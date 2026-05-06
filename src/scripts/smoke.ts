@@ -3,7 +3,7 @@
  * Probes whose required env vars are missing are skipped (not failed).
  * Usage: npm run smoke
  */
-import 'dotenv/config';
+// dotenv is loaded (with override) inside ../config.js
 import { smokeTest as supabaseSmoke } from '../lib/supabase.js';
 import { smokeTest as anthropicSmoke } from '../lib/anthropic.js';
 import { smokeTest as githubSmoke } from '../lib/github.js';
@@ -19,12 +19,12 @@ const probes: Probe[] = [
   { name: 'GitHub', required: ['GITHUB_TOKEN', 'GITHUB_OWNER', 'GITHUB_REPO'], run: githubSmoke },
   {
     name: 'GSC',
-    required: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN', 'GSC_PROPERTY_URL'],
+    required: ['GSC_OAUTH_CREDENTIALS_FILE', 'GSC_TOKEN_FILE', 'GSC_SITE_URL'],
     run: gscSmoke,
   },
   {
     name: 'GA4',
-    required: ['GOOGLE_CLIENT_ID', 'GOOGLE_CLIENT_SECRET', 'GOOGLE_REFRESH_TOKEN', 'GA4_PROPERTY_ID'],
+    required: ['GA4_OAUTH_CREDENTIALS_FILE', 'GA4_TOKEN_FILE', 'GA4_PROPERTY_ID'],
     run: ga4Smoke,
   },
   { name: 'Wix', required: ['WIX_API_KEY', 'WIX_SITE_ID', 'WIX_ACCOUNT_ID'], run: wixSmoke },

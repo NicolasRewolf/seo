@@ -1,13 +1,18 @@
 import { google, type analyticsdata_v1beta } from 'googleapis';
 import { format, subDays } from 'date-fns';
-import { googleOAuth } from './google-auth.js';
+import { googleOAuthFromFiles } from './google-auth.js';
 import { env } from '../config.js';
 
 let cached: analyticsdata_v1beta.Analyticsdata | null = null;
 
 export function ga4(): analyticsdata_v1beta.Analyticsdata {
   if (cached) return cached;
-  cached = google.analyticsdata({ version: 'v1beta', auth: googleOAuth() });
+  const e = env.ga4();
+  const auth = googleOAuthFromFiles({
+    credentialsFile: e.GA4_OAUTH_CREDENTIALS_FILE,
+    tokenFile: e.GA4_TOKEN_FILE,
+  });
+  cached = google.analyticsdata({ version: 'v1beta', auth });
   return cached;
 }
 

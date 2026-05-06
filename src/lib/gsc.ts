@@ -1,13 +1,18 @@
 import { google, type webmasters_v3 } from 'googleapis';
 import { format, subDays } from 'date-fns';
-import { googleOAuth } from './google-auth.js';
+import { googleOAuthFromFiles } from './google-auth.js';
 import { env } from '../config.js';
 
 let cached: webmasters_v3.Webmasters | null = null;
 
 export function gsc(): webmasters_v3.Webmasters {
   if (cached) return cached;
-  cached = google.webmasters({ version: 'v3', auth: googleOAuth() });
+  const e = env.gsc();
+  const auth = googleOAuthFromFiles({
+    credentialsFile: e.GSC_OAUTH_CREDENTIALS_FILE,
+    tokenFile: e.GSC_TOKEN_FILE,
+  });
+  cached = google.webmasters({ version: 'v3', auth });
   return cached;
 }
 
@@ -29,7 +34,7 @@ export async function querySearchAnalytics(params: {
 }): Promise<SearchAnalyticsRow[]> {
   const e = env.gsc();
   const { data } = await gsc().searchanalytics.query({
-    siteUrl: e.GSC_PROPERTY_URL,
+    siteUrl: e.GSC_SITE_URL,
     requestBody: {
       startDate: params.startDate,
       endDate: params.endDate,
@@ -47,12 +52,12 @@ export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
   try {
     const e = env.gsc();
     const sites = await gsc().sites.list();
-    const found = (sites.data.siteEntry ?? []).some((s) => s.siteUrl === e.GSC_PROPERTY_URL);
+    const found = (sites.data.siteEntry ?? []).some((s) => s.siteUrl === e.GSC_SITE_URL);
     if (!found) {
       const known = (sites.data.siteEntry ?? []).map((s) => s.siteUrl).join(', ');
       return {
         ok: false,
-        detail: `GSC property ${e.GSC_PROPERTY_URL} not in account. Visible: ${known || '(none)'}`,
+        detail: `GSC property ${e.GSC_SITE_URL} not in account. Visible: ${known || '(none)'}`,
       };
     }
     const today = new Date();
@@ -62,7 +67,7 @@ export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
       endDate: format(today, 'yyyy-MM-dd'),
       rowLimit: 1,
     });
-    return { ok: true, detail: `property=${e.GSC_PROPERTY_URL}, last-7d sample rows=${rows.length}` };
+    return { ok: true, detail: `property=${e.GSC_SITE_URL}, last-7d sample rows=${rows.length}` };
   } catch (err) {
     return { ok: false, detail: (err as Error).message };
   }

@@ -8,3 +8,9 @@ dist/
 .idea/
 coverage/
 .tsbuildinfo
+
+# OAuth secrets (GSC/GA4 client + token files)
+gsc-oauth-credentials.json
+gsc-token.json
+ga4-oauth-credentials.json
+ga4-token.json

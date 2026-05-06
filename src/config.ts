@@ -1,5 +1,11 @@
-import 'dotenv/config';
+import { config as dotenvConfig } from 'dotenv';
 import { z } from 'zod';
+
+// `.env` wins over the inherited shell env. This is intentional for a local
+// CLI tool — without override, an empty shell var (e.g. ANTHROPIC_API_KEY=
+// injected by some launcher) silently shadows the real value in .env. CI/Docker
+// can still set values directly because they don't ship with a .env file.
+dotenvConfig({ override: true });
 
 /**
  * Each connector validates only the env vars it needs (via its own section).
@@ -24,17 +30,21 @@ const GitHubSchema = z.object({
   GITHUB_REPO: z.string().min(1),
 });
 
-const GoogleSchema = z.object({
-  GOOGLE_CLIENT_ID: z.string().min(1),
-  GOOGLE_CLIENT_SECRET: z.string().min(1),
-  GOOGLE_REFRESH_TOKEN: z.string().min(1),
+/**
+ * Google OAuth — file-based pattern.
+ * The OAuth client credentials JSON (downloaded from GCP) can be shared
+ * between GSC and GA4 since the OAuth project is the same. Each scope
+ * needs its own user-consent token, so we keep two token paths.
+ */
+const GscSchema = z.object({
+  GSC_OAUTH_CREDENTIALS_FILE: z.string().min(1),
+  GSC_TOKEN_FILE: z.string().min(1),
+  GSC_SITE_URL: z.string().url(),
 });
 
-const GscSchema = GoogleSchema.extend({
-  GSC_PROPERTY_URL: z.string().url(),
-});
-
-const Ga4Schema = GoogleSchema.extend({
+const Ga4Schema = z.object({
+  GA4_OAUTH_CREDENTIALS_FILE: z.string().min(1),
+  GA4_TOKEN_FILE: z.string().min(1),
   GA4_PROPERTY_ID: z.string().min(1),
 });
 
@@ -79,7 +89,6 @@ export const env = {
   ga4: () => parseOrThrow('GA4', Ga4Schema),
   wix: () => parseOrThrow('Wix', WixSchema),
   audit: () => parseOrThrow('Audit', AuditSchema),
-  google: () => parseOrThrow('Google', GoogleSchema),
 };
 
 export type FullEnv = z.infer<typeof FullSchema>;
