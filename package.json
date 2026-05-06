@@ -15,6 +15,9 @@
     "snapshot": "tsx src/scripts/run-snapshot.ts",
     "audit": "tsx src/scripts/run-audit.ts",
     "audit:loose": "tsx src/scripts/run-audit.ts --ctr-gap=0.3 --min-impressions=200",
+    "pull:state": "tsx src/scripts/run-pull-current-state.ts",
+    "diagnose": "tsx src/scripts/run-diagnose.ts",
+    "fixes": "tsx src/scripts/run-generate-fixes.ts",
     "test:scoring": "tsx --test src/scripts/test-scoring.ts",
     "measure": "tsx src/scripts/run-measure.ts"
   },
