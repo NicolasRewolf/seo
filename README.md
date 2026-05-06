@@ -70,7 +70,7 @@ supabase/
 - [x] **Sprint 2** — Snapshot GSC + GA4 + cron `snapshot-weekly.yml`
 - [x] **Sprint 3** — Compute findings (page-level site benchmarks, scoring, treatment/control) + cron `audit-weekly.yml`
 - [x] **Sprint 4** — Pull current state (Wix Blog + HTML fallback) + diagnostic LLM + génération de fixes LLM
-- [ ] Sprint 5 — Création d'issues GitHub
+- [x] **Sprint 5** — Création d'issues GitHub + chainage `audit-weekly.yml` (snapshot → audit → pull → diagnose → fixes → issues)
 - [ ] Sprint 6 — Apply fixes via Wix + mesure J+30 / J+60
 
 ## GitHub Action — secrets requis
