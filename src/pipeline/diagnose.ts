@@ -139,7 +139,10 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
   const prompt = renderDiagnosticPrompt(inputs);
   const res = await anthropic().messages.create({
     model: model(),
-    max_tokens: 2000,
+    // 2000 tokens proved too tight once we added structural_gaps + the wider
+    // current_state context — Sonnet was truncating the JSON mid-string.
+    // 4000 covers the worst case with margin (~16k chars output).
+    max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }],
   });
   const first = res.content[0];
