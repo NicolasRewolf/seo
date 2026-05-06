@@ -69,7 +69,7 @@ supabase/
 - [x] **Sprint 1** — Schéma Supabase + connecteurs `lib/*`
 - [x] **Sprint 2** — Snapshot GSC + GA4 + cron `snapshot-weekly.yml`
 - [x] **Sprint 3** — Compute findings (page-level site benchmarks, scoring, treatment/control) + cron `audit-weekly.yml`
-- [ ] Sprint 4 — Diagnostic + fixes via LLM
+- [x] **Sprint 4** — Pull current state (Wix Blog + HTML fallback) + diagnostic LLM + génération de fixes LLM
 - [ ] Sprint 5 — Création d'issues GitHub
 - [ ] Sprint 6 — Apply fixes via Wix + mesure J+30 / J+60
 
