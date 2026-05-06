@@ -251,6 +251,7 @@ select
 from audit_findings f
 where f.status in ('pending','diagnosed','proposed')
 order by f.priority_score desc;
+alter view v_pending_findings set (security_invoker = true);
 
 create or replace view v_treatment_vs_control as
 select
@@ -264,6 +265,7 @@ left join fix_outcomes o on o.finding_id = f.id
 where f.status = 'measured'
 group by f.group_assignment, o.days_after_fix
 order by o.days_after_fix, f.group_assignment;
+alter view v_treatment_vs_control set (security_invoker = true);
 
 -- ============================================================
 -- 12. ROW-LEVEL SECURITY (service-role bypass; no public access)
