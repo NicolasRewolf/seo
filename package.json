@@ -14,6 +14,8 @@
     "auth:ga4": "tsx src/scripts/auth-ga4.ts",
     "snapshot": "tsx src/scripts/run-snapshot.ts",
     "audit": "tsx src/scripts/run-audit.ts",
+    "audit:loose": "tsx src/scripts/run-audit.ts --ctr-gap=0.3 --min-impressions=200",
+    "test:scoring": "tsx --test src/scripts/test-scoring.ts",
     "measure": "tsx src/scripts/run-measure.ts"
   },
   "dependencies": {
