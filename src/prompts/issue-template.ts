@@ -227,7 +227,7 @@ export function renderIssueBody(i: IssueInputs): string {
     `| **Priority score** | ${i.priority_score.toFixed(2)} (tier ${i.priority_tier}) |`,
     `| **Groupe expérimental** | \`${i.group_assignment}\` |`,
     ``,
-    `### Engagement (GA4, ${i.audit_period_months} mois)`,
+    `### Comportement (first-party Cooked, ${i.audit_period_months} mois)`,
     ``,
     `| Signal | Valeur | Interprétation |`,
     `|---|---|---|`,

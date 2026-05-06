@@ -1,18 +1,19 @@
 /**
- * Diagnostic prompt v1 — ROADMAP §8.
+ * Diagnostic prompt v2 — ROADMAP §8.
+ *
+ * v2 (this file) replaces the GA4-derived "engagement" section with first-party
+ * behavioral data from Cooked, and adds a Core Web Vitals section. The
+ * resulting JSON gains a `performance_diagnosis` field. Older v1 diagnostics
+ * persisted in `audit_findings.diagnostic` remain readable — the Zod schema
+ * defaults the new field to '' for backward compatibility.
  *
  * Renders the prompt with simple `{{var}}` substitution. Top-level export is
- * a function rather than a string so future versions (v2 etc.) can plug in
+ * a function rather than a string so future versions (v3 etc.) can plug in
  * with the same signature, and so we can store the rendered prompt in
  * audit_runs.config_snapshot if we want to debug a specific run.
- *
- * Updated on 2026-05-06 to also surface the page's existing schema.org
- * JSON-LD blocks and existing internal links — without these the LLM was
- * recommending fixes that already existed (e.g. "add FAQ schema" on a page
- * that already had FAQ schema), and missing context to assess maillage.
  */
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 1 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 2 as const;
 
 export type DiagnosticPromptInputs = {
   url: string;
@@ -25,6 +26,12 @@ export type DiagnosticPromptInputs = {
   pages_per_session: number | null;
   avg_duration_seconds: number | null;
   scroll_depth: number | null;
+  scroll_complete_pct: number | null;
+  outbound_clicks: number | null;
+  lcp_p75_ms: number | null;
+  inp_p75_ms: number | null;
+  cls_p75: number | null;
+  ttfb_p75_ms: number | null;
   current_title: string;
   current_meta: string;
   current_h1: string;
@@ -67,6 +74,29 @@ function fmtExistingLinks(rows: DiagnosticPromptInputs['current_internal_links']
   return sample.map((l) => `- "${l.anchor}" → ${l.target}`).join('\n') + more;
 }
 
+/**
+ * Classify a Core Web Vital value against Google's tri-tier thresholds.
+ * Source: https://web.dev/articles/vitals (Good / Needs Improvement / Poor).
+ */
+function classifyCwv(metric: 'LCP' | 'INP' | 'CLS' | 'TTFB', v: number): string {
+  switch (metric) {
+    case 'LCP':
+      return v <= 2500 ? 'Good' : v <= 4000 ? 'Needs Improvement' : 'Poor';
+    case 'INP':
+      return v <= 200 ? 'Good' : v <= 500 ? 'Needs Improvement' : 'Poor';
+    case 'CLS':
+      return v <= 0.1 ? 'Good' : v <= 0.25 ? 'Needs Improvement' : 'Poor';
+    case 'TTFB':
+      return v <= 800 ? 'Good' : v <= 1800 ? 'Needs Improvement' : 'Poor';
+  }
+}
+
+function fmtCwvLine(metric: 'LCP' | 'INP' | 'CLS' | 'TTFB', v: number | null, unit: string): string {
+  if (v == null) return `- ${metric} : n/a`;
+  const display = unit === 'ms' ? `${Math.round(v)}${unit}` : v.toFixed(3);
+  return `- ${metric} (p75) : ${display} → **${classifyCwv(metric, v)}**`;
+}
+
 export function renderDiagnosticPrompt(i: DiagnosticPromptInputs): string {
   return `Tu es un consultant SEO senior expert en NavBoost et signaux de clic Google. Analyse cette page sous-performante et produis un diagnostic structuré.
 
@@ -79,10 +109,18 @@ CTR actuel : ${fmtPct(i.ctr_actual)}%
 CTR attendu pour cette position : ${fmtPct(i.ctr_expected)}%
 Gap : ${i.ctr_gap_pct.toFixed(1)}%
 
-# Engagement (GA4)
+# Comportement (first-party, non échantillonné)
 Pages/session : ${fmtNumOrNA(i.pages_per_session)}
 Durée moyenne : ${fmtNumOrNA(i.avg_duration_seconds, 's')}
-Scroll depth : ${fmtNumOrNA(i.scroll_depth, '%')}
+Scroll moyen : ${fmtNumOrNA(i.scroll_depth, '%')}
+Scroll complet (% sessions atteignant 100%) : ${fmtNumOrNA(i.scroll_complete_pct, '%')}
+Clics sortants : ${fmtNumOrNA(i.outbound_clicks)}
+
+# Performance technique (Core Web Vitals — seuils Google)
+${fmtCwvLine('LCP', i.lcp_p75_ms, 'ms')}
+${fmtCwvLine('INP', i.inp_p75_ms, 'ms')}
+${fmtCwvLine('CLS', i.cls_p75, '')}
+${fmtCwvLine('TTFB', i.ttfb_p75_ms, 'ms')}
 
 # État SEO actuel de la page
 **Title** : ${i.current_title || '(empty)'}
@@ -116,7 +154,8 @@ Produis un diagnostic JSON strict avec ce schéma :
       "note": "courte note"
     }
   ],
-  "engagement_diagnosis": "Si pages_per_session < 1.3 ou duration < 30s ou scroll < 50%, explique ce que ça signale. Sinon: 'engagement satisfaisant'.",
+  "engagement_diagnosis": "Si pages_per_session < 1.3 ou duration < 30s ou scroll < 50%, explique ce que ça signale (intention déçue, contenu insuffisant, CTA manquante…). Sinon: 'engagement satisfaisant'.",
+  "performance_diagnosis": "Si LCP > 2500ms, INP > 200ms ou CLS > 0.1 (zones 'Needs Improvement' ou 'Poor' Google), explique l'impact NavBoost direct (Google rétrograde les pages lentes/instables) et donne l'action prioritaire (image trop lourde, JS bloquant, layout shift sur header…). Sinon: 'performance technique satisfaisante'.",
   "structural_gaps": "1-3 phrases sur ce qui manque structurellement. Tu DOIS prendre en compte le schema déjà présent (ne pas suggérer ce qui existe) et le maillage actuel. Mentionne uniquement des gaps concrets (ex: 'aucune FAQPage alors que les top queries sont des questions', ou 'maillage anémique vers les pages thématiques connexes')."
 }
 

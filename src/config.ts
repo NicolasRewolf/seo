@@ -32,9 +32,8 @@ const GitHubSchema = z.object({
 
 /**
  * Google OAuth — file-based pattern.
- * The OAuth client credentials JSON (downloaded from GCP) can be shared
- * between GSC and GA4 since the OAuth project is the same. Each scope
- * needs its own user-consent token, so we keep two token paths.
+ * The OAuth client credentials JSON (downloaded from GCP) is used by GSC.
+ * (GA4 has been removed: behavioral data now comes from Cooked, see below.)
  */
 const GscSchema = z.object({
   GSC_OAUTH_CREDENTIALS_FILE: z.string().min(1),
@@ -42,10 +41,14 @@ const GscSchema = z.object({
   GSC_SITE_URL: z.string().url(),
 });
 
-const Ga4Schema = z.object({
-  GA4_OAUTH_CREDENTIALS_FILE: z.string().min(1),
-  GA4_TOKEN_FILE: z.string().min(1),
-  GA4_PROPERTY_ID: z.string().min(1),
+/**
+ * Cooked — first-party behavioral source (replaces GA4).
+ * COOKED_SECRET_KEY is the `sb_secret_…` key from the Cooked Supabase project,
+ * used cross-project to call the `behavior_pages_for_period` RPC.
+ */
+const CookedSchema = z.object({
+  COOKED_SUPABASE_URL: z.string().url(),
+  COOKED_SECRET_KEY: z.string().min(1),
 });
 
 const WixSchema = z.object({
@@ -66,7 +69,7 @@ const FullSchema = SupabaseSchema
   .merge(AnthropicSchema)
   .merge(GitHubSchema)
   .merge(GscSchema)
-  .merge(Ga4Schema)
+  .merge(CookedSchema)
   .merge(WixSchema)
   .merge(AuditSchema);
 
@@ -86,7 +89,7 @@ export const env = {
   anthropic: () => parseOrThrow('Anthropic', AnthropicSchema),
   github: () => parseOrThrow('GitHub', GitHubSchema),
   gsc: () => parseOrThrow('GSC', GscSchema),
-  ga4: () => parseOrThrow('GA4', Ga4Schema),
+  cooked: () => parseOrThrow('Cooked', CookedSchema),
   wix: () => parseOrThrow('Wix', WixSchema),
   audit: () => parseOrThrow('Audit', AuditSchema),
 };

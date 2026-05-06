@@ -34,7 +34,7 @@ npm run smoke
 
 | # | Commande | Rôle |
 |---|---|---|
-| 1 | `npm run snapshot` | Pull GSC pages + queries (3 mois) + GA4 engagement → `*_snapshots` |
+| 1 | `npm run snapshot` | Pull GSC pages + queries (3 mois) + Cooked first-party behavior & Core Web Vitals → `*_snapshots` |
 | 2 | `npm run audit` | Calcule findings (CTR gap vs benchmark site-spécifique, scoring, treatment/control) → `audit_findings` |
 | 3 | `npm run pull:state` | Récupère le contenu actuel des pages flagged (Wix Blog API + scrape HTML pour les liens) → `current_state` |
 | 4 | `npm run diagnose` | LLM Sonnet 4.6 produit un diagnostic enrichi par page → `diagnostic` |
@@ -62,13 +62,13 @@ npm run measure
 - **Anthropic Claude Sonnet 4.6** : diagnostic + fix-generation (max_tokens=4000 pour éviter la troncature)
 - **GitHub Issues** : 1 issue par finding, labels `seo-audit` + `priority-{1-3}` + `{treatment|control}` + `status:proposed`
 - **Google Search Console** (`webmasters.readonly`) : positions, impressions, CTR par page + par query, sur 3 mois
-- **GA4 Data API** (`analytics.readonly`) : sessions / scroll / pages-per-session par pagePath — **biaisé par le consent CNIL**
+- **Cooked** ([repo](https://github.com/NicolasRewolf/cooked)) : sessions / dwell actif / scroll (avg + median + complete %) / **Core Web Vitals (LCP, INP, CLS, TTFB p75)** / outbound clicks par URL — first-party, cookieless, RGPD-exempt, **non échantillonné, non thresholdé, non biaisé consent** (vs GA4 historique)
 - **Wix REST** :
   - `Blog API v3` : `getBlogPostBySlug` (SEO + contentText + richContent + categoryIds)
   - `Blog Post Metrics` (`/v3/posts/{id}/metrics`) : views/likes/comments first-party par post
   - `Analytics Data API v2` (`/analytics/v2/site-analytics/data`) : sessions site-wide first-party (calibration consent)
 - **DataForSEO** : volumes mensuels France réels par keyword + share-of-voice computé page-side
-- **OAuth Google** : pattern fichier (`gsc-oauth-credentials.json` + `gsc-token.json` + `ga4-token.json`), gitignored
+- **OAuth Google** : pattern fichier (`gsc-oauth-credentials.json` + `gsc-token.json`), gitignored
 - **GitHub Actions** : `audit-weekly.yml` (lundi 06:00 UTC, full chain) + `measure-outcomes.yml` (quotidien 07:00 UTC)
 
 ---
@@ -82,15 +82,15 @@ src/
 │   ├── supabase.ts               # service-role client
 │   ├── anthropic.ts
 │   ├── github.ts                 # Octokit
-│   ├── google-auth.ts            # OAuth file-based loader (shared GSC/GA4)
+│   ├── google-auth.ts            # OAuth file-based loader (GSC)
 │   ├── gsc.ts                    # searchanalytics.query wrapper
-│   ├── ga4.ts                    # runReport wrapper
+│   ├── cooked.ts                 # Cross-project Supabase client → behavior_pages_for_period RPC
 │   ├── wix.ts                    # Blog API + Site Properties + Blog Metrics + Site Analytics + HTML scrape fallback
 │   ├── dataforseo.ts             # search_volume Live (Basic Auth)
 │   └── site-catalog.ts           # Hardcoded catalog of REAL Plouton URLs + Wix category role mapping
 ├── pipeline/
-│   ├── snapshot.ts               # GSC pages/queries + GA4 (idempotent delete-before-insert)
-│   ├── compute-findings.ts       # Scoring (page-level site benchmark, ctr_gap, priority_score, engagement penalty, treatment/control)
+│   ├── snapshot.ts               # GSC pages/queries + Cooked behavior+CWV (idempotent delete-before-insert)
+│   ├── compute-findings.ts       # Scoring (page-level site benchmark, ctr_gap, priority_score, engagement+CWV penalty, treatment/control)
 │   ├── pull-current-state.ts     # Loop: getCurrentStateForUrl → audit_findings.current_state
 │   ├── context-enrichment.ts     # Sprint 7: gather wix_views + DataForSEO volumes + categorized maillage + consent calibration
 │   ├── diagnose.ts               # Claude call + Zod validation → audit_findings.diagnostic
@@ -133,12 +133,13 @@ supabase/
 |---|---|---|
 | 0 | ✅ | Bootstrap (TS, deps, env, repo) |
 | 1 | ✅ | Schéma Supabase + connecteurs `lib/*` |
-| 2 | ✅ | Snapshot GSC + GA4 + cron `audit-weekly.yml` (puis chainé en Sprint 5) |
+| 2 | ✅ | Snapshot GSC + GA4 (puis remplacé par Cooked au Sprint 8) + cron `audit-weekly.yml` (puis chainé en Sprint 5) |
 | 3 | ✅ | Compute findings (page-level site benchmarks, scoring, treatment/control) |
 | 4 | ✅ | Pull current state (Wix Blog + HTML fallback) + diagnostic LLM + génération de fixes LLM |
 | 5 | ✅ | Création d'issues GitHub + chainage `audit-weekly.yml` (snapshot → audit → pull → diagnose → fixes → issues) |
 | 6 | ✅ | Prompts enrichis v1 (schema + maillage + 7 fix types), `npm run apply` (signal manuel post-edit Wix), `pipeline/measure.ts` + cron `measure-outcomes.yml` |
 | **7** | 🟡 **en cours** | **Enrichissement contextuel** : DataForSEO (volumes France réels + share-of-voice), Wix Blog Metrics (views first-party), Wix Analytics (calibration consent), `site-catalog.ts` (URLs internes réelles → 0 hallucination), maillage catégorisé éditorial vs nav, prompt `funnel_assessment` field. **Mode itératif** : on perfectionne le diagnostic d'**une seule** page (`/post/abandon-de-poste-quels-risques`, [issue #23](https://github.com/NicolasRewolf/seo/issues/23)) avant de relancer sur les 15 autres findings. |
+| **8** | ✅ | **GA4 → Cooked** : remplace la source comportementale par le tracker first-party Cooked. `ga4_page_snapshots` → `behavior_page_snapshots` (data préservée). Ajoute Core Web Vitals (LCP/INP/CLS/TTFB p75) et `scroll_complete_pct`/`outbound_clicks` au snapshot et au scoring. Pénalité scoring étendue avec les seuils Google (LCP > 2500ms +0.15, INP > 200ms +0.15, CLS > 0.1 +0.10, cap global 0.7). Prompt diagnostic v2 ajoute la section CWV + champ `performance_diagnosis`. Toute la couche `consent calibration` Wix Analytics devient obsolète (Cooked = ground truth). |
 
 ---
 
@@ -194,8 +195,8 @@ Repo Settings → Secrets and variables → Actions :
 | `GSC_SITE_URL` | `https://www.jplouton-avocat.fr/` |
 | `GSC_OAUTH_CREDENTIALS_JSON` | Contenu brut de `gsc-oauth-credentials.json` |
 | `GSC_TOKEN_JSON` | Contenu brut de `gsc-token.json` |
-| `GA4_TOKEN_JSON` | Contenu brut de `ga4-token.json` |
-| `GA4_PROPERTY_ID` | ID numérique GA4 (ex: `375034206`) |
+| `COOKED_SUPABASE_URL` | URL du projet Cooked (ex: `https://mxycmjkeotrycyneacje.supabase.co`) |
+| `COOKED_SECRET_KEY` | Clé `sb_secret_...` du projet Cooked (Settings → API) |
 | `WIX_API_KEY` | JWT IST.eyJ... |
 | `WIX_SITE_ID` | UUID du site Wix |
 | `WIX_ACCOUNT_ID` | UUID du compte **owner** du site (pas du contributor) |
@@ -207,7 +208,8 @@ Variables `.env` locales : voir `.env.example`. **Important** : `dotenv` est cha
 
 ## Limitations connues
 
-- **GA4 biaisé consent** : ~3.5% des sessions visibles sur jplouton-avocat.fr (CNIL stricte). Les valeurs absolues (sessions, durée, scroll) sont sous-estimées. Les **ratios inter-pages** restent valides pour le scoring relatif. Le prompt diagnostic surface le ratio Wix/GA4 pour que le LLM pondère.
+- ~~GA4 biaisé consent~~ — **résolu Sprint 8** : on a swappé GA4 pour Cooked (first-party, exempté CNIL). 100% des sessions sont capturées, plus aucun thresholding ni sampling ni modeled data.
+- **Backfill historique** : Cooked a démarré la collecte le jour de son déploiement (cf. ROADMAP §S8). Les premiers audits n'auront que ~quelques jours/semaines de données comportementales selon le moment. Le scoring fonctionne malgré ça (les signaux manquants ne pénalisent pas — `null` est neutre).
 - **Wix Analytics Data API** = site-wide uniquement, pas de breakdown per-page (vérifié empiriquement avec tous les filtres `groupBy`/`dimensions`/`filter.*`). Sert uniquement à la calibration.
 - **Wix Blog Post Metrics** = cumulatif lifetime, pas de range. Pour avoir un delta hebdo, il faudrait snapshotter les views à chaque cron — pas encore implémenté.
 - **Pages statiques** (non `/post/*`) : extraction via scrape HTML qui peut capturer du chrome de menu Wix dans l'intro. Acceptable pour title/meta, dégradé pour intro.

@@ -51,7 +51,7 @@ test('computeCtrGap: positive when actual under expected', () => {
   assert.equal(computeCtrGap(0.01, 0), 0); // expected = 0 → no signal
 });
 
-test('computeEngagementPenalty: stacks but caps at 0.5', () => {
+test('computeEngagementPenalty: stacks behavior signals (3× = 0.5)', () => {
   assert.equal(
     computeEngagementPenalty({
       pagesPerSession: 1.0,
@@ -78,6 +78,61 @@ test('computeEngagementPenalty: missing signals are not penalized', () => {
       scrollDepthAvg: null,
     }),
     0,
+  );
+});
+
+test('computeEngagementPenalty: each CWV signal added independently', () => {
+  // LCP just over Google's "Good" threshold (2500ms)
+  assert.equal(
+    computeEngagementPenalty({ lcpP75Ms: 2501 }),
+    0.15,
+  );
+  // INP just over 200ms
+  assert.equal(
+    computeEngagementPenalty({ inpP75Ms: 201 }),
+    0.15,
+  );
+  // CLS just over 0.1
+  assert.equal(
+    computeEngagementPenalty({ clsP75: 0.11 }),
+    0.10,
+  );
+});
+
+test('computeEngagementPenalty: CWV at "Good" thresholds → 0', () => {
+  assert.equal(
+    computeEngagementPenalty({
+      lcpP75Ms: 2500,
+      inpP75Ms: 200,
+      clsP75: 0.1,
+    }),
+    0,
+  );
+});
+
+test('computeEngagementPenalty: behavior + CWV stack and cap at 0.7', () => {
+  // 3 behavior signals (0.50) + 3 CWV signals (0.40) → would be 0.90, capped at 0.7
+  assert.equal(
+    computeEngagementPenalty({
+      pagesPerSession: 1.0,
+      avgSessionDurationSeconds: 20,
+      scrollDepthAvg: 30,
+      lcpP75Ms: 5000,
+      inpP75Ms: 600,
+      clsP75: 0.3,
+    }),
+    0.7,
+  );
+});
+
+test('computeEngagementPenalty: only CWV → max 0.4 before cap', () => {
+  assert.equal(
+    computeEngagementPenalty({
+      lcpP75Ms: 5000,
+      inpP75Ms: 600,
+      clsP75: 0.3,
+    }),
+    0.4,
   );
 });
 

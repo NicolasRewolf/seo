@@ -26,9 +26,8 @@ jobs:
       GSC_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
       GSC_TOKEN_FILE: ./gsc-token.json
       GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
-      GA4_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
-      GA4_TOKEN_FILE: ./ga4-token.json
-      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+      COOKED_SUPABASE_URL: ${{ secrets.COOKED_SUPABASE_URL }}
+      COOKED_SECRET_KEY: ${{ secrets.COOKED_SECRET_KEY }}
       WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
       WIX_SITE_ID: ${{ secrets.WIX_SITE_ID }}
       WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}

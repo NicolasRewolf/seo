@@ -2,10 +2,10 @@
  * Sprint 4 — LLM diagnostic.
  *
  * For each finding with status='pending' and current_state IS NOT NULL,
- * builds the diagnostic prompt with top-10 query data + GA4 engagement,
- * calls Claude Sonnet 4.6, validates the JSON shape with Zod, writes the
- * structured diagnostic to audit_findings.diagnostic, and bumps the finding
- * to status='diagnosed'.
+ * builds the diagnostic prompt with top-10 query data + Cooked first-party
+ * behavior + Core Web Vitals, calls Claude Sonnet 4.6, validates the JSON
+ * shape with Zod, writes the structured diagnostic to
+ * audit_findings.diagnostic, and bumps the finding to status='diagnosed'.
  */
 import { z } from 'zod';
 import { supabase } from '../lib/supabase.js';
@@ -34,6 +34,7 @@ const DiagnosticSchema = z.object({
     )
     .default([]),
   engagement_diagnosis: z.string(),
+  performance_diagnosis: z.string().optional().default(''),
   structural_gaps: z.string().optional().default(''),
 });
 
@@ -91,10 +92,13 @@ function unfenceJson(s: string): string {
 }
 
 export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayload> {
+  // NOTE: keep this select string a single literal — Supabase's PostgREST
+  // type inference falls back to `GenericStringError` when the string is
+  // built via `+` concatenation, which breaks downstream `.data` typing.
   const { data: row, error } = await supabase()
     .from('audit_findings')
     .select(
-      'id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, current_state, audit_run_id, audit_runs(period_start, period_end)',
+      'id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, scroll_complete_pct, lcp_p75_ms, inp_p75_ms, cls_p75, ttfb_p75_ms, outbound_clicks, current_state, audit_run_id, audit_runs(period_start, period_end)',
     )
     .eq('id', findingId)
     .single();
@@ -127,6 +131,13 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     avg_duration_seconds:
       row.avg_session_duration_seconds != null ? Number(row.avg_session_duration_seconds) : null,
     scroll_depth: row.scroll_depth_avg != null ? Number(row.scroll_depth_avg) : null,
+    scroll_complete_pct:
+      row.scroll_complete_pct != null ? Number(row.scroll_complete_pct) : null,
+    outbound_clicks: row.outbound_clicks != null ? Number(row.outbound_clicks) : null,
+    lcp_p75_ms: row.lcp_p75_ms != null ? Number(row.lcp_p75_ms) : null,
+    inp_p75_ms: row.inp_p75_ms != null ? Number(row.inp_p75_ms) : null,
+    cls_p75: row.cls_p75 != null ? Number(row.cls_p75) : null,
+    ttfb_p75_ms: row.ttfb_p75_ms != null ? Number(row.ttfb_p75_ms) : null,
     current_title: cs.title,
     current_meta: cs.meta_description,
     current_h1: cs.h1,
