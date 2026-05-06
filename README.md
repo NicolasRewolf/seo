@@ -7,8 +7,11 @@ réels (DataForSEO), et crée des issues GitHub structurées par finding. Mesure
 l'impact via groupe de contrôle treatment vs control.
 
 > Roadmap technique de référence : voir [`ROADMAP.md`](./ROADMAP.md). Le
-> README ci-dessous documente l'**état actuel** du code, qui a évolué au-delà
-> du roadmap initial pendant Sprint 7 (enrichissement contextuel).
+> README ci-dessous documente l'**état actuel** du code. Le scope a dépassé
+> le roadmap initial avec deux extensions livrées : Sprint 7 (enrichissement
+> contextuel — DataForSEO + catalogue d'URLs réelles + funnel role) et
+> Sprint 8 (remplacement de GA4 par Cooked first-party + Core Web Vitals).
+> Tous les sprints sont sur `main`.
 
 ---
 
@@ -64,9 +67,10 @@ npm run measure
 - **Google Search Console** (`webmasters.readonly`) : positions, impressions, CTR par page + par query, sur 3 mois
 - **Cooked** ([repo](https://github.com/NicolasRewolf/cooked)) : sessions / dwell actif / scroll (avg + median + complete %) / **Core Web Vitals (LCP, INP, CLS, TTFB p75)** / outbound clicks par URL — first-party, cookieless, RGPD-exempt, **non échantillonné, non thresholdé, non biaisé consent** (vs GA4 historique)
 - **Wix REST** :
-  - `Blog API v3` : `getBlogPostBySlug` (SEO + contentText + richContent + categoryIds)
+  - `Blog API v3` : `getBlogPostBySlug` (SEO + contentText + richContent + categoryIds) + scrape HTML parallèle pour les liens éditoriaux que l'API ne renvoie pas
   - `Blog Post Metrics` (`/v3/posts/{id}/metrics`) : views/likes/comments first-party par post
-  - `Analytics Data API v2` (`/analytics/v2/site-analytics/data`) : sessions site-wide first-party (calibration consent)
+  - `Site Properties` (`/site-properties/v4/properties`) pour le smoke test
+  - _Wix Analytics Data API existe et est connue (`/analytics/v2/site-analytics/data`, site-wide only) mais plus utilisée depuis le Sprint 8 — Cooked = ground truth comportementale._
 - **DataForSEO** : volumes mensuels France réels par keyword + share-of-voice computé page-side
 - **OAuth Google** : pattern fichier (`gsc-oauth-credentials.json` + `gsc-token.json`), gitignored
 - **GitHub Actions** : `audit-weekly.yml` (lundi 06:00 UTC, full chain) + `measure-outcomes.yml` (quotidien 07:00 UTC)
@@ -92,19 +96,18 @@ src/
 │   ├── snapshot.ts               # GSC pages/queries + Cooked behavior+CWV (idempotent delete-before-insert)
 │   ├── compute-findings.ts       # Scoring (page-level site benchmark, ctr_gap, priority_score, engagement+CWV penalty, treatment/control)
 │   ├── pull-current-state.ts     # Loop: getCurrentStateForUrl → audit_findings.current_state
-│   ├── context-enrichment.ts     # Sprint 7: gather wix_views + DataForSEO volumes + categorized maillage + consent calibration
+│   ├── context-enrichment.ts     # Sprint 7: Wix category + funnel role + post views + DataForSEO volumes + URL catalog
 │   ├── diagnose.ts               # Claude call + Zod validation → audit_findings.diagnostic
 │   ├── generate-fixes.ts         # Claude call + insert proposed_fixes (status='draft')
 │   ├── create-issues.ts          # Octokit create + store issue_number/url
 │   ├── mark-applied.ts           # Manual signal (no auto-Wix-push)
 │   └── measure.ts                # T+30/T+60 outcomes + treatment-vs-control gap
 ├── prompts/
-│   ├── diagnostic.v1.ts          # Sprint-7 enriched: category role, schema, categorized maillage, real volumes, consent caveat
-│   ├── fix-generation.v1.ts      # Sprint-7 enriched: catalog of REAL URLs, no hallucination, schema with placeholders
+│   ├── diagnostic.v1.ts          # v3 prompt: identité+rôle, GSC, Cooked behavior, CWV, état SEO, maillage catégorisé, top queries enrichies, catalogue URLs, mission JSON 8-fields
+│   ├── fix-generation.v1.ts      # Catalog-aware (no URL hallucination), schema with {{TO_FILL_BY_AUTHOR}} placeholders, 7 fix_type options
 │   └── issue-template.ts         # Pure renderer for §9 markdown
 └── scripts/
     ├── smoke.ts                  # Per-connector ping
-    ├── auth-ga4.ts               # One-off OAuth consent flow (analytics.readonly)
     ├── run-snapshot.ts
     ├── run-audit.ts
     ├── run-pull-current-state.ts
@@ -118,7 +121,8 @@ src/
 
 supabase/
 └── migrations/
-    └── 20260506000000_initial_schema.sql
+    ├── 20260506000000_initial_schema.sql
+    └── 20260507000000_swap_ga4_to_behavior.sql   # Sprint 8 rename + CWV columns
 
 .github/workflows/
 ├── audit-weekly.yml              # Full chain: snapshot → audit → pull → diagnose → fixes → issues
@@ -143,29 +147,37 @@ supabase/
 
 ---
 
-## Mode itération actuel (Sprint 7)
+## Mode itératif (pour stabiliser la qualité)
 
-Pour stabiliser la qualité du LLM avant de scaler, on travaille **sur une seule
-issue à la fois**. Tant qu'elle n'est pas validée, on ne touche pas aux autres.
+Quand on touche les prompts ou l'extraction de données, on travaille **sur une
+seule issue à la fois** avant de scaler aux 16 findings. Boucle :
 
-À chaque retour utilisateur :
-1. Identifier le bug dans l'extraction de données ou dans le prompt
+1. Identifier le bug (extraction de données ou prompt)
 2. Patcher le code concerné (lib, pipeline ou prompt)
-3. Reset la finding ciblée (`status='pending'`, `diagnostic=null`)
-4. Re-run `npm run pull:state && npm run diagnose && npm run fixes`
-5. Soit recréer une issue propre, soit poster un commentaire de comparaison
+3. Reset la finding ciblée :
+   ```sql
+   delete from proposed_fixes where finding_id = '<uuid>';
+   update audit_findings
+     set status='pending', diagnostic=null, current_state=null,
+         github_issue_number=null, github_issue_url=null
+     where id='<uuid>';
+   ```
+4. Re-run `npm run pull:state -- --ids=<uuid> && npm run diagnose -- --ids=<uuid> && npm run fixes -- --ids=<uuid> && npm run issues -- --ids=<uuid>`
+5. Review l'issue créée. Si OK → `gh workflow run audit-weekly.yml` pour relancer sur tout.
 
-**Bugs trouvés et corrigés pendant cette itération** :
+**Bugs trouvés et corrigés pendant les itérations** (utile comme historique
+de leçons) :
 
 | # | Bug | Fix |
 |---|---|---|
 | 1 | `internal_links_outbound` hardcodé à `[]` pour les blog posts → LLM diagnostiquait "cul-de-sac funnel" alors que le maillage existe | `scrapeInternalLinks(url)` parallèle au Blog API |
-| 2 | Consent rate calculé à >100% (impossible) car GA4 sommé sur 3 mois vs Wix sur 30 j | Aligner les deux périodes via `runReport` site-wide last-30d |
+| 2 | Consent rate calculé à >100% (impossible) car GA4 sommé sur 3 mois vs Wix sur 30 j | Aligner les deux périodes (puis tout droppé au Sprint 8 quand GA4 a sauté) |
 | 3 | LLM mélangeait nav menu + liens éditoriaux → conclusions fausses | Classifier les liens en 3 buckets (`editorial`, `related_post`, `nav`) avant injection prompt |
 | 4 | Fix-gen v0 hallucinait des URLs (`/post/licenciement-faute-grave` n'existe pas) | Catalogue dur des URLs réelles Plouton injecté dans le prompt avec règle "uniquement celles-ci" |
 | 5 | LLM inventait `dateModified` / `datePublished` pour les schemas Article | Prompt impose le placeholder `{{TO_FILL_BY_AUTHOR}}` quand la vraie date n'est pas connue |
 | 6 | `max_tokens=2000/2500` truncatait les réponses LLM (~1/3 des findings) | Bumpé à 4000 (~16k chars output) |
 | 7 | YAML anchors dans `audit-weekly.yml` (non supportés par GHA) → silently résolus en null | `env:` au niveau du job |
+| 8 | Wix Blog `getBlogPostBySlug` peut renvoyer 503 transient pendant fix-gen | Re-tenter après ~10-15s suffit (idempotent côté pipeline) |
 
 ---
 
@@ -209,8 +221,7 @@ Variables `.env` locales : voir `.env.example`. **Important** : `dotenv` est cha
 ## Limitations connues
 
 - ~~GA4 biaisé consent~~ — **résolu Sprint 8** : on a swappé GA4 pour Cooked (first-party, exempté CNIL). 100% des sessions sont capturées, plus aucun thresholding ni sampling ni modeled data.
-- **Backfill historique** : Cooked a démarré la collecte le jour de son déploiement (cf. ROADMAP §S8). Les premiers audits n'auront que ~quelques jours/semaines de données comportementales selon le moment. Le scoring fonctionne malgré ça (les signaux manquants ne pénalisent pas — `null` est neutre).
-- **Wix Analytics Data API** = site-wide uniquement, pas de breakdown per-page (vérifié empiriquement avec tous les filtres `groupBy`/`dimensions`/`filter.*`). Sert uniquement à la calibration.
+- **Backfill historique Cooked** : Cooked a démarré la collecte le jour de son déploiement. Les premiers audits auront `null` sur les CWV et le comportement par page tant que le tracker n'a pas accumulé d'événements (~28 jours pour CWV en plein régime). Le scoring est neutre sur `null` (pas de pénalité ajoutée), et le prompt diagnostic le dit explicitement (`'CWV en cours de collecte (n/a)'`).
 - **Wix Blog Post Metrics** = cumulatif lifetime, pas de range. Pour avoir un delta hebdo, il faudrait snapshotter les views à chaque cron — pas encore implémenté.
 - **Pages statiques** (non `/post/*`) : extraction via scrape HTML qui peut capturer du chrome de menu Wix dans l'intro. Acceptable pour title/meta, dégradé pour intro.
 - **Position drift** = `null` au premier audit (pas de snapshot d'il y a 3 mois). Devient calculable dès le 2e cycle hebdo.
@@ -221,7 +232,7 @@ Variables `.env` locales : voir `.env.example`. **Important** : `dotenv` est cha
 ## Tests
 
 ```bash
-npm run test:scoring         # 10 cases — formules de scoring (ROADMAP §7)
+npm run test:scoring         # 14 cases — formules de scoring (ROADMAP §7) + seuils CWV (Sprint 8)
 npm run test:issue-template  # 9 cases — rendu markdown des issues (ROADMAP §9)
 npx tsc --noEmit             # typecheck strict
 ```
