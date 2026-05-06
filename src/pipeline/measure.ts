@@ -2,8 +2,9 @@
  * Sprint 6 — Measure outcomes (T+30 / T+60).
  *
  * Reads each finding with status='applied' (or already 'measured') and
- * compares its current GSC + GA4 metrics to the baseline captured at apply
- * time. Inserts one fix_outcomes row per due cycle. Bumps the finding to
+ * compares its current GSC metrics (CTR, position, impressions) to the
+ * baseline captured at apply time. Inserts one fix_outcomes row per due
+ * cycle. Bumps the finding to
  * 'measured' once the T+60 measurement has landed.
  *
  * Baseline = the gsc_page_snapshots row whose period contains the apply

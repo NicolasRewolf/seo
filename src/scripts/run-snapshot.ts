@@ -42,7 +42,7 @@ async function main(): Promise<void> {
       `period       : ${summary.periodStart} → ${summary.periodEnd}`,
       `gsc pages    : ${summary.gscPages}`,
       `gsc queries  : ${summary.gscQueries}`,
-      `ga4 pages    : ${summary.ga4Pages}`,
+      `behavior pgs : ${summary.behaviorPages}`,
       `duration     : ${(summary.durationMs / 1000).toFixed(1)}s`,
       ``,
     ].join('\n'),

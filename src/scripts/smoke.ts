@@ -8,7 +8,7 @@ import { smokeTest as supabaseSmoke } from '../lib/supabase.js';
 import { smokeTest as anthropicSmoke } from '../lib/anthropic.js';
 import { smokeTest as githubSmoke } from '../lib/github.js';
 import { smokeTest as gscSmoke } from '../lib/gsc.js';
-import { smokeTest as ga4Smoke } from '../lib/ga4.js';
+import { smokeTest as cookedSmoke } from '../lib/cooked.js';
 import { smokeTest as wixSmoke } from '../lib/wix.js';
 
 type Probe = { name: string; required: string[]; run: () => Promise<{ ok: boolean; detail: string }> };
@@ -23,9 +23,9 @@ const probes: Probe[] = [
     run: gscSmoke,
   },
   {
-    name: 'GA4',
-    required: ['GA4_OAUTH_CREDENTIALS_FILE', 'GA4_TOKEN_FILE', 'GA4_PROPERTY_ID'],
-    run: ga4Smoke,
+    name: 'Cooked',
+    required: ['COOKED_SUPABASE_URL', 'COOKED_SECRET_KEY'],
+    run: cookedSmoke,
   },
   { name: 'Wix', required: ['WIX_API_KEY', 'WIX_SITE_ID', 'WIX_ACCOUNT_ID'], run: wixSmoke },
 ];

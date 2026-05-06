@@ -11,7 +11,6 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "smoke": "tsx src/scripts/smoke.ts",
-    "auth:ga4": "tsx src/scripts/auth-ga4.ts",
     "snapshot": "tsx src/scripts/run-snapshot.ts",
     "audit": "tsx src/scripts/run-audit.ts",
     "audit:loose": "tsx src/scripts/run-audit.ts --ctr-gap=0.3 --min-impressions=200",

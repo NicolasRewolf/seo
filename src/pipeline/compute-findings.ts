@@ -1,9 +1,10 @@
 /**
  * Sprint 3 — Compute findings.
  *
- * Reads the latest GSC + GA4 snapshots, computes per-page metrics
- * (ctr_expected, ctr_gap, priority_score, priority_tier, engagement penalty),
- * applies the audit thresholds, alternately assigns treatment/control,
+ * Reads the latest GSC + Cooked behavior snapshots, computes per-page metrics
+ * (ctr_expected, ctr_gap, priority_score, priority_tier, engagement penalty
+ * incl. Core Web Vitals), applies the audit thresholds, alternately assigns
+ * treatment/control,
  * and writes everything to audit_runs + audit_findings.
  *
  * Idempotent at the audit_runs level: each call creates a NEW audit_runs row.
@@ -40,10 +41,31 @@ export function computeCtrGap(actual: number, expected: number): number {
   return Math.max(0, (expected - actual) / expected);
 }
 
+/**
+ * Compute the engagement penalty applied to `priority_score`. Higher penalty
+ * = page is more underperforming behaviorally = more priority.
+ *
+ * Behavioral signals (from Cooked first-party tracker):
+ * - pagesPerSession < 1.3 → +0.15
+ * - avgSessionDurationSeconds < 30 → +0.20
+ * - scrollDepthAvg < 50 → +0.15
+ *
+ * Core Web Vitals signals (Google's "Needs Improvement" thresholds — the
+ * literal cutoffs the search ranking uses):
+ * - LCP > 2500 ms → +0.15
+ * - INP > 200 ms → +0.15
+ * - CLS > 0.1     → +0.10
+ *
+ * Sum is capped at 0.7 (was 0.5 before CWV) to leave the formula meaningful
+ * when a page is bad on every dimension.
+ */
 export function computeEngagementPenalty(signals: {
   pagesPerSession?: number | null;
   avgSessionDurationSeconds?: number | null;
   scrollDepthAvg?: number | null;
+  lcpP75Ms?: number | null;
+  inpP75Ms?: number | null;
+  clsP75?: number | null;
 }): number {
   let penalty = 0;
   if (signals.pagesPerSession != null && signals.pagesPerSession < 1.3) penalty += 0.15;
@@ -51,7 +73,10 @@ export function computeEngagementPenalty(signals: {
     penalty += 0.2;
   }
   if (signals.scrollDepthAvg != null && signals.scrollDepthAvg < 50) penalty += 0.15;
-  return Math.min(penalty, 0.5);
+  if (signals.lcpP75Ms != null && signals.lcpP75Ms > 2500) penalty += 0.15;
+  if (signals.inpP75Ms != null && signals.inpP75Ms > 200) penalty += 0.15;
+  if (signals.clsP75 != null && signals.clsP75 > 0.1) penalty += 0.1;
+  return Math.min(penalty, 0.7);
 }
 
 export function computePriorityScore(opts: {
@@ -282,43 +307,55 @@ async function fetchAllPages(
   return out;
 }
 
-async function fetchEngagementMap(
+type BehaviorRowFromDb = {
+  pages_per_session: number | null;
+  avg_session_duration_seconds: number | null;
+  scroll_depth_avg: number | null;
+  scroll_complete_pct: number | null;
+  lcp_p75_ms: number | null;
+  inp_p75_ms: number | null;
+  cls_p75: number | null;
+  ttfb_p75_ms: number | null;
+  outbound_clicks: number | null;
+};
+
+function num(v: unknown): number | null {
+  if (v == null) return null;
+  const n = typeof v === 'string' ? Number(v) : (v as number);
+  return Number.isFinite(n) ? n : null;
+}
+
+async function fetchBehaviorMap(
   periodStart: string,
   periodEnd: string,
-): Promise<
-  Map<
-    string,
-    {
-      pages_per_session: number | null;
-      avg_session_duration_seconds: number | null;
-      scroll_depth_avg: number | null;
-    }
-  >
-> {
-  const map = new Map<
-    string,
-    {
-      pages_per_session: number | null;
-      avg_session_duration_seconds: number | null;
-      scroll_depth_avg: number | null;
-    }
-  >();
+): Promise<Map<string, BehaviorRowFromDb>> {
+  const map = new Map<string, BehaviorRowFromDb>();
   let from = 0;
   for (;;) {
+    // NOTE: keep this select string a single literal — Supabase's PostgREST
+    // type inference falls back to `GenericStringError` when the string is
+    // built via `+` concatenation, which breaks downstream `.data` typing.
     const { data, error } = await supabase()
-      .from('ga4_page_snapshots')
-      .select('page, pages_per_session, avg_session_duration_seconds, scroll_depth_avg')
+      .from('behavior_page_snapshots')
+      .select(
+        'page, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, scroll_complete_pct, lcp_p75_ms, inp_p75_ms, cls_p75, ttfb_p75_ms, outbound_clicks',
+      )
       .eq('period_start', periodStart)
       .eq('period_end', periodEnd)
       .range(from, from + 999);
-    if (error) throw new Error(`fetch ga4 snapshots: ${error.message}`);
+    if (error) throw new Error(`fetch behavior snapshots: ${error.message}`);
     if (!data || data.length === 0) break;
     for (const r of data) {
       map.set(r.page as string, {
-        pages_per_session: r.pages_per_session != null ? Number(r.pages_per_session) : null,
-        avg_session_duration_seconds:
-          r.avg_session_duration_seconds != null ? Number(r.avg_session_duration_seconds) : null,
-        scroll_depth_avg: r.scroll_depth_avg != null ? Number(r.scroll_depth_avg) : null,
+        pages_per_session: num(r.pages_per_session),
+        avg_session_duration_seconds: num(r.avg_session_duration_seconds),
+        scroll_depth_avg: num(r.scroll_depth_avg),
+        scroll_complete_pct: num(r.scroll_complete_pct),
+        lcp_p75_ms: num(r.lcp_p75_ms),
+        inp_p75_ms: num(r.inp_p75_ms),
+        cls_p75: num(r.cls_p75),
+        ttfb_p75_ms: num(r.ttfb_p75_ms),
+        outbound_clicks: num(r.outbound_clicks),
       });
     }
     if (data.length < 1000) break;
@@ -393,7 +430,7 @@ export async function runAudit(opts: AuditOptions = {}): Promise<AuditSummary> {
 
   try {
     const pages = await fetchAllPages(period.periodStart, period.periodEnd);
-    const engagement = await fetchEngagementMap(period.periodStart, period.periodEnd);
+    const behavior = await fetchBehaviorMap(period.periodStart, period.periodEnd);
 
     // Score every page that clears the impressions floor + position range +
     // ctr_gap threshold. position_drift stays null — first audit, no history.
@@ -405,7 +442,7 @@ export async function runAudit(opts: AuditOptions = {}): Promise<AuditSummary> {
       ctr_gap: number;
       avg_position: number;
       position_drift: number | null;
-      engagement: ReturnType<typeof engagement.get>;
+      behavior: ReturnType<typeof behavior.get>;
       priority_score: number;
     }> = [];
 
@@ -418,11 +455,14 @@ export async function runAudit(opts: AuditOptions = {}): Promise<AuditSummary> {
       const ctrGap = computeCtrGap(p.ctr, ctrExpected);
       if (ctrGap < thresholds.ctr_gap_threshold) continue;
 
-      const eng = engagement.get(p.page);
+      const beh = behavior.get(p.page);
       const engagementPenalty = computeEngagementPenalty({
-        pagesPerSession: eng?.pages_per_session ?? null,
-        avgSessionDurationSeconds: eng?.avg_session_duration_seconds ?? null,
-        scrollDepthAvg: eng?.scroll_depth_avg ?? null,
+        pagesPerSession: beh?.pages_per_session ?? null,
+        avgSessionDurationSeconds: beh?.avg_session_duration_seconds ?? null,
+        scrollDepthAvg: beh?.scroll_depth_avg ?? null,
+        lcpP75Ms: beh?.lcp_p75_ms ?? null,
+        inpP75Ms: beh?.inp_p75_ms ?? null,
+        clsP75: beh?.cls_p75 ?? null,
       });
 
       const priorityScore = computePriorityScore({
@@ -443,7 +483,7 @@ export async function runAudit(opts: AuditOptions = {}): Promise<AuditSummary> {
         ctr_gap: ctrGap,
         avg_position: p.avg_position,
         position_drift: null,
-        engagement: eng,
+        behavior: beh,
         priority_score: priorityScore,
       });
     }
@@ -461,9 +501,15 @@ export async function runAudit(opts: AuditOptions = {}): Promise<AuditSummary> {
       position_drift: c.position_drift,
       priority_score: c.priority_score,
       priority_tier: computePriorityTier(c.priority_score),
-      pages_per_session: c.engagement?.pages_per_session ?? null,
-      avg_session_duration_seconds: c.engagement?.avg_session_duration_seconds ?? null,
-      scroll_depth_avg: c.engagement?.scroll_depth_avg ?? null,
+      pages_per_session: c.behavior?.pages_per_session ?? null,
+      avg_session_duration_seconds: c.behavior?.avg_session_duration_seconds ?? null,
+      scroll_depth_avg: c.behavior?.scroll_depth_avg ?? null,
+      scroll_complete_pct: c.behavior?.scroll_complete_pct ?? null,
+      lcp_p75_ms: c.behavior?.lcp_p75_ms ?? null,
+      inp_p75_ms: c.behavior?.inp_p75_ms ?? null,
+      cls_p75: c.behavior?.cls_p75 ?? null,
+      ttfb_p75_ms: c.behavior?.ttfb_p75_ms ?? null,
+      outbound_clicks: c.behavior?.outbound_clicks ?? null,
       group_assignment: assignGroup(i),
       status: 'pending' as const,
     }));
