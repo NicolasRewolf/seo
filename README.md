@@ -71,7 +71,19 @@ supabase/
 - [x] **Sprint 3** — Compute findings (page-level site benchmarks, scoring, treatment/control) + cron `audit-weekly.yml`
 - [x] **Sprint 4** — Pull current state (Wix Blog + HTML fallback) + diagnostic LLM + génération de fixes LLM
 - [x] **Sprint 5** — Création d'issues GitHub + chainage `audit-weekly.yml` (snapshot → audit → pull → diagnose → fixes → issues)
-- [ ] Sprint 6 — Apply fixes via Wix + mesure J+30 / J+60
+- [x] **Sprint 6** — Prompts enrichis (schema + maillage existant + 7 fix types), `npm run apply` (signal manuel post-edit Wix), `pipeline/measure.ts` + cron quotidien `measure-outcomes.yml` (T+30 / T+60 + treatment-vs-control)
+
+## Workflow opérationnel après audit
+
+1. Le cron `audit-weekly.yml` (lundi 06:00 UTC) tourne tout le pipeline → ~N issues GitHub fresh avec diagnostic + fixes proposés.
+2. Tu reviewes chaque issue dans GitHub. Les findings du **groupe contrôle** ont un bandeau "ne pas appliquer" — laisse-les tels quels 4 semaines minimum (mesure d'impact treatment vs control).
+3. Pour appliquer un fix de groupe **traitement** : copie-colle les valeurs proposées dans l'éditeur Wix.
+4. Une fois fait, lance localement :
+   ```bash
+   npm run apply -- --finding=<uuid> --by=nicolas@rewolf.studio
+   ```
+   Ça écrit `applied_fixes` (T0 = maintenant), bascule la finding à `applied`, et ajoute le label `status:applied` sur l'issue.
+5. Rien d'autre à faire — le cron `measure-outcomes.yml` (quotidien 07:00 UTC) écrit automatiquement les `fix_outcomes` à T+30 et T+60.
 
 ## GitHub Action — secrets requis
 

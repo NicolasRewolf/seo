@@ -1,0 +1,43 @@
+name: measure-outcomes
+
+# Daily cron that lands T+30 / T+60 fix_outcomes rows for any finding that
+# crossed a milestone since the last run. No LLM calls, no GSC writes —
+# pure read-then-insert against the existing snapshots.
+on:
+  schedule:
+    - cron: '0 7 * * *' # 07:00 UTC every day, after audit-weekly's 06:00 Mon run.
+  workflow_dispatch:
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      # measure.ts only reads Supabase, but the per-section env loaders for
+      # the libs it imports validate their own bundles eagerly. Provide
+      # placeholder paths so they don't fail import — the scripts that need
+      # them aren't actually invoked here.
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      GITHUB_TOKEN: ${{ secrets.GH_API_TOKEN }}
+      GITHUB_OWNER: ${{ github.repository_owner }}
+      GITHUB_REPO: ${{ github.event.repository.name }}
+      GSC_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
+      GSC_TOKEN_FILE: ./gsc-token.json
+      GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+      GA4_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
+      GA4_TOKEN_FILE: ./ga4-token.json
+      GA4_PROPERTY_ID: ${{ secrets.GA4_PROPERTY_ID }}
+      WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+      WIX_SITE_ID: ${{ secrets.WIX_SITE_ID }}
+      WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run measure

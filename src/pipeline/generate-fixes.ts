@@ -41,6 +41,10 @@ const CurrentStateShape = z.object({
   meta_description: z.string().default(''),
   h1: z.string().default(''),
   intro_first_100_words: z.string().default(''),
+  schema_jsonld: z.array(z.unknown()).nullable().default(null),
+  internal_links_outbound: z
+    .array(z.object({ anchor: z.string(), target: z.string() }))
+    .default([]),
 });
 
 function unfenceJson(s: string): string {
@@ -102,6 +106,8 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
     current_meta: cs.meta_description,
     current_h1: cs.h1,
     current_intro: cs.intro_first_100_words,
+    current_schema_jsonld: cs.schema_jsonld,
+    current_internal_links: cs.internal_links_outbound,
     top_queries: topQueries,
     diagnostic: row.diagnostic,
   };
