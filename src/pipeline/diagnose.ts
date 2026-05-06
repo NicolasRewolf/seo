@@ -16,6 +16,7 @@ import {
   DIAGNOSTIC_PROMPT_VERSION,
   type DiagnosticPromptInputs,
 } from '../prompts/diagnostic.v1.js';
+import { enrichContext } from './context-enrichment.js';
 
 const DiagnosticSchema = z.object({
   intent_mismatch: z.string(),
@@ -36,6 +37,7 @@ const DiagnosticSchema = z.object({
   engagement_diagnosis: z.string(),
   performance_diagnosis: z.string().optional().default(''),
   structural_gaps: z.string().optional().default(''),
+  funnel_assessment: z.string().optional().default(''),
 });
 
 export type DiagnosticPayload = z.infer<typeof DiagnosticSchema>;
@@ -119,6 +121,15 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     auditRun.period_end,
   );
 
+  // Sprint-7 enrichment: Wix category + post metrics, DataForSEO volumes per
+  // top query, real internal-pages catalog. Failures inside enrichContext
+  // degrade gracefully (warn-and-skip) so the diagnostic still runs even if
+  // e.g. DataForSEO is briefly down.
+  const enrichment = await enrichContext({
+    pageUrl: row.page as string,
+    topQueries,
+  });
+
   const inputs: DiagnosticPromptInputs = {
     url: row.page as string,
     avg_position: Number(row.avg_position),
@@ -145,6 +156,7 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     current_schema_jsonld: cs.schema_jsonld,
     current_internal_links: cs.internal_links_outbound,
     top_queries: topQueries,
+    enrichment,
   };
 
   const prompt = renderDiagnosticPrompt(inputs);
