@@ -1,0 +1,34 @@
+{
+  "name": "plouton-seo-audit",
+  "version": "0.0.1",
+  "description": "REWOLF · Plouton SEO Audit Tool — NavBoost-oriented audit pipeline for jplouton-avocat.fr",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "smoke": "tsx src/scripts/smoke.ts",
+    "snapshot": "tsx src/scripts/run-snapshot.ts",
+    "audit": "tsx src/scripts/run-audit.ts",
+    "measure": "tsx src/scripts/run-measure.ts"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.30.0",
+    "@octokit/rest": "^21.0.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.4.0",
+    "googleapis": "^144.0.0",
+    "pino": "^9.5.0",
+    "pino-pretty": "^11.3.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.7.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
