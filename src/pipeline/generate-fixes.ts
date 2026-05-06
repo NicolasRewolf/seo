@@ -15,6 +15,7 @@ import {
   FIX_GEN_PROMPT_VERSION,
   type FixGenPromptInputs,
 } from '../prompts/fix-generation.v1.js';
+import { enrichContext } from './context-enrichment.js';
 
 const FIX_TYPES = [
   'title',
@@ -99,6 +100,12 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
     auditRun.period_end,
   );
 
+  // Same enrichment as diagnose: real volumes, catalog, category, consent.
+  const enrichment = await enrichContext({
+    pageUrl: row.page as string,
+    topQueries,
+  });
+
   const inputs: FixGenPromptInputs = {
     url: row.page as string,
     position: Number(row.avg_position),
@@ -110,6 +117,7 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
     current_internal_links: cs.internal_links_outbound,
     top_queries: topQueries,
     diagnostic: row.diagnostic,
+    enrichment,
   };
 
   const prompt = renderFixGenPrompt(inputs);
