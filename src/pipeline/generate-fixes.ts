@@ -115,7 +115,9 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
   const prompt = renderFixGenPrompt(inputs);
   const res = await anthropic().messages.create({
     model: model(),
-    max_tokens: 2500,
+    // Same reason as diagnose: 2500 was too tight once the prompt opened up
+    // to all 7 fix types + schema fixes that include full JSON-LD strings.
+    max_tokens: 4000,
     messages: [{ role: 'user', content: prompt }],
   });
   const first = res.content[0];
