@@ -1,8 +1,9 @@
 /**
  * Sprint 1 smoke test — pings each connector and prints pass/fail.
+ * Probes whose required env vars are missing are skipped (not failed).
  * Usage: npm run smoke
  */
-import { loadEnvPartial } from '../config.js';
+import 'dotenv/config';
 import { smokeTest as supabaseSmoke } from '../lib/supabase.js';
 import { smokeTest as anthropicSmoke } from '../lib/anthropic.js';
 import { smokeTest as githubSmoke } from '../lib/github.js';
@@ -29,16 +30,18 @@ const probes: Probe[] = [
   { name: 'Wix', required: ['WIX_API_KEY', 'WIX_SITE_ID', 'WIX_ACCOUNT_ID'], run: wixSmoke },
 ];
 
-function missing(env: Record<string, unknown>, keys: string[]): string[] {
-  return keys.filter((k) => !env[k] || String(env[k]).trim() === '');
+function missing(keys: string[]): string[] {
+  return keys.filter((k) => {
+    const v = process.env[k];
+    return !v || v.trim() === '';
+  });
 }
 
 async function main(): Promise<void> {
-  const env = loadEnvPartial() as Record<string, unknown>;
   const results: Array<{ name: string; status: 'ok' | 'fail' | 'skipped'; detail: string }> = [];
 
   for (const probe of probes) {
-    const miss = missing(env, probe.required);
+    const miss = missing(probe.required);
     if (miss.length > 0) {
       results.push({ name: probe.name, status: 'skipped', detail: `missing: ${miss.join(', ')}` });
       continue;
@@ -56,8 +59,7 @@ async function main(): Promise<void> {
   let skipped = 0;
   for (const r of results) {
     const icon = r.status === 'ok' ? '✓' : r.status === 'skipped' ? '·' : '✗';
-    const tag =
-      r.status === 'ok' ? 'OK     ' : r.status === 'skipped' ? 'SKIP   ' : 'FAIL   ';
+    const tag = r.status === 'ok' ? 'OK     ' : r.status === 'skipped' ? 'SKIP   ' : 'FAIL   ';
     process.stdout.write(`${icon}  ${tag} ${r.name.padEnd(10)} ${r.detail}\n`);
     if (r.status === 'ok') ok++;
     else if (r.status === 'fail') fail++;

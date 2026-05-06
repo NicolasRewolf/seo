@@ -1,13 +1,13 @@
-import { loadEnv } from '../config.js';
+import { env } from '../config.js';
 
 const WIX_BASE = 'https://www.wixapis.com';
 
 function headers(): Record<string, string> {
-  const env = loadEnv();
+  const e = env.wix();
   return {
-    Authorization: env.WIX_API_KEY,
-    'wix-site-id': env.WIX_SITE_ID,
-    'wix-account-id': env.WIX_ACCOUNT_ID,
+    Authorization: e.WIX_API_KEY,
+    'wix-site-id': e.WIX_SITE_ID,
+    'wix-account-id': e.WIX_ACCOUNT_ID,
     'Content-Type': 'application/json',
   };
 }
@@ -50,8 +50,8 @@ export async function wixPatch<T>(path: string, body: unknown): Promise<T> {
 }
 
 /**
- * Smoke test: query a small sample from Wix Site Properties (a low-impact endpoint
- * available on most sites). On 401/403, the API key/site/account IDs are wrong.
+ * Smoke test: query Wix Site Properties (low-impact endpoint available on most sites).
+ * On 401/403, the API key/site/account IDs are wrong.
  */
 export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
   try {

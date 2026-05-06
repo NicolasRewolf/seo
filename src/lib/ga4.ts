@@ -1,7 +1,7 @@
 import { google, type analyticsdata_v1beta } from 'googleapis';
 import { format, subDays } from 'date-fns';
 import { googleOAuth } from './google-auth.js';
-import { loadEnv } from '../config.js';
+import { env } from '../config.js';
 
 let cached: analyticsdata_v1beta.Analyticsdata | null = null;
 
@@ -23,9 +23,9 @@ export async function runReport(params: {
   endDate: string;
   limit?: number;
 }): Promise<GA4Row[]> {
-  const env = loadEnv();
+  const e = env.ga4();
   const { data } = await ga4().properties.runReport({
-    property: `properties/${env.GA4_PROPERTY_ID}`,
+    property: `properties/${e.GA4_PROPERTY_ID}`,
     requestBody: {
       dimensions: params.dimensions.map((name) => ({ name })),
       metrics: params.metrics.map((name) => ({ name })),
@@ -39,7 +39,7 @@ export async function runReport(params: {
 /** Smoke test: minimal runReport on the configured property. */
 export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
   try {
-    const env = loadEnv();
+    const e = env.ga4();
     const today = new Date();
     const rows = await runReport({
       dimensions: ['pagePath'],
@@ -48,7 +48,7 @@ export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
       endDate: format(today, 'yyyy-MM-dd'),
       limit: 1,
     });
-    return { ok: true, detail: `property=${env.GA4_PROPERTY_ID}, last-7d sample rows=${rows.length}` };
+    return { ok: true, detail: `property=${e.GA4_PROPERTY_ID}, last-7d sample rows=${rows.length}` };
   } catch (err) {
     return { ok: false, detail: (err as Error).message };
   }
