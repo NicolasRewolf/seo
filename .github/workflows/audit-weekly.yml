@@ -1,39 +1,56 @@
 name: audit-weekly
 
-# Weekly compute-findings job. Runs after snapshot-weekly so the latest data
-# is available. Each call inserts a new audit_runs row + N audit_findings.
+# Full audit pipeline, end-to-end:
+#   snapshot → audit → pull-current-state → diagnose → fixes → issues
+#
+# All steps are idempotent (snapshot delete-before-insert; audit always inserts
+# a new audit_runs row; pull-current-state skips findings that already have
+# current_state; diagnose+fixes skip findings already past their gate;
+# create-issues skips findings that already have github_issue_number).
 on:
   schedule:
-    # Mondays 06:30 UTC — 30 min after snapshot-weekly so its writes land first.
-    - cron: '30 6 * * 1'
+    # Mondays 06:00 UTC = 07:00 / 08:00 Paris depending on DST.
+    - cron: '0 6 * * 1'
   workflow_dispatch:
+    inputs:
+      skip_snapshot:
+        description: 'Skip the snapshot step (use existing data)'
+        required: false
+        default: 'false'
 
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
           cache: 'npm'
-
       - run: npm ci
 
-      - name: Run audit
+      - name: Materialize OAuth files from secrets
         env:
+          GSC_OAUTH_CREDENTIALS_JSON: ${{ secrets.GSC_OAUTH_CREDENTIALS_JSON }}
+          GSC_TOKEN_JSON: ${{ secrets.GSC_TOKEN_JSON }}
+          GA4_TOKEN_JSON: ${{ secrets.GA4_TOKEN_JSON }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$GSC_OAUTH_CREDENTIALS_JSON" > gsc-oauth-credentials.json
+          printf '%s' "$GSC_TOKEN_JSON" > gsc-token.json
+          printf '%s' "$GA4_TOKEN_JSON" > ga4-token.json
+          node -e "for (const f of ['gsc-oauth-credentials.json','gsc-token.json','ga4-token.json']) JSON.parse(require('fs').readFileSync(f,'utf8'))"
+
+      - name: snapshot
+        if: ${{ github.event.inputs.skip_snapshot != 'true' }}
+        env: &pipeline-env
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GH_API_TOKEN }}
           GITHUB_OWNER: ${{ github.repository_owner }}
           GITHUB_REPO: ${{ github.event.repository.name }}
-          # The audit job doesn't hit GSC/GA4/Wix directly — it works off the
-          # Supabase snapshots — but the per-section env loaders in lib/*
-          # validate their bundle when imported, so we provide placeholders
-          # for everything not strictly used here.
           GSC_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
           GSC_TOKEN_FILE: ./gsc-token.json
           GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
@@ -43,4 +60,28 @@ jobs:
           WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
           WIX_SITE_ID: ${{ secrets.WIX_SITE_ID }}
           WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
+        run: npm run snapshot
+
+      - name: audit (compute findings)
+        env: *pipeline-env
         run: npm run audit
+
+      - name: pull current state
+        env: *pipeline-env
+        run: npm run pull:state
+
+      - name: diagnose (LLM)
+        env: *pipeline-env
+        run: npm run diagnose
+
+      - name: generate fixes (LLM)
+        env: *pipeline-env
+        run: npm run fixes
+
+      - name: create issues
+        env: *pipeline-env
+        run: npm run issues
+
+      - name: cleanup OAuth files
+        if: always()
+        run: rm -f gsc-oauth-credentials.json gsc-token.json ga4-token.json

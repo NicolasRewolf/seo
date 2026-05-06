@@ -18,7 +18,9 @@
     "pull:state": "tsx src/scripts/run-pull-current-state.ts",
     "diagnose": "tsx src/scripts/run-diagnose.ts",
     "fixes": "tsx src/scripts/run-generate-fixes.ts",
+    "issues": "tsx src/scripts/run-create-issues.ts",
     "test:scoring": "tsx --test src/scripts/test-scoring.ts",
+    "test:issue-template": "tsx --test src/scripts/test-issue-template.ts",
     "measure": "tsx src/scripts/run-measure.ts"
   },
   "dependencies": {
