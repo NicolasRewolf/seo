@@ -19,6 +19,8 @@
     "diagnose": "tsx src/scripts/run-diagnose.ts",
     "fixes": "tsx src/scripts/run-generate-fixes.ts",
     "issues": "tsx src/scripts/run-create-issues.ts",
+    "apply": "tsx src/scripts/run-mark-applied.ts",
+    "measure": "tsx src/scripts/run-measure.ts",
     "test:scoring": "tsx --test src/scripts/test-scoring.ts",
     "test:issue-template": "tsx --test src/scripts/test-issue-template.ts",
     "measure": "tsx src/scripts/run-measure.ts"

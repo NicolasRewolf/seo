@@ -5,6 +5,11 @@
  * a function rather than a string so future versions (v2 etc.) can plug in
  * with the same signature, and so we can store the rendered prompt in
  * audit_runs.config_snapshot if we want to debug a specific run.
+ *
+ * Updated on 2026-05-06 to also surface the page's existing schema.org
+ * JSON-LD blocks and existing internal links — without these the LLM was
+ * recommending fixes that already existed (e.g. "add FAQ schema" on a page
+ * that already had FAQ schema), and missing context to assess maillage.
  */
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
 export const DIAGNOSTIC_PROMPT_VERSION = 1 as const;
@@ -24,6 +29,8 @@ export type DiagnosticPromptInputs = {
   current_meta: string;
   current_h1: string;
   current_intro: string;
+  current_schema_jsonld: unknown[] | null;
+  current_internal_links: Array<{ anchor: string; target: string }>;
   top_queries: Array<{ query: string; impressions: number; ctr: number; position: number }>;
 };
 
@@ -41,6 +48,23 @@ function fmtQueriesTable(rows: DiagnosticPromptInputs['top_queries']): string {
     lines.push(`| ${r.query} | ${r.impressions} | ${ctr} | ${r.position.toFixed(1)} |`);
   }
   return lines.join('\n');
+}
+function fmtSchemaSummary(blocks: unknown[] | null): string {
+  if (!blocks || blocks.length === 0) return '_(aucun schema JSON-LD détecté sur la page)_';
+  const types = blocks.map((b) => {
+    if (!b || typeof b !== 'object') return '<malformed>';
+    const t = (b as Record<string, unknown>)['@type'];
+    if (Array.isArray(t)) return t.join(', ');
+    if (typeof t === 'string') return t;
+    return '<no @type>';
+  });
+  return types.map((t, i) => `${i + 1}. ${t}`).join('\n');
+}
+function fmtExistingLinks(rows: DiagnosticPromptInputs['current_internal_links']): string {
+  if (rows.length === 0) return '_(aucun lien interne sortant détecté — peut indiquer un scrape limité ou une page maillée trop pauvrement)_';
+  const sample = rows.slice(0, 10);
+  const more = rows.length > 10 ? ` (+ ${rows.length - 10} autres)` : '';
+  return sample.map((l) => `- "${l.anchor}" → ${l.target}`).join('\n') + more;
 }
 
 export function renderDiagnosticPrompt(i: DiagnosticPromptInputs): string {
@@ -60,11 +84,17 @@ Pages/session : ${fmtNumOrNA(i.pages_per_session)}
 Durée moyenne : ${fmtNumOrNA(i.avg_duration_seconds, 's')}
 Scroll depth : ${fmtNumOrNA(i.scroll_depth, '%')}
 
-# État actuel de la page
+# État SEO actuel de la page
 **Title** : ${i.current_title || '(empty)'}
 **Meta description** : ${i.current_meta || '(empty)'}
 **H1** : ${i.current_h1 || '(empty)'}
 **Intro (100 premiers mots)** : ${i.current_intro || '(empty)'}
+
+# Schema.org JSON-LD déjà présent
+${fmtSchemaSummary(i.current_schema_jsonld)}
+
+# Maillage interne sortant déjà présent (échantillon)
+${fmtExistingLinks(i.current_internal_links)}
 
 # Top 10 requêtes (3 derniers mois)
 ${fmtQueriesTable(i.top_queries)}
@@ -86,7 +116,8 @@ Produis un diagnostic JSON strict avec ce schéma :
       "note": "courte note"
     }
   ],
-  "engagement_diagnosis": "Si pages_per_session < 1.3 ou duration < 30s ou scroll < 50%, explique ce que ça signale. Sinon: 'engagement satisfaisant'."
+  "engagement_diagnosis": "Si pages_per_session < 1.3 ou duration < 30s ou scroll < 50%, explique ce que ça signale. Sinon: 'engagement satisfaisant'.",
+  "structural_gaps": "1-3 phrases sur ce qui manque structurellement. Tu DOIS prendre en compte le schema déjà présent (ne pas suggérer ce qui existe) et le maillage actuel. Mentionne uniquement des gaps concrets (ex: 'aucune FAQPage alors que les top queries sont des questions', ou 'maillage anémique vers les pages thématiques connexes')."
 }
 
 Réponds UNIQUEMENT avec le JSON, pas de markdown, pas de préambule.`;
