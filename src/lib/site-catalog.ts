@@ -13,6 +13,13 @@
  *   - "blog_root"  → blog landing
  *   - "homepage"
  *   - "legal"
+ *
+ * `FORBIDDEN_LINK_TARGETS` is a separate concern: business rule for the LLM
+ * fix-generation step. These URLs may legitimately appear in the link
+ * graph (we want them visible for observability — e.g. mentions-legales
+ * showing 440 inbound from footer is signal) but the LLM must NEVER
+ * propose them as `internal_links` fixes (no editorial value to propose
+ * a link to /mentions-legales as an "internal_links" recommendation).
  */
 export type CatalogRole =
   | 'expertise'
@@ -27,6 +34,31 @@ export type CatalogEntry = {
   role: CatalogRole;
   topic?: string; // human-readable topic for expertise pages
 };
+
+/**
+ * Paths the LLM must NOT propose as link targets in `internal_links` fixes.
+ * Either policy (legal mentions), or low-value-as-CTA (blog index pages,
+ * empty list pages). Prefix-match: a path that startsWith one of these
+ * is forbidden.
+ */
+export const FORBIDDEN_LINK_TARGETS: readonly string[] = [
+  '/mentions-legales',
+  '/blog',                  // also catches /blog/categories/*
+  '/comprendre-le-droit',
+  '/blog/tags',             // Wix tag index pages
+];
+
+/** Convenience: returns true if the LLM should be told "don't propose this". */
+export function isForbiddenLinkTarget(target: string): boolean {
+  let path = target;
+  try {
+    path = new URL(target).pathname;
+  } catch {
+    // already a path or invalid URL — fall through with raw value
+  }
+  const lower = path.toLowerCase();
+  return FORBIDDEN_LINK_TARGETS.some((p) => lower === p || lower.startsWith(p + '/'));
+}
 
 export const SITE_CATALOG: CatalogEntry[] = [
   { url: 'https://www.jplouton-avocat.fr', role: 'homepage' },

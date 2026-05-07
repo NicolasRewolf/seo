@@ -1,12 +1,18 @@
 name: audit-weekly
 
 # Full audit pipeline, end-to-end:
-#   snapshot → audit → pull-current-state → diagnose → fixes → issues
+#   snapshot → crawl-internal-links → audit → pull-current-state → diagnose → fixes → issues
 #
-# All steps are idempotent (snapshot delete-before-insert; audit always inserts
-# a new audit_runs row; pull-current-state skips findings that already have
-# current_state; diagnose+fixes skip findings already past their gate;
-# create-issues skips findings that already have github_issue_number).
+# crawl-internal-links runs BEFORE audit so the diagnostic step can query
+# fresh inbound counts from the link graph (Sprint 9). Without this order,
+# the diagnose step would see week-old graph data that may not reflect the
+# article structure the auditor cares about.
+#
+# All steps are idempotent (snapshot delete-before-insert; crawl
+# delete-by-source-then-insert; audit always inserts a new audit_runs row;
+# pull-current-state skips findings that already have current_state;
+# diagnose+fixes skip findings already past their gate; create-issues skips
+# findings that already have github_issue_number).
 on:
   schedule:
     # Mondays 06:00 UTC = 07:00 / 08:00 Paris depending on DST.
@@ -21,7 +27,9 @@ on:
 jobs:
   audit:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # 30 → 45 min: Sprint 9 added a sitemap crawl (~440 URLs at concurrency
+    # 10 ≈ 5 min, more on Wix CDN throttle days) before the LLM steps.
+    timeout-minutes: 45
 
     # Job-level env is inherited by every step. We define it once here instead
     # of repeating per step (and instead of YAML anchors, which GitHub Actions
@@ -63,6 +71,9 @@ jobs:
       - name: snapshot
         if: ${{ github.event.inputs.skip_snapshot != 'true' }}
         run: npm run snapshot
+
+      - name: crawl internal links
+        run: npm run crawl
 
       - name: audit (compute findings)
         run: npm run audit

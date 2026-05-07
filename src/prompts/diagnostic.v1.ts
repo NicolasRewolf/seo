@@ -26,7 +26,26 @@ import type {
 import type { CatalogEntry } from '../lib/site-catalog.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 3 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 4 as const;
+
+/**
+ * Sprint-9: live snapshot of how the rest of the site links to this page.
+ * Comes from `internal_link_graph` (queried fresh each diagnose run, NOT
+ * snapshotted in current_state — inbound is an emergent property of the
+ * whole site that should reflect the latest crawl, even when the finding
+ * was opened weeks ago).
+ */
+export type InboundSummary = {
+  outbound_total: number;
+  inbound_total: number;
+  inbound_distinct_sources: number;
+  /** Inbound from inside <article>/<main> body — the meaningful editorial links. */
+  inbound_editorial: number;
+  /** Inbound from header/nav/footer — present-on-every-page boilerplate. */
+  inbound_nav_footer: number;
+  /** Up to 15 source pages with editorial inbound links (anchor text included). */
+  top_editorial_sources: Array<{ source_path: string; anchor_text: string }>;
+};
 
 export type DiagnosticPromptInputs = {
   url: string;
@@ -54,11 +73,17 @@ export type DiagnosticPromptInputs = {
   current_h1: string;
   current_intro: string;
   current_schema_jsonld: unknown[] | null;
-  current_internal_links: Array<{ anchor: string; target: string }>;
+  current_internal_links: Array<{
+    anchor: string;
+    target: string;
+    placement?: 'editorial' | 'related' | 'nav' | 'footer' | 'cta' | 'image';
+  }>;
   // Top queries (raw — enriched if context-enrichment ran)
   top_queries: Array<{ query: string; impressions: number; ctr: number; position: number }>;
   /** Sprint-7 enrichment (optional during transition / when API is unavailable). */
   enrichment?: EnrichedContext;
+  /** Sprint-9 inbound graph signal. Null if the link graph hasn't been crawled yet. */
+  inbound_summary?: InboundSummary | null;
 };
 
 // ---------- formatting helpers ---------------------------------------------
@@ -121,65 +146,78 @@ function fmtEnrichedQueriesTable(rows: EnrichedTopQuery[]): string {
 }
 
 /**
- * Group extracted links into editorial vs navigation buckets so the LLM
- * doesn't conflate the two (e.g. don't conclude "no editorial maillage"
- * just because the only links it sees are header menu items).
- *  - "related_post" → links to /post/* (Wix "posts similaires" block)
- *  - "editorial"   → anchor has a sentence-like quality (long, or contains
- *                    French body verbs like "découvrez/contactez/notre/nos")
- *  - "nav"         → everything else (header menu, footer nav, repeated
- *                    expertise labels)
+ * Sprint-9: classification is now done structurally by the DOM classifier
+ * (lib/dom-link-classifier.ts) at scrape time — placement is a property
+ * of each row, not derived from anchor text. This function just groups
+ * the rows by their stored placement. Links missing `placement` (legacy
+ * findings persisted before Sprint 9) fall back to the "unclassified"
+ * bucket so they're still visible to the LLM.
  */
-function classifyLink(link: { anchor: string; target: string }): 'editorial' | 'nav' | 'related_post' {
-  let path = '';
-  try {
-    path = new URL(link.target).pathname;
-  } catch {
-    path = link.target;
-  }
-  if (path.startsWith('/post/')) return 'related_post';
-  const a = link.anchor.toLowerCase();
-  const editorialMarkers = /\b(découvrez|consultez|contactez|notre cabinet|nos services|cabinet plouton|en savoir plus|voir nos|cliquez ici|notre équipe)\b/;
-  if (a.length > 25 || editorialMarkers.test(a)) return 'editorial';
-  return 'nav';
-}
-
 function fmtCategorizedLinks(rows: DiagnosticPromptInputs['current_internal_links']): string {
   if (rows.length === 0) return '_(aucun lien interne sortant détecté)_';
 
-  const editorial: typeof rows = [];
-  const nav: typeof rows = [];
-  const related: typeof rows = [];
+  const buckets: Record<string, typeof rows> = {
+    editorial: [], related: [], cta: [], nav: [], footer: [], image: [], unclassified: [],
+  };
   for (const l of rows) {
-    const k = classifyLink(l);
-    if (k === 'editorial') editorial.push(l);
-    else if (k === 'nav') nav.push(l);
-    else related.push(l);
+    const k = l.placement ?? 'unclassified';
+    (buckets[k] ?? buckets.unclassified)!.push(l);
   }
+
+  const fmtRow = (l: typeof rows[number]): string =>
+    `- "${l.anchor.slice(0, 100) || '(no text)'}" → ${l.target}`;
 
   const sections: string[] = [];
   sections.push(
-    `**Liens éditoriaux in-body** (${editorial.length}) — ce sont les vrais signaux de funnel choisis par l'auteur :\n` +
-      (editorial.length === 0
+    `**Liens éditoriaux in-body** (${buckets.editorial!.length}) — vrais signaux de funnel choisis par l'auteur :\n` +
+      (buckets.editorial!.length === 0
         ? '_(aucun lien éditorial détecté dans le corps de l\'article — fort signal de cul-de-sac funnel)_'
-        : editorial.map((l) => `- "${l.anchor.slice(0, 100)}" → ${l.target}`).join('\n')),
+        : buckets.editorial!.map(fmtRow).join('\n')),
+  );
+  if (buckets.cta!.length > 0) {
+    sections.push(`**CTA buttons** (${buckets.cta!.length}) :\n${buckets.cta!.map(fmtRow).join('\n')}`);
+  }
+  sections.push(
+    `**Liens "posts similaires"** auto-générés par Wix (${buckets.related!.length}) — pas de signal éditorial actionnable.` +
+      (buckets.related!.length > 0
+        ? `\n${buckets.related!.slice(0, 5).map(fmtRow).join('\n')}${buckets.related!.length > 5 ? `\n_(+ ${buckets.related!.length - 5} autres)_` : ''}`
+        : ''),
   );
   sections.push(
-    `**Liens "posts similaires"** auto-générés par Wix (${related.length}) — pas de signal éditorial :\n` +
-      (related.length === 0
-        ? '_(aucun)_'
-        : related
-            .slice(0, 5)
-            .map((l) => `- "${l.anchor.slice(0, 80)}" → ${l.target}`)
-            .join('\n')),
+    `**Liens header/nav** (${buckets.nav!.length}) + **footer** (${buckets.footer!.length}) — présents sur toutes les pages, pas un signal propre à cette page.`,
   );
-  sections.push(
-    `**Liens header/footer/nav** (${nav.length}) — présents sur TOUTES les pages, pas un signal de maillage propre à cette page : ` +
-      (nav.length === 0
-        ? '_aucun_'
-        : `${nav.slice(0, 5).map((l) => l.anchor.slice(0, 30)).join(', ')}…`),
-  );
+  if (buckets.image!.length > 0) {
+    sections.push(`**Liens images** (${buckets.image!.length}, sans texte d'ancrage)`);
+  }
+  if (buckets.unclassified!.length > 0) {
+    sections.push(
+      `**Non classés** (${buckets.unclassified!.length}) — finding antérieure à Sprint 9, placement non disponible.`,
+    );
+  }
   return sections.join('\n\n');
+}
+
+function fmtInboundBlock(s: InboundSummary | null | undefined): string {
+  if (!s) {
+    return '_(graph de liens internes pas encore crawlé — le signal inbound apparaîtra au prochain audit)_';
+  }
+  const lines: string[] = [
+    `- **Inbound total** : ${s.inbound_total} liens depuis ${s.inbound_distinct_sources} pages distinctes`,
+    `- **Inbound éditorial** (in-body, vrais signaux d'autorité interne) : **${s.inbound_editorial}**`,
+    `- **Inbound nav/footer** (boilerplate présent sur toutes les pages) : ${s.inbound_nav_footer}`,
+    `- **Outbound total** depuis cette page : ${s.outbound_total}`,
+  ];
+  if (s.top_editorial_sources.length > 0) {
+    lines.push(`\n**Top sources éditoriales linkant cette page** :`);
+    for (const src of s.top_editorial_sources.slice(0, 10)) {
+      lines.push(`  - ${src.source_path}${src.anchor_text ? ` ("${src.anchor_text.slice(0, 80)}")` : ''}`);
+    }
+  } else if (s.inbound_editorial === 0 && s.inbound_total > 0) {
+    lines.push(
+      `\n> ⚠️ **Aucun lien éditorial entrant** — la page est exclusivement linkée depuis nav/footer (présence sur toutes les pages mais aucun rédacteur n'a choisi de la pointer dans un article). Page **orpheline éditorialement**.`,
+    );
+  }
+  return lines.join('\n');
 }
 
 function fmtCatalog(catalog: EnrichedContext['internal_pages_catalog']): string {
@@ -286,8 +324,11 @@ ${fmtCwvLine('TTFB', i.ttfb_p75_ms, 'ms')}
 ## Schema.org JSON-LD déjà présent
 ${fmtSchemaSummary(i.current_schema_jsonld)}
 
-## Maillage interne sortant déjà présent (catégorisé)
+## Maillage interne sortant déjà présent (catégorisé via DOM)
 ${fmtCategorizedLinks(i.current_internal_links)}
+
+## Maillage interne — vue graph (qui linke vers cette page)
+${fmtInboundBlock(i.inbound_summary)}
 
 # Top requêtes (3 derniers mois) avec volume réel France et share of voice
 ${fmtEnrichedQueriesTable(enrichedQueries)}
@@ -316,7 +357,8 @@ Produis un diagnostic JSON strict avec ce schéma :
   "engagement_diagnosis": "Lecture des signaux comportementaux Cooked (first-party, non biaisé). Si pages/session<1.3, scroll<50%, ou peu de clics sortants, explique ce que ça signale (intention déçue, contenu insuffisant, CTA manquante). Sinon: 'engagement satisfaisant'. Note: si Cooked vient juste d'être déployé et que les valeurs sont null, écris 'données comportementales en cours de collecte (n/a au premier audit)'.",
   "performance_diagnosis": "Si LCP > 2500ms, INP > 200ms ou CLS > 0.1 (zones 'Needs Improvement' ou 'Poor' Google), explique l'impact NavBoost direct (Google rétrograde les pages lentes/instables) et donne l'action prioritaire (image trop lourde, JS bloquant, layout shift sur header...). Si toutes les valeurs sont null: 'CWV en cours de collecte (n/a)'. Sinon: 'performance technique satisfaisante'.",
   "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le maillage actuel catégorisé ci-dessus (ne pas re-suggérer des liens éditoriaux déjà en place — la nav menu ne compte pas comme maillage éditorial), et le RÔLE FUNNEL de la page.",
-  "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle dans le funnel attendu pour sa catégorie ? Quels sont les 2-3 maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs cibles précises depuis le catalogue. Pour un knowledge_brick, exiger au minimum 1 lien expertise + 1 CTA RDV éditorialement intégrés (pas juste dans la nav)."
+  "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle dans le funnel attendu pour sa catégorie ? Quels sont les 2-3 maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs cibles précises depuis le catalogue. Pour un knowledge_brick, exiger au minimum 1 lien expertise + 1 CTA RDV éditorialement intégrés (pas juste dans la nav).",
+  "internal_authority_assessment": "1-2 phrases sur la position de cette page dans le graph interne (cf. section inbound ci-dessus). Si inbound_editorial>=10 → 'page hub à protéger' (les fixes ne doivent pas casser ce statut). Si inbound_editorial==0 et inbound_total>0 → 'page orpheline éditorialement' : prioriser absolument l'ajout de liens depuis 2-3 pages sources naturelles. Sinon → position standard, pas de levier graph spécifique. Si le graph n'est pas encore crawlé, écris 'graph non disponible (premier crawl en cours)'."
 }
 
 Réponds UNIQUEMENT avec le JSON, pas de markdown, pas de préambule.`;

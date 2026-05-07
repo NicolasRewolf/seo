@@ -15,8 +15,10 @@ import {
   DIAGNOSTIC_PROMPT_NAME,
   DIAGNOSTIC_PROMPT_VERSION,
   type DiagnosticPromptInputs,
+  type InboundSummary,
 } from '../prompts/diagnostic.v1.js';
 import { enrichContext } from './context-enrichment.js';
+import { pathOf } from '../lib/url.js';
 
 const DiagnosticSchema = z.object({
   intent_mismatch: z.string(),
@@ -38,6 +40,7 @@ const DiagnosticSchema = z.object({
   performance_diagnosis: z.string().optional().default(''),
   structural_gaps: z.string().optional().default(''),
   funnel_assessment: z.string().optional().default(''),
+  internal_authority_assessment: z.string().optional().default(''),
 });
 
 export type DiagnosticPayload = z.infer<typeof DiagnosticSchema>;
@@ -93,6 +96,50 @@ function unfenceJson(s: string): string {
   return (fenced?.[1] ?? s).trim();
 }
 
+/**
+ * Sprint 9 — Query the live internal_link_graph for a finding's inbound
+ * authority signal. Returns aggregated counts plus the top editorial
+ * sources (most semantically meaningful for the LLM to reason about).
+ *
+ * If the graph hasn't been crawled yet (empty table), we return zeroed
+ * counts and an empty top_sources list — the prompt will surface this
+ * as "graph not available yet" so the LLM doesn't fabricate authority.
+ */
+async function fetchInboundSummary(targetPath: string): Promise<InboundSummary> {
+  const sb = supabase();
+
+  // Aggregated counts via the view
+  const { data: summary, error: sErr } = await sb
+    .from('v_internal_link_summary')
+    .select('outbound_total, inbound_total, inbound_distinct_sources, inbound_editorial, inbound_nav_footer')
+    .eq('page', targetPath)
+    .maybeSingle();
+  if (sErr) throw new Error(`inbound summary fetch: ${sErr.message}`);
+
+  // Top 15 editorial sources (most useful for the LLM — reveals who
+  // actually links to this page in the body, not just nav/footer).
+  const { data: editorial, error: eErr } = await sb
+    .from('internal_link_graph')
+    .select('source_path, anchor_text')
+    .eq('target_path', targetPath)
+    .eq('placement', 'editorial')
+    .order('source_path', { ascending: true })
+    .limit(15);
+  if (eErr) throw new Error(`inbound editorial sources fetch: ${eErr.message}`);
+
+  return {
+    outbound_total: Number(summary?.outbound_total ?? 0),
+    inbound_total: Number(summary?.inbound_total ?? 0),
+    inbound_distinct_sources: Number(summary?.inbound_distinct_sources ?? 0),
+    inbound_editorial: Number(summary?.inbound_editorial ?? 0),
+    inbound_nav_footer: Number(summary?.inbound_nav_footer ?? 0),
+    top_editorial_sources: (editorial ?? []).map((r) => ({
+      source_path: r.source_path as string,
+      anchor_text: (r.anchor_text as string | null) ?? '',
+    })),
+  };
+}
+
 export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayload> {
   // NOTE: keep this select string a single literal — Supabase's PostgREST
   // type inference falls back to `GenericStringError` when the string is
@@ -130,6 +177,17 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     topQueries,
   });
 
+  // Sprint-9: live inbound authority signal from the link graph.
+  // The `current_state.internal_links_outbound` snapshot stays immutable for
+  // the audit timeline; inbound is queried fresh because it's an emergent
+  // property of the *whole site* and a single page audit shouldn't freeze it.
+  let inboundSummary: InboundSummary | null = null;
+  try {
+    inboundSummary = await fetchInboundSummary(pathOf(row.page as string));
+  } catch (err) {
+    process.stderr.write(`[diagnose] inbound fetch failed: ${(err as Error).message}\n`);
+  }
+
   const inputs: DiagnosticPromptInputs = {
     url: row.page as string,
     avg_position: Number(row.avg_position),
@@ -157,6 +215,7 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     current_internal_links: cs.internal_links_outbound,
     top_queries: topQueries,
     enrichment,
+    inbound_summary: inboundSummary,
   };
 
   const prompt = renderDiagnosticPrompt(inputs);

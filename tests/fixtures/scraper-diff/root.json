@@ -1,0 +1,1743 @@
+{
+  "url": "https://www.jplouton-avocat.fr",
+  "generated_at": "2026-05-07T07:24:17.849Z",
+  "legacy": [
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Procès criminels",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Trafic de stupéfiants",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Violences conjugales et féminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Droit pénal des affaires",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Victimes de délits ou crimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accidents de la route",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit et accidents du travail",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accidents et erreurs médicales",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accidents de la vie courante",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et professionnels",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Défense des consommateurs",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit de la famille",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Divorce",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Affaires",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Équipe",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Contactez - nous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accueil",
+      "target": "https://www.jplouton-avocat.fr/",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Je prends rendez-vous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Rendez-vous, accès & honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Horaires & accès",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "La défense pénale",
+      "target": "https://www.jplouton-avocat.fr/defense-penale",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Violences conjugales et feminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "L'indemnisation des victimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Les droits des contrats et des personnes",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et pro",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "RDV",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Domaines d'expertises",
+      "target": "https://www.jplouton-avocat.fr/",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Nos affaires",
+      "target": "https://www.jplouton-avocat.fr/",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/bordeaux-relaxe-pour-le-g%C3%A9rant-d-une-soci%C3%A9t%C3%A9-de-revente-en-gros-de-cbd-poursuivi-pour-trafic-de-st",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/intervention-de-ma%C3%AEtre-plouton-dans-l-enqu%C3%AAte-elle-sur-l-inceste-le-cabinet-acteur-engag%C3%A9-aupr%C3%A8s",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/tribunal-judiciaire-une-ordonnance-de-protection-d%C3%A9livr%C3%A9e-pour-des-violences-psychologiques",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/responsabilit%C3%A9-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tomb%C3%A9-ou-d-%C3%A9quipement-d%C3%A9f",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/appels-t%C3%A9l%C3%A9phoniques-malveillants-les-proches-de-la-victime-peuvent-aussi-%C3%AAtre-indemnis%C3%A9s",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/d%C3%A9fense-d-une-victime-de-viol-conjugal-devant-la-cour-criminelle-d%C3%A9partementale-de-la-seine-maritime",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/ma-proc%C3%A9dure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-d%C3%A9lai-d%C3%A9raisonnable",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/droit-de-visite-et-ordonnance-de-protection-notre-cabinet-d%C3%A9fend-le-maintien-du-lien-p%C3%A8re-enfant",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/tribunal-correctionnel-de-toulouse-intervention-en-partie-civile-pour-des-pme-victimes-de-pratique",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/que-faire-en-cas-d-arnaque-au-contrat-de-leasing-d-un-photocopieur-caisse-enregistreuse",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/fusillade-aux-aubiers-notre-client-plac%C3%A9-sous-le-statut-de-t%C3%A9moin-assist%C3%A9-pour-la-tentative-de-meu",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/reconstitution-criminelle-f%C3%A9minicide-de-nasrine-bensalem-%C3%A0-cenon",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/restitution-de-39-000-la-protection-du-tiers-propri%C3%A9taire-devant-le-tribunal-correctionnel-de-pa",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/affaire-chahinez-daoud-action-en-responsabilit%C3%A9-contre-l-%C3%A9tat-la-demande-de-sursis-%C3%A0-statuer-pr%C3%A9sen",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/comment-assigner-l-%C3%A9tat-en-responsabilit%C3%A9-pour-faute-lourde",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/affaire-sylvia-iannello-%C3%A0-martigues-un-f%C3%A9minicide-doubl%C3%A9-de-carences-dans-la-prise-en-charge-des-a",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/accident-de-la-circulation-%C3%A0-moto-une-indemnisation-amiable-doubl%C3%A9e-apr%C3%A8s-l-intervention-du-cabine",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/un-capitaine-de-cargo-russo-ukrainien-interpell%C3%A9-au-port-de-bayonne-avec-2-grammes-d-alcool-dans-le",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/post/nouvelle-victoire-pour-les-petites-entreprises-victimes-de-d%C3%A9marchage-entre-caducit%C3%A9-et-nullit%C3%A9-du",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "placement": "nav"
+    },
+    {
+      "anchor": "View More",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "placement": "nav"
+    }
+  ],
+  "next": [
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/droit-penal",
+      "anchor_text": "Droit Pénal",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/droit-penal",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/proces-criminel",
+      "anchor_text": "Procès criminels",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/proces-criminel",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/trafic-de-stupefiant",
+      "anchor_text": "Trafic de stupéfiants",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/trafic-de-stupefiant",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor_text": "Violences conjugales et féminicides",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/droit-penal-des-affaires",
+      "anchor_text": "Droit pénal des affaires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/droit-penal-des-affaires",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor_text": "Victimes de délits ou crimes",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor_text": "Accidents de la route",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor_text": "Droit et accidents du travail",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor_text": "Accidents et erreurs médicales",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor_text": "Accidents de la vie courante",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor_text": "Droit des assurances particuliers et professionnels",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor_text": "Défense des consommateurs",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor_text": "Droit de la famille",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor_text": "Divorce",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/nos-affaires",
+      "anchor_text": "Affaires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/médias",
+      "anchor_text": "Médias",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/comprendre-le-droit",
+      "anchor_text": "Ressources",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/notre-cabinet",
+      "anchor_text": "Équipe",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Contactez - nous",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Je prends rendez-vous",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Rendez-vous, accès & honoraires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Horaires & accès",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Honoraires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale",
+      "anchor_text": "La défense pénale",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor_text": "Violences conjugales et feminicides",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes",
+      "anchor_text": "L'indemnisation des victimes",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes",
+      "anchor_text": "Les droits des contrats et des personnes",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor_text": "Droit des assurances particuliers et pro",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/nos-affaires/categories/médias",
+      "anchor_text": "Médias",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/mentions-legales",
+      "anchor_text": "Mentions Légales",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "RDV",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/bordeaux-relaxe-pour-le-gérant-d-une-société-de-revente-en-gros-de-cbd-poursuivi-pour-trafic-de-st",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/intervention-de-maître-plouton-dans-l-enquête-elle-sur-l-inceste-le-cabinet-acteur-engagé-auprès",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/tribunal-judiciaire-une-ordonnance-de-protection-délivrée-pour-des-violences-psychologiques",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/appels-téléphoniques-malveillants-les-proches-de-la-victime-peuvent-aussi-être-indemnisés",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/défense-d-une-victime-de-viol-conjugal-devant-la-cour-criminelle-départementale-de-la-seine-maritime",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/droit-de-visite-et-ordonnance-de-protection-notre-cabinet-défend-le-maintien-du-lien-père-enfant",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/tribunal-correctionnel-de-toulouse-intervention-en-partie-civile-pour-des-pme-victimes-de-pratique",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/que-faire-en-cas-d-arnaque-au-contrat-de-leasing-d-un-photocopieur-caisse-enregistreuse",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/fusillade-aux-aubiers-notre-client-placé-sous-le-statut-de-témoin-assisté-pour-la-tentative-de-meu",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/reconstitution-criminelle-féminicide-de-nasrine-bensalem-à-cenon",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/restitution-de-39-000-la-protection-du-tiers-propriétaire-devant-le-tribunal-correctionnel-de-pa",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/affaire-chahinez-daoud-action-en-responsabilité-contre-l-état-la-demande-de-sursis-à-statuer-présen",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/comment-assigner-l-état-en-responsabilité-pour-faute-lourde",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/affaire-sylvia-iannello-à-martigues-un-féminicide-doublé-de-carences-dans-la-prise-en-charge-des-a",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/accident-de-la-circulation-à-moto-une-indemnisation-amiable-doublée-après-l-intervention-du-cabine",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/un-capitaine-de-cargo-russo-ukrainien-interpellé-au-port-de-bayonne-avec-2-grammes-d-alcool-dans-le",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/nouvelle-victoire-pour-les-petites-entreprises-victimes-de-démarchage-entre-caducité-et-nullité-du",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/droit-penal",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/proces-criminel",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/trafic-de-stupefiant",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale/droit-penal-des-affaires",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor_text": "View More",
+      "placement": "editorial",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/droit-criminel",
+      "anchor_text": "Nos affaires en cours d'assises",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/notre-cabinet",
+      "anchor_text": "Notre équipe",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/nos-affaires",
+      "anchor_text": "Découvrir les affaires du cabinet",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/bordeaux-relaxe-pour-le-gérant-d-une-société-de-revente-en-gros-de-cbd-poursuivi-pour-trafic-de-st",
+      "anchor_text": "Bordeaux : Relaxe pour le gérant d'une société de revente en gros de CBD poursuivi pour trafic de stupéfiants",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/droit-pénal-des-affaires",
+      "anchor_text": "Droit pénal des affaires",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/intervention-de-maître-plouton-dans-l-enquête-elle-sur-l-inceste-le-cabinet-acteur-engagé-auprès",
+      "anchor_text": "Intervention de Me Plouton dans l’enquête ELLE sur l’inceste : le cabinet, acteur engagé auprès des victimes pour la libération de leur parole",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/tribunal-judiciaire-une-ordonnance-de-protection-délivrée-pour-des-violences-psychologiques",
+      "anchor_text": "Tribunal judiciaire : une ordonnance de protection délivrée pour des violences psychologiques",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/droit-de-la-famille",
+      "anchor_text": "Droit de la famille",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+      "anchor_text": "Responsabilité du fait des choses : quels recours en cas de chute, d’objet tombé ou d’équipement défectueux ?",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/ressources-et-notions-juridiques",
+      "anchor_text": "Ressources et notions juridiques",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/appels-téléphoniques-malveillants-les-proches-de-la-victime-peuvent-aussi-être-indemnisés",
+      "anchor_text": "Appels téléphoniques malveillants : les proches de la victime peuvent aussi être indemnisés",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/violences-conjugales-féminicides",
+      "anchor_text": "Violences Conjugales et féminicides",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/défense-d-une-victime-de-viol-conjugal-devant-la-cour-criminelle-départementale-de-la-seine-maritime",
+      "anchor_text": "Défense d'une victime de viol conjugal devant la Cour criminelle départementale de la Seine-Maritime",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/droit-criminel",
+      "anchor_text": "Procès criminels",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+      "anchor_text": "Délai déraisonnable dans une procédure judiciaire : comment engager la responsabilité de l’Etat ?",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/droit-de-visite-et-ordonnance-de-protection-notre-cabinet-défend-le-maintien-du-lien-père-enfant",
+      "anchor_text": "Ordonnance de protection : le juge maintient le droit de visite du père malgré un contrôle judiciaire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/blog/categories/droit-pénal",
+      "anchor_text": "Droit Pénal",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "anchor_text": "Auto-entrepreneur victime d'un accident : comment obtenir une indemnisation complète ?",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/post/tribunal-correctionnel-de-toulouse-intervention-en-partie-civile-pour-des-pme-victimes-de-pratique",
+      "anchor_text": "Tribunal correctionnel de Toulouse : défense de PME victimes de pratiques commerciales trompeuses",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Je prends rendez vous",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/notre-cabinet",
+      "anchor_text": "Notre cabinet",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/nos-affaires",
+      "anchor_text": "Nos affaires",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/defense-penale",
+      "anchor_text": "Défense Pénale",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/indemnisation-des-victimes",
+      "anchor_text": "Indemnisation des victimes",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/",
+      "target_path": "/droit-des-contrats-et-des-personnes",
+      "anchor_text": "Droit des contrats et des personnes",
+      "placement": "footer",
+      "rel": null
+    }
+  ],
+  "summary": {
+    "match": 15,
+    "diff": 42,
+    "lost": 3,
+    "gained": 47
+  },
+  "rows": [
+    {
+      "status": "match",
+      "target": "/defense-penale/droit-penal",
+      "anchor": "Droit Pénal",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale/proces-criminel",
+      "anchor": "Procès criminels",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale/trafic-de-stupefiant",
+      "anchor": "Trafic de stupéfiants",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor": "Violences conjugales et féminicides",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale/droit-penal-des-affaires",
+      "anchor": "Droit pénal des affaires",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor": "Victimes de délits ou crimes",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor": "Accidents de la route",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor": "Droit et accidents du travail",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor": "Accidents et erreurs médicales",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor": "Accidents de la vie courante",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor": "Droit des assurances particuliers et professionnels",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor": "Défense des consommateurs",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor": "Droit de la famille",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor": "Divorce",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/nos-affaires",
+      "anchor": "Affaires",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/notre-cabinet",
+      "anchor": "Équipe",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Contactez - nous",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "lost",
+      "target": "/",
+      "anchor": "Accueil",
+      "legacy_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Je prends rendez-vous",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Rendez-vous, accès & honoraires",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Horaires & accès",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Honoraires",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale",
+      "anchor": "La défense pénale",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor": "Violences conjugales et feminicides",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes",
+      "anchor": "L'indemnisation des victimes",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/droit-des-contrats-et-des-personnes",
+      "anchor": "Les droits des contrats et des personnes",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor": "Droit des assurances particuliers et pro",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "RDV",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "lost",
+      "target": "/",
+      "anchor": "Domaines d'expertises",
+      "legacy_placement": "nav"
+    },
+    {
+      "status": "lost",
+      "target": "/",
+      "anchor": "Nos affaires",
+      "legacy_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/post/bordeaux-relaxe-pour-le-gérant-d-une-société-de-revente-en-gros-de-cbd-poursuivi-pour-trafic-de-st",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/intervention-de-maître-plouton-dans-l-enquête-elle-sur-l-inceste-le-cabinet-acteur-engagé-auprès",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/tribunal-judiciaire-une-ordonnance-de-protection-délivrée-pour-des-violences-psychologiques",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/appels-téléphoniques-malveillants-les-proches-de-la-victime-peuvent-aussi-être-indemnisés",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/défense-d-une-victime-de-viol-conjugal-devant-la-cour-criminelle-départementale-de-la-seine-maritime",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/droit-de-visite-et-ordonnance-de-protection-notre-cabinet-défend-le-maintien-du-lien-père-enfant",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/tribunal-correctionnel-de-toulouse-intervention-en-partie-civile-pour-des-pme-victimes-de-pratique",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/que-faire-en-cas-d-arnaque-au-contrat-de-leasing-d-un-photocopieur-caisse-enregistreuse",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/fusillade-aux-aubiers-notre-client-placé-sous-le-statut-de-témoin-assisté-pour-la-tentative-de-meu",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/reconstitution-criminelle-féminicide-de-nasrine-bensalem-à-cenon",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/restitution-de-39-000-la-protection-du-tiers-propriétaire-devant-le-tribunal-correctionnel-de-pa",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/affaire-chahinez-daoud-action-en-responsabilité-contre-l-état-la-demande-de-sursis-à-statuer-présen",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/comment-assigner-l-état-en-responsabilité-pour-faute-lourde",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/affaire-sylvia-iannello-à-martigues-un-féminicide-doublé-de-carences-dans-la-prise-en-charge-des-a",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/accident-de-la-circulation-à-moto-une-indemnisation-amiable-doublée-après-l-intervention-du-cabine",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/un-capitaine-de-cargo-russo-ukrainien-interpellé-au-port-de-bayonne-avec-2-grammes-d-alcool-dans-le",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/nouvelle-victoire-pour-les-petites-entreprises-victimes-de-démarchage-entre-caducité-et-nullité-du",
+      "anchor": "Lire",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/droit-penal",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/proces-criminel",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/trafic-de-stupefiant",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/droit-penal-des-affaires",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor": "View More",
+      "legacy_placement": "nav",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/droit-penal",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/proces-criminel",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/trafic-de-stupefiant",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/droit-penal-des-affaires",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/médias",
+      "anchor": "Médias",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/comprendre-le-droit",
+      "anchor": "Ressources",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/nos-affaires/categories/médias",
+      "anchor": "Médias",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/mentions-legales",
+      "anchor": "Mentions Légales",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor": "View More",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor": "View More",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor": "View More",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor": "View More",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-criminel",
+      "anchor": "Nos affaires en cours d'assises",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/notre-cabinet",
+      "anchor": "Notre équipe",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/nos-affaires",
+      "anchor": "Découvrir les affaires du cabinet",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/bordeaux-relaxe-pour-le-gérant-d-une-société-de-revente-en-gros-de-cbd-poursuivi-pour-trafic-de-st",
+      "anchor": "Bordeaux : Relaxe pour le gérant d'une société de revente en gros de CBD poursuivi pour trafic de stupéfiants",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-pénal-des-affaires",
+      "anchor": "Droit pénal des affaires",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/intervention-de-maître-plouton-dans-l-enquête-elle-sur-l-inceste-le-cabinet-acteur-engagé-auprès",
+      "anchor": "Intervention de Me Plouton dans l’enquête ELLE sur l’inceste : le cabinet, acteur engagé auprès des victimes pour la libération de leur parole",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/tribunal-judiciaire-une-ordonnance-de-protection-délivrée-pour-des-violences-psychologiques",
+      "anchor": "Tribunal judiciaire : une ordonnance de protection délivrée pour des violences psychologiques",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-de-la-famille",
+      "anchor": "Droit de la famille",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+      "anchor": "Responsabilité du fait des choses : quels recours en cas de chute, d’objet tombé ou d’équipement défectueux ?",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/ressources-et-notions-juridiques",
+      "anchor": "Ressources et notions juridiques",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/appels-téléphoniques-malveillants-les-proches-de-la-victime-peuvent-aussi-être-indemnisés",
+      "anchor": "Appels téléphoniques malveillants : les proches de la victime peuvent aussi être indemnisés",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/violences-conjugales-féminicides",
+      "anchor": "Violences Conjugales et féminicides",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/défense-d-une-victime-de-viol-conjugal-devant-la-cour-criminelle-départementale-de-la-seine-maritime",
+      "anchor": "Défense d'une victime de viol conjugal devant la Cour criminelle départementale de la Seine-Maritime",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-criminel",
+      "anchor": "Procès criminels",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+      "anchor": "Délai déraisonnable dans une procédure judiciaire : comment engager la responsabilité de l’Etat ?",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/droit-de-visite-et-ordonnance-de-protection-notre-cabinet-défend-le-maintien-du-lien-père-enfant",
+      "anchor": "Ordonnance de protection : le juge maintient le droit de visite du père malgré un contrôle judiciaire",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-pénal",
+      "anchor": "Droit Pénal",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "anchor": "Auto-entrepreneur victime d'un accident : comment obtenir une indemnisation complète ?",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/post/tribunal-correctionnel-de-toulouse-intervention-en-partie-civile-pour-des-pme-victimes-de-pratique",
+      "anchor": "Tribunal correctionnel de Toulouse : défense de PME victimes de pratiques commerciales trompeuses",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "gained",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Je prends rendez vous",
+      "new_placement": "footer"
+    },
+    {
+      "status": "gained",
+      "target": "/notre-cabinet",
+      "anchor": "Notre cabinet",
+      "new_placement": "footer"
+    },
+    {
+      "status": "gained",
+      "target": "/nos-affaires",
+      "anchor": "Nos affaires",
+      "new_placement": "footer"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale",
+      "anchor": "Défense Pénale",
+      "new_placement": "footer"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes",
+      "anchor": "Indemnisation des victimes",
+      "new_placement": "footer"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes",
+      "anchor": "Droit des contrats et des personnes",
+      "new_placement": "footer"
+    }
+  ]
+}
