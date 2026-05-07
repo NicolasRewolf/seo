@@ -62,6 +62,7 @@ import type {
   OutboundDestination,
   CtaBreakdownRow,
 } from '../lib/cooked.js';
+import { fetchTrackerFirstSeen } from '../lib/cooked.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
 export const DIAGNOSTIC_PROMPT_VERSION = 6 as const;
@@ -137,6 +138,10 @@ export type DiagnosticPromptInputs = {
   /** GSC clicks over the same window as cooked_extras.windows['28d'] —
    *  used to compute the data quality / capture rate sanity check. */
   gsc_clicks_28d?: number | null;
+  /** Sprint-13bis: when Cooked first saw an event ever. Used to pro-rate
+   *  the capture rate during the bootstrap window. The diagnose pipeline
+   *  fetches this once via `getCookedFirstSeen()` and passes it down. */
+  cooked_first_seen?: Date | null;
 };
 
 // ---------- formatting helpers ---------------------------------------------
@@ -389,19 +394,41 @@ function fmtOutboundDestinations(rows: OutboundDestination[] | undefined): strin
 }
 
 /**
- * Sprint-12 hotfix: Cooked-tracker deploy date for jplouton-avocat.fr.
- * Used to pro-rate the capture rate during the bootstrap window. Before this
- * fix, the helper compared 28d-window-of-Cooked-data (which actually held
- * <2 days of collection) against 28d-window-of-GSC-data, producing artificial
- * "5% — tracker quasi-cassé" verdicts during the first 28 days post-deploy.
+ * Sprint-13bis: replaced the Sprint-12 hardcoded deploy date with a fetch
+ * against Cooked's `tracker_first_seen_global()` RPC, with a 1h in-memory
+ * cache to avoid spamming the RPC across all findings of one audit run.
  *
- * TODO: replace with a Cooked RPC `tracker_first_seen_global()` once published
- * — Cooked agent offered this; the hardcode unblocks today.
+ * The hardcoded fallback below stays as a safety net for the pathological
+ * case where the RPC errors (network blip, Cooked transient outage, etc.) —
+ * the helper never throws, just degrades to the known-good baseline.
  */
-export const COOKED_TRACKER_DEPLOY_DATE = new Date('2026-05-06T17:00:00Z');
+const COOKED_TRACKER_DEPLOY_FALLBACK = new Date('2026-05-06T17:00:00Z');
 
-function daysCookedHasCollected(now: Date): number {
-  const ms = now.getTime() - COOKED_TRACKER_DEPLOY_DATE.getTime();
+let _cachedFirstSeen: { value: Date; at: number } | null = null;
+const CACHE_TTL_MS = 3600_000; // 1h
+
+/**
+ * Returns the date Cooked first started collecting events, with 1h cache.
+ * Falls back to the hardcoded deploy date on RPC error so the helper never
+ * throws — the data quality check is too central to crash the diagnose call.
+ */
+export async function getCookedFirstSeen(now: Date = new Date()): Promise<Date> {
+  if (_cachedFirstSeen && now.getTime() - _cachedFirstSeen.at < CACHE_TTL_MS) {
+    return _cachedFirstSeen.value;
+  }
+  const fetched = await fetchTrackerFirstSeen();
+  const value = fetched ?? COOKED_TRACKER_DEPLOY_FALLBACK;
+  _cachedFirstSeen = { value, at: now.getTime() };
+  return value;
+}
+
+/** Test-only: reset the cache between test runs to avoid state leakage. */
+export function _resetCookedFirstSeenCache(): void {
+  _cachedFirstSeen = null;
+}
+
+function daysCookedHasCollected(firstSeen: Date, now: Date): number {
+  const ms = now.getTime() - firstSeen.getTime();
   const days = ms / (24 * 60 * 60 * 1000);
   return Math.max(0, Math.min(28, days));
 }
@@ -426,12 +453,19 @@ function daysCookedHasCollected(now: Date): number {
 // Exported so the unit tests can validate the verdict strings without
 // having to render the full prompt body. Not part of the public API —
 // callers should not rely on the exact wording.
+//
+// Sprint-13bis: takes `cookedFirstSeen` explicitly. The diagnose pipeline
+// fetches it once per audit run via `getCookedFirstSeen()` (cache 1h) and
+// passes it through DiagnosticPromptInputs. Tests pass it directly.
+// Pure-sync function — no I/O.
 export function fmtDataQualityCheck(
   gscClicks28d: number | null | undefined,
   cookedSessions28d: number | null | undefined,
-  /** Sprint-12 hotfix: optional override for tests (default = real time). */
+  cookedFirstSeen: Date | null,
+  /** Optional override for tests (default = real time). */
   now: Date = new Date(),
 ): string {
+  const firstSeen = cookedFirstSeen ?? COOKED_TRACKER_DEPLOY_FALLBACK;
   if (gscClicks28d == null || cookedSessions28d == null) {
     return '_(données insuffisantes pour calculer le capture rate — Cooked en cours d\'absorption)_';
   }
@@ -443,7 +477,7 @@ export function fmtDataQualityCheck(
   // per-day rate over its full 28d window. This eliminates the bootstrap
   // artefact that made every FR page look like "🚫 tracker cassé" during the
   // first 28 days post-deploy.
-  const daysCooked = daysCookedHasCollected(now);
+  const daysCooked = daysCookedHasCollected(firstSeen, now);
   if (daysCooked < 1) {
     return [
       `- GSC clicks 28d: ${gscClicks28d}`,
@@ -633,7 +667,7 @@ ${i.enrichment ? fmtCatalog(i.enrichment.internal_pages_catalog) : '_(catalog no
 ⚠️ **Lis le bloc \`<data_quality_check>\` EN PREMIER.** Il te dit si tu peux lire les chiffres Cooked comme ground truth ou comme lower bound. Tous les autres blocs sont à pondérer en conséquence.
 
 <data_quality_check>
-${fmtDataQualityCheck(i.gsc_clicks_28d, i.cooked_extras?.windows['28d'].sessions ?? null)}
+${fmtDataQualityCheck(i.gsc_clicks_28d, i.cooked_extras?.windows['28d'].sessions ?? null, i.cooked_first_seen ?? null)}
 </data_quality_check>
 
 <conversion_signals>

@@ -305,6 +305,24 @@ export async function fetchCtaBreakdown(
   }));
 }
 
+/**
+ * Sprint-13bis: Cooked-side `tracker_first_seen_global()` RPC. Returns the
+ * earliest `occurred_at` ever observed in `events`. Used SEO-side to
+ * pro-rate the data_quality_check capture rate during the bootstrap window
+ * (first 28 days post-deploy) — without it, every page would have a
+ * "🚫 tracker quasi-cassé" verdict for 28 days regardless of actual tracker
+ * health.
+ *
+ * Returns null on RPC error (network blip etc.) — the caller falls back to
+ * a hardcoded deploy date for safety.
+ */
+export async function fetchTrackerFirstSeen(): Promise<Date | null> {
+  const { data, error } = await cookedSupabase().rpc('tracker_first_seen_global');
+  if (error || data == null) return null;
+  const d = new Date(data as string);
+  return Number.isFinite(d.getTime()) ? d : null;
+}
+
 // ============================================================================
 
 /** Smoke test: ping every Cooked RPC the SEO tool depends on.

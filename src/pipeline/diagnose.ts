@@ -14,6 +14,7 @@ import {
   renderDiagnosticPrompt,
   DIAGNOSTIC_PROMPT_NAME,
   DIAGNOSTIC_PROMPT_VERSION,
+  getCookedFirstSeen,
   type DiagnosticPromptInputs,
   type InboundSummary,
 } from '../prompts/diagnostic.v1.js';
@@ -261,6 +262,13 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
   // Falls back to null if the page has no recent gsc_page_snapshots row.
   const gscClicks28d = await fetchGscClicksLast28d(row.page as string);
 
+  // Sprint-13bis: fetch Cooked tracker first-seen date once per finding via
+  // the cached helper (1h cache shared across all findings of this audit run).
+  // Used by fmtDataQualityCheck to pro-rate the capture rate during bootstrap.
+  // Best-effort: getCookedFirstSeen falls back to a hardcoded baseline if the
+  // RPC errors, so this never throws.
+  const cookedFirstSeen = await getCookedFirstSeen();
+
   return {
     url: row.page as string,
     avg_position: Number(row.avg_position),
@@ -329,6 +337,7 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     outbound_destinations: outboundDestinations,
     cta_breakdown: ctaBreakdown,
     gsc_clicks_28d: gscClicks28d,
+    cooked_first_seen: cookedFirstSeen,
   };
 }
 
