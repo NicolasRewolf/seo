@@ -12,8 +12,42 @@
  *      prose to skim)
  *   4. Numbered actions with cible-CTR hint
  *   5. Footer (cycle dates / workflow / refs)
+ *
+ * Sprint 13 UI/UX pass — within GitHub markdown limits:
+ *   - Native GitHub Alerts (`> [!IMPORTANT]`, `> [!TIP]`, `> [!WARNING]`,
+ *     `> [!CAUTION]`) replace emoji-prefixed blockquotes — colored boxes
+ *     rendered natively by GitHub, no custom CSS needed.
+ *   - `<sub>(Source)</sub>` discreet inline source attribution per data
+ *     point + per diagnostic bullet so the human reader can tell at a
+ *     glance whether a value comes from GSC, Cooked, DataForSEO, DOM
+ *     scrape, computed SEO-side, or LLM synthesis. Convention via
+ *     fmtSource() helper.
+ *   - <details> collapsibles for verbose `current_value` blocks (intro,
+ *     internal_links) — reduces visual clutter while keeping the data
+ *     accessible on click.
  */
 import { addDays, format } from 'date-fns';
+
+/**
+ * Sprint 13 — discreet inline source attribution.
+ * Renders as small text below or after a data point, e.g.:
+ *   "Pages/session 1.0 <sub>_(Cooked)_</sub>"
+ *
+ * Convention used across the issue:
+ *   - GSC          → Google Search Console (impressions, clicks, CTR, position)
+ *   - Cooked       → first-party tracker (behavior, CWV, conversion CTAs, provenance, device)
+ *   - DataForSEO   → keyword volume FR, share of voice
+ *   - Wix          → category, blog views/likes/comments
+ *   - DOM          → Sprint-9 HTML scrape (title, meta, H1, intro, schema, link placement)
+ *   - SEO calc     → SEO-side computed value (ctr_expected interpolation,
+ *                    capture_rate, priority_score, CWV verdicts, formules)
+ *   - LLM          → Claude Sonnet 4.6 synthesis
+ *   - Catalogue    → curated lib/site-catalog.ts (anti-hallucination URLs)
+ */
+function fmtSource(...sources: string[]): string {
+  if (sources.length === 0) return '';
+  return ` <sub>_(${sources.join(' · ')})_</sub>`;
+}
 
 export type IssueProposedFix = {
   fix_type:
@@ -217,11 +251,29 @@ function fmtFixSection(opts: {
   const proposedFmt = opts.blockquoteCurrent
     ? `> ${opts.fix.proposed_value.replace(/\n/g, '\n> ')}`
     : '```\n' + opts.fix.proposed_value + '\n```';
+
+  // Sprint-13 UI: collapse the verbatim "Actuel" block when it's long
+  // (intro >300 chars, internal_links proposals). Keeps the fix scannable
+  // — the reader expands only if they need to compare verbatim.
+  const isLongCurrent = cur.length > 300;
+  const currentBlock = isLongCurrent
+    ? [
+        `<details>`,
+        `<summary><b>Actuel</b>${fmtSource('DOM scrape')} — cliquer pour voir</summary>`,
+        ``,
+        fmt,
+        ``,
+        `</details>`,
+      ].join('\n')
+    : [
+        `**Actuel**${fmtSource('DOM scrape')} :`,
+        fmt,
+      ].join('\n');
+
   return [
-    `### ${opts.ordinal}. ${opts.label}`,
+    `### ${opts.ordinal}. ${opts.label}${fmtSource('LLM fix-gen')}`,
     ``,
-    `**Actuel** :`,
-    fmt,
+    currentBlock,
     ``,
     `**Proposé** :`,
     proposedFmt,
@@ -236,13 +288,16 @@ function fmtFixSection(opts: {
 function fmtTopQueries(rows: IssueDiagnostic['top_queries_analysis'], limit = 5): string {
   const subset = rows.slice(0, limit);
   if (subset.length === 0) return '_(pas de données de requêtes)_';
-  const lines = ['| Requête | Impressions | CTR | Position | Intent match |', '|---|---|---|---|---|'];
+  // Sprint-13: column-level source tags (GSC for the metrics, LLM for the
+  // intent_match verdict). Compact via <sub> in the header row.
+  const lines = [
+    `| Requête <sub>(GSC)</sub> | Imp <sub>(GSC)</sub> | CTR <sub>(GSC)</sub> | Pos <sub>(GSC)</sub> | Intent match <sub>(LLM)</sub> |`,
+    `|---|---|---|---|---|`,
+  ];
   for (const r of subset) {
     // Sprint-12 hotfix: the LLM outputs CTR as either a fraction (0..1, e.g. 0.0165)
     // OR as a percent (e.g. 1.65) depending on how it copies from the prompt input.
-    // Detect the format defensively — values > 1 are necessarily already a percent
-    // (CTR > 100% is impossible). Without this, we used to render "165.00%" for
-    // a real CTR of 1.65%.
+    // Detect defensively — values > 1 are necessarily already a percent.
     const ctrPct = (r.ctr > 1 ? r.ctr : r.ctr * 100).toFixed(2);
     lines.push(
       `| ${r.query} | ${r.impressions} | ${ctrPct}% | ${r.position.toFixed(1)} | ${r.intent_match} |`,
@@ -255,10 +310,13 @@ function fmtTopQueries(rows: IssueDiagnostic['top_queries_analysis'], limit = 5)
  * Render a tight diagnostic bullet — only emits the bullet if the field is
  * non-empty (so legacy v1/v2 diagnostics don't show "Structure: " orphans).
  * The label is bolded; the body is rendered as-is (LLM controls the prose).
+ *
+ * Sprint 13: trailing `<sub>_(LLM · sources)_</sub>` so the reader sees at
+ * a glance which sources fed this bullet's reasoning.
  */
-function fmtDiagBullet(label: string, value: string | undefined): string {
+function fmtDiagBullet(label: string, value: string | undefined, ...sources: string[]): string {
   if (!value || !value.trim()) return '';
-  return `- **${label}** — ${value.trim()}`;
+  return `- **${label}** — ${value.trim()}${fmtSource('LLM', ...sources)}`;
 }
 
 export function renderIssueBody(i: IssueInputs): string {
@@ -275,9 +333,14 @@ export function renderIssueBody(i: IssueInputs): string {
 
   const linksSection = linksFix
     ? [
-        `### 4. Maillage interne`,
+        `### 4. Maillage interne${fmtSource('LLM fix-gen', 'Catalogue')}`,
+        ``,
+        `<details>`,
+        `<summary><b>Proposé</b> — cliquer pour voir le détail</summary>`,
         ``,
         linksFix.proposed_value,
+        ``,
+        `</details>`,
         ``,
         `**Pourquoi** : ${linksFix.rationale}`,
         ``,
@@ -286,25 +349,31 @@ export function renderIssueBody(i: IssueInputs): string {
       ].join('\n')
     : '';
 
-  // ---- TL;DR callout (Sprint-11) ------------------------------------------
-  // Surface the v5 `tldr` field as a GitHub blockquote at the very top —
-  // first thing a reviewer sees, autonomous (readable without scrolling).
-  // Falls back to the hypothesis sentence when re-rendering older v1-v4
-  // diagnostics that don't have a tldr field yet.
+  // ---- TL;DR callout (Sprint-11 → Sprint-13) ------------------------------
+  // Sprint-13: switched to native GitHub `[!IMPORTANT]` alert (purple box,
+  // colored side-bar, native icon) — much more visible than a plain
+  // blockquote with emoji. Falls back to hypothesis if no v5 tldr.
   const tldrText = (i.diagnostic.tldr && i.diagnostic.tldr.trim()) || i.diagnostic.hypothesis;
   const tldrBlock = [
-    `> ## 🎯 TL;DR`,
-    `>`,
+    `> [!IMPORTANT]`,
+    `> ### 🎯 TL;DR`,
     `> ${tldrText.replace(/\n/g, '\n> ')}`,
+    `> ${fmtSource('LLM').trim()}`,
   ].join('\n');
 
   // ---- Group banner (treatment vs control) --------------------------------
-  // Hoisted out of the actions section so reviewers see the experimental
-  // assignment before reading the diagnostic, not after.
+  // Sprint-13: native GitHub Alerts. `[!TIP]` = green for treatment,
+  // `[!CAUTION]` = red for control (don't apply).
   const groupBanner =
     i.group_assignment === 'control'
-      ? `> ⚠️ **Groupe contrôle** — ne PAS appliquer ces fixes pendant 4 semaines (mesure d'impact via différence treatment vs contrôle).`
-      : `> 🟢 **Groupe traitement** — à appliquer après revue.`;
+      ? [
+          `> [!CAUTION]`,
+          `> **Groupe contrôle** — ne PAS appliquer ces fixes pendant 4 semaines (mesure d'impact via différence treatment vs contrôle).`,
+        ].join('\n')
+      : [
+          `> [!TIP]`,
+          `> **Groupe traitement** — à appliquer après revue.`,
+        ].join('\n');
 
   // ---- Compact metrics box ------------------------------------------------
   // Sprint-12: 4 columns (GSC × Cooked behavior × CWV × Conversion).
@@ -359,44 +428,55 @@ export function renderIssueBody(i: IssueInputs): string {
   const dwellValue = i.avg_session_duration_seconds ?? ex?.avg_session_duration_28d ?? null;
   const scrollValue = i.scroll_depth_avg ?? ex?.scroll_avg_28d ?? null;
 
+  // Sprint-13: source tags on cells where the source differs from the
+  // column header (interpolations, computed values, derived metrics).
+  // Cells that match their column don't get a tag (would be redundant).
+  const benchSrc = fmtSource('SEO calc · interpolé');
+  const gapSrc = fmtSource('SEO calc');
+  const prioSrc = fmtSource('SEO calc');
+  const captureSrc = fmtSource('SEO calc · Cooked ÷ GSC');
+  const bodySrc = fmtSource('SEO calc · depuis Cooked cta_breakdown');
+
   const metricsBox = [
     `| 📊 GSC (${i.audit_period_months} mois) | Valeur | 🧭 Cooked behavior | Valeur | ⚡ CWV (28d p75) | Valeur | 📞 Conversion (28d) | Valeur |`,
     `|---|---|---|---|---|---|---|---|`,
     `| Position moy. | ${i.avg_position.toFixed(1)} (drift ${fmtDriftCell(i.position_drift)}) | Pages/session | ${fmtNumOrNA(ppsValue)} — ${ppsInterpretation(ppsValue)} | LCP | ${lcpCell} | Phone clicks | ${phoneCell} |`,
     `| Impressions/mois | ${monthlyImp.toLocaleString('fr-FR')} | Durée active | ${fmtNumOrNA(dwellValue, 's', 0)} — ${durationInterpretation(dwellValue)} | INP | ${inpCell} | Email clicks | ${emailCell} |`,
     `| **CTR actuel** | **${pct(i.ctr_actual)}%** | Scroll moy. | ${fmtNumOrNA(scrollValue, '%', 1)} — ${scrollInterpretation(scrollValue)} | CLS | ${clsCell} | Booking CTA | ${bookingCell} |`,
-    `| CTR benchmark | ${pct(i.ctr_expected)}% | Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)}) | TTFB | ${ttfbCell} | Body share | ${bodyPctCell} |`,
-    `| **Gap vs benchmark** | **${(i.ctr_gap * 100).toFixed(1)}% sous** | Page | [${shortPath(i.page, 50)}](${i.page}) | Capture rate | ${captureCell} | Provenance / Device | ${provCell} • ${deviceCell} |`,
+    `| CTR benchmark | ${pct(i.ctr_expected)}%${benchSrc} | Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)})${prioSrc} | TTFB | ${ttfbCell} | Body share | ${bodyPctCell}${ex?.cta_body_pct != null ? bodySrc : ''} |`,
+    `| **Gap vs benchmark** | **${(i.ctr_gap * 100).toFixed(1)}% sous**${gapSrc} | Page | [${shortPath(i.page, 50)}](${i.page}) | Capture rate | ${captureCell}${ex?.capture_rate_pct != null ? captureSrc : ''} | Provenance / Device | ${provCell} • ${deviceCell} |`,
   ].join('\n');
 
   // ---- Diagnostic bullets (one per analytic field) ------------------------
-  // Empty fields are skipped so legacy v1 diagnostics render cleanly.
-  // Sprint-12: 4 new v6 fields (conversion / traffic / device / outbound leak).
+  // Sprint-13: each bullet trailed with `<sub>(LLM · sources)</sub>` so the
+  // reader sees which sources fed each piece of reasoning.
   const diagBullets = [
     fmtDiagBullet('Hypothèse', i.diagnostic.hypothesis),
-    fmtDiagBullet('Intent mismatch', i.diagnostic.intent_mismatch),
-    fmtDiagBullet('Snippet', i.diagnostic.snippet_weakness),
-    fmtDiagBullet('Engagement', i.diagnostic.engagement_diagnosis),
-    fmtDiagBullet('CWV / perf', i.diagnostic.performance_diagnosis),
-    fmtDiagBullet('Structure', i.diagnostic.structural_gaps),
-    fmtDiagBullet('Funnel', i.diagnostic.funnel_assessment),
-    fmtDiagBullet('Autorité interne', i.diagnostic.internal_authority_assessment),
-    fmtDiagBullet('Conversion', i.diagnostic.conversion_assessment),
-    fmtDiagBullet('Traffic strategy', i.diagnostic.traffic_strategy_note),
-    fmtDiagBullet('Device optimization', i.diagnostic.device_optimization_note),
-    fmtDiagBullet('Outbound leak', i.diagnostic.outbound_leak_note),
+    fmtDiagBullet('Intent mismatch', i.diagnostic.intent_mismatch, 'GSC top queries', 'DataForSEO volumes'),
+    fmtDiagBullet('Snippet', i.diagnostic.snippet_weakness, 'DOM scrape', 'DataForSEO SOV'),
+    fmtDiagBullet('Engagement', i.diagnostic.engagement_diagnosis, 'Cooked', 'SEO calc capture rate'),
+    fmtDiagBullet('CWV / perf', i.diagnostic.performance_diagnosis, 'Cooked CWV 28d'),
+    fmtDiagBullet('Structure', i.diagnostic.structural_gaps, 'DOM scrape', 'GSC top queries'),
+    fmtDiagBullet('Funnel', i.diagnostic.funnel_assessment, 'DOM Sprint-9', 'Catalogue', 'Wix category'),
+    fmtDiagBullet('Autorité interne', i.diagnostic.internal_authority_assessment, 'DOM Sprint-9 inbound graph'),
+    fmtDiagBullet('Conversion', i.diagnostic.conversion_assessment, 'Cooked CTAs', 'DOM CTA placement'),
+    fmtDiagBullet('Traffic strategy', i.diagnostic.traffic_strategy_note, 'Cooked top_referrer'),
+    fmtDiagBullet('Device optimization', i.diagnostic.device_optimization_note, 'Cooked device_split'),
+    fmtDiagBullet('Outbound leak', i.diagnostic.outbound_leak_note, 'Cooked outbound_destinations'),
   ]
     .filter((s) => s !== '')
     .join('\n');
 
-  // ---- Sprint-12 data quality banner --------------------------------------
-  // If capture_rate is < 50%, surface it as a warning blockquote between the
-  // metrics box and the diagnostic — the human reader needs to know "Cooked
-  // signals here are a lower bound, not absolute".
+  // ---- Data quality banner (Sprint-12 → Sprint-13) ------------------------
+  // Sprint-13: native GitHub `[!WARNING]` alert (yellow side-bar + icon).
   let dataQualityBanner = '';
   if (i.cooked_extras?.capture_rate_pct != null && i.cooked_extras.capture_rate_pct < 50) {
     const rate = i.cooked_extras.capture_rate_pct.toFixed(0);
-    dataQualityBanner = `> ⚠️ **Data quality** — Cooked capture rate **${rate}%** sur cette page (${i.cooked_extras.cooked_sessions_28d ?? '?'} sessions Cooked vs ${i.cooked_extras.gsc_clicks_28d ?? '?'} GSC clicks 28d). Lis les chiffres Cooked comme un **lower bound**, pas comme des absolus.`;
+    dataQualityBanner = [
+      `> [!WARNING]`,
+      `> **Data quality** — Cooked capture rate **${rate}%** sur cette page (${i.cooked_extras.cooked_sessions_28d ?? '?'} sessions Cooked vs ${i.cooked_extras.gsc_clicks_28d ?? '?'} GSC clicks 28d). Lis les chiffres Cooked comme un **lower bound**, pas comme des absolus.`,
+      `> ${fmtSource('SEO calc · Cooked sessions ÷ GSC clicks 28d').trim()}`,
+    ].join('\n');
   }
 
   // Sprint-11 layout: each top-level section is a self-contained string with

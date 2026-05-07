@@ -134,12 +134,13 @@ test('finding + audit_run IDs appear in Refs', () => {
 
 // ---------- Sprint-11 redesign-specific tests ------------------------------
 
-test('TL;DR callout sits at the very top of the body', () => {
+test('TL;DR callout sits at the very top of the body (Sprint-13: GitHub IMPORTANT alert)', () => {
   const r = renderIssue(fixture);
-  // Body must START with the TL;DR blockquote — first thing reviewers see.
+  // Sprint-13: switched from emoji blockquote to native GitHub `[!IMPORTANT]`
+  // alert (purple side-bar). Body now starts with the alert directive.
   assert.ok(
-    r.body.startsWith('> ## 🎯 TL;DR'),
-    `body should start with TL;DR callout, got:\n${r.body.slice(0, 200)}`,
+    r.body.startsWith('> [!IMPORTANT]\n> ### 🎯 TL;DR'),
+    `body should start with [!IMPORTANT] TL;DR alert, got:\n${r.body.slice(0, 200)}`,
   );
   assert.ok(r.body.includes('TLDR sentence — synthesis upfront.'));
 });
@@ -148,8 +149,8 @@ test('TL;DR falls back to hypothesis when v5 tldr field is missing (legacy)', ()
   const legacyDiag = { ...fixture.diagnostic };
   delete legacyDiag.tldr;
   const r = renderIssue({ ...fixture, diagnostic: legacyDiag });
-  // Should still render the TL;DR block, populated with hypothesis text.
-  assert.ok(r.body.startsWith('> ## 🎯 TL;DR'));
+  // Should still render the TL;DR alert, populated with hypothesis text.
+  assert.ok(r.body.startsWith('> [!IMPORTANT]\n> ### 🎯 TL;DR'));
   assert.ok(r.body.includes('hypothesis text'));
 });
 
@@ -251,7 +252,7 @@ test('conversion column shows phone/email/booking + body share', () => {
   assert.match(r.body, /60% body \(intent qualifié\)/);
 });
 
-test('low capture rate (<50%) surfaces a data quality warning banner', () => {
+test('low capture rate (<50%) surfaces a data quality warning banner (Sprint-13: GitHub WARNING alert)', () => {
   const r = renderIssue({
     ...fixture,
     cooked_extras: {
@@ -260,7 +261,8 @@ test('low capture rate (<50%) surfaces a data quality warning banner', () => {
       capture_rate_pct: 9.86,
     },
   });
-  assert.match(r.body, /⚠️ \*\*Data quality\*\* — Cooked capture rate \*\*10%\*\*/);
+  // Sprint-13: switched to native GitHub `[!WARNING]` alert (yellow).
+  assert.match(r.body, /> \[!WARNING\]\n> \*\*Data quality\*\* — Cooked capture rate \*\*10%\*\*/);
   assert.match(r.body, /lower bound/);
 });
 
@@ -369,4 +371,62 @@ test('hotfix #4 — top-level values still preferred over cooked_extras when bot
   });
   assert.match(r.body, /Pages\/session.*0\.99/);
   assert.ok(!r.body.includes('2.50'));
+});
+
+// ---------- Sprint-13 UI tests --------------------------------------------
+
+test('Sprint-13 — diagnostic bullets carry source attribution as <sub>', () => {
+  const r = renderIssue(fixture);
+  // Hypothèse only has LLM (no other sources passed)
+  assert.match(r.body, /- \*\*Hypothèse\*\* — hypothesis text <sub>_\(LLM\)_<\/sub>/);
+  // Intent mismatch carries LLM + GSC top queries + DataForSEO volumes
+  assert.match(r.body, /- \*\*Intent mismatch\*\* — mismatch text <sub>_\(LLM · GSC top queries · DataForSEO volumes\)_<\/sub>/);
+  // Funnel — LLM + DOM Sprint-9 + Catalogue + Wix category
+  assert.match(r.body, /- \*\*Funnel\*\* — funnel text <sub>_\(LLM · DOM Sprint-9 · Catalogue · Wix category\)_<\/sub>/);
+});
+
+test('Sprint-13 — group banner uses GitHub TIP alert (treatment) and CAUTION (control)', () => {
+  const rT = renderIssue(fixture);
+  assert.match(rT.body, /> \[!TIP\]\n> \*\*Groupe traitement\*\*/);
+
+  const rC = renderIssue({ ...fixture, group_assignment: 'control' });
+  assert.match(rC.body, /> \[!CAUTION\]\n> \*\*Groupe contrôle\*\*/);
+});
+
+test('Sprint-13 — box cells differing from column header carry SEO calc tag', () => {
+  const r = renderIssue(fixture);
+  // CTR benchmark is interpolated → tag visible
+  assert.match(r.body, /CTR benchmark \| 3\.64% <sub>_\(SEO calc · interpolé\)_<\/sub>/);
+  // Gap vs benchmark is computed
+  assert.match(r.body, /Gap vs benchmark\*\* \| \*\*61\.0% sous\*\* <sub>_\(SEO calc\)_<\/sub>/);
+  // Priority cell is computed
+  assert.match(r.body, /tier 1 \(score 360\.77\) <sub>_\(SEO calc\)_<\/sub>/);
+});
+
+test('Sprint-13 — top-5 queries header has per-column source tags', () => {
+  const r = renderIssue(fixture);
+  assert.match(r.body, /\| Requête <sub>\(GSC\)<\/sub> \| Imp <sub>\(GSC\)<\/sub> \| CTR <sub>\(GSC\)<\/sub> \| Pos <sub>\(GSC\)<\/sub> \| Intent match <sub>\(LLM\)<\/sub> \|/);
+});
+
+test('Sprint-13 — long current_value (>300 chars) wrapped in <details> collapsible', () => {
+  const longCurrent = 'L'.repeat(400);
+  const r = renderIssue({
+    ...fixture,
+    fixes: [
+      { fix_type: 'title', current_value: longCurrent, proposed_value: 'short proposed', rationale: 'r' },
+      { fix_type: 'meta_description', current_value: 'short', proposed_value: 'short', rationale: 'r' },
+      { fix_type: 'intro', current_value: 'short', proposed_value: 'short', rationale: 'r' },
+      { fix_type: 'internal_links', current_value: null, proposed_value: 'a → b', rationale: 'r' },
+    ],
+  });
+  // Long current → wrapped in details
+  assert.match(r.body, /<details>\n<summary><b>Actuel<\/b> <sub>_\(DOM scrape\)_<\/sub> — cliquer pour voir<\/summary>/);
+  // Short current → not wrapped
+  assert.match(r.body, /\*\*Actuel\*\* <sub>_\(DOM scrape\)_<\/sub> :\n```\nshort\n```/);
+});
+
+test('Sprint-13 — internal_links section has Catalogue source tag + collapsible proposed', () => {
+  const r = renderIssue(fixture);
+  assert.match(r.body, /### 4\. Maillage interne <sub>_\(LLM fix-gen · Catalogue\)_<\/sub>/);
+  assert.match(r.body, /<details>\n<summary><b>Proposé<\/b> — cliquer pour voir le détail<\/summary>/);
 });
