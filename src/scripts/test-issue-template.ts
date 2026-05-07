@@ -114,16 +114,15 @@ test('cycle de mesure dates are baseline + 30 + 60', () => {
 
 test('Cooked behavior interpretations flag the warning thresholds', () => {
   const r = renderIssue(fixture);
-  // Sprint-11: behavior signals now live in the metrics box right column
-  // (Pages/session, Durée, Scroll moy.), one row per signal.
+  // Sprint-13 v2: 2-col layout, labels are "Pages/session", "Scroll moyen".
   assert.match(r.body, /Pages\/session.*1\.02.*rebond rapide/);
-  assert.match(r.body, /Scroll moy\..*12\.4%.*scroll superficiel/);
+  assert.match(r.body, /Scroll moyen.*12\.4%.*scroll superficiel/);
 });
 
 test('drift cell falls back gracefully when null (first audit)', () => {
   const r = renderIssue({ ...fixture, position_drift: null });
-  // Sprint-11: drift moved inline into the Position cell of the metrics box.
-  assert.match(r.body, /Position moy\..*premier audit/);
+  // Sprint-13 v2: row label is "Position moyenne" in the 2-col table.
+  assert.match(r.body, /Position moyenne.*premier audit/);
 });
 
 test('finding + audit_run IDs appear in Refs', () => {
@@ -134,12 +133,13 @@ test('finding + audit_run IDs appear in Refs', () => {
 
 // ---------- Sprint-11 redesign-specific tests ------------------------------
 
-test('TL;DR callout sits at the very top of the body', () => {
+test('TL;DR callout sits at the very top of the body (Sprint-13: GitHub IMPORTANT alert)', () => {
   const r = renderIssue(fixture);
-  // Body must START with the TL;DR blockquote — first thing reviewers see.
+  // Sprint-13: switched from emoji blockquote to native GitHub `[!IMPORTANT]`
+  // alert (purple side-bar). Body now starts with the alert directive.
   assert.ok(
-    r.body.startsWith('> ## 🎯 TL;DR'),
-    `body should start with TL;DR callout, got:\n${r.body.slice(0, 200)}`,
+    r.body.startsWith('> [!IMPORTANT]\n> ### 🎯 TL;DR'),
+    `body should start with [!IMPORTANT] TL;DR alert, got:\n${r.body.slice(0, 200)}`,
   );
   assert.ok(r.body.includes('TLDR sentence — synthesis upfront.'));
 });
@@ -148,8 +148,8 @@ test('TL;DR falls back to hypothesis when v5 tldr field is missing (legacy)', ()
   const legacyDiag = { ...fixture.diagnostic };
   delete legacyDiag.tldr;
   const r = renderIssue({ ...fixture, diagnostic: legacyDiag });
-  // Should still render the TL;DR block, populated with hypothesis text.
-  assert.ok(r.body.startsWith('> ## 🎯 TL;DR'));
+  // Should still render the TL;DR alert, populated with hypothesis text.
+  assert.ok(r.body.startsWith('> [!IMPORTANT]\n> ### 🎯 TL;DR'));
   assert.ok(r.body.includes('hypothesis text'));
 });
 
@@ -185,12 +185,19 @@ test('empty diagnostic fields are omitted (legacy v1 cleanly renders)', () => {
   assert.ok(!r.body.includes('- **Structure** —'));
 });
 
-test('metrics box has the Sprint-12 4-column layout (GSC × Cooked × CWV × Conversion)', () => {
+test('metrics box uses the Sprint-13 v2 2-column × 20-row layout', () => {
   const r = renderIssue(fixture);
-  assert.match(
-    r.body,
-    /\| 📊 GSC \(3 mois\) \| Valeur \| 🧭 Cooked behavior \| Valeur \| ⚡ CWV \(28d p75\) \| Valeur \| 📞 Conversion \(28d\) \| Valeur \|/,
-  );
+  // Header is now "Métrique | Valeur" — single 2-col table.
+  assert.match(r.body, /\| Métrique \| Valeur \|\n\|---\|---\|/);
+  // Slice from the table header to the next blank line, then count rows.
+  const headerIdx = r.body.indexOf('| Métrique | Valeur |');
+  const afterHeader = r.body.slice(headerIdx);
+  const blankLineIdx = afterHeader.indexOf('\n\n');
+  const tableBody = afterHeader.slice(0, blankLineIdx);
+  const allRows = tableBody.split('\n').filter((l) => l.startsWith('|'));
+  // header (1) + separator (1) + 20 data rows = 22 total
+  const dataRows = allRows.filter((l) => !l.includes('---') && !l.includes('Métrique | Valeur'));
+  assert.equal(dataRows.length, 20, `expected 20 data rows, got ${dataRows.length}: ${dataRows.map((r) => r.slice(0, 40)).join('\n')}`);
 });
 
 // ---------- Sprint-12 v6 + Cooked extras tests -----------------------------
@@ -228,14 +235,14 @@ test('CWV cells classify against Google thresholds (Good / NI / Poor)', () => {
 
 test('CWV cells degrade to "—" when Cooked extras are absent', () => {
   const r = renderIssue(fixture); // no cooked_extras passed
-  // The 4 CWV labels still appear, but cells are em-dashes
-  assert.ok(r.body.includes('| LCP | — '));
-  assert.ok(r.body.includes('| INP | — '));
-  assert.ok(r.body.includes('| CLS | — '));
-  assert.ok(r.body.includes('| TTFB | — '));
+  // Sprint-13 v2: row labels are "LCP (p75 28j)" etc. in the 2-col table.
+  assert.ok(r.body.includes('| LCP (p75 28j) | — |'));
+  assert.ok(r.body.includes('| INP (p75 28j) | — |'));
+  assert.ok(r.body.includes('| CLS (p75 28j) | — |'));
+  assert.ok(r.body.includes('| TTFB (p75 28j) | — |'));
 });
 
-test('conversion column shows phone/email/booking + body share', () => {
+test('conversion rows show phone/email/booking + body share (Sprint-13 v2 layout)', () => {
   const r = renderIssue({
     ...fixture,
     cooked_extras: {
@@ -245,13 +252,14 @@ test('conversion column shows phone/email/booking + body share', () => {
       cta_body_pct: 60,
     },
   });
-  assert.ok(r.body.includes('| Phone clicks | 5 |'));
-  assert.ok(r.body.includes('| Email clicks | 1 |'));
-  assert.ok(r.body.includes('| Booking CTA | 0 |'));
+  // Sprint-13 v2: row labels use "(28j)" suffix in the 2-col table.
+  assert.match(r.body, /\| Phone clicks \(28j\) \| 5/);
+  assert.match(r.body, /\| Email clicks \(28j\) \| 1/);
+  assert.match(r.body, /\| Booking CTA clicks \(28j\) \| 0/);
   assert.match(r.body, /60% body \(intent qualifié\)/);
 });
 
-test('low capture rate (<50%) surfaces a data quality warning banner', () => {
+test('low capture rate (<50%) surfaces a data quality warning banner (Sprint-13: GitHub WARNING alert)', () => {
   const r = renderIssue({
     ...fixture,
     cooked_extras: {
@@ -260,7 +268,8 @@ test('low capture rate (<50%) surfaces a data quality warning banner', () => {
       capture_rate_pct: 9.86,
     },
   });
-  assert.match(r.body, /⚠️ \*\*Data quality\*\* — Cooked capture rate \*\*10%\*\*/);
+  // Sprint-13: switched to native GitHub `[!WARNING]` alert (yellow).
+  assert.match(r.body, /> \[!WARNING\]\n> \*\*Data quality\*\* — Cooked capture rate \*\*10%\*\*/);
   assert.match(r.body, /lower bound/);
 });
 
@@ -276,10 +285,10 @@ test('healthy capture rate (>=50%) does NOT surface the data quality banner', ()
   assert.ok(!r.body.includes('Data quality'));
 });
 
-test('absent cooked_extras renders cleanly (no banner, "—" cells in box)', () => {
+test('absent cooked_extras renders cleanly (no banner, "—" cells in 2-col box)', () => {
   const r = renderIssue(fixture); // no cooked_extras
   assert.ok(!r.body.includes('Data quality'));
-  assert.ok(r.body.includes('| Phone clicks | — |'));
+  assert.ok(r.body.includes('| Phone clicks (28j) | — |'));
 });
 
 test('provenance + device cell shows top_source/medium and mobile/desktop split', () => {
@@ -353,9 +362,10 @@ test('hotfix #4 — behavior cells fallback to cooked_extras 28d when audit_find
       scroll_avg_28d: 28.5,
     },
   });
+  // Sprint-13 v2: 2-col labels. "Durée active moyenne" + "Scroll moyen".
   assert.match(r.body, /Pages\/session.*1\.42.*standard/);
-  assert.match(r.body, /Durée active.*117s.*session longue/);
-  assert.match(r.body, /Scroll moy\..*28\.5%.*scroll superficiel/);
+  assert.match(r.body, /Durée active moyenne.*117s.*session longue/);
+  assert.match(r.body, /Scroll moyen.*28\.5%.*scroll superficiel/);
 });
 
 test('hotfix #4 — top-level values still preferred over cooked_extras when both present', () => {
@@ -369,4 +379,144 @@ test('hotfix #4 — top-level values still preferred over cooked_extras when bot
   });
   assert.match(r.body, /Pages\/session.*0\.99/);
   assert.ok(!r.body.includes('2.50'));
+});
+
+// ---------- Sprint-13 UI tests --------------------------------------------
+
+test('Sprint-13 — diagnostic bullets carry source attribution as <sub>', () => {
+  const r = renderIssue(fixture);
+  // Hypothèse only has LLM (no other sources passed)
+  assert.match(r.body, /- \*\*Hypothèse\*\* — hypothesis text <sub>_\(LLM\)_<\/sub>/);
+  // Intent mismatch carries LLM + GSC top queries + DataForSEO volumes
+  assert.match(r.body, /- \*\*Intent mismatch\*\* — mismatch text <sub>_\(LLM · GSC top queries · DataForSEO volumes\)_<\/sub>/);
+  // Funnel — LLM + DOM Sprint-9 + Catalogue + Wix category
+  assert.match(r.body, /- \*\*Funnel\*\* — funnel text <sub>_\(LLM · DOM Sprint-9 · Catalogue · Wix category\)_<\/sub>/);
+});
+
+test('Sprint-13 — group banner uses GitHub TIP alert (treatment) and CAUTION (control)', () => {
+  const rT = renderIssue(fixture);
+  assert.match(rT.body, /> \[!TIP\]\n> \*\*Groupe traitement\*\*/);
+
+  const rC = renderIssue({ ...fixture, group_assignment: 'control' });
+  assert.match(rC.body, /> \[!CAUTION\]\n> \*\*Groupe contrôle\*\*/);
+});
+
+test('Sprint-13 — computed/interpolated rows carry SEO calc tag', () => {
+  const r = renderIssue(fixture);
+  // CTR benchmark is interpolated
+  assert.match(r.body, /CTR benchmark.*3\.64%.*SEO calc · interpolé/);
+  // Gap vs benchmark is computed
+  assert.match(r.body, /Gap vs benchmark\*\*.*61\.0% sous.*SEO calc/);
+  // Priority is computed
+  assert.match(r.body, /tier 1 \(score 360\.77\).*SEO calc/);
+});
+
+test('Sprint-13 — top-5 queries header has per-column source tags', () => {
+  const r = renderIssue(fixture);
+  assert.match(r.body, /\| Requête <sub>\(GSC\)<\/sub> \| Imp <sub>\(GSC\)<\/sub> \| CTR <sub>\(GSC\)<\/sub> \| Pos <sub>\(GSC\)<\/sub> \| Intent match <sub>\(LLM\)<\/sub> \|/);
+});
+
+test('Sprint-13 — long current_value (>300 chars) wrapped in <details> collapsible', () => {
+  const longCurrent = 'L'.repeat(400);
+  const r = renderIssue({
+    ...fixture,
+    fixes: [
+      { fix_type: 'title', current_value: longCurrent, proposed_value: 'short proposed', rationale: 'r' },
+      { fix_type: 'meta_description', current_value: 'short', proposed_value: 'short', rationale: 'r' },
+      { fix_type: 'intro', current_value: 'short', proposed_value: 'short', rationale: 'r' },
+      { fix_type: 'internal_links', current_value: null, proposed_value: 'a → b', rationale: 'r' },
+    ],
+  });
+  // Long current → wrapped in details
+  assert.match(r.body, /<details>\n<summary><b>Actuel<\/b> <sub>_\(DOM scrape\)_<\/sub> — cliquer pour voir<\/summary>/);
+  // Short current → not wrapped
+  assert.match(r.body, /\*\*Actuel\*\* <sub>_\(DOM scrape\)_<\/sub> :\n```\nshort\n```/);
+});
+
+test('Sprint-13 — internal_links section has Catalogue source tag + collapsible proposed', () => {
+  const r = renderIssue(fixture);
+  assert.match(r.body, /### 4\. Maillage interne <sub>_\(LLM fix-gen · Catalogue\)_<\/sub>/);
+  assert.match(r.body, /<details>\n<summary><b>Proposé<\/b> — cliquer pour voir le détail<\/summary>/);
+});
+
+// ---------- Sprint-14 measurement (T+30 / T+60) tests --------------------
+
+const positiveT30 = {
+  days_after_fix: 30,
+  measured_at: '2026-06-08T00:00:00Z',
+  applied_at: '2026-05-09T12:00:00Z',
+  baseline_ctr: 0.0467,
+  current_ctr: 0.0542,
+  ctr_delta_pct: 16.1,
+  baseline_position: 4.5,
+  current_position: 4.1,
+  position_delta: -0.4,
+  baseline_impressions: 38478,
+  current_impressions: 41200,
+  significance_note: null,
+};
+
+const regressionT30 = {
+  ...positiveT30,
+  current_ctr: 0.0410,
+  ctr_delta_pct: -12.2,
+  current_position: 4.8,
+  position_delta: 0.3,
+  current_impressions: 36500,
+};
+
+test('Sprint-14 — pre-measurement render is unchanged (no measurements key)', () => {
+  const r = renderIssue(fixture);
+  // No verdict alert, no delta table
+  assert.ok(!r.body.includes('📈 Mesure T+'));
+  assert.ok(!r.body.includes('Détail mesure'));
+  // Body still starts with TLDR (Sprint-13 layout)
+  assert.ok(r.body.startsWith('> [!IMPORTANT]\n> ### 🎯 TL;DR'));
+});
+
+test('Sprint-14 — positive T+30 measurement → green TIP verdict + delta table', () => {
+  const r = renderIssue({ ...fixture, measurements: [positiveT30] });
+  // Verdict alert appears between TLDR and group banner
+  assert.match(r.body, /> \[!TIP\]\n> ### 📈 Mesure T\+30 \(2026-06-08\)/);
+  assert.match(r.body, /Fix qui marche/);
+  assert.match(r.body, /Fix appliqué le 2026-05-09/);
+  // Delta table appears after the metrics box
+  assert.match(r.body, /### 📈 Détail mesure T\+30/);
+  assert.match(r.body, /\| CTR \| 4\.67% \| 5\.42% \| \+16\.1%/);
+  assert.match(r.body, /\| Position moyenne \| 4\.5 \| 4\.1 \| -0\.40 ✅/);
+});
+
+test('Sprint-14 — regression T+30 → red CAUTION verdict', () => {
+  const r = renderIssue({ ...fixture, measurements: [regressionT30] });
+  assert.match(r.body, /> \[!CAUTION\]\n> ### 📈 Mesure T\+30/);
+  assert.match(r.body, /Régression/);
+  assert.match(r.body, /envisager rollback/);
+});
+
+test('Sprint-14 — neutral T+30 (small CTR delta) → blue NOTE verdict', () => {
+  const neutral = { ...positiveT30, ctr_delta_pct: 2.5, current_ctr: 0.0479 };
+  const r = renderIssue({ ...fixture, measurements: [neutral] });
+  assert.match(r.body, /> \[!NOTE\]\n> ### 📈 Mesure T\+30/);
+  assert.match(r.body, /Mouvement neutre/);
+  assert.match(r.body, /observer T\+60/);
+});
+
+test('Sprint-14 — both T+30 and T+60 → 5-col delta table side-by-side', () => {
+  const t60 = { ...positiveT30, days_after_fix: 60, measured_at: '2026-07-08T00:00:00Z',
+    current_ctr: 0.0581, ctr_delta_pct: 24.4, current_position: 4.0, position_delta: -0.5,
+    current_impressions: 42800 };
+  const r = renderIssue({ ...fixture, measurements: [positiveT30, t60] });
+  // Verdict uses LATEST (T+60) measurement
+  assert.match(r.body, /### 📈 Mesure T\+60/);
+  // 5-col detail table
+  assert.match(r.body, /\| Métrique \| T0 baseline \| T\+30 mesuré \| Δ T\+30 \| T\+60 mesuré \| Δ T\+60 \|/);
+  assert.match(r.body, /\| CTR \| 4\.67% \| 5\.42% \| \+16\.1%.* \| 5\.81% \| \+24\.4%/);
+});
+
+test('Sprint-14 — measurement source attribution carries SEO calc tag', () => {
+  const r = renderIssue({ ...fixture, measurements: [positiveT30] });
+  // Verdict alert source
+  assert.match(r.body, /SEO calc · GSC fix_outcomes vs baseline T0/);
+  // Delta table source
+  assert.match(r.body, /SEO calc · fix_outcomes/);
 });
