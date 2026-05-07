@@ -293,3 +293,80 @@ test('provenance + device cell shows top_source/medium and mobile/desktop split'
   });
   assert.match(r.body, /google\/organic.*mob 70 \/ desk 28/);
 });
+
+// ---------- Sprint-12 hotfix tests -----------------------------------------
+
+test('hotfix #1 — top-5 queries CTR rendered correctly when LLM outputs percent (1.65 not 0.0165)', () => {
+  // Reproduce the bug from issue #30: LLM output ctr=1.65 (already percent),
+  // we used to render 165.00% (× 100 again). Defensive detect: if ctr > 1 it's
+  // already a percent and we don't multiply again.
+  const r = renderIssue({
+    ...fixture,
+    diagnostic: {
+      ...fixture.diagnostic,
+      top_queries_analysis: [
+        { query: 'q-percent', impressions: 100, ctr: 1.65, position: 5, intent_match: 'yes' },
+        { query: 'q-fraction', impressions: 100, ctr: 0.0165, position: 5, intent_match: 'yes' },
+      ],
+    },
+  });
+  assert.match(r.body, /q-percent.*1\.65%/, 'LLM-percent CTR should render as 1.65%, not 165%');
+  assert.match(r.body, /q-fraction.*1\.65%/, 'fraction CTR should also render as 1.65%');
+  assert.ok(!r.body.includes('165.00%'), 'should never render impossible CTR > 100%');
+});
+
+test('hotfix #2 — provenance falls back from top_source → top_referrer → direct', () => {
+  // Case 1: only top_referrer set (real-world: pages with no UTM tagging)
+  const r1 = renderIssue({
+    ...fixture,
+    cooked_extras: { top_referrer: 'www.google.com' },
+  });
+  assert.match(r1.body, /www\.google\.com\/referral/);
+
+  // Case 2: top_source set → preferred over top_referrer
+  const r2 = renderIssue({
+    ...fixture,
+    cooked_extras: { top_source: 'newsletter', top_medium: 'email', top_referrer: 'gmail.com' },
+  });
+  assert.match(r2.body, /newsletter\/email/);
+  assert.ok(!r2.body.includes('gmail.com'));
+
+  // Case 3: cooked_extras present but both null → "direct/none" (GA4 convention)
+  const r3 = renderIssue({
+    ...fixture,
+    cooked_extras: {},
+  });
+  assert.match(r3.body, /direct\/none/);
+});
+
+test('hotfix #4 — behavior cells fallback to cooked_extras 28d when audit_findings cols null', () => {
+  // Forged finding: top-level pps/dwell/scroll are null, but Cooked has fresh
+  // 28d data. Box should display the Cooked values instead of "n/a".
+  const r = renderIssue({
+    ...fixture,
+    pages_per_session: null,
+    avg_session_duration_seconds: null,
+    scroll_depth_avg: null,
+    cooked_extras: {
+      pages_per_session_28d: 1.42,
+      avg_session_duration_28d: 117,
+      scroll_avg_28d: 28.5,
+    },
+  });
+  assert.match(r.body, /Pages\/session.*1\.42.*standard/);
+  assert.match(r.body, /Durée active.*117s.*session longue/);
+  assert.match(r.body, /Scroll moy\..*28\.5%.*scroll superficiel/);
+});
+
+test('hotfix #4 — top-level values still preferred over cooked_extras when both present', () => {
+  // Standard case: audit_findings has values, cooked_extras also has values
+  // but with different numbers. The top-level (audit-period snapshot) wins
+  // because it's the snapshot at audit time, semantically the right reference.
+  const r = renderIssue({
+    ...fixture,
+    pages_per_session: 0.99,
+    cooked_extras: { pages_per_session_28d: 2.5 },
+  });
+  assert.match(r.body, /Pages\/session.*0\.99/);
+  assert.ok(!r.body.includes('2.50'));
+});

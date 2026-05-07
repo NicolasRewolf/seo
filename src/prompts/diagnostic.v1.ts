@@ -389,6 +389,24 @@ function fmtOutboundDestinations(rows: OutboundDestination[] | undefined): strin
 }
 
 /**
+ * Sprint-12 hotfix: Cooked-tracker deploy date for jplouton-avocat.fr.
+ * Used to pro-rate the capture rate during the bootstrap window. Before this
+ * fix, the helper compared 28d-window-of-Cooked-data (which actually held
+ * <2 days of collection) against 28d-window-of-GSC-data, producing artificial
+ * "5% — tracker quasi-cassé" verdicts during the first 28 days post-deploy.
+ *
+ * TODO: replace with a Cooked RPC `tracker_first_seen_global()` once published
+ * — Cooked agent offered this; the hardcode unblocks today.
+ */
+export const COOKED_TRACKER_DEPLOY_DATE = new Date('2026-05-06T17:00:00Z');
+
+function daysCookedHasCollected(now: Date): number {
+  const ms = now.getTime() - COOKED_TRACKER_DEPLOY_DATE.getTime();
+  const days = ms / (24 * 60 * 60 * 1000);
+  return Math.max(0, Math.min(28, days));
+}
+
+/**
  * GSC clicks ÷ Cooked sessions = tracker capture rate. Cooked agent insisted
  * this lands DÈS Phase C, not Sprint+1, because the LLM must know whether to
  * read Cooked metrics as ground truth or as a lower bound.
@@ -399,6 +417,11 @@ function fmtOutboundDestinations(rows: OutboundDestination[] | undefined): strin
  *     ground truth on the FULL volume (not just the GSC slice).
  *   - 4-tier verdicts enriched with empirical Cooked-side explanations
  *     (SSR vs JS-rendered, ad-blockers, tracker load timing).
+ *
+ * Sprint-12 hotfix:
+ *   - Pro-rate by `daysCookedHasCollected()` to kill the bootstrap artefact
+ *     where a freshly-deployed Cooked install gave artificial "🚫 tracker
+ *     cassé" verdicts on every page during the first 28 days.
  */
 // Exported so the unit tests can validate the verdict strings without
 // having to render the full prompt body. Not part of the public API —
@@ -406,6 +429,8 @@ function fmtOutboundDestinations(rows: OutboundDestination[] | undefined): strin
 export function fmtDataQualityCheck(
   gscClicks28d: number | null | undefined,
   cookedSessions28d: number | null | undefined,
+  /** Sprint-12 hotfix: optional override for tests (default = real time). */
+  now: Date = new Date(),
 ): string {
   if (gscClicks28d == null || cookedSessions28d == null) {
     return '_(données insuffisantes pour calculer le capture rate — Cooked en cours d\'absorption)_';
@@ -413,7 +438,22 @@ export function fmtDataQualityCheck(
   if (gscClicks28d === 0) {
     return '- GSC clicks 28d: 0 (pas d\'audience organique sur cette fenêtre — capture rate non significatif)';
   }
-  const rate = (cookedSessions28d / gscClicks28d) * 100;
+  // Sprint-12 hotfix: pro-rate by the actual days Cooked has been collecting.
+  // sessions / days_collected = real per-day Cooked rate. Compare to GSC's
+  // per-day rate over its full 28d window. This eliminates the bootstrap
+  // artefact that made every FR page look like "🚫 tracker cassé" during the
+  // first 28 days post-deploy.
+  const daysCooked = daysCookedHasCollected(now);
+  if (daysCooked < 1) {
+    return [
+      `- GSC clicks 28d: ${gscClicks28d}`,
+      `- Cooked sessions (so far): ${cookedSessions28d}`,
+      `- ⏳ Cooked en phase d'amorçage (< 1 jour de collection effective) — capture rate non-évaluable. Le tracker vient juste d'être déployé. Réévaluer après J+7.`,
+    ].join('\n');
+  }
+  const cookedPerDay = cookedSessions28d / daysCooked;
+  const gscPerDay = gscClicks28d / 28;
+  const rate = gscPerDay > 0 ? (cookedPerDay / gscPerDay) * 100 : 0;
   let verdict: string;
   // Empirical thresholds calibrated for Wix Studio (Cooked agent feedback).
   if (rate > 150) {
@@ -432,12 +472,19 @@ export function fmtDataQualityCheck(
     verdict =
       '🚫 tracker quasi-cassé sur cette URL. Soit on fix le tracker (ajout d\'un retry sur load), soit on désactive cette page de l\'audit comportemental jusqu\'à fix. NE PAS conclure à l\'absence de conversion sur ces chiffres — c\'est probablement un problème de capture, pas un problème de page.';
   }
-  return [
-    `- GSC clicks 28d: ${gscClicks28d}`,
-    `- Cooked sessions 28d: ${cookedSessions28d}`,
-    `- Capture rate: ${cookedSessions28d}/${gscClicks28d} = ${rate.toFixed(0)}%`,
-    `- Verdict: ${verdict}`,
-  ].join('\n');
+  // Surface the pro-rating math when Cooked is still in its first 28d so
+  // the LLM and the human can see we're not comparing apples to oranges.
+  const isBootstrap = daysCooked < 28;
+  const lines: string[] = [
+    `- GSC clicks 28d: ${gscClicks28d} (= ${gscPerDay.toFixed(1)}/jour)`,
+    `- Cooked sessions: ${cookedSessions28d} sur ${daysCooked.toFixed(1)} jours de collection (= ${cookedPerDay.toFixed(1)}/jour)`,
+    `- Capture rate (rate/jour normalisé): ${rate.toFixed(0)}%`,
+  ];
+  if (isBootstrap) {
+    lines.push(`- ⓘ Cooked en phase d'amorçage (déployé il y a ${daysCooked.toFixed(1)} jours), pro-rated pour comparer apples-to-apples avec GSC.`);
+  }
+  lines.push(`- Verdict: ${verdict}`);
+  return lines.join('\n');
 }
 
 function fmtSiteContext(ctx: SiteContext | null | undefined): string {

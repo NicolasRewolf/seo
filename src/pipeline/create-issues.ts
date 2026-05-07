@@ -244,7 +244,15 @@ async function fetchCookedExtrasForIssue(pageUrl: string): Promise<IssueCookedEx
     cta_body_pct: bodyPct,
     top_source: snap.provenance_28d.top_source,
     top_medium: snap.provenance_28d.top_medium,
+    top_referrer: snap.provenance_28d.top_referrer,
     device_split: snap.device_split_28d,
+    // Sprint-12 hotfix: 28d behavior signals for box-cell fallback.
+    pages_per_session_28d:
+      snap.windows['28d'].sessions > 0
+        ? snap.windows['28d'].views / snap.windows['28d'].sessions
+        : null,
+    avg_session_duration_28d: snap.windows['28d'].avg_dwell_seconds,
+    scroll_avg_28d: snap.windows['28d'].scroll_avg,
     cooked_sessions_28d: cookedSessions28d,
     gsc_clicks_28d: gscClicks28d,
     capture_rate_pct: captureRatePct,
