@@ -12,6 +12,7 @@ import {
   renderIssue,
   type IssueCookedExtras,
   type IssueDiagnostic,
+  type IssueMeasurement,
   type IssueProposedFix,
 } from '../prompts/issue-template.js';
 import { fetchPageSnapshotExtras, fetchCtaBreakdown } from '../lib/cooked.js';
@@ -257,6 +258,230 @@ async function fetchCookedExtrasForIssue(pageUrl: string): Promise<IssueCookedEx
     gsc_clicks_28d: gscClicks28d,
     capture_rate_pct: captureRatePct,
   };
+}
+
+/**
+ * Sprint-14: re-render the existing GitHub issue body with the freshly-
+ * landed measurement (T+30 or T+60) AND post a timestamped comment on
+ * the issue with the deltas.
+ *
+ * Called by measure.ts AFTER `fix_outcomes` has been inserted for a new
+ * milestone. Idempotent — re-running is safe (the body is just re-rendered
+ * with the same data, and the comment posting is best-effort).
+ *
+ * Failures are non-fatal: measure.ts still returns success even if this
+ * fails, because the canonical state (fix_outcomes row) is already
+ * persisted. Only the GitHub UI lags.
+ */
+export async function updateIssueAfterMeasurement(findingId: string): Promise<{
+  issueNumber: number;
+  issueUrl: string;
+  measurementsCount: number;
+  commentPosted: boolean;
+}> {
+  // 1. Load finding + audit run + cs + fixes — same shape as create-issues
+  const { data: row, error } = await supabase()
+    .from('audit_findings')
+    .select(
+      'id, audit_run_id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, priority_score, priority_tier, group_assignment, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, current_state, diagnostic, github_issue_number, github_issue_url, audit_runs(period_start, period_end, config_snapshot)',
+    )
+    .eq('id', findingId)
+    .single();
+  if (error || !row) throw new Error(`load finding: ${error?.message ?? 'not found'}`);
+  if (!row.github_issue_number) {
+    throw new Error(`finding has no github_issue_number — can't update`);
+  }
+  if (!row.diagnostic || !row.current_state) {
+    throw new Error(`finding missing diagnostic or current_state`);
+  }
+
+  const diagnostic: IssueDiagnostic = DiagnosticShape.parse(row.diagnostic);
+  const cs = CurrentStateShape.parse(row.current_state);
+  const auditRun = Array.isArray(row.audit_runs)
+    ? (row.audit_runs[0] as
+        | { period_start: string; period_end: string; config_snapshot: { period_months?: number } }
+        | undefined)
+    : (row.audit_runs as
+        | { period_start: string; period_end: string; config_snapshot: { period_months?: number } }
+        | undefined);
+  if (!auditRun) throw new Error('no audit_runs join');
+
+  const { data: fixesRows } = await supabase()
+    .from('proposed_fixes')
+    .select('fix_type, current_value, proposed_value, rationale')
+    .eq('finding_id', findingId)
+    .order('created_at');
+  const fixes: IssueProposedFix[] = (fixesRows ?? []).map((f) => ({
+    fix_type: f.fix_type as IssueProposedFix['fix_type'],
+    current_value: (f.current_value as string | null) ?? null,
+    proposed_value: f.proposed_value as string,
+    rationale: (f.rationale as string | null) ?? '',
+  }));
+
+  // 2. Load measurements (the part that's new for this flow)
+  const measurements = await fetchMeasurementsForFinding(findingId);
+  if (measurements.length === 0) {
+    throw new Error('no measurements yet — nothing to render');
+  }
+
+  // 3. Build inputs + render — same as create-issues with measurements added
+  const auditConf = env.audit();
+  const periodMonths = auditRun.config_snapshot?.period_months ?? auditConf.AUDIT_PERIOD_MONTHS;
+  const supabaseUrl = env.supabase().SUPABASE_URL.replace(/\/$/, '');
+  const cookedExtras = await fetchCookedExtrasForIssue(row.page as string);
+
+  const rendered = renderIssue({
+    finding_id: row.id as string,
+    audit_run_id: row.audit_run_id as string,
+    page: row.page as string,
+    avg_position: Number(row.avg_position),
+    position_drift: row.position_drift != null ? Number(row.position_drift) : null,
+    impressions: Number(row.impressions),
+    audit_period_months: periodMonths,
+    ctr_actual: Number(row.ctr_actual),
+    ctr_expected: Number(row.ctr_expected),
+    ctr_gap: Number(row.ctr_gap),
+    priority_score: Number(row.priority_score),
+    priority_tier: row.priority_tier as 1 | 2 | 3,
+    group_assignment: row.group_assignment as 'treatment' | 'control',
+    pages_per_session: row.pages_per_session != null ? Number(row.pages_per_session) : null,
+    avg_session_duration_seconds:
+      row.avg_session_duration_seconds != null ? Number(row.avg_session_duration_seconds) : null,
+    scroll_depth_avg: row.scroll_depth_avg != null ? Number(row.scroll_depth_avg) : null,
+    current_title: cs.title,
+    current_meta: cs.meta_description,
+    current_intro: cs.intro_first_100_words,
+    diagnostic,
+    fixes,
+    baseline_date: auditRun.period_end,
+    supabase_finding_url: `${supabaseUrl}/project/_/editor?schema=public&table=audit_findings&filter=id=${findingId}`,
+    cooked_extras: cookedExtras,
+    measurements,
+  });
+
+  // 4. PATCH issue body
+  const { owner, repo } = repoCoords();
+  const issueNumber = row.github_issue_number as number;
+  await github().rest.issues.update({
+    owner,
+    repo,
+    issue_number: issueNumber,
+    body: rendered.body,
+  });
+
+  // 5. POST a timestamped comment with the latest measurement summary
+  const latest = [...measurements].sort((a, b) => a.days_after_fix - b.days_after_fix)[
+    measurements.length - 1
+  ]!;
+  let commentPosted = false;
+  try {
+    await github().rest.issues.createComment({
+      owner,
+      repo,
+      issue_number: issueNumber,
+      body: buildMeasurementComment(latest),
+    });
+    commentPosted = true;
+  } catch (err) {
+    process.stderr.write(`[update-issue] comment post failed: ${(err as Error).message}\n`);
+  }
+
+  return {
+    issueNumber,
+    issueUrl: row.github_issue_url as string,
+    measurementsCount: measurements.length,
+    commentPosted,
+  };
+}
+
+/**
+ * Pull all `fix_outcomes` rows for this finding + the earliest `applied_at`
+ * from `applied_fixes` (= T0). Returns sorted ascending by `days_after_fix`.
+ */
+async function fetchMeasurementsForFinding(findingId: string): Promise<IssueMeasurement[]> {
+  // Earliest applied_at — same logic as measure.ts.fetchAppliedFindings
+  const { data: fixesRows } = await supabase()
+    .from('proposed_fixes')
+    .select('id')
+    .eq('finding_id', findingId);
+  const fixIds = ((fixesRows ?? []) as Array<{ id: string }>).map((r) => r.id);
+  if (fixIds.length === 0) return [];
+
+  const { data: applied } = await supabase()
+    .from('applied_fixes')
+    .select('applied_at')
+    .in('proposed_fix_id', fixIds)
+    .order('applied_at', { ascending: true })
+    .limit(1);
+  const earliestApplied = ((applied ?? []) as Array<{ applied_at: string }>)[0]?.applied_at;
+  if (!earliestApplied) return [];
+
+  const { data: outcomes } = await supabase()
+    .from('fix_outcomes')
+    .select(
+      'measured_at, days_after_fix, baseline_ctr, current_ctr, ctr_delta_pct, baseline_position, current_position, position_delta, baseline_impressions, current_impressions, significance_note',
+    )
+    .eq('finding_id', findingId)
+    .order('days_after_fix', { ascending: true });
+
+  return ((outcomes ?? []) as Array<Record<string, unknown>>).map((o) => ({
+    days_after_fix: Number(o.days_after_fix),
+    measured_at: String(o.measured_at),
+    applied_at: earliestApplied,
+    baseline_ctr: Number(o.baseline_ctr ?? 0),
+    current_ctr: Number(o.current_ctr ?? 0),
+    ctr_delta_pct: Number(o.ctr_delta_pct ?? 0),
+    baseline_position: Number(o.baseline_position ?? 0),
+    current_position: Number(o.current_position ?? 0),
+    position_delta: Number(o.position_delta ?? 0),
+    baseline_impressions: Number(o.baseline_impressions ?? 0),
+    current_impressions: Number(o.current_impressions ?? 0),
+    significance_note: (o.significance_note as string | null) ?? null,
+  }));
+}
+
+/**
+ * Build the markdown body of the GitHub comment posted to the issue at
+ * each new measurement. Brief, scannable, dated — surfaces the verdict
+ * and the key deltas. The issue body itself has the full delta table;
+ * this comment is the timestamped record in the GH timeline.
+ */
+function buildMeasurementComment(m: IssueMeasurement): string {
+  const ctrPct = (n: number): string => `${(n * 100).toFixed(2)}%`;
+  const sign = (n: number, decimals = 1, suffix = ''): string =>
+    `${n > 0 ? '+' : ''}${n.toFixed(decimals)}${suffix}`;
+  const impDelta =
+    m.baseline_impressions > 0
+      ? sign(((m.current_impressions - m.baseline_impressions) / m.baseline_impressions) * 100, 1, '%')
+      : '—';
+
+  const ctrSignal = m.ctr_delta_pct;
+  const posSignal = m.position_delta;
+  const verdict =
+    ctrSignal >= 5 && posSignal <= 0
+      ? '✅ **Fix qui marche** — garder.'
+      : ctrSignal <= -5
+      ? '🚫 **Régression** — envisager rollback.'
+      : 'ℹ️ **Mouvement neutre** — observer T+60 avant conclusion.';
+
+  return [
+    `**📈 Mesure automatique T+${m.days_after_fix}** — ${m.measured_at.slice(0, 10)}`,
+    ``,
+    `Fix appliqué le ${m.applied_at.slice(0, 10)}.`,
+    ``,
+    `| Métrique | T0 → T+${m.days_after_fix} | Δ |`,
+    `|---|---|---|`,
+    `| CTR | ${ctrPct(m.baseline_ctr)} → ${ctrPct(m.current_ctr)} | ${sign(ctrSignal, 1, '%')} |`,
+    `| Position moyenne | ${m.baseline_position.toFixed(1)} → ${m.current_position.toFixed(1)} | ${sign(posSignal, 2)} |`,
+    `| Impressions | ${m.baseline_impressions.toLocaleString('fr-FR')} → ${m.current_impressions.toLocaleString('fr-FR')} | ${impDelta} |`,
+    ``,
+    verdict,
+    ``,
+    m.significance_note ? `_${m.significance_note}_` : '',
+    `_Source : SEO calc · GSC fix_outcomes · auto-posted by measure.ts_`,
+  ]
+    .filter((s) => s !== '')
+    .join('\n');
 }
 
 export async function createIssuesForProposed(opts: {

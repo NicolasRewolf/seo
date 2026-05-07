@@ -15,6 +15,7 @@
  */
 import { differenceInCalendarDays } from 'date-fns';
 import { supabase } from '../lib/supabase.js';
+import { updateIssueAfterMeasurement } from './create-issues.js';
 
 export type MeasureSummary = {
   attempted: number;
@@ -232,6 +233,23 @@ export async function runMeasure(): Promise<MeasureSummary> {
           .from('audit_findings')
           .update({ status: 'measured', updated_at: now.toISOString() })
           .eq('id', finding.id);
+      }
+
+      // Sprint-14: re-render the GH issue with the fresh measurement(s)
+      // and post a timestamped comment. Best-effort — failures don't
+      // abort the run, the canonical state (fix_outcomes) is already
+      // persisted.
+      if (madeProgress) {
+        try {
+          const r = await updateIssueAfterMeasurement(finding.id);
+          process.stdout.write(
+            `[measure] issue #${r.issueNumber} updated (${r.measurementsCount} measurement(s), comment ${r.commentPosted ? 'OK' : 'failed'})\n`,
+          );
+        } catch (err) {
+          process.stderr.write(
+            `[measure] issue update failed for ${finding.id}: ${(err as Error).message}\n`,
+          );
+        }
       }
     } catch (err) {
       errors.push({ findingId: finding.id, error: (err as Error).message });

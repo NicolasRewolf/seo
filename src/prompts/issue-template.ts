@@ -92,6 +92,26 @@ export type IssueDiagnostic = {
   }>;
 };
 
+/** Sprint-14 — one row from `fix_outcomes`, surfaced in the issue body
+ *  after a T+30 or T+60 measurement has landed. The issue template
+ *  renders ZERO measurement UI when the array is empty (default state
+ *  for findings that haven't been measured yet). */
+export type IssueMeasurement = {
+  days_after_fix: number; // typically 30 or 60
+  measured_at: string; // ISO timestamp
+  applied_at: string; // ISO timestamp — fix application date (T0)
+  baseline_ctr: number; // 0..1
+  current_ctr: number; // 0..1
+  ctr_delta_pct: number; // signed % change (e.g. +16.2 = +16.2%)
+  baseline_position: number;
+  current_position: number;
+  position_delta: number; // current - baseline (negative = improvement)
+  baseline_impressions: number;
+  current_impressions: number;
+  /** Optional treatment-vs-control gap note ("ctr +5.2% / position -0.3"). */
+  significance_note?: string | null;
+};
+
 /** Sprint-12: optional Cooked extras surfaced in the issue box. Issue
  *  template is rendered without these on findings created before Sprint-12,
  *  so all fields are optional and degraded cleanly. */
@@ -166,6 +186,12 @@ export type IssueInputs = {
   // Sprint-12: Cooked full-menu extras for the issue box. Optional —
   // findings created before Sprint-12 render cleanly without it.
   cooked_extras?: IssueCookedExtras;
+
+  // Sprint-14: outcomes from measure.ts (T+30, T+60). Optional — the
+  // measurement UI (verdict alert + delta table) only renders when at
+  // least one measurement exists. Pre-measurement, the issue body is
+  // identical to a Sprint-13 render.
+  measurements?: IssueMeasurement[];
 };
 
 function pct(n: number, digits = 2): string {
@@ -224,6 +250,122 @@ function scrollInterpretation(p: number | null): string {
   if (p < 50) return '⚠️ scroll superficiel (< 50%)';
   if (p < 75) return 'lecture partielle';
   return '✅ scroll profond';
+}
+
+// ============================================================================
+// Sprint-14 — measurement (T+30 / T+60) rendering helpers.
+// All emit empty string when no measurements are passed, so the Sprint-13
+// body stays unchanged for pre-measurement findings.
+// ============================================================================
+
+/**
+ * Verdict alert at the top of the issue (right after TLDR). Uses the
+ * MOST RECENT measurement to call green / yellow / red. Empty string
+ * when no measurements yet.
+ *
+ * Verdict logic — keep it simple and conservative:
+ *   - CTR delta ≥ +5%  AND  position delta ≤ 0  → ✅ TIP    (fix qui marche)
+ *   - CTR delta ≤ -5%                            → 🚫 CAUTION (régression)
+ *   - else                                       → ℹ️ NOTE   (mouvement neutre)
+ */
+function fmtMeasurementVerdict(measurements: IssueMeasurement[] | undefined): string {
+  if (!measurements || measurements.length === 0) return '';
+  const sorted = [...measurements].sort((a, b) => a.days_after_fix - b.days_after_fix);
+  const latest = sorted[sorted.length - 1]!;
+  const ctrSignal = latest.ctr_delta_pct;
+  const posSignal = latest.position_delta; // negative = better
+  let alert: string;
+  let verdict: string;
+  if (ctrSignal >= 5 && posSignal <= 0) {
+    alert = '[!TIP]';
+    verdict = `✅ **Fix qui marche** — garder. CTR ${ctrSignal > 0 ? '+' : ''}${ctrSignal.toFixed(1)}%${posSignal !== 0 ? `, position ${posSignal > 0 ? '+' : ''}${posSignal.toFixed(2)}` : ''}.`;
+  } else if (ctrSignal <= -5) {
+    alert = '[!CAUTION]';
+    verdict = `🚫 **Régression** — envisager rollback. CTR ${ctrSignal.toFixed(1)}%${posSignal !== 0 ? `, position ${posSignal > 0 ? '+' : ''}${posSignal.toFixed(2)}` : ''}.`;
+  } else {
+    alert = '[!NOTE]';
+    verdict = `ℹ️ **Mouvement neutre** — observer T+60 avant conclusion. CTR ${ctrSignal > 0 ? '+' : ''}${ctrSignal.toFixed(1)}%${posSignal !== 0 ? `, position ${posSignal > 0 ? '+' : ''}${posSignal.toFixed(2)}` : ''}.`;
+  }
+  return [
+    `> ${alert}`,
+    `> ### 📈 Mesure T+${latest.days_after_fix} (${latest.measured_at.slice(0, 10)})`,
+    `> Fix appliqué le ${latest.applied_at.slice(0, 10)}.`,
+    `> ${verdict}`,
+    `> ${fmtSource('SEO calc · GSC fix_outcomes vs baseline T0').trim()}`,
+  ].join('\n');
+}
+
+/**
+ * Detail delta table — sits AFTER the baseline metrics box so the
+ * comparison is visually adjacent. Shows CTR / position / impressions.
+ * Cols depend on which milestones have landed (T+30 only, or both
+ * T+30 + T+60 side by side). Cooked-side deltas are TODO — `fix_outcomes`
+ * stores GSC only today; once we extend it to capture Cooked baseline,
+ * we'll add rows here.
+ */
+function fmtMeasurementTable(measurements: IssueMeasurement[] | undefined): string {
+  if (!measurements || measurements.length === 0) return '';
+  const sorted = [...measurements].sort((a, b) => a.days_after_fix - b.days_after_fix);
+  const t30 = sorted.find((m) => m.days_after_fix === 30) ?? null;
+  const t60 = sorted.find((m) => m.days_after_fix === 60) ?? null;
+
+  const fmtCtr = (n: number): string => `${(n * 100).toFixed(2)}%`;
+  const fmtPos = (n: number): string => n.toFixed(1);
+  const fmtImp = (n: number): string => Math.round(n).toLocaleString('fr-FR');
+  const arrow = (deltaPct: number, lowerIsBetter = false): string => {
+    if (Math.abs(deltaPct) < 1) return '';
+    const positive = lowerIsBetter ? deltaPct < 0 : deltaPct > 0;
+    return positive ? ' ✅' : ' 🚫';
+  };
+  const fmtDeltaPct = (n: number, lowerIsBetter = false): string =>
+    `${n > 0 ? '+' : ''}${n.toFixed(1)}%${arrow(n, lowerIsBetter)}`;
+  const fmtPosDelta = (n: number): string =>
+    `${n > 0 ? '+' : ''}${n.toFixed(2)}${n === 0 ? '' : n < 0 ? ' ✅' : ' 🚫'}`;
+  const impDelta = (b: number, c: number): string => {
+    if (!b || b === 0) return '—';
+    const pct = ((c - b) / b) * 100;
+    return `${pct > 0 ? '+' : ''}${pct.toFixed(1)}%`;
+  };
+
+  // Take baseline from the earliest measurement available — they should
+  // all have the same baseline (same T0).
+  const base = sorted[0]!;
+
+  if (!t60) {
+    // T+30 only
+    const m = t30 ?? sorted[0]!;
+    return [
+      `### 📈 Détail mesure T+30${fmtSource('SEO calc · fix_outcomes')}`,
+      ``,
+      `| Métrique | T0 baseline | T+30 mesuré | Δ |`,
+      `|---|---|---|---|`,
+      `| CTR | ${fmtCtr(base.baseline_ctr)} | ${fmtCtr(m.current_ctr)} | ${fmtDeltaPct(m.ctr_delta_pct)} |`,
+      `| Position moyenne | ${fmtPos(base.baseline_position)} | ${fmtPos(m.current_position)} | ${fmtPosDelta(m.position_delta)} |`,
+      `| Impressions | ${fmtImp(base.baseline_impressions)} | ${fmtImp(m.current_impressions)} | ${impDelta(base.baseline_impressions, m.current_impressions)} |`,
+      m.significance_note ? `\n_${m.significance_note}_` : '',
+    ].filter((s) => s !== '').join('\n');
+  }
+
+  // Both T+30 and T+60
+  const lines = [
+    `### 📈 Détail mesure T+30 / T+60${fmtSource('SEO calc · fix_outcomes')}`,
+    ``,
+    `| Métrique | T0 baseline | T+30 mesuré | Δ T+30 | T+60 mesuré | Δ T+60 |`,
+    `|---|---|---|---|---|---|`,
+  ];
+  const c30 = t30!;
+  const c60 = t60;
+  lines.push(
+    `| CTR | ${fmtCtr(base.baseline_ctr)} | ${fmtCtr(c30.current_ctr)} | ${fmtDeltaPct(c30.ctr_delta_pct)} | ${fmtCtr(c60.current_ctr)} | ${fmtDeltaPct(c60.ctr_delta_pct)} |`,
+  );
+  lines.push(
+    `| Position moyenne | ${fmtPos(base.baseline_position)} | ${fmtPos(c30.current_position)} | ${fmtPosDelta(c30.position_delta)} | ${fmtPos(c60.current_position)} | ${fmtPosDelta(c60.position_delta)} |`,
+  );
+  lines.push(
+    `| Impressions | ${fmtImp(base.baseline_impressions)} | ${fmtImp(c30.current_impressions)} | ${impDelta(base.baseline_impressions, c30.current_impressions)} | ${fmtImp(c60.current_impressions)} | ${impDelta(base.baseline_impressions, c60.current_impressions)} |`,
+  );
+  if (c60.significance_note) lines.push(`\n_${c60.significance_note}_`);
+  return lines.join('\n');
 }
 
 function fmtDriftCell(drift: number | null): string {
@@ -556,12 +698,20 @@ export function renderIssueBody(i: IssueInputs): string {
     fmtTopQueries(i.diagnostic.top_queries_analysis, 5),
   ].join('\n');
 
-  // Sections may be empty (e.g. dataQualityBanner when capture rate is OK).
-  // Filter them out so the join('\n\n') doesn't produce double-blank gaps.
+  // Sprint-14: measurement blocks. Empty strings when no measurements yet,
+  // so pre-measurement findings render identically to Sprint-13.
+  const measurementVerdict = fmtMeasurementVerdict(i.measurements);
+  const measurementTable = fmtMeasurementTable(i.measurements);
+
+  // Sections may be empty (e.g. dataQualityBanner when capture rate is OK,
+  // measurement blocks when no measurement yet). Filter them out so the
+  // join('\n\n') doesn't produce double-blank gaps.
   return [
     tldrBlock,
+    measurementVerdict, // Sprint-14: verdict alert sits right after TLDR
     groupBanner,
     metricsBox,
+    measurementTable, // Sprint-14: detail delta table sits right after the baseline metrics box
     dataQualityBanner,
     `---`,
     diagSection,

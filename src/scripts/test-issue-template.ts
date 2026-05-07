@@ -438,3 +438,85 @@ test('Sprint-13 — internal_links section has Catalogue source tag + collapsibl
   assert.match(r.body, /### 4\. Maillage interne <sub>_\(LLM fix-gen · Catalogue\)_<\/sub>/);
   assert.match(r.body, /<details>\n<summary><b>Proposé<\/b> — cliquer pour voir le détail<\/summary>/);
 });
+
+// ---------- Sprint-14 measurement (T+30 / T+60) tests --------------------
+
+const positiveT30 = {
+  days_after_fix: 30,
+  measured_at: '2026-06-08T00:00:00Z',
+  applied_at: '2026-05-09T12:00:00Z',
+  baseline_ctr: 0.0467,
+  current_ctr: 0.0542,
+  ctr_delta_pct: 16.1,
+  baseline_position: 4.5,
+  current_position: 4.1,
+  position_delta: -0.4,
+  baseline_impressions: 38478,
+  current_impressions: 41200,
+  significance_note: null,
+};
+
+const regressionT30 = {
+  ...positiveT30,
+  current_ctr: 0.0410,
+  ctr_delta_pct: -12.2,
+  current_position: 4.8,
+  position_delta: 0.3,
+  current_impressions: 36500,
+};
+
+test('Sprint-14 — pre-measurement render is unchanged (no measurements key)', () => {
+  const r = renderIssue(fixture);
+  // No verdict alert, no delta table
+  assert.ok(!r.body.includes('📈 Mesure T+'));
+  assert.ok(!r.body.includes('Détail mesure'));
+  // Body still starts with TLDR (Sprint-13 layout)
+  assert.ok(r.body.startsWith('> [!IMPORTANT]\n> ### 🎯 TL;DR'));
+});
+
+test('Sprint-14 — positive T+30 measurement → green TIP verdict + delta table', () => {
+  const r = renderIssue({ ...fixture, measurements: [positiveT30] });
+  // Verdict alert appears between TLDR and group banner
+  assert.match(r.body, /> \[!TIP\]\n> ### 📈 Mesure T\+30 \(2026-06-08\)/);
+  assert.match(r.body, /Fix qui marche/);
+  assert.match(r.body, /Fix appliqué le 2026-05-09/);
+  // Delta table appears after the metrics box
+  assert.match(r.body, /### 📈 Détail mesure T\+30/);
+  assert.match(r.body, /\| CTR \| 4\.67% \| 5\.42% \| \+16\.1%/);
+  assert.match(r.body, /\| Position moyenne \| 4\.5 \| 4\.1 \| -0\.40 ✅/);
+});
+
+test('Sprint-14 — regression T+30 → red CAUTION verdict', () => {
+  const r = renderIssue({ ...fixture, measurements: [regressionT30] });
+  assert.match(r.body, /> \[!CAUTION\]\n> ### 📈 Mesure T\+30/);
+  assert.match(r.body, /Régression/);
+  assert.match(r.body, /envisager rollback/);
+});
+
+test('Sprint-14 — neutral T+30 (small CTR delta) → blue NOTE verdict', () => {
+  const neutral = { ...positiveT30, ctr_delta_pct: 2.5, current_ctr: 0.0479 };
+  const r = renderIssue({ ...fixture, measurements: [neutral] });
+  assert.match(r.body, /> \[!NOTE\]\n> ### 📈 Mesure T\+30/);
+  assert.match(r.body, /Mouvement neutre/);
+  assert.match(r.body, /observer T\+60/);
+});
+
+test('Sprint-14 — both T+30 and T+60 → 5-col delta table side-by-side', () => {
+  const t60 = { ...positiveT30, days_after_fix: 60, measured_at: '2026-07-08T00:00:00Z',
+    current_ctr: 0.0581, ctr_delta_pct: 24.4, current_position: 4.0, position_delta: -0.5,
+    current_impressions: 42800 };
+  const r = renderIssue({ ...fixture, measurements: [positiveT30, t60] });
+  // Verdict uses LATEST (T+60) measurement
+  assert.match(r.body, /### 📈 Mesure T\+60/);
+  // 5-col detail table
+  assert.match(r.body, /\| Métrique \| T0 baseline \| T\+30 mesuré \| Δ T\+30 \| T\+60 mesuré \| Δ T\+60 \|/);
+  assert.match(r.body, /\| CTR \| 4\.67% \| 5\.42% \| \+16\.1%.* \| 5\.81% \| \+24\.4%/);
+});
+
+test('Sprint-14 — measurement source attribution carries SEO calc tag', () => {
+  const r = renderIssue({ ...fixture, measurements: [positiveT30] });
+  // Verdict alert source
+  assert.match(r.body, /SEO calc · GSC fix_outcomes vs baseline T0/);
+  // Delta table source
+  assert.match(r.body, /SEO calc · fix_outcomes/);
+});
