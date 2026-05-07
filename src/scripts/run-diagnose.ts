@@ -1,12 +1,21 @@
 /**
  * Sprint 4 — driver for the diagnostic LLM step.
  * Usage: npm run diagnose -- [--limit=3] [--ids=uuid1,uuid2]
+ *        npm run diagnose -- --ids=uuid --print-prompt   (debug-only,
+ *                            renders prompt to stdout, NO LLM call)
  */
-import { diagnosePending } from '../pipeline/diagnose.js';
+import { diagnosePending, buildDiagnosticInputs } from '../pipeline/diagnose.js';
+import { renderDiagnosticPrompt } from '../prompts/diagnostic.v1.js';
 
-function parseArgs(): { limit?: number; onlyFindingIds?: string[] } {
-  const out: { limit?: number; onlyFindingIds?: string[] } = {};
+type Args = { limit?: number; onlyFindingIds?: string[]; printPrompt?: boolean };
+
+function parseArgs(): Args {
+  const out: Args = {};
   for (const arg of process.argv.slice(2)) {
+    if (arg === '--print-prompt') {
+      out.printPrompt = true;
+      continue;
+    }
     const [k, v] = arg.split('=');
     if (!v) continue;
     if (k === '--limit') out.limit = Number(v);
@@ -21,6 +30,22 @@ function parseArgs(): { limit?: number; onlyFindingIds?: string[] } {
 
 async function main(): Promise<void> {
   const opts = parseArgs();
+
+  if (opts.printPrompt) {
+    if (!opts.onlyFindingIds || opts.onlyFindingIds.length === 0) {
+      process.stderr.write('--print-prompt requires --ids=<uuid>\n');
+      process.exit(2);
+    }
+    for (const id of opts.onlyFindingIds) {
+      const inputs = await buildDiagnosticInputs(id);
+      const prompt = renderDiagnosticPrompt(inputs);
+      process.stdout.write(`========== prompt for finding ${id} (${prompt.length} chars) ==========\n`);
+      process.stdout.write(prompt);
+      process.stdout.write('\n========== end ==========\n\n');
+    }
+    return;
+  }
+
   process.stdout.write(`diagnose starting…\n`);
   const r = await diagnosePending(opts);
   process.stdout.write(

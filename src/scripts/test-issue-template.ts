@@ -35,10 +35,15 @@ const fixture: IssueInputs = {
   current_meta: 'old meta',
   current_intro: 'old intro paragraph',
   diagnostic: {
+    tldr: 'TLDR sentence — synthesis upfront.',
     intent_mismatch: 'mismatch text',
     snippet_weakness: 'weakness text',
     hypothesis: 'hypothesis text',
     engagement_diagnosis: 'engagement text',
+    performance_diagnosis: 'CWV satisfaisant.',
+    structural_gaps: 'gaps text',
+    funnel_assessment: 'funnel text',
+    internal_authority_assessment: 'authority text',
     top_queries_analysis: [
       { query: 'q1', impressions: 1000, ctr: 0.02, position: 5.0, intent_match: 'yes' },
       { query: 'q2', impressions: 800, ctr: 0.01, position: 6.5, intent_match: 'partial' },
@@ -107,19 +112,80 @@ test('cycle de mesure dates are baseline + 30 + 60', () => {
   assert.ok(r.body.includes('**T+60 mesure 2** : prévue le 2026-07-05'));
 });
 
-test('engagement interpretations flag the warning thresholds', () => {
+test('Cooked behavior interpretations flag the warning thresholds', () => {
   const r = renderIssue(fixture);
+  // Sprint-11: behavior signals now live in the metrics box right column
+  // (Pages/session, Durée, Scroll moy.), one row per signal.
   assert.match(r.body, /Pages\/session.*1\.02.*rebond rapide/);
-  assert.match(r.body, /Scroll depth.*12\.4%.*scroll superficiel/);
+  assert.match(r.body, /Scroll moy\..*12\.4%.*scroll superficiel/);
 });
 
 test('drift cell falls back gracefully when null (first audit)', () => {
   const r = renderIssue({ ...fixture, position_drift: null });
-  assert.match(r.body, /Drift.*premier audit/);
+  // Sprint-11: drift moved inline into the Position cell of the metrics box.
+  assert.match(r.body, /Position moy\..*premier audit/);
 });
 
 test('finding + audit_run IDs appear in Refs', () => {
   const r = renderIssue(fixture);
   assert.ok(r.body.includes(fixture.finding_id));
   assert.ok(r.body.includes(fixture.audit_run_id));
+});
+
+// ---------- Sprint-11 redesign-specific tests ------------------------------
+
+test('TL;DR callout sits at the very top of the body', () => {
+  const r = renderIssue(fixture);
+  // Body must START with the TL;DR blockquote — first thing reviewers see.
+  assert.ok(
+    r.body.startsWith('> ## 🎯 TL;DR'),
+    `body should start with TL;DR callout, got:\n${r.body.slice(0, 200)}`,
+  );
+  assert.ok(r.body.includes('TLDR sentence — synthesis upfront.'));
+});
+
+test('TL;DR falls back to hypothesis when v5 tldr field is missing (legacy)', () => {
+  const legacyDiag = { ...fixture.diagnostic };
+  delete legacyDiag.tldr;
+  const r = renderIssue({ ...fixture, diagnostic: legacyDiag });
+  // Should still render the TL;DR block, populated with hypothesis text.
+  assert.ok(r.body.startsWith('> ## 🎯 TL;DR'));
+  assert.ok(r.body.includes('hypothesis text'));
+});
+
+test('diagnostic bullets surface ALL v3-v5 analytic fields', () => {
+  const r = renderIssue(fixture);
+  for (const label of [
+    'Hypothèse',
+    'Intent mismatch',
+    'Snippet',
+    'Engagement',
+    'CWV / perf',
+    'Structure',
+    'Funnel',
+    'Autorité interne',
+  ]) {
+    assert.match(r.body, new RegExp(`- \\*\\*${label}\\*\\*`), `missing bullet: ${label}`);
+  }
+});
+
+test('empty diagnostic fields are omitted (legacy v1 cleanly renders)', () => {
+  const skinnyDiag = {
+    ...fixture.diagnostic,
+    performance_diagnosis: '',
+    structural_gaps: '',
+    funnel_assessment: '',
+    internal_authority_assessment: '',
+  };
+  const r = renderIssue({ ...fixture, diagnostic: skinnyDiag });
+  // Still has the v1 fields…
+  assert.match(r.body, /- \*\*Hypothèse\*\*/);
+  // …but skips the v3+ ones rather than printing empty bullets.
+  assert.ok(!r.body.includes('- **CWV / perf** —'));
+  assert.ok(!r.body.includes('- **Structure** —'));
+});
+
+test('metrics box has both GSC and Cooked columns side-by-side', () => {
+  const r = renderIssue(fixture);
+  assert.match(r.body, /\| 📊 GSC \(3 mois\) \| Valeur \| 🧭 Cooked behavior \| Valeur \|/);
 });
