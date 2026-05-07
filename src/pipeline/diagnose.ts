@@ -14,6 +14,7 @@ import {
   renderDiagnosticPrompt,
   DIAGNOSTIC_PROMPT_NAME,
   DIAGNOSTIC_PROMPT_VERSION,
+  getCookedFirstSeen,
   type DiagnosticPromptInputs,
   type InboundSummary,
 } from '../prompts/diagnostic.v1.js';
@@ -261,6 +262,13 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
   // Falls back to null if the page has no recent gsc_page_snapshots row.
   const gscClicks28d = await fetchGscClicksLast28d(row.page as string);
 
+  // Sprint-13bis: fetch Cooked tracker first-seen date once per finding via
+  // the cached helper (1h cache shared across all findings of this audit run).
+  // Used by fmtDataQualityCheck to pro-rate the capture rate during bootstrap.
+  // Best-effort: getCookedFirstSeen falls back to a hardcoded baseline if the
+  // RPC errors, so this never throws.
+  const cookedFirstSeen = await getCookedFirstSeen();
+
   return {
     url: row.page as string,
     avg_position: Number(row.avg_position),
@@ -269,17 +277,51 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     ctr_actual: Number(row.ctr_actual),
     ctr_expected: Number(row.ctr_expected),
     ctr_gap_pct: Number(row.ctr_gap) * 100,
-    pages_per_session: row.pages_per_session != null ? Number(row.pages_per_session) : null,
+    // Sprint-12 hotfix: same fallback to cooked_extras for behavior signals.
+    // Same root cause as CWV — forged findings or stale behavior_page_snapshots
+    // mean the audit_findings columns can be null while Cooked has fresh data.
+    pages_per_session:
+      row.pages_per_session != null
+        ? Number(row.pages_per_session)
+        : cookedExtras
+        ? cookedExtras.windows['28d'].sessions > 0
+          ? cookedExtras.windows['28d'].views / cookedExtras.windows['28d'].sessions
+          : null
+        : null,
     avg_duration_seconds:
-      row.avg_session_duration_seconds != null ? Number(row.avg_session_duration_seconds) : null,
-    scroll_depth: row.scroll_depth_avg != null ? Number(row.scroll_depth_avg) : null,
+      row.avg_session_duration_seconds != null
+        ? Number(row.avg_session_duration_seconds)
+        : cookedExtras?.windows['28d'].avg_dwell_seconds ?? null,
+    scroll_depth:
+      row.scroll_depth_avg != null
+        ? Number(row.scroll_depth_avg)
+        : cookedExtras?.windows['28d'].scroll_avg ?? null,
     scroll_complete_pct:
-      row.scroll_complete_pct != null ? Number(row.scroll_complete_pct) : null,
-    outbound_clicks: row.outbound_clicks != null ? Number(row.outbound_clicks) : null,
-    lcp_p75_ms: row.lcp_p75_ms != null ? Number(row.lcp_p75_ms) : null,
-    inp_p75_ms: row.inp_p75_ms != null ? Number(row.inp_p75_ms) : null,
-    cls_p75: row.cls_p75 != null ? Number(row.cls_p75) : null,
-    ttfb_p75_ms: row.ttfb_p75_ms != null ? Number(row.ttfb_p75_ms) : null,
+      row.scroll_complete_pct != null
+        ? Number(row.scroll_complete_pct)
+        : cookedExtras?.windows['28d'].scroll_complete_pct ?? null,
+    outbound_clicks:
+      row.outbound_clicks != null
+        ? Number(row.outbound_clicks)
+        : cookedExtras?.windows['28d'].outbound_clicks ?? null,
+    // Sprint-12 hotfix: CWV from audit_findings columns can be null (forged
+    // findings, or findings older than the latest behavior_page_snapshots
+    // refresh). Fallback to the live Cooked extras so the LLM gets the
+    // freshest CWV signal — same source the issue box already uses.
+    lcp_p75_ms:
+      row.lcp_p75_ms != null
+        ? Number(row.lcp_p75_ms)
+        : cookedExtras?.cwv_28d.lcp_p75_ms ?? null,
+    inp_p75_ms:
+      row.inp_p75_ms != null
+        ? Number(row.inp_p75_ms)
+        : cookedExtras?.cwv_28d.inp_p75_ms ?? null,
+    cls_p75:
+      row.cls_p75 != null ? Number(row.cls_p75) : cookedExtras?.cwv_28d.cls_p75 ?? null,
+    ttfb_p75_ms:
+      row.ttfb_p75_ms != null
+        ? Number(row.ttfb_p75_ms)
+        : cookedExtras?.cwv_28d.ttfb_p75_ms ?? null,
     current_title: cs.title,
     current_meta: cs.meta_description,
     current_h1: cs.h1,
@@ -295,6 +337,7 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     outbound_destinations: outboundDestinations,
     cta_breakdown: ctaBreakdown,
     gsc_clicks_28d: gscClicks28d,
+    cooked_first_seen: cookedFirstSeen,
   };
 }
 

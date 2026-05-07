@@ -67,6 +67,12 @@ export type IssueCookedExtras = {
   inp_p75_ms?: number | null;
   cls_p75?: number | null;
   ttfb_p75_ms?: number | null;
+  // Sprint-12 hotfix: 28d behavior signals from Cooked, used as fallback for
+  // the box when audit_findings columns are null (forged findings / stale
+  // behavior_page_snapshots).
+  pages_per_session_28d?: number | null;
+  avg_session_duration_28d?: number | null;
+  scroll_avg_28d?: number | null;
   // Conversion — 28d CTAs with body-vs-ambient breakdown
   phone_clicks_28d?: number | null;
   email_clicks_28d?: number | null;
@@ -75,6 +81,8 @@ export type IssueCookedExtras = {
   // Provenance
   top_source?: string | null;
   top_medium?: string | null;
+  /** Sprint-12 hotfix: fallback when top_source is null (no UTM tagging). */
+  top_referrer?: string | null;
   // Device
   device_split?: { desktop: number; mobile: number; tablet: number } | null;
   // Data quality (capture rate)
@@ -230,7 +238,12 @@ function fmtTopQueries(rows: IssueDiagnostic['top_queries_analysis'], limit = 5)
   if (subset.length === 0) return '_(pas de données de requêtes)_';
   const lines = ['| Requête | Impressions | CTR | Position | Intent match |', '|---|---|---|---|---|'];
   for (const r of subset) {
-    const ctrPct = (r.ctr * 100).toFixed(2);
+    // Sprint-12 hotfix: the LLM outputs CTR as either a fraction (0..1, e.g. 0.0165)
+    // OR as a percent (e.g. 1.65) depending on how it copies from the prompt input.
+    // Detect the format defensively — values > 1 are necessarily already a percent
+    // (CTR > 100% is impossible). Without this, we used to render "165.00%" for
+    // a real CTR of 1.65%.
+    const ctrPct = (r.ctr > 1 ? r.ctr : r.ctr * 100).toFixed(2);
     lines.push(
       `| ${r.query} | ${r.impressions} | ${ctrPct}% | ${r.position.toFixed(1)} | ${r.intent_match} |`,
     );
@@ -317,8 +330,18 @@ export function renderIssueBody(i: IssueInputs): string {
     ex?.cta_body_pct != null
       ? `${ex.cta_body_pct.toFixed(0)}% body (intent qualifié)`
       : '—';
-  const provCell =
-    ex?.top_source ? `${ex.top_source}/${ex.top_medium ?? '?'}` : '—';
+  // Sprint-12 hotfix: fallback chain GA4-style — utm_source > referrer_hostname > 'direct'.
+  // Cooked agent confirmed: top_referrer is denser than top_source (every session has
+  // a referrer header, only UTM-tagged sessions have utm_source). Box used to display
+  // "—" while the LLM correctly synthesized "google.com/organic" from the prompt block
+  // — fix the box to reflect the same fallback the LLM uses.
+  const provCell = ex?.top_source
+    ? `${ex.top_source}/${ex.top_medium ?? '?'}`
+    : ex?.top_referrer
+    ? `${ex.top_referrer}/referral`
+    : ex
+    ? 'direct/none'
+    : '—';
   const deviceCell =
     ex?.device_split
       ? `mob ${ex.device_split.mobile.toFixed(0)} / desk ${ex.device_split.desktop.toFixed(0)}`
@@ -328,12 +351,20 @@ export function renderIssueBody(i: IssueInputs): string {
       ? `${ex.capture_rate_pct.toFixed(0)}% (${ex.cooked_sessions_28d ?? '?'}/${ex.gsc_clicks_28d ?? '?'})`
       : '—';
 
+  // Sprint-12 hotfix: behavior cells fallback to cooked_extras (28d window)
+  // when the audit_findings columns are null. Same root cause as the CWV
+  // fallback: forged findings / stale behavior_page_snapshots leave the
+  // canonical columns empty while Cooked has fresh data.
+  const ppsValue = i.pages_per_session ?? ex?.pages_per_session_28d ?? null;
+  const dwellValue = i.avg_session_duration_seconds ?? ex?.avg_session_duration_28d ?? null;
+  const scrollValue = i.scroll_depth_avg ?? ex?.scroll_avg_28d ?? null;
+
   const metricsBox = [
     `| 📊 GSC (${i.audit_period_months} mois) | Valeur | 🧭 Cooked behavior | Valeur | ⚡ CWV (28d p75) | Valeur | 📞 Conversion (28d) | Valeur |`,
     `|---|---|---|---|---|---|---|---|`,
-    `| Position moy. | ${i.avg_position.toFixed(1)} (drift ${fmtDriftCell(i.position_drift)}) | Pages/session | ${fmtNumOrNA(i.pages_per_session)} — ${ppsInterpretation(i.pages_per_session)} | LCP | ${lcpCell} | Phone clicks | ${phoneCell} |`,
-    `| Impressions/mois | ${monthlyImp.toLocaleString('fr-FR')} | Durée active | ${fmtNumOrNA(i.avg_session_duration_seconds, 's', 0)} — ${durationInterpretation(i.avg_session_duration_seconds)} | INP | ${inpCell} | Email clicks | ${emailCell} |`,
-    `| **CTR actuel** | **${pct(i.ctr_actual)}%** | Scroll moy. | ${fmtNumOrNA(i.scroll_depth_avg, '%', 1)} — ${scrollInterpretation(i.scroll_depth_avg)} | CLS | ${clsCell} | Booking CTA | ${bookingCell} |`,
+    `| Position moy. | ${i.avg_position.toFixed(1)} (drift ${fmtDriftCell(i.position_drift)}) | Pages/session | ${fmtNumOrNA(ppsValue)} — ${ppsInterpretation(ppsValue)} | LCP | ${lcpCell} | Phone clicks | ${phoneCell} |`,
+    `| Impressions/mois | ${monthlyImp.toLocaleString('fr-FR')} | Durée active | ${fmtNumOrNA(dwellValue, 's', 0)} — ${durationInterpretation(dwellValue)} | INP | ${inpCell} | Email clicks | ${emailCell} |`,
+    `| **CTR actuel** | **${pct(i.ctr_actual)}%** | Scroll moy. | ${fmtNumOrNA(scrollValue, '%', 1)} — ${scrollInterpretation(scrollValue)} | CLS | ${clsCell} | Booking CTA | ${bookingCell} |`,
     `| CTR benchmark | ${pct(i.ctr_expected)}% | Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)}) | TTFB | ${ttfbCell} | Body share | ${bodyPctCell} |`,
     `| **Gap vs benchmark** | **${(i.ctr_gap * 100).toFixed(1)}% sous** | Page | [${shortPath(i.page, 50)}](${i.page}) | Capture rate | ${captureCell} | Provenance / Device | ${provCell} • ${deviceCell} |`,
   ].join('\n');
