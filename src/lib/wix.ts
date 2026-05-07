@@ -1,5 +1,11 @@
 import { env } from '../config.js';
 import { classifyLinks } from './dom-link-classifier.js';
+import {
+  extractPageContent,
+  CONTENT_BOT_UA,
+  type ContentSnapshot,
+  type AuthorInfo,
+} from './page-content-extractor.js';
 
 const WIX_BASE = 'https://www.wixapis.com';
 
@@ -260,7 +266,11 @@ function stripTags(s: string): string {
  * because we don't ship a heavy DOM parser for this single use.
  */
 async function scrapeHtml(url: string): Promise<CurrentState> {
-  const res = await fetch(url, { headers: { 'User-Agent': 'plouton-seo-audit/0.0.1' } });
+  // Sprint-14: switched to CONTENT_BOT_UA for consistency across all
+  // page-content fetches (Cooked-agent flag #1 — lets Wix logs filter
+  // our traffic, lets Cooked Edge Function ignore our hits if we ever
+  // switch to Playwright).
+  const res = await fetch(url, { headers: { 'User-Agent': CONTENT_BOT_UA } });
   const html = await res.text();
 
   const titleMatch = html.match(/<title[^>]*>([^<]+)<\/title>/i);
@@ -335,7 +345,7 @@ async function scrapeHtml(url: string): Promise<CurrentState> {
 export async function scrapeInternalLinks(
   url: string,
 ): Promise<CurrentState['internal_links_outbound']> {
-  const res = await fetch(url, { headers: { 'User-Agent': 'plouton-seo-audit/0.0.1' } });
+  const res = await fetch(url, { headers: { 'User-Agent': CONTENT_BOT_UA } });
   if (!res.ok) return [];
   const html = await res.text();
   const classified = classifyLinks({ pageUrl: url, html });
@@ -396,4 +406,59 @@ export async function getCurrentStateForUrl(pageUrl: string): Promise<CurrentSta
   }
 
   return scrapeHtml(pageUrl);
+}
+
+/**
+ * Sprint-14: extract a structured ContentSnapshot for a given page URL.
+ *
+ * Strategy:
+ *   1. Fetch the live HTML once (with CONTENT_BOT_UA per Cooked-agent flag #1)
+ *   2. For /post/* paths, also pull the Wix Blog API to enrich the author
+ *      override with firstPublishedDate, lastPublishedDate, member fullName
+ *      (Cooked-agent flag #3 — don't regex HTML for author when the API has it)
+ *   3. Pass HTML + authorOverride into extractPageContent to get the snapshot
+ *
+ * Best-effort everywhere: returns a partially-populated snapshot if either
+ * fetch fails, never throws on a single missing field.
+ */
+export async function extractContentForFinding(pageUrl: string): Promise<ContentSnapshot> {
+  // 1. Fetch HTML
+  const res = await fetch(pageUrl, { headers: { 'User-Agent': CONTENT_BOT_UA } });
+  if (!res.ok) {
+    throw new Error(`extractContentForFinding fetch ${pageUrl} → ${res.status}`);
+  }
+  const html = await res.text();
+
+  // 2. For /post/* paths, enrich author from the Blog API
+  let authorOverride: AuthorInfo | null = null;
+  let parsed: URL;
+  try {
+    parsed = new URL(pageUrl);
+  } catch {
+    // unparseable URL — skip blog enrichment, fall back to HTML extraction only
+    return extractPageContent({ html, pageUrl });
+  }
+  const blogMatch = parsed.pathname.match(/^\/post\/(.+)$/);
+  if (blogMatch) {
+    const slug = decodeURIComponent(blogMatch[1]!);
+    try {
+      const post = await getBlogPostBySlug(slug);
+      if (post) {
+        authorOverride = {
+          // member.profile.fullName is not on the WixBlogPost type yet — pull
+          // it via raw API call when needed (TODO Sprint 15: extend the type
+          // + Zod parse). For now, use post.title as a placeholder name fallback
+          // is not informative; leave name undefined and let the LLM see "byline
+          // absent" if no <a rel="author"> in HTML either.
+          date_published: post.firstPublishedDate,
+          date_modified: post.lastPublishedDate,
+        };
+      }
+    } catch {
+      // Blog API miss — fall back to HTML regex extraction in extractPageContent
+    }
+  }
+
+  // 3. Extract
+  return extractPageContent({ html, pageUrl, authorOverride });
 }

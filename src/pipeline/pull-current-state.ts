@@ -9,7 +9,7 @@
  * fills `diagnostic` and bumps to 'diagnosed'.
  */
 import { supabase } from '../lib/supabase.js';
-import { getCurrentStateForUrl } from '../lib/wix.js';
+import { getCurrentStateForUrl, extractContentForFinding } from '../lib/wix.js';
 
 export type PullSummary = {
   attempted: number;
@@ -48,9 +48,25 @@ export async function pullCurrentStateForPending(opts: {
   for (const f of findings) {
     try {
       const state = await getCurrentStateForUrl(f.page);
+      // Sprint-14: structured content snapshot for the diagnostic v7 LLM
+      // (full body / outline / images / author / CTA positions). Best-effort
+      // — failure here doesn't abort the current_state write, the LLM just
+      // gets the legacy intro_first_100_words from current_state.
+      let contentSnapshot = null;
+      try {
+        contentSnapshot = await extractContentForFinding(f.page);
+      } catch (err) {
+        process.stderr.write(
+          `[pull-current-state] content snapshot failed for ${f.page}: ${(err as Error).message}\n`,
+        );
+      }
       const { error: updErr } = await supabase()
         .from('audit_findings')
-        .update({ current_state: state, updated_at: new Date().toISOString() })
+        .update({
+          current_state: state,
+          content_snapshot: contentSnapshot,
+          updated_at: new Date().toISOString(),
+        })
         .eq('id', f.id);
       if (updErr) throw new Error(`update finding: ${updErr.message}`);
       succeeded++;

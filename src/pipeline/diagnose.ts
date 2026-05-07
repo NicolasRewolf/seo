@@ -185,7 +185,7 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
   const { data: row, error } = await supabase()
     .from('audit_findings')
     .select(
-      'id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, scroll_complete_pct, lcp_p75_ms, inp_p75_ms, cls_p75, ttfb_p75_ms, outbound_clicks, current_state, audit_run_id, audit_runs(period_start, period_end)',
+      'id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, scroll_complete_pct, lcp_p75_ms, inp_p75_ms, cls_p75, ttfb_p75_ms, outbound_clicks, current_state, content_snapshot, audit_run_id, audit_runs(period_start, period_end)',
     )
     .eq('id', findingId)
     .single();
@@ -338,6 +338,8 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     cta_breakdown: ctaBreakdown,
     gsc_clicks_28d: gscClicks28d,
     cooked_first_seen: cookedFirstSeen,
+    // Sprint-14: full content extracted at pull-current-state time
+    content_snapshot: (row.content_snapshot as DiagnosticPromptInputs['content_snapshot']) ?? null,
   };
 }
 
@@ -376,11 +378,12 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
   const prompt = renderDiagnosticPrompt(inputs);
   const res = await anthropic().messages.create({
     model: model(),
-    // 2000 tokens proved too tight once we added structural_gaps + the wider
-    // current_state context — Sonnet was truncating the JSON mid-string on
-    // ~1/3 of findings ("Unterminated string in JSON at position …").
-    // 4000 covers the worst case observed (~6.5k chars output) with margin.
-    max_tokens: 4000,
+    // Sprint-14: bumped from 4000 → 8000 tokens. The v7 prompt feeds the
+    // full <page_body> (up to 8000 words) + 4 new XML blocks, so the LLM
+    // produces a richer output that frequently exceeded 4000 tokens
+    // mid-JSON — observed on first qspa run. 8000 covers all observed
+    // cases with margin (~6-9k chars output typical, max ~14k).
+    max_tokens: 8000,
     messages: [{ role: 'user', content: prompt }],
   });
   const first = res.content[0];

@@ -24,7 +24,9 @@
     "test:scoring": "tsx --test src/scripts/test-scoring.ts",
     "compare:scrapers": "tsx src/scripts/compare-scrapers.ts",
     "test:issue-template": "tsx --test src/scripts/test-issue-template.ts",
-    "test:data-quality": "tsx --test src/scripts/test-data-quality-check.ts"
+    "test:data-quality": "tsx --test src/scripts/test-data-quality-check.ts",
+    "test:content-extractor": "tsx --test src/scripts/test-content-extractor.ts",
+    "test:fact-check": "tsx --test src/scripts/test-diagnostic-fact-check.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",

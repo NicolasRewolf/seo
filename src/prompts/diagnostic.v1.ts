@@ -1,5 +1,5 @@
 /**
- * Diagnostic prompt v6 — ROADMAP §8 + Sprint-7/8/9 + Sprint-11 + Sprint-12 Cooked full-menu.
+ * Diagnostic prompt v7 — ROADMAP §8 + Sprint-7/8/9 + Sprint-11 + Sprint-12 Cooked full-menu + Sprint-14 page content.
  *
  * Iteration history:
  *   v1 — original §8 template with engagement (GA4) section.
@@ -42,8 +42,20 @@
  *        - <site_context>: global mix + median sessions/day → relative reads.
  *        New JSON output fields: conversion_assessment, traffic_strategy_note,
  *        device_optimization_note, outbound_leak_note.
+ *   v7 — Sprint 14 page content extraction. Sortie du "100 premiers mots".
+ *        Le LLM consomme désormais le full body via 4 nouveaux blocs XML :
+ *        - <page_body>: texte propre + word_count (8000 mots max)
+ *        - <page_outline>: H2/H3/H4 hiérarchique avec word_offset
+ *        - <images>: audit alt-text (in-body, header/footer ignorés)
+ *        - <author_eeat>: byline + dates publication/modif (E-E-A-T YMYL)
+ *        - <cta_in_body_positions>: position word_offset des CTAs (proxy
+ *          du % scroll, caveat explicite)
+ *        Drop de l'ancien `intro_first_100_words` du prompt (la donnée
+ *        reste en DB pour retro-compat des findings v1-v6 mais n'est
+ *        plus réinjectée). Tighten de structural_gaps et funnel_assessment
+ *        pour citer les blocs <page_outline> / <page_body> / <cta_positions>.
  *
- * Older diagnostics persisted under v1-v5 schemas remain readable: every
+ * Older diagnostics persisted under v1-v6 schemas remain readable: every
  * new JSON field is `.optional().default('')` in the Zod validator
  * (cf. src/pipeline/diagnose.ts).
  *
@@ -63,9 +75,10 @@ import type {
   CtaBreakdownRow,
 } from '../lib/cooked.js';
 import { fetchTrackerFirstSeen } from '../lib/cooked.js';
+import type { ContentSnapshot } from '../lib/page-content-extractor.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 6 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 7 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -142,6 +155,10 @@ export type DiagnosticPromptInputs = {
    *  the capture rate during the bootstrap window. The diagnose pipeline
    *  fetches this once via `getCookedFirstSeen()` and passes it down. */
   cooked_first_seen?: Date | null;
+  /** Sprint-14: full structured content (body, outline, images, author,
+   *  CTA positions). When present, the prompt v7 adds 4 new XML blocks
+   *  and the LLM stops being limited to intro_first_100_words. */
+  content_snapshot?: ContentSnapshot | null;
 };
 
 // ---------- formatting helpers ---------------------------------------------
@@ -537,6 +554,124 @@ function fmtSiteContext(ctx: SiteContext | null | undefined): string {
   return lines.join('\n');
 }
 
+// ============================================================================
+// Sprint-14 — page content rendering helpers (body / outline / images / author).
+// Replaces the v6 `intro_first_100_words` (Cooked-agent Q2: stop feeding it,
+// the body supersedes — keep only for legacy retro-compat in DB).
+// ============================================================================
+
+/**
+ * Render the full body text in a fenced block, with a word-count summary.
+ * Truncates at 8000 words to keep prompt tokens reasonable on edge cases —
+ * 99% of Plouton articles are < 3000 words so this is a safety net.
+ */
+function fmtPageBody(c: ContentSnapshot | null | undefined): string {
+  if (!c) return '_(content_snapshot indisponible — finding pré-Sprint-14, le LLM tombe sur intro_first_100_words seulement)_';
+  if (!c.body_text || c.body_text.length === 0) {
+    return '_(body vide — extraction Cheerio n\'a rien trouvé, vérifier que la page est SSR pas JS-rendered)_';
+  }
+  const truncated = c.word_count > 8000 ? c.body_text.split(/\s+/).slice(0, 8000).join(' ') + '\n\n[…tronqué à 8000 mots]' : c.body_text;
+  return [
+    `**Word count** : ${c.word_count} mots`,
+    ``,
+    `\`\`\`text`,
+    truncated,
+    `\`\`\``,
+  ].join('\n');
+}
+
+/**
+ * Outline as a hierarchical list with H2/H3/H4 indentation + word offsets.
+ * The word_offset is what lets the LLM recommend a precise insertion point
+ * for a `content_addition` fix (e.g. "ajouter H2 'X' entre H2 #2 (offset 350)
+ * et H2 #3 (offset 720)").
+ */
+function fmtPageOutline(c: ContentSnapshot | null | undefined): string {
+  if (!c || c.outline.length === 0) {
+    return '_(aucun H2/H3/H4 détecté dans le body — page très peu structurée)_';
+  }
+  const lines: string[] = [];
+  for (const o of c.outline) {
+    const indent = o.level === 2 ? '' : o.level === 3 ? '  ' : '    ';
+    const prefix = o.level === 2 ? '##' : o.level === 3 ? '###' : '####';
+    lines.push(`${indent}- ${prefix} ${o.text} _(offset ${o.word_offset} mots${o.anchor ? `, id="${o.anchor}"` : ''})_`);
+  }
+  return lines.join('\n');
+}
+
+/**
+ * Image audit block — surfaces missing alt-text (accessibility + Image Search
+ * blocker). Distinguishes in-body vs decorative (header/footer).
+ */
+function fmtImageAudit(c: ContentSnapshot | null | undefined): string {
+  if (!c || c.images.length === 0) {
+    return '_(aucune image détectée sur la page)_';
+  }
+  const inBody = c.images.filter((i) => i.in_body);
+  const missingAlt = inBody.filter((i) => !i.alt);
+  const lines: string[] = [
+    `- **${inBody.length} images dans le body** (header/footer décoratives ignorées)`,
+    `- **${missingAlt.length} sans alt-text** ${missingAlt.length > 0 ? '⚠️ blocage Image Search + accessibilité' : '✅'}`,
+  ];
+  if (missingAlt.length > 0) {
+    lines.push(``, `Images sans alt :`);
+    for (const i of missingAlt.slice(0, 5)) {
+      lines.push(`  - \`${i.src.slice(0, 80)}${i.src.length > 80 ? '…' : ''}\``);
+    }
+    if (missingAlt.length > 5) lines.push(`  - _(+ ${missingAlt.length - 5} autres)_`);
+  }
+  return lines.join('\n');
+}
+
+/**
+ * E-E-A-T author signal — byline + dates. Critical for YMYL topics
+ * (legal/medical/financial — Plouton hits this category hard).
+ */
+function fmtAuthorEEAT(c: ContentSnapshot | null | undefined): string {
+  if (!c || !c.author) {
+    return '_(aucune info auteur/date détectée — signal E-E-A-T faible, particulièrement pénalisant en YMYL juridique)_';
+  }
+  const a = c.author;
+  const lines: string[] = [];
+  lines.push(`- **Auteur** : ${a.name ?? '_(absent)_'}${a.url ? ` ([profil](${a.url}))` : ''}`);
+  lines.push(`- **Date publication** : ${a.date_published ?? '_(absente)_'}`);
+  lines.push(`- **Date dernière modif** : ${a.date_modified ?? '_(absente)_'}`);
+  if (!a.name) lines.push(`- ⚠️ Byline manquant — risque E-E-A-T sur YMYL juridique`);
+  if (!a.date_modified || !a.date_published) lines.push(`- ⚠️ Dates manquantes — Google peut juger contenu obsolète`);
+  return lines.join('\n');
+}
+
+/**
+ * CTA in-body positions block — surfaces the position of internal CTAs
+ * relative to the body word count, so the LLM can recommend repositioning.
+ *
+ * IMPORTANT CAVEAT (Cooked-agent flag #2): word_offset / word_count is a
+ * PROXY for scroll position, not an exact correspondence. Pages with image-
+ * heavy content or long footers can shift the actual scroll % significantly.
+ * The block surfaces this caveat explicitly so the LLM doesn't claim exact
+ * scroll-percentage figures.
+ */
+function fmtCtaPositions(c: ContentSnapshot | null | undefined): string {
+  if (!c) return '_(content_snapshot indisponible)_';
+  if (c.cta_in_body_positions.length === 0) {
+    return '_(aucun CTA in-body détecté — peut être un déficit de maillage interne)_';
+  }
+  const lines: string[] = [
+    `⚠️ **Caveat** : word_offset/word_count est un PROXY du % de scroll, pas une correspondance exacte. Une page avec beaucoup d'images ou un footer touffu peut décaler le scroll réel. À utiliser comme estimation, pas comme valeur absolue.`,
+    ``,
+    `Word count total : ${c.word_count}`,
+    ``,
+  ];
+  for (const cta of c.cta_in_body_positions.slice(0, 12)) {
+    const pct = c.word_count > 0 ? ((cta.word_offset / c.word_count) * 100).toFixed(0) : '?';
+    lines.push(`- "${cta.anchor.slice(0, 60)}" → \`${cta.target}\` _(offset ${cta.word_offset}/${c.word_count} mots ≈ ${pct}% du body)_`);
+  }
+  if (c.cta_in_body_positions.length > 12) {
+    lines.push(`- _(+ ${c.cta_in_body_positions.length - 12} autres CTAs)_`);
+  }
+  return lines.join('\n');
+}
+
 function fmtCatalog(catalog: EnrichedContext['internal_pages_catalog']): string {
   const sections: string[] = [];
   const fmtList = (entries: CatalogEntry[]): string =>
@@ -636,10 +771,41 @@ ${fmtCwvLine('TTFB', i.ttfb_p75_ms, 'ms')}
 **Title** : ${i.current_title || '(empty)'}
 **Meta description** : ${i.current_meta || '(empty)'}
 **H1** : ${i.current_h1 || '(empty)'}
-**Intro (100 premiers mots)** : ${i.current_intro || '(empty)'}
 
 ## Schema.org JSON-LD déjà présent
 ${fmtSchemaSummary(i.current_schema_jsonld)}
+
+# Contenu de l'article (Sprint-14 — full body, plus de limite à 100 mots)
+
+<page_body>
+Le texte propre du body, headings inline, header/footer/nav exclus. Tu peux compter les mots, citer les passages précis, identifier les sections existantes et les manques. Si word_count est faible vs benchmark juridique-FR (~1 800 mots médian), c'est un signal "thin content" actionnable.
+
+${fmtPageBody(i.content_snapshot)}
+</page_body>
+
+<page_outline>
+Structure H2/H3/H4 actuelle avec word_offset (= position dans le body en mots). Utilise ce bloc pour : (a) détecter les manques de section vs les top requêtes (\`structural_gaps\`), (b) recommander des content_addition à un emplacement PRÉCIS (ex: "ajouter H2 'X' entre l'offset 350 et 720").
+
+${fmtPageOutline(i.content_snapshot)}
+</page_outline>
+
+<images>
+Audit images du body (header/footer décoratives ignorées). Compte les images sans alt-text — c'est un blocage Image Search + accessibilité.
+
+${fmtImageAudit(i.content_snapshot)}
+</images>
+
+<author_eeat>
+Signal E-E-A-T (Experience-Expertise-Authoritativeness-Trustworthiness). Critique sur YMYL juridique.
+
+${fmtAuthorEEAT(i.content_snapshot)}
+</author_eeat>
+
+<cta_in_body_positions>
+Position de chaque CTA in-body en word_offset (PROXY du % de scroll, voir caveat dans le bloc). Croise avec scroll_avg du Cooked behavior — si CTA est à 80% du body et scroll_avg est 22%, ce CTA est mort dans 78% des sessions.
+
+${fmtCtaPositions(i.content_snapshot)}
+</cta_in_body_positions>
 
 ## Maillage interne — DEUX flux distincts à NE PAS confondre
 
@@ -736,8 +902,8 @@ Produis un diagnostic JSON strict avec ce schéma. **Le champ \`tldr\` vient en 
   "traffic_strategy_note": "1 phrase. À partir du <traffic_provenance>: si top_source=google + top_medium=organic ≥ 70% → 'priorité = CTR snippet (la bataille se joue dans la SERP Google)'. Si top_referrer = social/réseau → 'priorité = OG tags + preview sociale'. Si direct ≥ 50% → 'audience qualifiée connaît déjà le cabinet, fix CTA conversion plutôt qu'acquisition'. Si pas assez de data: 'provenance non significative'.",
   "device_optimization_note": "1 phrase. À partir du <device_split>: si mobile ≥ 65% + scroll_avg < 30% → 'fix mobile-first impératif (intro courte, CTA above-the-fold mobile)'. Si desktop ≥ 65% → 'OK pour intro plus dense, marges latérales plus larges'. Si équilibré : 'audience hybride, vérifier que le snippet et l'intro fonctionnent sur les 2 formats'. Si pas de data: 'split device non significatif'.",
   "outbound_leak_note": "1 phrase ou 'pas de leak significatif'. Lis <top_outbound_destinations>: si la top destination est sémantiquement liée à la thématique de la page (ex: legifrance.gouv.fr / service-public.fr sur une page juridique), c'est une fuite réparable → 'ajoute la citation X in-page au lieu de laisser fuir vers source externe Y'. Sinon : 'fuites externes normales (autorités juridiques officielles), pas un signal de fix'.",
-  "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le bloc <outbound_links_from_this_page> ci-dessus (ne pas re-suggérer des liens éditoriaux déjà en place — la nav menu ne compte pas comme maillage éditorial), et le RÔLE FUNNEL de la page. ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', traite le maillage éditorial sortant comme INCONNU et n'invoque PAS de gap basé sur l'absence de liens.**",
-  "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle dans le funnel attendu pour sa catégorie ? Quels sont les 2-3 maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs cibles précises depuis le catalogue. Pour un knowledge_brick, exiger au minimum 1 lien expertise + 1 CTA RDV éditorialement intégrés (pas juste dans la nav). ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', écris : 'maillage éditorial sortant non capturé au snapshot — réévaluer après le prochain crawl' et ne propose PAS de maillons manquants.**",
+  "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le bloc <outbound_links_from_this_page> (ne pas re-suggérer des liens existants), le RÔLE FUNNEL de la page, ET (Sprint-14) **le bloc <page_outline> et le word_count du <page_body>**. Si le word_count est < 1500 mots sur un sujet juridique substantiel, dis 'thin content vs benchmark juridique-FR ~1800 mots médian'. Si une top requête à fort volume n'a pas de H2 dédié dans <page_outline>, dis-le explicitement avec l'offset où l'insérer. Cite le bloc <images> si plusieurs images sans alt-text. ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', traite le maillage éditorial sortant comme INCONNU.** ⚠️ **Si <page_body> est indisponible/vide, écris 'extraction body indisponible' et ne fais PAS de claim sur word_count ou outline.**",
+  "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle funnel ? Quels maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs précises du catalogue. (Sprint-14) **Lis aussi <cta_in_body_positions>** — si un CTA existant est très tard dans le body (offset > 70% du word_count) et que scroll_avg Cooked est faible (<50%), recommande explicitement de le repositionner plus tôt avec l'offset cible. ⚠️ **Si <outbound_links_from_this_page> est 'Snapshot pré-Sprint-9', écris : 'maillage éditorial sortant non capturé — réévaluer'.**",
   "internal_authority_assessment": "1-2 phrases sur la position de cette page dans le graph interne (lis EXCLUSIVEMENT le bloc <inbound_links_to_this_page>, JAMAIS le bloc outbound). Si inbound_editorial>=10 → 'page hub à protéger' (les fixes ne doivent pas casser ce statut). Si inbound_editorial==0 et inbound_total>0 → 'page orpheline éditorialement' : prioriser absolument l'ajout de liens depuis 2-3 pages sources naturelles. Sinon → position standard, pas de levier graph spécifique. Si le graph n'est pas encore crawlé, écris 'graph non disponible (premier crawl en cours)'."
 }
 
