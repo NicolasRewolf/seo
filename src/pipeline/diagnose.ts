@@ -121,7 +121,7 @@ function unfenceJson(s: string): string {
  * counts and an empty top_sources list — the prompt will surface this
  * as "graph not available yet" so the LLM doesn't fabricate authority.
  */
-async function fetchInboundSummary(targetPath: string): Promise<InboundSummary> {
+export async function fetchInboundSummary(targetPath: string): Promise<InboundSummary> {
   const sb = supabase();
 
   // Aggregated counts via the view
