@@ -1,20 +1,37 @@
 /**
- * Fix-generation prompt v1 — ROADMAP §8 + Sprint-7 enrichment.
+ * Fix-generation prompt — ROADMAP §8 + Sprint-7 enrichment + Sprint-11 v5 sync.
  *
- * Now receives the same enrichment as the diagnostic prompt: categorized
- * existing maillage (editorial / nav / posts similaires), the REAL site
- * catalog of internal URLs, DataForSEO volumes per top query, the article's
- * Wix category + funnel role, and the first-party Wix views.
- *
- * Without these the v0 fix-gen hallucinated link targets like
- * /post/licenciement-faute-grave (didn't exist), invented dateModified
- * values for schema, and re-suggested internal links that already existed.
+ * Iteration history:
+ *   v1 — Sprint 7: receives the same enrichment as the diagnostic prompt:
+ *        categorized existing maillage (editorial / nav / posts similaires),
+ *        the REAL site catalog of internal URLs, DataForSEO volumes per top
+ *        query, the article's Wix category + funnel role, and the first-party
+ *        Wix views. Without these the v0 fix-gen hallucinated link targets
+ *        like /post/licenciement-faute-grave (didn't exist), invented
+ *        dateModified values for schema, and re-suggested internal links
+ *        that already existed.
+ *   v2 — Sprint 11: synced with diagnostic v5. Three bugs fixed:
+ *        (1) `current_internal_links` now carries the Sprint-9 `placement`
+ *        field — v1 stripped it via a partial type and re-derived placement
+ *        from a regex anchor-heuristic (`editorialMarkers`) abandoned in
+ *        Sprint-9. The fix LLM was therefore reasoning about a stale
+ *        view of the maillage.
+ *        (2) The diagnostic is no longer dumped as raw `JSON.stringify`. It
+ *        is rendered as labeled sections with the v5 `tldr`,
+ *        `structural_gaps`, `funnel_assessment` and
+ *        `internal_authority_assessment` surfaced as first-class — these
+ *        are the fields that contain the most directly actionable
+ *        guidance (URLs to link to, gaps to fill).
+ *        (3) Optional `inbound_summary` block (Sprint-9 graph) is now
+ *        passed in so an "internal_links" fix can recommend SEEDING the
+ *        page from sources when it's editorially orphaned.
  */
 import type { EnrichedContext, EnrichedTopQuery } from '../pipeline/context-enrichment.js';
+import type { InboundSummary } from './diagnostic.v1.js';
 import { FORBIDDEN_LINK_TARGETS } from '../lib/site-catalog.js';
 
 export const FIX_GEN_PROMPT_NAME = 'fix_generation' as const;
-export const FIX_GEN_PROMPT_VERSION = 1 as const;
+export const FIX_GEN_PROMPT_VERSION = 2 as const;
 
 export type FixGenPromptInputs = {
   url: string;
@@ -24,10 +41,17 @@ export type FixGenPromptInputs = {
   current_h1: string;
   current_intro: string;
   current_schema_jsonld: unknown[] | null;
-  current_internal_links: Array<{ anchor: string; target: string }>;
+  /** Sprint-11 v2: `placement` carried through (was stripped by Zod in v1). */
+  current_internal_links: Array<{
+    anchor: string;
+    target: string;
+    placement?: 'editorial' | 'related' | 'nav' | 'footer' | 'cta' | 'image';
+  }>;
   top_queries: Array<{ query: string; impressions: number; ctr: number; position: number }>;
   diagnostic: unknown;
   enrichment?: EnrichedContext;
+  /** Sprint-11 v2: live inbound graph signal. Null if not yet crawled. */
+  inbound_summary?: InboundSummary | null;
 };
 
 function fmtTopQueries(rows: FixGenPromptInputs['top_queries']): string {
@@ -47,36 +71,136 @@ function fmtEnrichedTopQueries(rows: EnrichedTopQuery[]): string {
     .join(' | ');
 }
 
+/**
+ * Sprint-11 v2: classification is driven by the Sprint-9 DOM `placement`
+ * field stored on each link row, NOT by a regex on the anchor text.
+ * Pre-Sprint-9 snapshots have all rows in the `unclassified` bucket — in
+ * that case we suppress the "ne PAS re-suggérer" guidance because we
+ * genuinely don't know what's in there (the same legacy-snapshot guard
+ * the diagnostic v5 uses).
+ */
 function fmtCategorizedLinks(rows: FixGenPromptInputs['current_internal_links']): string {
   if (rows.length === 0) return '_(aucun lien sortant détecté)_';
-  const editorial: string[] = [];
-  const related: string[] = [];
-  const nav: string[] = [];
-  const editorialMarkers = /\b(découvrez|consultez|contactez|notre cabinet|nos services|cabinet plouton|en savoir plus|voir nos|notre équipe)\b/;
+
+  const buckets: Record<string, typeof rows> = {
+    editorial: [], related: [], cta: [], nav: [], footer: [], image: [], unclassified: [],
+  };
   for (const l of rows) {
-    let path = '';
-    try {
-      path = new URL(l.target).pathname;
-    } catch {
-      path = l.target;
-    }
-    const a = l.anchor.toLowerCase();
-    if (path.startsWith('/post/')) related.push(`${l.anchor.slice(0, 60)} → ${l.target}`);
-    else if (a.length > 25 || editorialMarkers.test(a)) editorial.push(`${l.anchor.slice(0, 80)} → ${l.target}`);
-    else nav.push(`${l.anchor.slice(0, 30)} → ${path}`);
+    const k = l.placement ?? 'unclassified';
+    (buckets[k] ?? buckets.unclassified)!.push(l);
   }
+
+  const totalClassified =
+    buckets.editorial!.length +
+    buckets.related!.length +
+    buckets.cta!.length +
+    buckets.nav!.length +
+    buckets.footer!.length +
+    buckets.image!.length;
+  const isLegacySnapshot = totalClassified === 0 && buckets.unclassified!.length > 0;
+
+  if (isLegacySnapshot) {
+    return (
+      `⚠️ **Snapshot pré-Sprint-9** : ${buckets.unclassified!.length} liens sortants ` +
+      `dont le placement DOM n'a pas été capturé. Tu ne peux PAS savoir lesquels ` +
+      `sont éditoriaux ou nav-cruft. Pour le fix \`internal_links\`, propose ` +
+      `librement depuis le catalogue ci-dessous — le QA détectera les doublons ` +
+      `au moment de l'application.`
+    );
+  }
+
+  const fmtRow = (l: typeof rows[number]): string =>
+    `  - ${l.anchor.slice(0, 80) || '(no text)'} → ${l.target}`;
+
   const out: string[] = [];
   out.push(
-    `LIENS ÉDITORIAUX in-body (${editorial.length}) — ne PAS re-suggérer ces liens, ils existent déjà :\n  - ` +
-      (editorial.length > 0 ? editorial.join('\n  - ') : '_(aucun)_'),
+    `LIENS ÉDITORIAUX in-body (${buckets.editorial!.length}) — **ne PAS re-suggérer** ces liens, ils existent déjà :\n` +
+      (buckets.editorial!.length > 0 ? buckets.editorial!.map(fmtRow).join('\n') : '  _(aucun)_'),
+  );
+  if (buckets.cta!.length > 0) {
+    out.push(`CTA buttons (${buckets.cta!.length}) — déjà présents :\n${buckets.cta!.map(fmtRow).join('\n')}`);
+  }
+  out.push(
+    `LIENS auto "posts similaires" (${buckets.related!.length}) — auto-générés Wix, pas un signal éditorial actionnable.`,
   );
   out.push(
-    `LIENS auto "posts similaires" (${related.length}) — pas un signal éditorial actionnable.`,
-  );
-  out.push(
-    `LIENS nav header/footer (${nav.length}) — présents sur toutes les pages, pas un maillage propre à cet article.`,
+    `LIENS nav header/footer (${buckets.nav!.length} / ${buckets.footer!.length}) — présents sur toutes les pages, pas un maillage propre à cet article.`,
   );
   return out.join('\n');
+}
+
+/**
+ * Sprint-11 v2: render the diagnostic as labeled, prioritized sections
+ * instead of dumping raw JSON. The v5 fields (`tldr`, `structural_gaps`,
+ * `funnel_assessment`, `internal_authority_assessment`) are surfaced
+ * first-class because they contain the most directly actionable guidance
+ * (URLs to link to, sections to add, orphan/hub posture). Any unknown
+ * fields are still emitted at the bottom as JSON so legacy diagnostics
+ * (v1-v4 without a tldr) and future fields don't get silently dropped.
+ */
+function fmtDiagnosticBlock(diag: unknown): string {
+  if (!diag || typeof diag !== 'object') {
+    return '_(diagnostic absent ou malformé)_';
+  }
+  const d = diag as Record<string, unknown>;
+  const get = (k: string): string => {
+    const v = d[k];
+    return typeof v === 'string' ? v.trim() : '';
+  };
+
+  const sections: string[] = [];
+  const tldr = get('tldr');
+  if (tldr) sections.push(`> 🎯 **TL;DR du diagnostic** : ${tldr}`);
+
+  const labelMap: Array<[string, string]> = [
+    ['hypothesis', '**Hypothèse principale**'],
+    ['intent_mismatch', '**Intent mismatch**'],
+    ['snippet_weakness', '**Faiblesse snippet** (utile pour fix title/meta)'],
+    ['engagement_diagnosis', '**Engagement** (utile pour fix intro/maillage)'],
+    ['performance_diagnosis', '**Perf / CWV**'],
+    ['structural_gaps', '**Manques structurels** (utile pour fix schema/content_addition)'],
+    ['funnel_assessment', '**Funnel assessment** (utile pour fix internal_links — souvent contient les URLs cibles précises)'],
+    ['internal_authority_assessment', '**Autorité interne** (utile si page orpheline → fix internal_links côté seeding)'],
+  ];
+  for (const [k, label] of labelMap) {
+    const v = get(k);
+    if (v) sections.push(`- ${label} — ${v}`);
+  }
+
+  // Top queries analysis (v3+) — flatten if present, else skip.
+  const tqa = d['top_queries_analysis'];
+  if (Array.isArray(tqa) && tqa.length > 0) {
+    const lines = tqa
+      .map((r) => {
+        const row = r as Record<string, unknown>;
+        const q = String(row.query ?? '');
+        const im = String(row.intent_match ?? '');
+        const note = typeof row.note === 'string' && row.note.trim() ? ` — ${row.note}` : '';
+        return `  - "${q}" : intent_match=${im}${note}`;
+      })
+      .join('\n');
+    sections.push(`- **Analyse top queries** :\n${lines}`);
+  }
+
+  return sections.join('\n');
+}
+
+function fmtInboundForFixes(s: InboundSummary | null | undefined): string {
+  if (!s) return '_(graph inbound pas encore crawlé — pas de signal d\'autorité interne dispo)_';
+  const orphan = s.inbound_editorial === 0 && s.inbound_total > 0;
+  const hub = s.inbound_editorial >= 10;
+  const lines: string[] = [
+    `- **Inbound éditorial** : ${s.inbound_editorial} liens depuis ${s.inbound_distinct_sources} pages distinctes`,
+    `- **Inbound nav/footer** : ${s.inbound_nav_footer} (boilerplate, pas un signal)`,
+  ];
+  if (orphan) {
+    lines.push(
+      `- ⚠️ **Page orpheline éditorialement** — un fix \`internal_links\` peut, en plus de proposer des liens SORTANTS, mentionner explicitement dans le \`rationale\` que la page bénéficierait d'être linkée DEPUIS 2-3 pages sources naturelles (info à exploiter par Nicolas hors de cette page).`,
+    );
+  } else if (hub) {
+    lines.push(`- ✅ **Page hub** (${s.inbound_editorial} sources éditoriales) — les fixes ne doivent PAS casser la structure existante qui apporte cette autorité.`);
+  }
+  return lines.join('\n');
 }
 
 function fmtCatalogForFixes(catalog: EnrichedContext['internal_pages_catalog'] | undefined): string {
@@ -152,8 +276,19 @@ Position : ${i.position.toFixed(1)}
 - Intro : ${i.current_intro || '(empty)'}
 - Schema.org JSON-LD présent : ${fmtSchemaTypes(i.current_schema_jsonld)}
 
-## Maillage interne actuel (catégorisé)
+## Maillage interne — DEUX flux distincts à NE PAS confondre
+
+<outbound_links_from_this_page>
+Liens que CETTE page émet déjà (snapshotté à l'audit, catégorisé via DOM Sprint-9). Ne re-suggère pas ces liens, ils existent.
+
 ${fmtCategorizedLinks(i.current_internal_links)}
+</outbound_links_from_this_page>
+
+<inbound_links_to_this_page>
+Liens que les AUTRES pages émettent vers cette page (graph live). Lis ce bloc EXCLUSIVEMENT pour évaluer l'autorité interne — pas pour proposer des liens sortants.
+
+${fmtInboundForFixes(i.inbound_summary)}
+</inbound_links_to_this_page>
 
 # Top queries avec volume FR et share of voice
 ${fmtEnrichedTopQueries(enrichedQueries)}
@@ -165,8 +300,8 @@ ${fmtCatalogForFixes(i.enrichment?.internal_pages_catalog)}
 ${FORBIDDEN_LINK_TARGETS.map((p) => `- ${p}`).join('\n')}
 > Pourquoi : ces URLs apparaissent légitimement dans le maillage (footer, mentions légales, blog index Wix) mais n'ont **aucune valeur éditoriale** comme cible de recommandation. Si tu veux pousser un lien CTA, propose une page \`expertise\` ou \`cta\` (honoraires-rendez-vous) du catalogue, pas une page index ni une page legal.
 
-# Diagnostic
-${JSON.stringify(i.diagnostic, null, 2)}
+# Diagnostic (rendu sectionné — lis le TL;DR puis pondère les autres sections en fonction de leur étiquette d'utilité)
+${fmtDiagnosticBlock(i.diagnostic)}
 
 # Tes contraintes
 - Le client est Cabinet Plouton, avocat pénaliste à Bordeaux

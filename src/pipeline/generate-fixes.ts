@@ -16,6 +16,9 @@ import {
   type FixGenPromptInputs,
 } from '../prompts/fix-generation.v1.js';
 import { enrichContext } from './context-enrichment.js';
+import { fetchInboundSummary } from './diagnose.js';
+import type { InboundSummary } from '../prompts/diagnostic.v1.js';
+import { pathOf } from '../lib/url.js';
 
 const FIX_TYPES = [
   'title',
@@ -43,8 +46,20 @@ const CurrentStateShape = z.object({
   h1: z.string().default(''),
   intro_first_100_words: z.string().default(''),
   schema_jsonld: z.array(z.unknown()).nullable().default(null),
+  // Sprint-11 v2 fix: preserve `placement` from Sprint-9+ snapshots. The
+  // previous shape silently dropped it and `fmtCategorizedLinks` then fell
+  // back to a regex anchor-heuristic that re-derived placement from anchor
+  // text — same bug pattern as the diagnose pipeline before Sprint 11.
   internal_links_outbound: z
-    .array(z.object({ anchor: z.string(), target: z.string() }))
+    .array(
+      z.object({
+        anchor: z.string(),
+        target: z.string(),
+        placement: z
+          .enum(['editorial', 'related', 'nav', 'footer', 'cta', 'image'])
+          .optional(),
+      }),
+    )
     .default([]),
 });
 
@@ -106,6 +121,16 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
     topQueries,
   });
 
+  // Sprint-11 v2: live inbound graph signal (same source as diagnose v5).
+  // Lets the fix LLM mark a page as "orphaned editorially" and adjust the
+  // internal_links rationale to mention seeding from source pages.
+  let inboundSummary: InboundSummary | null = null;
+  try {
+    inboundSummary = await fetchInboundSummary(pathOf(row.page as string));
+  } catch (err) {
+    process.stderr.write(`[generate-fixes] inbound fetch failed: ${(err as Error).message}\n`);
+  }
+
   const inputs: FixGenPromptInputs = {
     url: row.page as string,
     position: Number(row.avg_position),
@@ -118,6 +143,7 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
     top_queries: topQueries,
     diagnostic: row.diagnostic,
     enrichment,
+    inbound_summary: inboundSummary,
   };
 
   const prompt = renderFixGenPrompt(inputs);

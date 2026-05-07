@@ -1,5 +1,5 @@
 /**
- * Diagnostic prompt v3 — ROADMAP §8 + Sprint-7 enrichment + Sprint-8 Cooked/CWV.
+ * Diagnostic prompt v5 — ROADMAP §8 + Sprint-7/8/9 + Sprint-11 readability pass.
  *
  * Iteration history:
  *   v1 — original §8 template with engagement (GA4) section.
@@ -10,14 +10,27 @@
  *        per query, real internal-pages catalog (kills URL hallucinations),
  *        categorized maillage (editorial vs nav vs related-post),
  *        + `funnel_assessment` JSON field.
+ *   v4 — Sprint 9: replaced anchor-heuristic categorization with DOM-classified
+ *        placements (editorial/nav/footer/related/cta/image), added inbound
+ *        graph block + `internal_authority_assessment` JSON field.
+ *   v5 — Sprint 11 prompt-redesign: (1) wrapped outbound/inbound blocks in
+ *        explicit <outbound_links_from_this_page> / <inbound_links_to_this_page>
+ *        XML tags to stop the LLM from conflating the two graphs (root cause
+ *        of finding #26 hallucination — it reported "0 outbound editorial"
+ *        which was the EDITORIAL count, while the unclassified-79 bucket was
+ *        the actual outbound truth). (2) Suppressed the misleading "cul-de-sac
+ *        funnel" warning when the snapshot is pre-Sprint-9 (all links in
+ *        `unclassified` bucket — placement is genuinely unknown, not zero).
+ *        (3) Added `tldr` (max 280 chars) as the FIRST JSON field to force
+ *        synthesis upfront before the long-form fields.
  *
- * Older diagnostics persisted under v1/v2 schemas remain readable: every
- * new JSON field is `.optional().default('')` in the Zod validator (cf.
- * src/pipeline/diagnose.ts).
+ * Older diagnostics persisted under v1/v2/v3/v4 schemas remain readable:
+ * every new JSON field is `.optional().default('')` in the Zod validator
+ * (cf. src/pipeline/diagnose.ts).
  *
  * Renders the prompt with simple `{{var}}` substitution. Top-level export is
- * a function rather than a string so future versions (v4 etc.) can plug in
- * with the same signature.
+ * a function rather than a string so future versions can plug in with the
+ * same signature.
  */
 import type {
   EnrichedTopQuery,
@@ -26,7 +39,7 @@ import type {
 import type { CatalogEntry } from '../lib/site-catalog.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 4 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 5 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -167,6 +180,34 @@ function fmtCategorizedLinks(rows: DiagnosticPromptInputs['current_internal_link
   const fmtRow = (l: typeof rows[number]): string =>
     `- "${l.anchor.slice(0, 100) || '(no text)'}" → ${l.target}`;
 
+  // ---- SNAPSHOT-AGE GUARD (Sprint-11) ------------------------------------
+  // If every classified bucket is empty AND we have unclassified rows, the
+  // snapshot was taken before Sprint 9 and placement is genuinely UNKNOWN.
+  // Suppress the editorial-zero "cul-de-sac" warning — printing it would lie
+  // to the LLM, which then reports a structural gap that doesn't exist
+  // (the real bug behind finding #26 v4 diagnosis).
+  const totalClassified =
+    buckets.editorial!.length +
+    buckets.related!.length +
+    buckets.cta!.length +
+    buckets.nav!.length +
+    buckets.footer!.length +
+    buckets.image!.length;
+  const isLegacySnapshot = totalClassified === 0 && buckets.unclassified!.length > 0;
+
+  if (isLegacySnapshot) {
+    return (
+      `⚠️ **Snapshot pré-Sprint-9** : ${buckets.unclassified!.length} liens sortants ` +
+      `dont le placement DOM n'a PAS été capturé (finding antérieure au crawler ` +
+      `structurel).\n\n` +
+      `**Conséquence pour ton diagnostic** : tu ne peux PAS conclure à un manque ` +
+      `de maillage éditorial sur cette page — la donnée est inconnue, pas zéro. ` +
+      `Le prochain crawl reclassifiera ces liens. Skip toute mention de ` +
+      `"cul-de-sac funnel" / "0 lien éditorial" dans \`structural_gaps\` et ` +
+      `\`funnel_assessment\`.`
+    );
+  }
+
   const sections: string[] = [];
   sections.push(
     `**Liens éditoriaux in-body** (${buckets.editorial!.length}) — vrais signaux de funnel choisis par l'auteur :\n` +
@@ -191,7 +232,7 @@ function fmtCategorizedLinks(rows: DiagnosticPromptInputs['current_internal_link
   }
   if (buckets.unclassified!.length > 0) {
     sections.push(
-      `**Non classés** (${buckets.unclassified!.length}) — finding antérieure à Sprint 9, placement non disponible.`,
+      `**Non classés** (${buckets.unclassified!.length}) — placement DOM non disponible (mix legacy + nouveaux liens).`,
     );
   }
   return sections.join('\n\n');
@@ -201,11 +242,14 @@ function fmtInboundBlock(s: InboundSummary | null | undefined): string {
   if (!s) {
     return '_(graph de liens internes pas encore crawlé — le signal inbound apparaîtra au prochain audit)_';
   }
+  // Sprint-11: dropped the `Outbound total` line that previously appeared
+  // here. It was bleeding the outbound signal into the inbound-only section
+  // and confusing the LLM (finding #26 v4 conflated the two). Outbound is
+  // covered exclusively in the <outbound_links_from_this_page> block above.
   const lines: string[] = [
     `- **Inbound total** : ${s.inbound_total} liens depuis ${s.inbound_distinct_sources} pages distinctes`,
     `- **Inbound éditorial** (in-body, vrais signaux d'autorité interne) : **${s.inbound_editorial}**`,
     `- **Inbound nav/footer** (boilerplate présent sur toutes les pages) : ${s.inbound_nav_footer}`,
-    `- **Outbound total** depuis cette page : ${s.outbound_total}`,
   ];
   if (s.top_editorial_sources.length > 0) {
     lines.push(`\n**Top sources éditoriales linkant cette page** :`);
@@ -324,11 +368,19 @@ ${fmtCwvLine('TTFB', i.ttfb_p75_ms, 'ms')}
 ## Schema.org JSON-LD déjà présent
 ${fmtSchemaSummary(i.current_schema_jsonld)}
 
-## Maillage interne sortant déjà présent (catégorisé via DOM)
-${fmtCategorizedLinks(i.current_internal_links)}
+## Maillage interne — DEUX flux distincts à NE PAS confondre
 
-## Maillage interne — vue graph (qui linke vers cette page)
+<outbound_links_from_this_page>
+Liens que CETTE page émet vers d'autres pages du site (snapshotté à l'audit, catégorisé via DOM Sprint-9). Source de vérité pour évaluer si la page funnel correctement le lecteur.
+
+${fmtCategorizedLinks(i.current_internal_links)}
+</outbound_links_from_this_page>
+
+<inbound_links_to_this_page>
+Liens que les AUTRES pages du site émettent VERS cette page (graph live, recrawlé à chaque audit). Source de vérité pour évaluer l'autorité interne de la page (orpheline / hub / standard).
+
 ${fmtInboundBlock(i.inbound_summary)}
+</inbound_links_to_this_page>
 
 # Top requêtes (3 derniers mois) avec volume réel France et share of voice
 ${fmtEnrichedQueriesTable(enrichedQueries)}
@@ -338,9 +390,10 @@ ${fmtDemandBlock(i.enrichment)}
 ${i.enrichment ? fmtCatalog(i.enrichment.internal_pages_catalog) : '_(catalog non chargé)_'}
 
 # Ta mission
-Produis un diagnostic JSON strict avec ce schéma :
+Produis un diagnostic JSON strict avec ce schéma. **Le champ \`tldr\` vient en PREMIER et résume tout** — c'est ce que le lecteur humain verra en haut du rapport, donc il doit être autonome (lisible sans lire le reste).
 
 {
+  "tldr": "Synthèse exécutive en MAX 280 caractères : (1) cause #1 du sous-CTR en 1 phrase, (2) action #1 prioritaire en 1 phrase. Ton direct, pas de hedging. Exemple : 'Title trop générique sur \"abandon de poste\" (43% SOV gâchée par un CTR 2× sous benchmark). Action : reframer en \"Abandon de poste : 7 risques que les employeurs ignorent\" pour aligner sur l'intent informationnel.'",
   "intent_mismatch": "Décris en 1-3 phrases le mismatch entre l'intention dominante des top requêtes (en t'appuyant sur les volumes réels France) et le cadrage actuel du title/meta/H1. Cite les requêtes concernées avec leurs volumes.",
   "snippet_weakness": "Décris en 1-3 phrases pourquoi le snippet (title + meta) ne convertit pas. Sois précis : trop générique ? Pas de bénéfice chiffré ? Concurrent plus fort dans la SERP ? Si la share of voice est déjà élevée (>50%) le levier est sur le CTR pas sur le ranking.",
   "hypothesis": "Une seule phrase : ton hypothèse principale du sous-CTR.",
@@ -356,9 +409,9 @@ Produis un diagnostic JSON strict avec ce schéma :
   ],
   "engagement_diagnosis": "Lecture des signaux comportementaux Cooked (first-party, non biaisé). Si pages/session<1.3, scroll<50%, ou peu de clics sortants, explique ce que ça signale (intention déçue, contenu insuffisant, CTA manquante). Sinon: 'engagement satisfaisant'. Note: si Cooked vient juste d'être déployé et que les valeurs sont null, écris 'données comportementales en cours de collecte (n/a au premier audit)'.",
   "performance_diagnosis": "Si LCP > 2500ms, INP > 200ms ou CLS > 0.1 (zones 'Needs Improvement' ou 'Poor' Google), explique l'impact NavBoost direct (Google rétrograde les pages lentes/instables) et donne l'action prioritaire (image trop lourde, JS bloquant, layout shift sur header...). Si toutes les valeurs sont null: 'CWV en cours de collecte (n/a)'. Sinon: 'performance technique satisfaisante'.",
-  "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le maillage actuel catégorisé ci-dessus (ne pas re-suggérer des liens éditoriaux déjà en place — la nav menu ne compte pas comme maillage éditorial), et le RÔLE FUNNEL de la page.",
-  "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle dans le funnel attendu pour sa catégorie ? Quels sont les 2-3 maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs cibles précises depuis le catalogue. Pour un knowledge_brick, exiger au minimum 1 lien expertise + 1 CTA RDV éditorialement intégrés (pas juste dans la nav).",
-  "internal_authority_assessment": "1-2 phrases sur la position de cette page dans le graph interne (cf. section inbound ci-dessus). Si inbound_editorial>=10 → 'page hub à protéger' (les fixes ne doivent pas casser ce statut). Si inbound_editorial==0 et inbound_total>0 → 'page orpheline éditorialement' : prioriser absolument l'ajout de liens depuis 2-3 pages sources naturelles. Sinon → position standard, pas de levier graph spécifique. Si le graph n'est pas encore crawlé, écris 'graph non disponible (premier crawl en cours)'."
+  "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le bloc <outbound_links_from_this_page> ci-dessus (ne pas re-suggérer des liens éditoriaux déjà en place — la nav menu ne compte pas comme maillage éditorial), et le RÔLE FUNNEL de la page. ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', traite le maillage éditorial sortant comme INCONNU et n'invoque PAS de gap basé sur l'absence de liens.**",
+  "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle dans le funnel attendu pour sa catégorie ? Quels sont les 2-3 maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs cibles précises depuis le catalogue. Pour un knowledge_brick, exiger au minimum 1 lien expertise + 1 CTA RDV éditorialement intégrés (pas juste dans la nav). ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', écris : 'maillage éditorial sortant non capturé au snapshot — réévaluer après le prochain crawl' et ne propose PAS de maillons manquants.**",
+  "internal_authority_assessment": "1-2 phrases sur la position de cette page dans le graph interne (lis EXCLUSIVEMENT le bloc <inbound_links_to_this_page>, JAMAIS le bloc outbound). Si inbound_editorial>=10 → 'page hub à protéger' (les fixes ne doivent pas casser ce statut). Si inbound_editorial==0 et inbound_total>0 → 'page orpheline éditorialement' : prioriser absolument l'ajout de liens depuis 2-3 pages sources naturelles. Sinon → position standard, pas de levier graph spécifique. Si le graph n'est pas encore crawlé, écris 'graph non disponible (premier crawl en cours)'."
 }
 
 Réponds UNIQUEMENT avec le JSON, pas de markdown, pas de préambule.`;

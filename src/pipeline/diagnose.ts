@@ -21,6 +21,9 @@ import { enrichContext } from './context-enrichment.js';
 import { pathOf } from '../lib/url.js';
 
 const DiagnosticSchema = z.object({
+  // Sprint-11 v5: synthesis-first field. Optional so older v1-v4 diagnostics
+  // (persisted before this migration) keep validating when re-loaded.
+  tldr: z.string().optional().default(''),
   intent_mismatch: z.string(),
   snippet_weakness: z.string(),
   hypothesis: z.string(),
@@ -51,8 +54,21 @@ const CurrentStateShape = z.object({
   h1: z.string().default(''),
   intro_first_100_words: z.string().default(''),
   schema_jsonld: z.array(z.unknown()).nullable().default(null),
+  // Sprint-11 fix: preserve `placement` from Sprint-9+ snapshots. The previous
+  // shape silently dropped it (Zod strips unknown keys by default), pushing
+  // every link into the "unclassified" bucket downstream — even on snapshots
+  // that DID have DOM-classified placements. `placement` stays optional so
+  // pre-Sprint-9 snapshots still validate.
   internal_links_outbound: z
-    .array(z.object({ anchor: z.string(), target: z.string() }))
+    .array(
+      z.object({
+        anchor: z.string(),
+        target: z.string(),
+        placement: z
+          .enum(['editorial', 'related', 'nav', 'footer', 'cta', 'image'])
+          .optional(),
+      }),
+    )
     .default([]),
 });
 
@@ -105,7 +121,7 @@ function unfenceJson(s: string): string {
  * counts and an empty top_sources list — the prompt will surface this
  * as "graph not available yet" so the LLM doesn't fabricate authority.
  */
-async function fetchInboundSummary(targetPath: string): Promise<InboundSummary> {
+export async function fetchInboundSummary(targetPath: string): Promise<InboundSummary> {
   const sb = supabase();
 
   // Aggregated counts via the view
@@ -140,7 +156,13 @@ async function fetchInboundSummary(targetPath: string): Promise<InboundSummary> 
   };
 }
 
-export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayload> {
+/**
+ * Sprint 11 — Build the full DiagnosticPromptInputs for a finding without
+ * calling the LLM. Used both by diagnoseFinding (then sent to Anthropic)
+ * and by the `--print-prompt` driver flag (then printed to stdout for
+ * debugging prompt-clarity issues).
+ */
+export async function buildDiagnosticInputs(findingId: string): Promise<DiagnosticPromptInputs> {
   // NOTE: keep this select string a single literal — Supabase's PostgREST
   // type inference falls back to `GenericStringError` when the string is
   // built via `+` concatenation, which breaks downstream `.data` typing.
@@ -188,7 +210,7 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     process.stderr.write(`[diagnose] inbound fetch failed: ${(err as Error).message}\n`);
   }
 
-  const inputs: DiagnosticPromptInputs = {
+  return {
     url: row.page as string,
     avg_position: Number(row.avg_position),
     position_drift: row.position_drift != null ? Number(row.position_drift) : null,
@@ -217,6 +239,10 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     enrichment,
     inbound_summary: inboundSummary,
   };
+}
+
+export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayload> {
+  const inputs = await buildDiagnosticInputs(findingId);
 
   const prompt = renderDiagnosticPrompt(inputs);
   const res = await anthropic().messages.create({
