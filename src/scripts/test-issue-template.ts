@@ -185,7 +185,111 @@ test('empty diagnostic fields are omitted (legacy v1 cleanly renders)', () => {
   assert.ok(!r.body.includes('- **Structure** —'));
 });
 
-test('metrics box has both GSC and Cooked columns side-by-side', () => {
+test('metrics box has the Sprint-12 4-column layout (GSC × Cooked × CWV × Conversion)', () => {
   const r = renderIssue(fixture);
-  assert.match(r.body, /\| 📊 GSC \(3 mois\) \| Valeur \| 🧭 Cooked behavior \| Valeur \|/);
+  assert.match(
+    r.body,
+    /\| 📊 GSC \(3 mois\) \| Valeur \| 🧭 Cooked behavior \| Valeur \| ⚡ CWV \(28d p75\) \| Valeur \| 📞 Conversion \(28d\) \| Valeur \|/,
+  );
+});
+
+// ---------- Sprint-12 v6 + Cooked extras tests -----------------------------
+
+test('diagnostic bullets surface ALL v6 fields (conversion / traffic / device / outbound leak)', () => {
+  const fullV6Diag = {
+    ...fixture.diagnostic,
+    conversion_assessment: '5 phone clicks dont 60% body — intent qualifié fort.',
+    traffic_strategy_note: 'top_source=google/organic 87% — priorité CTR snippet.',
+    device_optimization_note: 'mobile 70% + scroll court — fix mobile-first impératif.',
+    outbound_leak_note: 'top destination = legifrance.gouv.fr — ajouter citation in-page.',
+  };
+  const r = renderIssue({ ...fixture, diagnostic: fullV6Diag });
+  for (const label of ['Conversion', 'Traffic strategy', 'Device optimization', 'Outbound leak']) {
+    assert.match(r.body, new RegExp(`- \\*\\*${label}\\*\\*`), `missing v6 bullet: ${label}`);
+  }
+});
+
+test('CWV cells classify against Google thresholds (Good / NI / Poor)', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      lcp_p75_ms: 2200,    // Good (≤ 2500)
+      inp_p75_ms: 350,     // Needs Improvement (≤ 500)
+      cls_p75: 0.32,       // Poor (> 0.25)
+      ttfb_p75_ms: 600,    // Good (≤ 800)
+    },
+  });
+  // Spot the 3 verdicts with the units in the same cell
+  assert.match(r.body, /2200ms ✅/);
+  assert.match(r.body, /350ms ⚠️/);
+  assert.match(r.body, /0\.320 🚫/);
+  assert.match(r.body, /600ms ✅/);
+});
+
+test('CWV cells degrade to "—" when Cooked extras are absent', () => {
+  const r = renderIssue(fixture); // no cooked_extras passed
+  // The 4 CWV labels still appear, but cells are em-dashes
+  assert.ok(r.body.includes('| LCP | — '));
+  assert.ok(r.body.includes('| INP | — '));
+  assert.ok(r.body.includes('| CLS | — '));
+  assert.ok(r.body.includes('| TTFB | — '));
+});
+
+test('conversion column shows phone/email/booking + body share', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      phone_clicks_28d: 5,
+      email_clicks_28d: 1,
+      booking_cta_clicks_28d: 0,
+      cta_body_pct: 60,
+    },
+  });
+  assert.ok(r.body.includes('| Phone clicks | 5 |'));
+  assert.ok(r.body.includes('| Email clicks | 1 |'));
+  assert.ok(r.body.includes('| Booking CTA | 0 |'));
+  assert.match(r.body, /60% body \(intent qualifié\)/);
+});
+
+test('low capture rate (<50%) surfaces a data quality warning banner', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      cooked_sessions_28d: 14,
+      gsc_clicks_28d: 142,
+      capture_rate_pct: 9.86,
+    },
+  });
+  assert.match(r.body, /⚠️ \*\*Data quality\*\* — Cooked capture rate \*\*10%\*\*/);
+  assert.match(r.body, /lower bound/);
+});
+
+test('healthy capture rate (>=50%) does NOT surface the data quality banner', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      cooked_sessions_28d: 120,
+      gsc_clicks_28d: 142,
+      capture_rate_pct: 84.5,
+    },
+  });
+  assert.ok(!r.body.includes('Data quality'));
+});
+
+test('absent cooked_extras renders cleanly (no banner, "—" cells in box)', () => {
+  const r = renderIssue(fixture); // no cooked_extras
+  assert.ok(!r.body.includes('Data quality'));
+  assert.ok(r.body.includes('| Phone clicks | — |'));
+});
+
+test('provenance + device cell shows top_source/medium and mobile/desktop split', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      top_source: 'google',
+      top_medium: 'organic',
+      device_split: { desktop: 28, mobile: 70, tablet: 2 },
+    },
+  });
+  assert.match(r.body, /google\/organic.*mob 70 \/ desk 28/);
 });

@@ -43,6 +43,11 @@ export type IssueDiagnostic = {
   funnel_assessment?: string;
   /** Sprint-9 (v4). May be '' on legacy v1-v3 diagnostics. */
   internal_authority_assessment?: string;
+  /** Sprint-12 (v6). May be '' on legacy v1-v5 diagnostics. */
+  conversion_assessment?: string;
+  traffic_strategy_note?: string;
+  device_optimization_note?: string;
+  outbound_leak_note?: string;
   top_queries_analysis: Array<{
     query: string;
     impressions: number;
@@ -51,6 +56,31 @@ export type IssueDiagnostic = {
     intent_match: 'yes' | 'partial' | 'no';
     note?: string;
   }>;
+};
+
+/** Sprint-12: optional Cooked extras surfaced in the issue box. Issue
+ *  template is rendered without these on findings created before Sprint-12,
+ *  so all fields are optional and degraded cleanly. */
+export type IssueCookedExtras = {
+  // CWV — already classified Good / Needs Improvement / Poor against Google thresholds
+  lcp_p75_ms?: number | null;
+  inp_p75_ms?: number | null;
+  cls_p75?: number | null;
+  ttfb_p75_ms?: number | null;
+  // Conversion — 28d CTAs with body-vs-ambient breakdown
+  phone_clicks_28d?: number | null;
+  email_clicks_28d?: number | null;
+  booking_cta_clicks_28d?: number | null;
+  cta_body_pct?: number | null; // % of CTA clicks that came from body (intent qualified)
+  // Provenance
+  top_source?: string | null;
+  top_medium?: string | null;
+  // Device
+  device_split?: { desktop: number; mobile: number; tablet: number } | null;
+  // Data quality (capture rate)
+  cooked_sessions_28d?: number | null;
+  gsc_clicks_28d?: number | null;
+  capture_rate_pct?: number | null; // 0..100
 };
 
 export type IssueInputs = {
@@ -90,6 +120,10 @@ export type IssueInputs = {
 
   // Optional links to external dashboards
   supabase_finding_url?: string;
+
+  // Sprint-12: Cooked full-menu extras for the issue box. Optional —
+  // findings created before Sprint-12 render cleanly without it.
+  cooked_extras?: IssueCookedExtras;
 };
 
 function pct(n: number, digits = 2): string {
@@ -260,21 +294,53 @@ export function renderIssueBody(i: IssueInputs): string {
       : `> 🟢 **Groupe traitement** — à appliquer après revue.`;
 
   // ---- Compact metrics box ------------------------------------------------
-  // Two columns: GSC signals on the left, Cooked behavior on the right.
-  // Scannable at a glance — no need to read prose to know "is this page
-  // pogo-sticking? what's the gap?".
+  // Sprint-12: 4 columns (GSC × Cooked behavior × CWV × Conversion).
+  // CWV and Conversion columns degrade to "—" cells when Cooked extras
+  // weren't passed (legacy findings or freshly-seeded Cooked DB).
+  const ex = i.cooked_extras;
+  const cwvCell = (ms: number | null | undefined, threshGood: number, threshNI: number, unit: 'ms' | ''): string => {
+    if (ms == null) return '—';
+    const verdict = ms <= threshGood ? '✅' : ms <= threshNI ? '⚠️' : '🚫';
+    const display = unit === 'ms' ? `${Math.round(ms)}ms` : ms.toFixed(3);
+    return `${display} ${verdict}`;
+  };
+  const lcpCell = cwvCell(ex?.lcp_p75_ms, 2500, 4000, 'ms');
+  const inpCell = cwvCell(ex?.inp_p75_ms, 200, 500, 'ms');
+  const clsCell = cwvCell(ex?.cls_p75, 0.1, 0.25, '');
+  const ttfbCell = cwvCell(ex?.ttfb_p75_ms, 800, 1800, 'ms');
+
+  const conv = (n: number | null | undefined): string => (n == null ? '—' : String(n));
+  const phoneCell = conv(ex?.phone_clicks_28d);
+  const emailCell = conv(ex?.email_clicks_28d);
+  const bookingCell = conv(ex?.booking_cta_clicks_28d);
+  const bodyPctCell =
+    ex?.cta_body_pct != null
+      ? `${ex.cta_body_pct.toFixed(0)}% body (intent qualifié)`
+      : '—';
+  const provCell =
+    ex?.top_source ? `${ex.top_source}/${ex.top_medium ?? '?'}` : '—';
+  const deviceCell =
+    ex?.device_split
+      ? `mob ${ex.device_split.mobile.toFixed(0)} / desk ${ex.device_split.desktop.toFixed(0)}`
+      : '—';
+  const captureCell =
+    ex?.capture_rate_pct != null
+      ? `${ex.capture_rate_pct.toFixed(0)}% (${ex.cooked_sessions_28d ?? '?'}/${ex.gsc_clicks_28d ?? '?'})`
+      : '—';
+
   const metricsBox = [
-    `| 📊 GSC (${i.audit_period_months} mois) | Valeur | 🧭 Cooked behavior | Valeur |`,
-    `|---|---|---|---|`,
-    `| Position moy. | ${i.avg_position.toFixed(1)} (drift ${fmtDriftCell(i.position_drift)}) | Pages/session | ${fmtNumOrNA(i.pages_per_session)} — ${ppsInterpretation(i.pages_per_session)} |`,
-    `| Impressions/mois | ${monthlyImp.toLocaleString('fr-FR')} | Durée active | ${fmtNumOrNA(i.avg_session_duration_seconds, 's', 0)} — ${durationInterpretation(i.avg_session_duration_seconds)} |`,
-    `| **CTR actuel** | **${pct(i.ctr_actual)}%** | Scroll moy. | ${fmtNumOrNA(i.scroll_depth_avg, '%', 1)} — ${scrollInterpretation(i.scroll_depth_avg)} |`,
-    `| CTR benchmark | ${pct(i.ctr_expected)}% | Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)}) |`,
-    `| **Gap vs benchmark** | **${(i.ctr_gap * 100).toFixed(1)}% sous** | Page | [${shortPath(i.page, 50)}](${i.page}) |`,
+    `| 📊 GSC (${i.audit_period_months} mois) | Valeur | 🧭 Cooked behavior | Valeur | ⚡ CWV (28d p75) | Valeur | 📞 Conversion (28d) | Valeur |`,
+    `|---|---|---|---|---|---|---|---|`,
+    `| Position moy. | ${i.avg_position.toFixed(1)} (drift ${fmtDriftCell(i.position_drift)}) | Pages/session | ${fmtNumOrNA(i.pages_per_session)} — ${ppsInterpretation(i.pages_per_session)} | LCP | ${lcpCell} | Phone clicks | ${phoneCell} |`,
+    `| Impressions/mois | ${monthlyImp.toLocaleString('fr-FR')} | Durée active | ${fmtNumOrNA(i.avg_session_duration_seconds, 's', 0)} — ${durationInterpretation(i.avg_session_duration_seconds)} | INP | ${inpCell} | Email clicks | ${emailCell} |`,
+    `| **CTR actuel** | **${pct(i.ctr_actual)}%** | Scroll moy. | ${fmtNumOrNA(i.scroll_depth_avg, '%', 1)} — ${scrollInterpretation(i.scroll_depth_avg)} | CLS | ${clsCell} | Booking CTA | ${bookingCell} |`,
+    `| CTR benchmark | ${pct(i.ctr_expected)}% | Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)}) | TTFB | ${ttfbCell} | Body share | ${bodyPctCell} |`,
+    `| **Gap vs benchmark** | **${(i.ctr_gap * 100).toFixed(1)}% sous** | Page | [${shortPath(i.page, 50)}](${i.page}) | Capture rate | ${captureCell} | Provenance / Device | ${provCell} • ${deviceCell} |`,
   ].join('\n');
 
   // ---- Diagnostic bullets (one per analytic field) ------------------------
   // Empty fields are skipped so legacy v1 diagnostics render cleanly.
+  // Sprint-12: 4 new v6 fields (conversion / traffic / device / outbound leak).
   const diagBullets = [
     fmtDiagBullet('Hypothèse', i.diagnostic.hypothesis),
     fmtDiagBullet('Intent mismatch', i.diagnostic.intent_mismatch),
@@ -284,9 +350,23 @@ export function renderIssueBody(i: IssueInputs): string {
     fmtDiagBullet('Structure', i.diagnostic.structural_gaps),
     fmtDiagBullet('Funnel', i.diagnostic.funnel_assessment),
     fmtDiagBullet('Autorité interne', i.diagnostic.internal_authority_assessment),
+    fmtDiagBullet('Conversion', i.diagnostic.conversion_assessment),
+    fmtDiagBullet('Traffic strategy', i.diagnostic.traffic_strategy_note),
+    fmtDiagBullet('Device optimization', i.diagnostic.device_optimization_note),
+    fmtDiagBullet('Outbound leak', i.diagnostic.outbound_leak_note),
   ]
     .filter((s) => s !== '')
     .join('\n');
+
+  // ---- Sprint-12 data quality banner --------------------------------------
+  // If capture_rate is < 50%, surface it as a warning blockquote between the
+  // metrics box and the diagnostic — the human reader needs to know "Cooked
+  // signals here are a lower bound, not absolute".
+  let dataQualityBanner = '';
+  if (i.cooked_extras?.capture_rate_pct != null && i.cooked_extras.capture_rate_pct < 50) {
+    const rate = i.cooked_extras.capture_rate_pct.toFixed(0);
+    dataQualityBanner = `> ⚠️ **Data quality** — Cooked capture rate **${rate}%** sur cette page (${i.cooked_extras.cooked_sessions_28d ?? '?'} sessions Cooked vs ${i.cooked_extras.gsc_clicks_28d ?? '?'} GSC clicks 28d). Lis les chiffres Cooked comme un **lower bound**, pas comme des absolus.`;
+  }
 
   // Sprint-11 layout: each top-level section is a self-contained string with
   // any internal newlines already in place. Sections are joined with BLANK
@@ -348,10 +428,13 @@ export function renderIssueBody(i: IssueInputs): string {
     fmtTopQueries(i.diagnostic.top_queries_analysis, 5),
   ].join('\n');
 
+  // Sections may be empty (e.g. dataQualityBanner when capture rate is OK).
+  // Filter them out so the join('\n\n') doesn't produce double-blank gaps.
   return [
     tldrBlock,
     groupBanner,
     metricsBox,
+    dataQualityBanner,
     `---`,
     diagSection,
     `---`,
@@ -359,7 +442,9 @@ export function renderIssueBody(i: IssueInputs): string {
     cycleBlock,
     workflowBlock,
     refsBlock,
-  ].join('\n\n');
+  ]
+    .filter((s) => s !== '')
+    .join('\n\n');
 }
 
 export type RenderedIssue = { title: string; body: string; labels: string[] };

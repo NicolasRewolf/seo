@@ -10,6 +10,11 @@
  *        like /post/licenciement-faute-grave (didn't exist), invented
  *        dateModified values for schema, and re-suggested internal links
  *        that already existed.
+ *   v3 — Sprint 12: synced with diagnostic v6 (Cooked full-menu). The fix
+ *        LLM now receives raw Cooked counters in addition to the diagnostic
+ *        prose, plus the data quality check + cta breakdown. Lets fixes be
+ *        chiffrés ("phone_clicks_28d=0 sur 30 sessions → CTA in-body
+ *        prioritaire") instead of derivés vagues.
  *   v2 — Sprint 11: synced with diagnostic v5. Three bugs fixed:
  *        (1) `current_internal_links` now carries the Sprint-9 `placement`
  *        field — v1 stripped it via a partial type and re-derived placement
@@ -28,10 +33,14 @@
  */
 import type { EnrichedContext, EnrichedTopQuery } from '../pipeline/context-enrichment.js';
 import type { InboundSummary } from './diagnostic.v1.js';
+import type {
+  PageSnapshotExtras,
+  CtaBreakdownRow,
+} from '../lib/cooked.js';
 import { FORBIDDEN_LINK_TARGETS } from '../lib/site-catalog.js';
 
 export const FIX_GEN_PROMPT_NAME = 'fix_generation' as const;
-export const FIX_GEN_PROMPT_VERSION = 2 as const;
+export const FIX_GEN_PROMPT_VERSION = 3 as const;
 
 export type FixGenPromptInputs = {
   url: string;
@@ -52,6 +61,10 @@ export type FixGenPromptInputs = {
   enrichment?: EnrichedContext;
   /** Sprint-11 v2: live inbound graph signal. Null if not yet crawled. */
   inbound_summary?: InboundSummary | null;
+  // ---------- Sprint-12 v3 — Cooked full-menu (raw, not just prose) ----------
+  cooked_extras?: PageSnapshotExtras | null;
+  cta_breakdown?: CtaBreakdownRow[];
+  gsc_clicks_28d?: number | null;
 };
 
 function fmtTopQueries(rows: FixGenPromptInputs['top_queries']): string {
@@ -252,6 +265,56 @@ function fmtLinks(rows: FixGenPromptInputs['current_internal_links']): string {
   return sample.join(' | ') + tail;
 }
 
+/**
+ * Sprint-12 v3: compact Cooked block for the fix-gen prompt.
+ * Focused on what's actionable for FIXES (vs the diagnostic which had
+ * the full multi-window trend / device split / etc).
+ */
+function fmtCookedBlockForFixes(
+  ex: PageSnapshotExtras | null | undefined,
+  cta: CtaBreakdownRow[] | undefined,
+  gscClicks28d: number | null | undefined,
+): string {
+  const lines: string[] = [];
+
+  // Capture rate sanity — fix LLM must know if Cooked counts are reliable
+  if (gscClicks28d != null && ex && ex.windows['28d'].sessions > 0) {
+    const rate = (ex.windows['28d'].sessions / Math.max(1, gscClicks28d)) * 100;
+    lines.push(`- capture_rate_28d: ${rate.toFixed(0)}% (${ex.windows['28d'].sessions} Cooked sessions / ${gscClicks28d} GSC clicks)`);
+    if (rate < 50) {
+      lines.push(`  ⚠️ Cooked under-capture cette page — chiffre tes propositions en RELATIF, pas en absolu`);
+    }
+  }
+
+  if (ex) {
+    const w28 = ex.windows['28d'];
+    const c = ex.conversion;
+    lines.push(`- 28d: sessions=${w28.sessions}, scroll_avg=${w28.scroll_avg.toFixed(0)}%, dwell=${w28.avg_dwell_seconds.toFixed(0)}s, outbound=${w28.outbound_clicks}`);
+    lines.push(`- conversion 28d: phone=${c.phone_clicks['28d']}, email=${c.email_clicks['28d']}, booking_cta=${c.booking_cta_clicks['28d']}`);
+    if (ex.device_split_28d) {
+      const d = ex.device_split_28d;
+      lines.push(`- device_split: mobile=${d.mobile.toFixed(0)}% desktop=${d.desktop.toFixed(0)}%`);
+    }
+    if (ex.provenance_28d.top_source) {
+      lines.push(`- top_source: ${ex.provenance_28d.top_source}/${ex.provenance_28d.top_medium ?? '?'}`);
+    }
+  } else {
+    lines.push(`_(Cooked snapshot indisponible pour cette page — capture en cours)_`);
+  }
+
+  if (cta && cta.length > 0) {
+    const byPlacement: Record<string, number> = { header: 0, footer: 0, body: 0 };
+    for (const r of cta) byPlacement[r.placement] = (byPlacement[r.placement] ?? 0) + r.clicks;
+    const total = byPlacement.header! + byPlacement.footer! + byPlacement.body!;
+    if (total > 0) {
+      const bodyPct = ((byPlacement.body! / total) * 100).toFixed(0);
+      lines.push(`- cta_breakdown 28d: ${byPlacement.body} body + ${byPlacement.footer} footer + ${byPlacement.header} header = ${total} (body=${bodyPct}% intent qualifié)`);
+    }
+  }
+
+  return lines.length > 0 ? lines.join('\n') : '_(pas de signal Cooked exploitable)_';
+}
+
 export function renderFixGenPrompt(i: FixGenPromptInputs): string {
   const enrichedQueries: EnrichedTopQuery[] =
     i.enrichment?.enriched_top_queries ??
@@ -302,6 +365,19 @@ ${FORBIDDEN_LINK_TARGETS.map((p) => `- ${p}`).join('\n')}
 
 # Diagnostic (rendu sectionné — lis le TL;DR puis pondère les autres sections en fonction de leur étiquette d'utilité)
 ${fmtDiagnosticBlock(i.diagnostic)}
+
+# Signaux Cooked raw (Sprint-12) — chiffre tes recos avec ces nombres, pas avec la prose du diagnostic seul
+
+<cooked_signals_for_fixes>
+${fmtCookedBlockForFixes(i.cooked_extras, i.cta_breakdown, i.gsc_clicks_28d)}
+</cooked_signals_for_fixes>
+
+**Comment t'en servir** :
+- Si \`capture_rate < 50%\` : reste en relatif ("renforcer" plutôt que "ajouter X clicks")
+- Si \`cta_breakdown body=0\` ET \`phone_clicks_28d=0\` : fix \`internal_links\` doit absolument inclure un CTA in-body (pas juste header/footer)
+- Si \`cta_breakdown body > 0\` : la page CONVERTIT déjà en intent qualifié — les fixes ne doivent PAS perturber le placement du CTA in-body existant
+- Si \`device_split.mobile > 65%\` : le title et l'intro doivent être lus mobile-first (snippets coupés à ~30 chars sur mobile)
+- Si \`top_source = google/organic\` : priorité title+meta (la SERP est ton champ de bataille). Si autre : adapter (OG tags pour social, etc.)
 
 # Tes contraintes
 - Le client est Cabinet Plouton, avocat pénaliste à Bordeaux
