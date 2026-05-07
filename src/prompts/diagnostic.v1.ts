@@ -392,8 +392,18 @@ function fmtOutboundDestinations(rows: OutboundDestination[] | undefined): strin
  * GSC clicks ÷ Cooked sessions = tracker capture rate. Cooked agent insisted
  * this lands DÈS Phase C, not Sprint+1, because the LLM must know whether to
  * read Cooked metrics as ground truth or as a lower bound.
+ *
+ * Sprint-12 Cooked-agent feedback integrated:
+ *   - rate > 100% is normal (page has non-Google traffic — direct, social,
+ *     other referrers). At rate > 150%, surface explicitly that Cooked is
+ *     ground truth on the FULL volume (not just the GSC slice).
+ *   - 4-tier verdicts enriched with empirical Cooked-side explanations
+ *     (SSR vs JS-rendered, ad-blockers, tracker load timing).
  */
-function fmtDataQualityCheck(
+// Exported so the unit tests can validate the verdict strings without
+// having to render the full prompt body. Not part of the public API —
+// callers should not rely on the exact wording.
+export function fmtDataQualityCheck(
   gscClicks28d: number | null | undefined,
   cookedSessions28d: number | null | undefined,
 ): string {
@@ -405,14 +415,22 @@ function fmtDataQualityCheck(
   }
   const rate = (cookedSessions28d / gscClicks28d) * 100;
   let verdict: string;
-  if (rate >= 80) {
-    verdict = '✅ ground truth — les chiffres Cooked peuvent être lus comme absolus';
+  // Empirical thresholds calibrated for Wix Studio (Cooked agent feedback).
+  if (rate > 150) {
+    verdict =
+      '✅✅ ground truth FULL VOLUME — cette page a du trafic significatif HORS Google (direct, social, referrers). Cooked voit l\'ensemble, GSC ne voit que la slice "Google search". Lis tous les chiffres Cooked comme absolus, et n\'utilise PAS les GSC impressions comme dénominateur de conversion (utilise Cooked sessions à la place).';
+  } else if (rate >= 80) {
+    verdict =
+      '✅ ground truth — la page est SSR-bien, le tracker se charge tôt, peu d\'ad-blockers actifs. Chiffres Cooked = absolus.';
   } else if (rate >= 50) {
-    verdict = '⚠️ partial capture — Cooked sous-évalue de ~' + (100 - rate).toFixed(0) + '%, lire comme lower bound';
+    verdict =
+      '⚠️ lower bound acceptable — quelques % d\'ad-blockers + des hits où le tracker n\'a pas eu le temps de charger avant que l\'user reparte. Toujours actionable, lire les conversion rates comme un plancher (ils sont en réalité ≥ ce que tu vois).';
   } else if (rate >= 20) {
-    verdict = '⚠️⚠️ low capture — Cooked rate la majorité du trafic, conversion rates absolus non fiables (comparer en relatif uniquement)';
+    verdict =
+      '⚠️⚠️ sous-capture forte — investigation requise côté tracker. Causes probables : (a) page partiellement JS-rendered (le widget Wix qui contient le contenu charge en client-side après le render initial), (b) ad-blocker pattern spécifique sur cette URL. Lecture RELATIVE seulement — ne JAMAIS comparer en absolu à d\'autres pages, ni convertir en taux de conversion %.';
   } else {
-    verdict = '🚫 tracker probablement cassé sur cette page — vérifier le chargement du Wix Custom Code, ne PAS conclure à l\'absence de conversion sur ces chiffres';
+    verdict =
+      '🚫 tracker quasi-cassé sur cette URL. Soit on fix le tracker (ajout d\'un retry sur load), soit on désactive cette page de l\'audit comportemental jusqu\'à fix. NE PAS conclure à l\'absence de conversion sur ces chiffres — c\'est probablement un problème de capture, pas un problème de page.';
   }
   return [
     `- GSC clicks 28d: ${gscClicks28d}`,
