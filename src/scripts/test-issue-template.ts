@@ -114,16 +114,15 @@ test('cycle de mesure dates are baseline + 30 + 60', () => {
 
 test('Cooked behavior interpretations flag the warning thresholds', () => {
   const r = renderIssue(fixture);
-  // Sprint-11: behavior signals now live in the metrics box right column
-  // (Pages/session, Durée, Scroll moy.), one row per signal.
+  // Sprint-13 v2: 2-col layout, labels are "Pages/session", "Scroll moyen".
   assert.match(r.body, /Pages\/session.*1\.02.*rebond rapide/);
-  assert.match(r.body, /Scroll moy\..*12\.4%.*scroll superficiel/);
+  assert.match(r.body, /Scroll moyen.*12\.4%.*scroll superficiel/);
 });
 
 test('drift cell falls back gracefully when null (first audit)', () => {
   const r = renderIssue({ ...fixture, position_drift: null });
-  // Sprint-11: drift moved inline into the Position cell of the metrics box.
-  assert.match(r.body, /Position moy\..*premier audit/);
+  // Sprint-13 v2: row label is "Position moyenne" in the 2-col table.
+  assert.match(r.body, /Position moyenne.*premier audit/);
 });
 
 test('finding + audit_run IDs appear in Refs', () => {
@@ -186,12 +185,19 @@ test('empty diagnostic fields are omitted (legacy v1 cleanly renders)', () => {
   assert.ok(!r.body.includes('- **Structure** —'));
 });
 
-test('metrics box has the Sprint-12 4-column layout (GSC × Cooked × CWV × Conversion)', () => {
+test('metrics box uses the Sprint-13 v2 2-column × 20-row layout', () => {
   const r = renderIssue(fixture);
-  assert.match(
-    r.body,
-    /\| 📊 GSC \(3 mois\) \| Valeur \| 🧭 Cooked behavior \| Valeur \| ⚡ CWV \(28d p75\) \| Valeur \| 📞 Conversion \(28d\) \| Valeur \|/,
-  );
+  // Header is now "Métrique | Valeur" — single 2-col table.
+  assert.match(r.body, /\| Métrique \| Valeur \|\n\|---\|---\|/);
+  // Slice from the table header to the next blank line, then count rows.
+  const headerIdx = r.body.indexOf('| Métrique | Valeur |');
+  const afterHeader = r.body.slice(headerIdx);
+  const blankLineIdx = afterHeader.indexOf('\n\n');
+  const tableBody = afterHeader.slice(0, blankLineIdx);
+  const allRows = tableBody.split('\n').filter((l) => l.startsWith('|'));
+  // header (1) + separator (1) + 20 data rows = 22 total
+  const dataRows = allRows.filter((l) => !l.includes('---') && !l.includes('Métrique | Valeur'));
+  assert.equal(dataRows.length, 20, `expected 20 data rows, got ${dataRows.length}: ${dataRows.map((r) => r.slice(0, 40)).join('\n')}`);
 });
 
 // ---------- Sprint-12 v6 + Cooked extras tests -----------------------------
@@ -229,14 +235,14 @@ test('CWV cells classify against Google thresholds (Good / NI / Poor)', () => {
 
 test('CWV cells degrade to "—" when Cooked extras are absent', () => {
   const r = renderIssue(fixture); // no cooked_extras passed
-  // The 4 CWV labels still appear, but cells are em-dashes
-  assert.ok(r.body.includes('| LCP | — '));
-  assert.ok(r.body.includes('| INP | — '));
-  assert.ok(r.body.includes('| CLS | — '));
-  assert.ok(r.body.includes('| TTFB | — '));
+  // Sprint-13 v2: row labels are "LCP (p75 28j)" etc. in the 2-col table.
+  assert.ok(r.body.includes('| LCP (p75 28j) | — |'));
+  assert.ok(r.body.includes('| INP (p75 28j) | — |'));
+  assert.ok(r.body.includes('| CLS (p75 28j) | — |'));
+  assert.ok(r.body.includes('| TTFB (p75 28j) | — |'));
 });
 
-test('conversion column shows phone/email/booking + body share', () => {
+test('conversion rows show phone/email/booking + body share (Sprint-13 v2 layout)', () => {
   const r = renderIssue({
     ...fixture,
     cooked_extras: {
@@ -246,9 +252,10 @@ test('conversion column shows phone/email/booking + body share', () => {
       cta_body_pct: 60,
     },
   });
-  assert.ok(r.body.includes('| Phone clicks | 5 |'));
-  assert.ok(r.body.includes('| Email clicks | 1 |'));
-  assert.ok(r.body.includes('| Booking CTA | 0 |'));
+  // Sprint-13 v2: row labels use "(28j)" suffix in the 2-col table.
+  assert.match(r.body, /\| Phone clicks \(28j\) \| 5/);
+  assert.match(r.body, /\| Email clicks \(28j\) \| 1/);
+  assert.match(r.body, /\| Booking CTA clicks \(28j\) \| 0/);
   assert.match(r.body, /60% body \(intent qualifié\)/);
 });
 
@@ -278,10 +285,10 @@ test('healthy capture rate (>=50%) does NOT surface the data quality banner', ()
   assert.ok(!r.body.includes('Data quality'));
 });
 
-test('absent cooked_extras renders cleanly (no banner, "—" cells in box)', () => {
+test('absent cooked_extras renders cleanly (no banner, "—" cells in 2-col box)', () => {
   const r = renderIssue(fixture); // no cooked_extras
   assert.ok(!r.body.includes('Data quality'));
-  assert.ok(r.body.includes('| Phone clicks | — |'));
+  assert.ok(r.body.includes('| Phone clicks (28j) | — |'));
 });
 
 test('provenance + device cell shows top_source/medium and mobile/desktop split', () => {
@@ -355,9 +362,10 @@ test('hotfix #4 — behavior cells fallback to cooked_extras 28d when audit_find
       scroll_avg_28d: 28.5,
     },
   });
+  // Sprint-13 v2: 2-col labels. "Durée active moyenne" + "Scroll moyen".
   assert.match(r.body, /Pages\/session.*1\.42.*standard/);
-  assert.match(r.body, /Durée active.*117s.*session longue/);
-  assert.match(r.body, /Scroll moy\..*28\.5%.*scroll superficiel/);
+  assert.match(r.body, /Durée active moyenne.*117s.*session longue/);
+  assert.match(r.body, /Scroll moyen.*28\.5%.*scroll superficiel/);
 });
 
 test('hotfix #4 — top-level values still preferred over cooked_extras when both present', () => {
@@ -393,14 +401,14 @@ test('Sprint-13 — group banner uses GitHub TIP alert (treatment) and CAUTION (
   assert.match(rC.body, /> \[!CAUTION\]\n> \*\*Groupe contrôle\*\*/);
 });
 
-test('Sprint-13 — box cells differing from column header carry SEO calc tag', () => {
+test('Sprint-13 — computed/interpolated rows carry SEO calc tag', () => {
   const r = renderIssue(fixture);
-  // CTR benchmark is interpolated → tag visible
-  assert.match(r.body, /CTR benchmark \| 3\.64% <sub>_\(SEO calc · interpolé\)_<\/sub>/);
+  // CTR benchmark is interpolated
+  assert.match(r.body, /CTR benchmark.*3\.64%.*SEO calc · interpolé/);
   // Gap vs benchmark is computed
-  assert.match(r.body, /Gap vs benchmark\*\* \| \*\*61\.0% sous\*\* <sub>_\(SEO calc\)_<\/sub>/);
-  // Priority cell is computed
-  assert.match(r.body, /tier 1 \(score 360\.77\) <sub>_\(SEO calc\)_<\/sub>/);
+  assert.match(r.body, /Gap vs benchmark\*\*.*61\.0% sous.*SEO calc/);
+  // Priority is computed
+  assert.match(r.body, /tier 1 \(score 360\.77\).*SEO calc/);
 });
 
 test('Sprint-13 — top-5 queries header has per-column source tags', () => {

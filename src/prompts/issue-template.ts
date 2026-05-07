@@ -428,23 +428,40 @@ export function renderIssueBody(i: IssueInputs): string {
   const dwellValue = i.avg_session_duration_seconds ?? ex?.avg_session_duration_28d ?? null;
   const scrollValue = i.scroll_depth_avg ?? ex?.scroll_avg_28d ?? null;
 
-  // Sprint-13: source tags on cells where the source differs from the
-  // column header (interpolations, computed values, derived metrics).
-  // Cells that match their column don't get a tag (would be redundant).
-  const benchSrc = fmtSource('SEO calc · interpolé');
-  const gapSrc = fmtSource('SEO calc');
-  const prioSrc = fmtSource('SEO calc');
-  const captureSrc = fmtSource('SEO calc · Cooked ÷ GSC');
-  const bodySrc = fmtSource('SEO calc · depuis Cooked cta_breakdown');
+  // Sprint-13 v2: 2-col × 20-row layout (Nicolas feedback — the previous
+  // 4-col was too dense). One metric per row, ordered by topical grouping
+  // (GSC → Cooked behavior → CWV → conversion → provenance/meta). The
+  // source tag at the end of each value visually groups rows by source.
+  const captureCellTagged = ex?.capture_rate_pct != null
+    ? `${captureCell}${fmtSource('SEO calc · Cooked ÷ GSC')}`
+    : captureCell;
+  const bodyCellTagged = ex?.cta_body_pct != null
+    ? `${bodyPctCell}${fmtSource('SEO calc · depuis Cooked cta_breakdown')}`
+    : bodyPctCell;
 
   const metricsBox = [
-    `| 📊 GSC (${i.audit_period_months} mois) | Valeur | 🧭 Cooked behavior | Valeur | ⚡ CWV (28d p75) | Valeur | 📞 Conversion (28d) | Valeur |`,
-    `|---|---|---|---|---|---|---|---|`,
-    `| Position moy. | ${i.avg_position.toFixed(1)} (drift ${fmtDriftCell(i.position_drift)}) | Pages/session | ${fmtNumOrNA(ppsValue)} — ${ppsInterpretation(ppsValue)} | LCP | ${lcpCell} | Phone clicks | ${phoneCell} |`,
-    `| Impressions/mois | ${monthlyImp.toLocaleString('fr-FR')} | Durée active | ${fmtNumOrNA(dwellValue, 's', 0)} — ${durationInterpretation(dwellValue)} | INP | ${inpCell} | Email clicks | ${emailCell} |`,
-    `| **CTR actuel** | **${pct(i.ctr_actual)}%** | Scroll moy. | ${fmtNumOrNA(scrollValue, '%', 1)} — ${scrollInterpretation(scrollValue)} | CLS | ${clsCell} | Booking CTA | ${bookingCell} |`,
-    `| CTR benchmark | ${pct(i.ctr_expected)}%${benchSrc} | Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)})${prioSrc} | TTFB | ${ttfbCell} | Body share | ${bodyPctCell}${ex?.cta_body_pct != null ? bodySrc : ''} |`,
-    `| **Gap vs benchmark** | **${(i.ctr_gap * 100).toFixed(1)}% sous**${gapSrc} | Page | [${shortPath(i.page, 50)}](${i.page}) | Capture rate | ${captureCell}${ex?.capture_rate_pct != null ? captureSrc : ''} | Provenance / Device | ${provCell} • ${deviceCell} |`,
+    `| Métrique | Valeur |`,
+    `|---|---|`,
+    `| Position moyenne | ${i.avg_position.toFixed(1)} (drift ${fmtDriftCell(i.position_drift)})${fmtSource('GSC')} |`,
+    `| Impressions/mois | ${monthlyImp.toLocaleString('fr-FR')}${fmtSource('GSC')} |`,
+    `| **CTR actuel** | **${pct(i.ctr_actual)}%**${fmtSource('GSC')} |`,
+    `| CTR benchmark (interpolé pos. ${i.avg_position.toFixed(1)}) | ${pct(i.ctr_expected)}%${fmtSource('SEO calc · interpolé')} |`,
+    `| **Gap vs benchmark** | **${(i.ctr_gap * 100).toFixed(1)}% sous**${fmtSource('SEO calc')} |`,
+    `| Pages/session | ${fmtNumOrNA(ppsValue)} — ${ppsInterpretation(ppsValue)}${fmtSource('Cooked')} |`,
+    `| Durée active moyenne | ${fmtNumOrNA(dwellValue, 's', 0)} — ${durationInterpretation(dwellValue)}${fmtSource('Cooked')} |`,
+    `| Scroll moyen | ${fmtNumOrNA(scrollValue, '%', 1)} — ${scrollInterpretation(scrollValue)}${fmtSource('Cooked')} |`,
+    `| LCP (p75 28j) | ${lcpCell}${ex?.lcp_p75_ms != null ? fmtSource('Cooked') : ''} |`,
+    `| INP (p75 28j) | ${inpCell}${ex?.inp_p75_ms != null ? fmtSource('Cooked') : ''} |`,
+    `| CLS (p75 28j) | ${clsCell}${ex?.cls_p75 != null ? fmtSource('Cooked') : ''} |`,
+    `| TTFB (p75 28j) | ${ttfbCell}${ex?.ttfb_p75_ms != null ? fmtSource('Cooked') : ''} |`,
+    `| Phone clicks (28j) | ${phoneCell}${ex?.phone_clicks_28d != null ? fmtSource('Cooked') : ''} |`,
+    `| Email clicks (28j) | ${emailCell}${ex?.email_clicks_28d != null ? fmtSource('Cooked') : ''} |`,
+    `| Booking CTA clicks (28j) | ${bookingCell}${ex?.booking_cta_clicks_28d != null ? fmtSource('Cooked') : ''} |`,
+    `| Body share (CTA in-body / total) | ${bodyCellTagged} |`,
+    `| Provenance / Device | ${provCell} • ${deviceCell}${ex ? fmtSource('Cooked') : ''} |`,
+    `| Capture rate (qualité Cooked) | ${captureCellTagged} |`,
+    `| Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)})${fmtSource('SEO calc')} |`,
+    `| Page | [${shortPath(i.page, 50)}](${i.page}) |`,
   ].join('\n');
 
   // ---- Diagnostic bullets (one per analytic field) ------------------------
