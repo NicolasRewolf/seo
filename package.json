@@ -23,7 +23,8 @@
     "measure": "tsx src/scripts/run-measure.ts",
     "test:scoring": "tsx --test src/scripts/test-scoring.ts",
     "compare:scrapers": "tsx src/scripts/compare-scrapers.ts",
-    "test:issue-template": "tsx --test src/scripts/test-issue-template.ts"
+    "test:issue-template": "tsx --test src/scripts/test-issue-template.ts",
+    "test:data-quality": "tsx --test src/scripts/test-data-quality-check.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",

@@ -19,6 +19,12 @@ import { enrichContext } from './context-enrichment.js';
 import { fetchInboundSummary } from './diagnose.js';
 import type { InboundSummary } from '../prompts/diagnostic.v1.js';
 import { pathOf } from '../lib/url.js';
+import {
+  fetchPageSnapshotExtras,
+  fetchCtaBreakdown,
+  type PageSnapshotExtras,
+  type CtaBreakdownRow,
+} from '../lib/cooked.js';
 
 const FIX_TYPES = [
   'title',
@@ -124,12 +130,32 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
   // Sprint-11 v2: live inbound graph signal (same source as diagnose v5).
   // Lets the fix LLM mark a page as "orphaned editorially" and adjust the
   // internal_links rationale to mention seeding from source pages.
+  const pagePath = pathOf(row.page as string);
   let inboundSummary: InboundSummary | null = null;
   try {
-    inboundSummary = await fetchInboundSummary(pathOf(row.page as string));
+    inboundSummary = await fetchInboundSummary(pagePath);
   } catch (err) {
     process.stderr.write(`[generate-fixes] inbound fetch failed: ${(err as Error).message}\n`);
   }
+
+  // Sprint-12 v3: Cooked extras + CTA breakdown for the fix-gen prompt.
+  // Best-effort, same degradation strategy as diagnose. We do NOT fetch
+  // outbound destinations or site context here — those informed the
+  // diagnostic but don't change the fixes (which target the page itself).
+  let cookedExtras: PageSnapshotExtras | null = null;
+  let ctaBreakdown: CtaBreakdownRow[] = [];
+  try {
+    const rows = await fetchPageSnapshotExtras([pagePath]);
+    cookedExtras = rows[0] ?? null;
+  } catch (err) {
+    process.stderr.write(`[generate-fixes] cooked snapshot failed: ${(err as Error).message}\n`);
+  }
+  try {
+    ctaBreakdown = await fetchCtaBreakdown(pagePath, 28);
+  } catch (err) {
+    process.stderr.write(`[generate-fixes] cta breakdown failed: ${(err as Error).message}\n`);
+  }
+  const gscClicks28d = await fetchGscClicksLast28dForFix(row.page as string);
 
   const inputs: FixGenPromptInputs = {
     url: row.page as string,
@@ -144,6 +170,9 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
     diagnostic: row.diagnostic,
     enrichment,
     inbound_summary: inboundSummary,
+    cooked_extras: cookedExtras,
+    cta_breakdown: ctaBreakdown,
+    gsc_clicks_28d: gscClicks28d,
   };
 
   const prompt = renderFixGenPrompt(inputs);
@@ -250,3 +279,26 @@ export const PROMPT_INFO = {
   name: FIX_GEN_PROMPT_NAME,
   version: FIX_GEN_PROMPT_VERSION,
 };
+
+/**
+ * Sprint-12: best-effort GSC clicks last-28d for the fix-gen prompt's
+ * data quality check. Identical pattern to fetchGscClicksLast28d in
+ * diagnose.ts — pro-rated to 28 days. Local copy to avoid circular
+ * import (diagnose.ts already imports from this file would create one).
+ */
+async function fetchGscClicksLast28dForFix(page: string): Promise<number | null> {
+  const cutoff = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const { data, error } = await supabase()
+    .from('gsc_page_snapshots')
+    .select('clicks, period_start, period_end')
+    .eq('page', page)
+    .gte('period_end', cutoff)
+    .order('period_end', { ascending: false })
+    .limit(1);
+  if (error || !data || data.length === 0) return null;
+  const r = data[0]!;
+  const startMs = new Date(r.period_start as string).getTime();
+  const endMs = new Date(r.period_end as string).getTime();
+  const days = Math.max(1, Math.round((endMs - startMs) / (24 * 60 * 60 * 1000)));
+  return Math.round(Number(r.clicks) * (28 / days));
+}

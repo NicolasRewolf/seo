@@ -10,15 +10,29 @@ import { github, repoCoords } from '../lib/github.js';
 import { env } from '../config.js';
 import {
   renderIssue,
+  type IssueCookedExtras,
   type IssueDiagnostic,
   type IssueProposedFix,
 } from '../prompts/issue-template.js';
+import { fetchPageSnapshotExtras, fetchCtaBreakdown } from '../lib/cooked.js';
+import { pathOf } from '../lib/url.js';
 
 const DiagnosticShape = z.object({
+  // Sprint-11/12: keep v5/v6 fields optional so persisted diagnostics from
+  // any version flow through to renderIssue without Zod stripping them.
+  tldr: z.string().optional(),
   intent_mismatch: z.string(),
   snippet_weakness: z.string(),
   hypothesis: z.string(),
   engagement_diagnosis: z.string(),
+  performance_diagnosis: z.string().optional(),
+  structural_gaps: z.string().optional(),
+  funnel_assessment: z.string().optional(),
+  internal_authority_assessment: z.string().optional(),
+  conversion_assessment: z.string().optional(),
+  traffic_strategy_note: z.string().optional(),
+  device_optimization_note: z.string().optional(),
+  outbound_leak_note: z.string().optional(),
   top_queries_analysis: z
     .array(
       z.object({
@@ -99,6 +113,12 @@ export async function createIssueForFinding(findingId: string): Promise<{
   const supabaseUrl = env.supabase().SUPABASE_URL.replace(/\/$/, '');
   const supabaseFindingUrl = `${supabaseUrl}/project/_/editor?schema=public&table=audit_findings&filter=id=${findingId}`;
 
+  // Sprint-12: fetch Cooked extras for the issue box (CWV / conversion /
+  // provenance / device / capture rate). All best-effort — if Cooked is
+  // unreachable or the page has no snapshot yet, we render with `—` cells
+  // and skip the data-quality banner.
+  const cookedExtras = await fetchCookedExtrasForIssue(row.page as string);
+
   const rendered = renderIssue({
     finding_id: row.id as string,
     audit_run_id: row.audit_run_id as string,
@@ -124,6 +144,7 @@ export async function createIssueForFinding(findingId: string): Promise<{
     fixes,
     baseline_date: auditRun.period_end,
     supabase_finding_url: supabaseFindingUrl,
+    cooked_extras: cookedExtras,
   });
 
   const { owner, repo } = repoCoords();
@@ -149,6 +170,85 @@ export async function createIssueForFinding(findingId: string): Promise<{
   if (updErr) throw new Error(`update finding with issue ref: ${updErr.message}`);
 
   return { issueNumber, issueUrl };
+}
+
+/**
+ * Sprint-12: pull Cooked extras for the issue box. Returns a fully-flat
+ * shape (no nesting beyond what `IssueCookedExtras` declares). Best-effort
+ * — any single Cooked failure produces a clean undefined cell rather than
+ * crashing the whole issue create.
+ */
+async function fetchCookedExtrasForIssue(pageUrl: string): Promise<IssueCookedExtras | undefined> {
+  const path = pathOf(pageUrl);
+  let snap: Awaited<ReturnType<typeof fetchPageSnapshotExtras>>[number] | undefined;
+  try {
+    const rows = await fetchPageSnapshotExtras([path]);
+    snap = rows[0];
+  } catch (err) {
+    process.stderr.write(`[create-issues] cooked snapshot failed: ${(err as Error).message}\n`);
+  }
+  let ctaRows: Awaited<ReturnType<typeof fetchCtaBreakdown>> = [];
+  try {
+    ctaRows = await fetchCtaBreakdown(path, 28);
+  } catch (err) {
+    process.stderr.write(`[create-issues] cta breakdown failed: ${(err as Error).message}\n`);
+  }
+
+  if (!snap) return undefined;
+
+  // Compute body-share % for the CTA breakdown banner.
+  let bodyPct: number | null = null;
+  if (ctaRows.length > 0) {
+    const totals = { header: 0, footer: 0, body: 0 };
+    for (const r of ctaRows) totals[r.placement] = (totals[r.placement] ?? 0) + r.clicks;
+    const total = totals.header + totals.footer + totals.body;
+    if (total > 0) bodyPct = (totals.body / total) * 100;
+  }
+
+  // Compute capture rate. Pull the latest gsc_page_snapshots row pro-rated to 28d.
+  let gscClicks28d: number | null = null;
+  try {
+    const cutoff = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+    const { data } = await supabase()
+      .from('gsc_page_snapshots')
+      .select('clicks, period_start, period_end')
+      .eq('page', pageUrl)
+      .gte('period_end', cutoff)
+      .order('period_end', { ascending: false })
+      .limit(1);
+    if (data && data.length > 0) {
+      const r = data[0]!;
+      const startMs = new Date(r.period_start as string).getTime();
+      const endMs = new Date(r.period_end as string).getTime();
+      const days = Math.max(1, Math.round((endMs - startMs) / (24 * 60 * 60 * 1000)));
+      gscClicks28d = Math.round(Number(r.clicks) * (28 / days));
+    }
+  } catch {
+    // best-effort — leave gscClicks28d = null
+  }
+
+  const cookedSessions28d = snap.windows['28d'].sessions;
+  const captureRatePct =
+    gscClicks28d != null && gscClicks28d > 0
+      ? (cookedSessions28d / gscClicks28d) * 100
+      : null;
+
+  return {
+    lcp_p75_ms: snap.cwv_28d.lcp_p75_ms,
+    inp_p75_ms: snap.cwv_28d.inp_p75_ms,
+    cls_p75: snap.cwv_28d.cls_p75,
+    ttfb_p75_ms: snap.cwv_28d.ttfb_p75_ms,
+    phone_clicks_28d: snap.conversion.phone_clicks['28d'],
+    email_clicks_28d: snap.conversion.email_clicks['28d'],
+    booking_cta_clicks_28d: snap.conversion.booking_cta_clicks['28d'],
+    cta_body_pct: bodyPct,
+    top_source: snap.provenance_28d.top_source,
+    top_medium: snap.provenance_28d.top_medium,
+    device_split: snap.device_split_28d,
+    cooked_sessions_28d: cookedSessions28d,
+    gsc_clicks_28d: gscClicks28d,
+    capture_rate_pct: captureRatePct,
+  };
 }
 
 export async function createIssuesForProposed(opts: {

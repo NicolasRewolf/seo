@@ -19,6 +19,16 @@ import {
 } from '../prompts/diagnostic.v1.js';
 import { enrichContext } from './context-enrichment.js';
 import { pathOf } from '../lib/url.js';
+import {
+  fetchPageSnapshotExtras,
+  fetchSiteContext,
+  fetchOutboundDestinations,
+  fetchCtaBreakdown,
+  type PageSnapshotExtras,
+  type SiteContext,
+  type OutboundDestination,
+  type CtaBreakdownRow,
+} from '../lib/cooked.js';
 
 const DiagnosticSchema = z.object({
   // Sprint-11 v5: synthesis-first field. Optional so older v1-v4 diagnostics
@@ -44,6 +54,11 @@ const DiagnosticSchema = z.object({
   structural_gaps: z.string().optional().default(''),
   funnel_assessment: z.string().optional().default(''),
   internal_authority_assessment: z.string().optional().default(''),
+  // Sprint-12 v6: Cooked full-menu fields. All optional for v1-v5 backcompat.
+  conversion_assessment: z.string().optional().default(''),
+  traffic_strategy_note: z.string().optional().default(''),
+  device_optimization_note: z.string().optional().default(''),
+  outbound_leak_note: z.string().optional().default(''),
 });
 
 export type DiagnosticPayload = z.infer<typeof DiagnosticSchema>;
@@ -210,6 +225,42 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     process.stderr.write(`[diagnose] inbound fetch failed: ${(err as Error).message}\n`);
   }
 
+  // Sprint-12: Cooked full-menu fetch. All 4 calls are best-effort — if any
+  // fails (RPC not yet deployed, network blip, freshly-seeded DB with no
+  // rows yet), we degrade gracefully and the prompt surfaces the absence
+  // explicitly rather than crashing the diagnostic.
+  const pagePath = pathOf(row.page as string);
+  let cookedExtras: PageSnapshotExtras | null = null;
+  let cookedSiteContext: SiteContext | null = null;
+  let outboundDestinations: OutboundDestination[] = [];
+  let ctaBreakdown: CtaBreakdownRow[] = [];
+  try {
+    const rows = await fetchPageSnapshotExtras([pagePath]);
+    cookedExtras = rows[0] ?? null;
+  } catch (err) {
+    process.stderr.write(`[diagnose] cooked snapshot extras failed: ${(err as Error).message}\n`);
+  }
+  try {
+    cookedSiteContext = await fetchSiteContext();
+  } catch (err) {
+    process.stderr.write(`[diagnose] cooked site context failed: ${(err as Error).message}\n`);
+  }
+  try {
+    outboundDestinations = await fetchOutboundDestinations(pagePath, 28);
+  } catch (err) {
+    process.stderr.write(`[diagnose] cooked outbound destinations failed: ${(err as Error).message}\n`);
+  }
+  try {
+    ctaBreakdown = await fetchCtaBreakdown(pagePath, 28);
+  } catch (err) {
+    process.stderr.write(`[diagnose] cooked cta breakdown failed: ${(err as Error).message}\n`);
+  }
+
+  // Sprint-12 data quality check: GSC clicks last 28d (NOT the audit period
+  // — capture rate is calibrated to the same window as Cooked extras).
+  // Falls back to null if the page has no recent gsc_page_snapshots row.
+  const gscClicks28d = await fetchGscClicksLast28d(row.page as string);
+
   return {
     url: row.page as string,
     avg_position: Number(row.avg_position),
@@ -238,7 +289,42 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     top_queries: topQueries,
     enrichment,
     inbound_summary: inboundSummary,
+    // Sprint-12 v6
+    cooked_extras: cookedExtras,
+    cooked_site_context: cookedSiteContext,
+    outbound_destinations: outboundDestinations,
+    cta_breakdown: ctaBreakdown,
+    gsc_clicks_28d: gscClicks28d,
   };
+}
+
+/**
+ * Sprint-12: best-effort GSC clicks count for the LAST 28 days specifically
+ * (NOT the audit period — used for the data_quality_check capture rate
+ * sanity, which compares apples-to-apples against Cooked's 28d window).
+ *
+ * Implementation: sum `clicks` from gsc_page_snapshots rows where this page
+ * is the target AND the period overlaps the last 28d. Returns null if no
+ * snapshot row covers that window.
+ */
+async function fetchGscClicksLast28d(page: string): Promise<number | null> {
+  const cutoff = new Date(Date.now() - 28 * 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+  const { data, error } = await supabase()
+    .from('gsc_page_snapshots')
+    .select('clicks, period_start, period_end')
+    .eq('page', page)
+    .gte('period_end', cutoff)
+    .order('period_end', { ascending: false })
+    .limit(1);
+  if (error || !data || data.length === 0) return null;
+  // We don't have a daily breakdown — use the latest snapshot's clicks
+  // pro-rated to 28d. Acceptable approximation for the capture-rate verdict
+  // (we need order-of-magnitude precision, not exactness).
+  const r = data[0]!;
+  const startMs = new Date(r.period_start as string).getTime();
+  const endMs = new Date(r.period_end as string).getTime();
+  const days = Math.max(1, Math.round((endMs - startMs) / (24 * 60 * 60 * 1000)));
+  return Math.round(Number(r.clicks) * (28 / days));
 }
 
 export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayload> {
