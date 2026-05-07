@@ -307,14 +307,18 @@ export async function fetchCtaBreakdown(
 
 // ============================================================================
 
-/** Smoke test: minimal RPC ping over the last 7 days. */
+/** Smoke test: ping every Cooked RPC the SEO tool depends on.
+ *
+ * Sprint-12: covers the 4 new RPCs (snapshot_pages_export, site_context_export,
+ * outbound_destinations_for_path, cta_breakdown_for_path) in addition to the
+ * legacy behavior_pages_for_period. Fast-fails if any RPC errors OR if the
+ * cta_breakdown enums diverge from the agreed contract — that's the silent
+ * regression class we most want to catch (a typo in `placement` would
+ * silently route every breakdown into "unknown" downstream).
+ */
 export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
   try {
     const today = new Date();
-    const rows = await fetchBehaviorPages(
-      format(subDays(today, 7), 'yyyy-MM-dd'),
-      format(today, 'yyyy-MM-dd'),
-    );
     const e = env.cooked();
     const host = (() => {
       try {
@@ -323,7 +327,43 @@ export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
         return e.COOKED_SUPABASE_URL;
       }
     })();
-    return { ok: true, detail: `host=${host}, last-7d sample rows=${rows.length}` };
+
+    // Legacy RPC — still consumed by snapshot.ts
+    const legacyRows = await fetchBehaviorPages(
+      format(subDays(today, 7), 'yyyy-MM-dd'),
+      format(today, 'yyyy-MM-dd'),
+    );
+
+    // Sprint-12 RPCs — call each once, validate the parsed shape on the
+    // happy path. A failure here means the wrapper / Cooked contract has
+    // drifted; the diagnostic prompt would then degrade to "indisponible"
+    // blocks silently.
+    const snaps = await fetchPageSnapshotExtras(['/']);
+    const ctx = await fetchSiteContext();
+    await fetchOutboundDestinations('/', 28);
+    const ctaRows = await fetchCtaBreakdown('/', 28);
+
+    // Validate the cta enum contract — this is the central signal, a
+    // mismatch here would silently route every breakdown into "unknown".
+    for (const c of ctaRows) {
+      if (!['phone', 'email', 'booking'].includes(c.cta_type)) {
+        return { ok: false, detail: `cta_type contract mismatch: got "${c.cta_type}"` };
+      }
+      if (!['header', 'footer', 'body'].includes(c.placement)) {
+        return { ok: false, detail: `placement contract mismatch: got "${c.placement}"` };
+      }
+    }
+
+    return {
+      ok: true,
+      detail:
+        `host=${host}, ` +
+        `legacy_rpc=${legacyRows.length}_rows, ` +
+        `snapshot_export=${snaps.length}_rows, ` +
+        `site_context_sessions_28d=${ctx.global_sessions_28d}, ` +
+        `cta_breakdown=${ctaRows.length}_rows ` +
+        `(enums OK)`,
+    };
   } catch (err) {
     return { ok: false, detail: (err as Error).message };
   }
