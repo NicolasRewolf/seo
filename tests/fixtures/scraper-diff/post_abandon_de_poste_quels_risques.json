@@ -1,0 +1,1295 @@
+{
+  "url": "https://www.jplouton-avocat.fr/post/abandon-de-poste-quels-risques",
+  "generated_at": "2026-05-07T07:24:17.517Z",
+  "legacy": [
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Procès criminels",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Trafic de stupéfiants",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Violences conjugales et féminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Droit pénal des affaires",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Victimes de délits ou crimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accidents de la route",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit et accidents du travail",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accidents et erreurs médicales",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accidents de la vie courante",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et professionnels",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Défense des consommateurs",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit de la famille",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Divorce",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Affaires",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Équipe",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Contactez - nous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Accueil",
+      "target": "https://www.jplouton-avocat.fr/",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Je prends rendez-vous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Rendez-vous, accès & honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Horaires & accès",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "La défense pénale",
+      "target": "https://www.jplouton-avocat.fr/defense-penale",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Violences conjugales et feminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "L'indemnisation des victimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Les droits des contrats et des personnes",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et pro",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "RDV",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "cabinet Plouton",
+      "target": "https://www.jplouton-avocat.fr/",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "notre cabinet Plouton vous propose un accompagnement sur mesure.",
+      "target": "https://www.jplouton-avocat.fr/d%C3%A9fense-p%C3%A9nale/droit-p%C3%A9nal-des-affaires",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Contactez notre cabinet pour une consultation personnalisée",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "nos services en accidents du travail",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "rj-accident-travail",
+      "target": "https://www.jplouton-avocat.fr/blog/tags/rj-accident-travail",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Responsabilité du fait des choses : quels recours en cas de chute, d’objet tombé ou d’équipement défectueux ?",
+      "target": "https://www.jplouton-avocat.fr/post/responsabilit%C3%A9-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tomb%C3%A9-ou-d-%C3%A9quipement-d%C3%A9f",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Délai déraisonnable dans une procédure judiciaire : comment engager la responsabilité de l’Etat ?",
+      "target": "https://www.jplouton-avocat.fr/post/ma-proc%C3%A9dure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-d%C3%A9lai-d%C3%A9raisonnable",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Auto-entrepreneur victime d'un accident : comment obtenir une indemnisation complète ?",
+      "target": "https://www.jplouton-avocat.fr/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "placement": "related_post"
+    },
+    {
+      "anchor": "Je prends rendez vous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Notre cabinet",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Nos affaires",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Défense Pénale",
+      "target": "https://www.jplouton-avocat.fr/defense-penale",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Indemnisation des victimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Droit des contrats et des personnes",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+      "placement": "editorial"
+    }
+  ],
+  "next": [
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/droit-penal",
+      "anchor_text": "Droit Pénal",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/droit-penal",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/proces-criminel",
+      "anchor_text": "Procès criminels",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/proces-criminel",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/trafic-de-stupefiant",
+      "anchor_text": "Trafic de stupéfiants",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/trafic-de-stupefiant",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor_text": "Violences conjugales et féminicides",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/droit-penal-des-affaires",
+      "anchor_text": "Droit pénal des affaires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/droit-penal-des-affaires",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor_text": "Victimes de délits ou crimes",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor_text": "Accidents de la route",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor_text": "Droit et accidents du travail",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor_text": "Accidents et erreurs médicales",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor_text": "Accidents de la vie courante",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor_text": "Droit des assurances particuliers et professionnels",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor_text": "Défense des consommateurs",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor_text": "Droit de la famille",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor_text": "Divorce",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor_text": "",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/nos-affaires",
+      "anchor_text": "Affaires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/médias",
+      "anchor_text": "Médias",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/comprendre-le-droit",
+      "anchor_text": "Ressources",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/notre-cabinet",
+      "anchor_text": "Équipe",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Contactez - nous",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/",
+      "anchor_text": "Accueil",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Je prends rendez-vous",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Rendez-vous, accès & honoraires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Horaires & accès",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Honoraires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale",
+      "anchor_text": "La défense pénale",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor_text": "Violences conjugales et feminicides",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes",
+      "anchor_text": "L'indemnisation des victimes",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes",
+      "anchor_text": "Les droits des contrats et des personnes",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor_text": "Droit des assurances particuliers et pro",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/nos-affaires/categories/médias",
+      "anchor_text": "Médias",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/mentions-legales",
+      "anchor_text": "Mentions Légales",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "RDV",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog",
+      "anchor_text": "Tous les articles",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/droit-pénal",
+      "anchor_text": "Droit Pénal",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/droit-criminel",
+      "anchor_text": "Procès criminels",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/violences-conjugales-féminicides",
+      "anchor_text": "Violences Conjugales et féminicides",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/trafic-de-stupéfiants",
+      "anchor_text": "Trafic de stupéfiants",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/droit-pénal-des-affaires",
+      "anchor_text": "Droit pénal des affaires",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/indemnisation-des-victimes-pénale",
+      "anchor_text": "Victimes de délits ou crimes",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/accidents-erreurs-médicales",
+      "anchor_text": "Accidents et erreurs médicales",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/accidents-de-la-route",
+      "anchor_text": "Accidents de la route",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/droit-et-accidents-du-travail",
+      "anchor_text": "Droit et accidents du travail",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/accidents-de-la-vie-courante",
+      "anchor_text": "Accidents de la vie courante",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/droit-des-assurances",
+      "anchor_text": "Droit des assurances",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/défense-des-consommateurs",
+      "anchor_text": "Défense des consommateurs",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/droit-de-la-famille",
+      "anchor_text": "Droit de la famille",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/ressources-et-notions-juridiques",
+      "anchor_text": "Ressources et notions juridiques",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/categories/divorce",
+      "anchor_text": "Divorce",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/",
+      "anchor_text": "cabinet Plouton",
+      "placement": "editorial",
+      "rel": "noopener"
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/défense-pénale/droit-pénal-des-affaires",
+      "anchor_text": "notre cabinet Plouton vous propose un accompagnement sur mesure.",
+      "placement": "editorial",
+      "rel": "noopener"
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/notre-cabinet",
+      "anchor_text": "Contactez notre cabinet pour une consultation personnalisée",
+      "placement": "editorial",
+      "rel": "noopener"
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor_text": "nos services en accidents du travail",
+      "placement": "editorial",
+      "rel": "noopener"
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog/tags/rj-accident-travail",
+      "anchor_text": "rj-accident-travail",
+      "placement": "footer",
+      "rel": "noopener noreferrer"
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/blog",
+      "anchor_text": "Voir tout",
+      "placement": "nav",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+      "anchor_text": "Responsabilité du fait des choses : quels recours en cas de chute, d’objet tombé ou d’équipement défectueux ?",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+      "anchor_text": "Délai déraisonnable dans une procédure judiciaire : comment engager la responsabilité de l’Etat ?",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "anchor_text": "Auto-entrepreneur victime d'un accident : comment obtenir une indemnisation complète ?",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/comprendre-le-droit",
+      "anchor_text": "Lire",
+      "placement": "editorial",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/honoraires-rendez-vous",
+      "anchor_text": "Je prends rendez vous",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/notre-cabinet",
+      "anchor_text": "Notre cabinet",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/nos-affaires",
+      "anchor_text": "Nos affaires",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/defense-penale",
+      "anchor_text": "Défense Pénale",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/indemnisation-des-victimes",
+      "anchor_text": "Indemnisation des victimes",
+      "placement": "footer",
+      "rel": null
+    },
+    {
+      "source_path": "/post/abandon-de-poste-quels-risques",
+      "target_path": "/droit-des-contrats-et-des-personnes",
+      "anchor_text": "Droit des contrats et des personnes",
+      "placement": "footer",
+      "rel": null
+    }
+  ],
+  "summary": {
+    "match": 20,
+    "diff": 22,
+    "lost": 0,
+    "gained": 37
+  },
+  "rows": [
+    {
+      "status": "match",
+      "target": "/defense-penale/droit-penal",
+      "anchor": "Droit Pénal",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale/proces-criminel",
+      "anchor": "Procès criminels",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale/trafic-de-stupefiant",
+      "anchor": "Trafic de stupéfiants",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor": "Violences conjugales et féminicides",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale/droit-penal-des-affaires",
+      "anchor": "Droit pénal des affaires",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor": "Victimes de délits ou crimes",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor": "Accidents de la route",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor": "Droit et accidents du travail",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor": "Accidents et erreurs médicales",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor": "Accidents de la vie courante",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor": "Droit des assurances particuliers et professionnels",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor": "Défense des consommateurs",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor": "Droit de la famille",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor": "Divorce",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/nos-affaires",
+      "anchor": "Affaires",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/notre-cabinet",
+      "anchor": "Équipe",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Contactez - nous",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/",
+      "anchor": "Accueil",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Je prends rendez-vous",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Rendez-vous, accès & honoraires",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Horaires & accès",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Honoraires",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/defense-penale",
+      "anchor": "La défense pénale",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor": "Violences conjugales et feminicides",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes",
+      "anchor": "L'indemnisation des victimes",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/droit-des-contrats-et-des-personnes",
+      "anchor": "Les droits des contrats et des personnes",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "diff",
+      "target": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor": "Droit des assurances particuliers et pro",
+      "legacy_placement": "editorial",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "RDV",
+      "legacy_placement": "nav",
+      "new_placement": "nav"
+    },
+    {
+      "status": "match",
+      "target": "/",
+      "anchor": "cabinet Plouton",
+      "legacy_placement": "editorial",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "match",
+      "target": "/défense-pénale/droit-pénal-des-affaires",
+      "anchor": "notre cabinet Plouton vous propose un accompagnement sur mesure.",
+      "legacy_placement": "editorial",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "match",
+      "target": "/notre-cabinet",
+      "anchor": "Contactez notre cabinet pour une consultation personnalisée",
+      "legacy_placement": "editorial",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "match",
+      "target": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor": "nos services en accidents du travail",
+      "legacy_placement": "editorial",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/blog/tags/rj-accident-travail",
+      "anchor": "rj-accident-travail",
+      "legacy_placement": "nav",
+      "new_placement": "footer"
+    },
+    {
+      "status": "diff",
+      "target": "/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+      "anchor": "Responsabilité du fait des choses : quels recours en cas de chute, d’objet tombé ou d’équipement défectueux ?",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+      "anchor": "Délai déraisonnable dans une procédure judiciaire : comment engager la responsabilité de l’Etat ?",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "anchor": "Auto-entrepreneur victime d'un accident : comment obtenir une indemnisation complète ?",
+      "legacy_placement": "related_post",
+      "new_placement": "editorial"
+    },
+    {
+      "status": "diff",
+      "target": "/honoraires-rendez-vous",
+      "anchor": "Je prends rendez vous",
+      "legacy_placement": "nav",
+      "new_placement": "footer"
+    },
+    {
+      "status": "diff",
+      "target": "/notre-cabinet",
+      "anchor": "Notre cabinet",
+      "legacy_placement": "editorial",
+      "new_placement": "footer"
+    },
+    {
+      "status": "diff",
+      "target": "/nos-affaires",
+      "anchor": "Nos affaires",
+      "legacy_placement": "nav",
+      "new_placement": "footer"
+    },
+    {
+      "status": "diff",
+      "target": "/defense-penale",
+      "anchor": "Défense Pénale",
+      "legacy_placement": "nav",
+      "new_placement": "footer"
+    },
+    {
+      "status": "diff",
+      "target": "/indemnisation-des-victimes",
+      "anchor": "Indemnisation des victimes",
+      "legacy_placement": "editorial",
+      "new_placement": "footer"
+    },
+    {
+      "status": "diff",
+      "target": "/droit-des-contrats-et-des-personnes",
+      "anchor": "Droit des contrats et des personnes",
+      "legacy_placement": "editorial",
+      "new_placement": "footer"
+    },
+    {
+      "status": "gained",
+      "target": "/",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/droit-penal",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/proces-criminel",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/trafic-de-stupefiant",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/violences-conjugales-et-feminicides",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/defense-penale/droit-penal-des-affaires",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/accidents-de-la-route",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "anchor": "",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/médias",
+      "anchor": "Médias",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/comprendre-le-droit",
+      "anchor": "Ressources",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/nos-affaires/categories/médias",
+      "anchor": "Médias",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/mentions-legales",
+      "anchor": "Mentions Légales",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog",
+      "anchor": "Tous les articles",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-pénal",
+      "anchor": "Droit Pénal",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-criminel",
+      "anchor": "Procès criminels",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/violences-conjugales-féminicides",
+      "anchor": "Violences Conjugales et féminicides",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/trafic-de-stupéfiants",
+      "anchor": "Trafic de stupéfiants",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-pénal-des-affaires",
+      "anchor": "Droit pénal des affaires",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/indemnisation-des-victimes-pénale",
+      "anchor": "Victimes de délits ou crimes",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/accidents-erreurs-médicales",
+      "anchor": "Accidents et erreurs médicales",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/accidents-de-la-route",
+      "anchor": "Accidents de la route",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-et-accidents-du-travail",
+      "anchor": "Droit et accidents du travail",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/accidents-de-la-vie-courante",
+      "anchor": "Accidents de la vie courante",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-des-assurances",
+      "anchor": "Droit des assurances",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/défense-des-consommateurs",
+      "anchor": "Défense des consommateurs",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/droit-de-la-famille",
+      "anchor": "Droit de la famille",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/ressources-et-notions-juridiques",
+      "anchor": "Ressources et notions juridiques",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog/categories/divorce",
+      "anchor": "Divorce",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/blog",
+      "anchor": "Voir tout",
+      "new_placement": "nav"
+    },
+    {
+      "status": "gained",
+      "target": "/comprendre-le-droit",
+      "anchor": "Lire",
+      "new_placement": "editorial"
+    }
+  ]
+}

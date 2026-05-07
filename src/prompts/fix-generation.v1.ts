@@ -11,6 +11,7 @@
  * values for schema, and re-suggested internal links that already existed.
  */
 import type { EnrichedContext, EnrichedTopQuery } from '../pipeline/context-enrichment.js';
+import { FORBIDDEN_LINK_TARGETS } from '../lib/site-catalog.js';
 
 export const FIX_GEN_PROMPT_NAME = 'fix_generation' as const;
 export const FIX_GEN_PROMPT_VERSION = 1 as const;
@@ -159,6 +160,10 @@ ${fmtEnrichedTopQueries(enrichedQueries)}
 
 # Catalogue d'URLs internes RÉELLES (utilise UNIQUEMENT celles-ci pour tout maillage proposé — toute autre URL est une hallucination que le QA rejettera)
 ${fmtCatalogForFixes(i.enrichment?.internal_pages_catalog)}
+
+# URLs INTERDITES en cible de fix \`internal_links\` (préfixes — n'importe quelle URL commençant par l'un de ceux-ci sera rejetée)
+${FORBIDDEN_LINK_TARGETS.map((p) => `- ${p}`).join('\n')}
+> Pourquoi : ces URLs apparaissent légitimement dans le maillage (footer, mentions légales, blog index Wix) mais n'ont **aucune valeur éditoriale** comme cible de recommandation. Si tu veux pousser un lien CTA, propose une page \`expertise\` ou \`cta\` (honoraires-rendez-vous) du catalogue, pas une page index ni une page legal.
 
 # Diagnostic
 ${JSON.stringify(i.diagnostic, null, 2)}

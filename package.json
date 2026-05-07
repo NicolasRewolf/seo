@@ -11,6 +11,7 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "smoke": "tsx src/scripts/smoke.ts",
+    "crawl": "tsx src/scripts/run-crawl.ts",
     "snapshot": "tsx src/scripts/run-snapshot.ts",
     "audit": "tsx src/scripts/run-audit.ts",
     "audit:loose": "tsx src/scripts/run-audit.ts --ctr-gap=0.3 --min-impressions=200",
@@ -21,13 +22,14 @@
     "apply": "tsx src/scripts/run-mark-applied.ts",
     "measure": "tsx src/scripts/run-measure.ts",
     "test:scoring": "tsx --test src/scripts/test-scoring.ts",
-    "test:issue-template": "tsx --test src/scripts/test-issue-template.ts",
-    "measure": "tsx src/scripts/run-measure.ts"
+    "compare:scrapers": "tsx src/scripts/compare-scrapers.ts",
+    "test:issue-template": "tsx --test src/scripts/test-issue-template.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",
     "@octokit/rest": "^21.0.0",
     "@supabase/supabase-js": "^2.45.0",
+    "cheerio": "^1.2.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.0",
     "googleapis": "^144.0.0",
