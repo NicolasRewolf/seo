@@ -520,3 +520,58 @@ test('Sprint-14 — measurement source attribution carries SEO calc tag', () => 
   // Delta table source
   assert.match(r.body, /SEO calc · fix_outcomes/);
 });
+
+test('Sprint-14bis — fact-check passed renders quiet [!NOTE] banner', () => {
+  const r = renderIssue({
+    ...fixture,
+    fact_check: {
+      total_numeric_claims: 4,
+      verified: 4,
+      unverified: [],
+      passed: true,
+      retry_attempted: false,
+    },
+  });
+  assert.match(r.body, /\[!NOTE\][\s\S]*Fact-check[\s\S]*4\/4 chiffres tracés/);
+  assert.match(r.body, /0 halluciné/);
+});
+
+test('Sprint-14bis — fact-check failed renders [!CAUTION] with claim list', () => {
+  const r = renderIssue({
+    ...fixture,
+    fact_check: {
+      total_numeric_claims: 3,
+      verified: 1,
+      unverified: [
+        { field: 'structural_gaps', claim: '1500 mots', note: 'claimed 1500, actual 720' },
+        { field: 'funnel_assessment', claim: 'H2 #5', note: 'only 3 H2' },
+      ],
+      passed: false,
+      retry_attempted: true,
+    },
+  });
+  assert.match(r.body, /\[!CAUTION\][\s\S]*Fact-check/);
+  assert.match(r.body, /2\/3 chiffres non vérifiés/);
+  assert.match(r.body, /1 retry tenté/);
+  assert.match(r.body, /structural_gaps[\s\S]*1500 mots/);
+  assert.match(r.body, /funnel_assessment[\s\S]*H2 #5/);
+});
+
+test('Sprint-14bis — fact-check absent renders no banner (pre-Sprint-14bis findings)', () => {
+  const r = renderIssue(fixture);
+  assert.doesNotMatch(r.body, /Fact-check/);
+});
+
+test('Sprint-14bis — fact-check with 0 claims renders no banner', () => {
+  const r = renderIssue({
+    ...fixture,
+    fact_check: {
+      total_numeric_claims: 0,
+      verified: 0,
+      unverified: [],
+      passed: true,
+      retry_attempted: false,
+    },
+  });
+  assert.doesNotMatch(r.body, /Fact-check/);
+});

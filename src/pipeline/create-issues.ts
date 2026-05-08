@@ -12,6 +12,7 @@ import {
   renderIssue,
   type IssueCookedExtras,
   type IssueDiagnostic,
+  type IssueFactCheck,
   type IssueMeasurement,
   type IssueProposedFix,
 } from '../prompts/issue-template.js';
@@ -54,6 +55,34 @@ const CurrentStateShape = z.object({
   intro_first_100_words: z.string().default(''),
 });
 
+const FactCheckShape = z.object({
+  total_numeric_claims: z.number(),
+  verified: z.number(),
+  unverified: z.array(
+    z.object({
+      claim: z.string(),
+      field: z.string(),
+      expected_in: z.string().optional(),
+      note: z.string().optional(),
+    }),
+  ),
+  passed: z.boolean(),
+  retry_attempted: z.boolean().optional().default(false),
+});
+
+function parseFactCheck(raw: unknown): IssueFactCheck | undefined {
+  if (raw == null) return undefined;
+  const r = FactCheckShape.safeParse(raw);
+  if (!r.success) return undefined;
+  return {
+    total_numeric_claims: r.data.total_numeric_claims,
+    verified: r.data.verified,
+    unverified: r.data.unverified.map((u) => ({ claim: u.claim, field: u.field, note: u.note })),
+    passed: r.data.passed,
+    retry_attempted: r.data.retry_attempted,
+  };
+}
+
 export type CreateIssuesSummary = {
   attempted: number;
   succeeded: number;
@@ -70,7 +99,7 @@ export async function createIssueForFinding(findingId: string): Promise<{
   const { data: row, error } = await supabase()
     .from('audit_findings')
     .select(
-      'id, audit_run_id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, priority_score, priority_tier, group_assignment, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, current_state, diagnostic, github_issue_number, audit_runs(period_start, period_end, config_snapshot)',
+      'id, audit_run_id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, priority_score, priority_tier, group_assignment, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, current_state, diagnostic, diagnostic_fact_check, github_issue_number, audit_runs(period_start, period_end, config_snapshot)',
     )
     .eq('id', findingId)
     .single();
@@ -84,6 +113,7 @@ export async function createIssueForFinding(findingId: string): Promise<{
 
   const diagnostic: IssueDiagnostic = DiagnosticShape.parse(row.diagnostic);
   const cs = CurrentStateShape.parse(row.current_state);
+  const factCheck = parseFactCheck(row.diagnostic_fact_check);
 
   const auditRun = Array.isArray(row.audit_runs)
     ? (row.audit_runs[0] as
@@ -146,6 +176,7 @@ export async function createIssueForFinding(findingId: string): Promise<{
     baseline_date: auditRun.period_end,
     supabase_finding_url: supabaseFindingUrl,
     cooked_extras: cookedExtras,
+    fact_check: factCheck,
   });
 
   const { owner, repo } = repoCoords();
@@ -283,7 +314,7 @@ export async function updateIssueAfterMeasurement(findingId: string): Promise<{
   const { data: row, error } = await supabase()
     .from('audit_findings')
     .select(
-      'id, audit_run_id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, priority_score, priority_tier, group_assignment, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, current_state, diagnostic, github_issue_number, github_issue_url, audit_runs(period_start, period_end, config_snapshot)',
+      'id, audit_run_id, page, impressions, ctr_actual, ctr_expected, ctr_gap, avg_position, position_drift, priority_score, priority_tier, group_assignment, pages_per_session, avg_session_duration_seconds, scroll_depth_avg, current_state, diagnostic, diagnostic_fact_check, github_issue_number, github_issue_url, audit_runs(period_start, period_end, config_snapshot)',
     )
     .eq('id', findingId)
     .single();
@@ -297,6 +328,7 @@ export async function updateIssueAfterMeasurement(findingId: string): Promise<{
 
   const diagnostic: IssueDiagnostic = DiagnosticShape.parse(row.diagnostic);
   const cs = CurrentStateShape.parse(row.current_state);
+  const factCheck = parseFactCheck(row.diagnostic_fact_check);
   const auditRun = Array.isArray(row.audit_runs)
     ? (row.audit_runs[0] as
         | { period_start: string; period_end: string; config_snapshot: { period_months?: number } }
@@ -357,6 +389,7 @@ export async function updateIssueAfterMeasurement(findingId: string): Promise<{
     supabase_finding_url: `${supabaseUrl}/project/_/editor?schema=public&table=audit_findings&filter=id=${findingId}`,
     cooked_extras: cookedExtras,
     measurements,
+    fact_check: factCheck,
   });
 
   // 4. PATCH issue body
