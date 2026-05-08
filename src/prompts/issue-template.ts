@@ -192,6 +192,21 @@ export type IssueInputs = {
   // least one measurement exists. Pre-measurement, the issue body is
   // identical to a Sprint-13 render.
   measurements?: IssueMeasurement[];
+
+  // Sprint-14bis: fact-check result for the diagnostic v7 numeric claims.
+  // Optional — pre-Sprint-14bis findings render cleanly without it.
+  // When present, surfaces a [!CAUTION] alert in the body if any claim
+  // didn't trace to content_snapshot, or a [!NOTE] confirming "0 chiffre
+  // halluciné" when everything verified.
+  fact_check?: IssueFactCheck;
+};
+
+export type IssueFactCheck = {
+  total_numeric_claims: number;
+  verified: number;
+  unverified: Array<{ claim: string; field: string; note?: string }>;
+  passed: boolean;
+  retry_attempted: boolean;
 };
 
 function pct(n: number, digits = 2): string {
@@ -268,6 +283,37 @@ function scrollInterpretation(p: number | null): string {
  *   - CTR delta ≤ -5%                            → 🚫 CAUTION (régression)
  *   - else                                       → ℹ️ NOTE   (mouvement neutre)
  */
+/**
+ * Sprint-14bis — fact-check banner. Shows under the diagnostic if any
+ * numeric claim didn't trace to <page_body>/<page_outline>/<images>/
+ * <cta_in_body_positions>. Renders nothing when no fact-check is on the
+ * finding (pre-Sprint-14bis), or as a quiet [!NOTE] confirming "0 chiffre
+ * halluciné" when everything verified.
+ */
+function fmtFactCheckBanner(fc: IssueFactCheck | undefined): string {
+  if (!fc) return '';
+  if (fc.passed) {
+    if (fc.total_numeric_claims === 0) return '';
+    const retried = fc.retry_attempted ? ' (corrigé en 1 retry)' : '';
+    return [
+      `> [!NOTE]`,
+      `> **Fact-check** — ${fc.verified}/${fc.total_numeric_claims} chiffres tracés vers \`content_snapshot\`${retried}. 0 halluciné.`,
+      `> ${fmtSource('SEO calc · diagnostic-fact-check').trim()}`,
+    ].join('\n');
+  }
+  const items = fc.unverified
+    .slice(0, 5)
+    .map((u) => `> - \`${u.field}\` — "${u.claim}"${u.note ? ` (${u.note})` : ''}`);
+  const overflow = fc.unverified.length > 5 ? `\n> - …et ${fc.unverified.length - 5} de plus` : '';
+  const retried = fc.retry_attempted ? ' (1 retry tenté)' : '';
+  return [
+    `> [!CAUTION]`,
+    `> **Fact-check** — ${fc.unverified.length}/${fc.total_numeric_claims} chiffre${fc.unverified.length > 1 ? 's' : ''} non vérifié${fc.unverified.length > 1 ? 's' : ''}${retried}. À recouper avec la page :`,
+    items.join('\n') + overflow,
+    `> ${fmtSource('SEO calc · diagnostic-fact-check').trim()}`,
+  ].join('\n');
+}
+
 function fmtMeasurementVerdict(measurements: IssueMeasurement[] | undefined): string {
   if (!measurements || measurements.length === 0) return '';
   const sorted = [...measurements].sort((a, b) => a.days_after_fix - b.days_after_fix);
@@ -703,6 +749,12 @@ export function renderIssueBody(i: IssueInputs): string {
   const measurementVerdict = fmtMeasurementVerdict(i.measurements);
   const measurementTable = fmtMeasurementTable(i.measurements);
 
+  // Sprint-14bis: fact-check banner — empty when no fact-check on the
+  // finding OR when 0 numeric claims; visible NOTE when all verified;
+  // CAUTION listing unverified claims when the LLM still hallucinated
+  // after retry.
+  const factCheckBanner = fmtFactCheckBanner(i.fact_check);
+
   // Sections may be empty (e.g. dataQualityBanner when capture rate is OK,
   // measurement blocks when no measurement yet). Filter them out so the
   // join('\n\n') doesn't produce double-blank gaps.
@@ -715,6 +767,7 @@ export function renderIssueBody(i: IssueInputs): string {
     dataQualityBanner,
     `---`,
     diagSection,
+    factCheckBanner, // Sprint-14bis: fact-check sits right under the diagnostic bullets
     `---`,
     fixesSection,
     cycleBlock,

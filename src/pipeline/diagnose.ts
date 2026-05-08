@@ -30,6 +30,8 @@ import {
   type OutboundDestination,
   type CtaBreakdownRow,
 } from '../lib/cooked.js';
+import { factCheckDiagnostic, type FactCheckResult } from '../lib/diagnostic-fact-check.js';
+import type { ContentSnapshot } from '../lib/page-content-extractor.js';
 
 const DiagnosticSchema = z.object({
   // Sprint-11 v5: synthesis-first field. Optional so older v1-v4 diagnostics
@@ -372,10 +374,7 @@ async function fetchGscClicksLast28d(page: string): Promise<number | null> {
   return Math.round(Number(r.clicks) * (28 / days));
 }
 
-export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayload> {
-  const inputs = await buildDiagnosticInputs(findingId);
-
-  const prompt = renderDiagnosticPrompt(inputs);
+async function callDiagnosticLLM(prompt: string, extraMessages: Array<{ role: 'user' | 'assistant'; content: string }> = []): Promise<DiagnosticPayload> {
   const res = await anthropic().messages.create({
     model: model(),
     // Sprint-14: bumped from 4000 → 8000 tokens. The v7 prompt feeds the
@@ -384,7 +383,7 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     // mid-JSON — observed on first qspa run. 8000 covers all observed
     // cases with margin (~6-9k chars output typical, max ~14k).
     max_tokens: 8000,
-    messages: [{ role: 'user', content: prompt }],
+    messages: [{ role: 'user', content: prompt }, ...extraMessages],
   });
   const first = res.content[0];
   const raw = first?.type === 'text' ? first.text : '';
@@ -396,12 +395,74 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
   } catch (err) {
     throw new Error(`LLM response is not valid JSON: ${(err as Error).message}\n${raw.slice(0, 500)}`);
   }
-  const diagnostic = DiagnosticSchema.parse(parsed);
+  return DiagnosticSchema.parse(parsed);
+}
+
+/**
+ * Sprint-14bis — build a corrective user message that lists the unverified
+ * claims and asks the LLM to redo the diagnostic without the hallucinated
+ * numbers. The retry message is concise on purpose : we don't repeat the
+ * full prompt context, the LLM still has the original `prompt` in its turn.
+ */
+function buildRetryMessage(unverified: FactCheckResult['unverified']): string {
+  const lines = unverified.map(
+    (u, i) =>
+      `${i + 1}. Champ \`${u.field}\` — claim "${u.claim}" — ${u.note ?? 'introuvable dans content_snapshot'}`,
+  );
+  return [
+    'Ton diagnostic précédent contient des chiffres qui ne tracent pas vers les blocs <page_body>, <page_outline>, <images> ou <cta_in_body_positions>.',
+    '',
+    'Claims à corriger :',
+    ...lines,
+    '',
+    'Refais le diagnostic complet, en JSON strict, sans aucun chiffre que tu ne peux pas tracer aux blocs sources. Si tu n\'es pas sûr d\'un nombre, retire-le ou écris-le qualitatif (ex: "court", "long", "plusieurs").',
+  ].join('\n');
+}
+
+export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayload> {
+  const inputs = await buildDiagnosticInputs(findingId);
+  const prompt = renderDiagnosticPrompt(inputs);
+  const cs = inputs.content_snapshot ?? null;
+
+  // First pass.
+  let diagnostic = await callDiagnosticLLM(prompt);
+
+  // Sprint-14bis: fact-check the numeric claims against content_snapshot.
+  // If any claim doesn't trace, retry ONCE with a corrective message
+  // listing the unverified claims. We retry at most once to bound cost.
+  let factCheck: FactCheckResult & { retry_attempted: boolean } = {
+    ...factCheckDiagnostic({ diagnostic, content_snapshot: cs as ContentSnapshot | null }),
+    retry_attempted: false,
+  };
+
+  if (!factCheck.passed && cs) {
+    const retryMsg = buildRetryMessage(factCheck.unverified);
+    process.stderr.write(
+      `[diagnose] ${findingId} — fact-check failed (${factCheck.unverified.length} unverified), retrying once\n`,
+    );
+    try {
+      const retried = await callDiagnosticLLM(prompt, [
+        { role: 'assistant', content: JSON.stringify(diagnostic) },
+        { role: 'user', content: retryMsg },
+      ]);
+      const retryFc = factCheckDiagnostic({ diagnostic: retried, content_snapshot: cs as ContentSnapshot | null });
+      // Keep the retried diagnostic even if it still has issues — at worst
+      // it's no worse than the first pass, and usually strictly better.
+      diagnostic = retried;
+      factCheck = { ...retryFc, retry_attempted: true };
+    } catch (err) {
+      process.stderr.write(
+        `[diagnose] ${findingId} — retry failed: ${(err as Error).message} — keeping first-pass diagnostic\n`,
+      );
+      factCheck.retry_attempted = true;
+    }
+  }
 
   const { error: updErr } = await supabase()
     .from('audit_findings')
     .update({
       diagnostic,
+      diagnostic_fact_check: factCheck,
       status: 'diagnosed',
       updated_at: new Date().toISOString(),
     })
