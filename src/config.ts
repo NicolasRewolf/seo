@@ -21,7 +21,7 @@ const SupabaseSchema = z.object({
 
 const AnthropicSchema = z.object({
   ANTHROPIC_API_KEY: z.string().min(1),
-  ANTHROPIC_MODEL: z.string().default('claude-sonnet-4-6'),
+  ANTHROPIC_MODEL: z.string().default('claude-opus-4-7'),
 });
 
 const GitHubSchema = z.object({
