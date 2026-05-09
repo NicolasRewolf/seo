@@ -62,6 +62,9 @@ const DiagnosticSchema = z.object({
   traffic_strategy_note: z.string().optional().default(''),
   device_optimization_note: z.string().optional().default(''),
   outbound_leak_note: z.string().optional().default(''),
+  // Sprint-15 v8: pogo-sticking / NavBoost negative signal. Optional for
+  // v1-v7 backcompat (older diagnostics in DB don't have this field).
+  pogo_navboost_assessment: z.string().optional().default(''),
 });
 
 export type DiagnosticPayload = z.infer<typeof DiagnosticSchema>;
@@ -407,15 +410,15 @@ async function callDiagnosticLLM(prompt: string, extraMessages: Array<{ role: 'u
 function buildRetryMessage(unverified: FactCheckResult['unverified']): string {
   const lines = unverified.map(
     (u, i) =>
-      `${i + 1}. Champ \`${u.field}\` — claim "${u.claim}" — ${u.note ?? 'introuvable dans content_snapshot'}`,
+      `${i + 1}. Champ \`${u.field}\` — claim "${u.claim}" — ${u.note ?? 'introuvable dans les blocs sources'}`,
   );
   return [
-    'Ton diagnostic précédent contient des chiffres qui ne tracent pas vers les blocs <page_body>, <page_outline>, <images> ou <cta_in_body_positions>.',
+    'Ton diagnostic précédent contient des chiffres qui ne tracent pas vers les blocs sources fournis (<page_body>, <page_outline>, <images>, <cta_in_body_positions>, <pogo_navboost>).',
     '',
     'Claims à corriger :',
     ...lines,
     '',
-    'Refais le diagnostic complet, en JSON strict, sans aucun chiffre que tu ne peux pas tracer aux blocs sources. Si tu n\'es pas sûr d\'un nombre, retire-le ou écris-le qualitatif (ex: "court", "long", "plusieurs").',
+    'Refais le diagnostic complet, en JSON strict, en n\'utilisant QUE les chiffres exacts présents dans les blocs sources. ATTENTION particulièrement aux chiffres pogo (n=, google_sessions, pogo_sticks, pogo_rate, hard_pogo) : recopie-les VERBATIM depuis le bloc <pogo_navboost>. Si tu n\'es pas sûr d\'un nombre, retire-le ou écris-le qualitatif (ex: "court", "long", "plusieurs").',
   ].join('\n');
 }
 
@@ -428,14 +431,30 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
   let diagnostic = await callDiagnosticLLM(prompt);
 
   // Sprint-14bis: fact-check the numeric claims against content_snapshot.
+  // Sprint-15: also fact-check pogo claims against pogo_28d facts.
   // If any claim doesn't trace, retry ONCE with a corrective message
   // listing the unverified claims. We retry at most once to bound cost.
+  const pogoFacts = inputs.cooked_extras
+    ? {
+        google_sessions: inputs.cooked_extras.pogo_28d.google_sessions,
+        pogo_sticks: inputs.cooked_extras.pogo_28d.pogo_sticks,
+        hard_pogo: inputs.cooked_extras.pogo_28d.hard_pogo,
+        pogo_rate_pct: inputs.cooked_extras.pogo_28d.pogo_rate_pct,
+      }
+    : null;
   let factCheck: FactCheckResult & { retry_attempted: boolean } = {
-    ...factCheckDiagnostic({ diagnostic, content_snapshot: cs as ContentSnapshot | null }),
+    ...factCheckDiagnostic({
+      diagnostic,
+      content_snapshot: cs as ContentSnapshot | null,
+      pogo: pogoFacts,
+    }),
     retry_attempted: false,
   };
 
-  if (!factCheck.passed && cs) {
+  // Retry triggers when ANY claim is unverified (content_snapshot OR pogo).
+  // We allow retry even when cs is null but pogo facts are present (Sprint-15
+  // hallucinations don't need cs to be detected).
+  if (!factCheck.passed && (cs || pogoFacts)) {
     const retryMsg = buildRetryMessage(factCheck.unverified);
     process.stderr.write(
       `[diagnose] ${findingId} — fact-check failed (${factCheck.unverified.length} unverified), retrying once\n`,
@@ -445,7 +464,11 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
         { role: 'assistant', content: JSON.stringify(diagnostic) },
         { role: 'user', content: retryMsg },
       ]);
-      const retryFc = factCheckDiagnostic({ diagnostic: retried, content_snapshot: cs as ContentSnapshot | null });
+      const retryFc = factCheckDiagnostic({
+        diagnostic: retried,
+        content_snapshot: cs as ContentSnapshot | null,
+        pogo: pogoFacts,
+      });
       // Keep the retried diagnostic even if it still has issues — at worst
       // it's no worse than the first pass, and usually strictly better.
       diagnostic = retried;

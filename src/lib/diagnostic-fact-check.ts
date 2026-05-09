@@ -32,6 +32,19 @@ export type FactCheckResult = {
 type DiagnosticBag = Record<string, unknown>;
 
 /**
+ * Sprint-15 — pogo signal facts to verify against. Optional : when
+ * not passed (or null), pogo claims are not checked. The 4 fields
+ * mirror PageSnapshotExtras.pogo_28d so callers can pass them
+ * directly without a transform.
+ */
+export type PogoFacts = {
+  google_sessions: number | null;
+  pogo_sticks: number | null;
+  hard_pogo: number | null;
+  pogo_rate_pct: number | null;
+};
+
+/**
  * Run a best-effort numeric fact-check across the diagnostic JSON.
  *
  * Patterns checked:
@@ -39,13 +52,16 @@ type DiagnosticBag = Record<string, unknown>;
  *   - "H2 #(\d+)" → must be ≤ count of H2 in outline
  *   - "(\d+) images" → must match images.length (±0)
  *   - "(\d+) sans alt" → must match images.filter(no alt).length (±0)
- *   - "offset (\d+)" → must match an outline.word_offset OR cta_in_body_positions.word_offset (±5)
+ *   - Sprint-15: pogo claims (n=N google_sessions, X pogo, X% pogo_rate, etc.)
+ *     → must match the pogo_28d facts within tolerance
  */
 export function factCheckDiagnostic(opts: {
   diagnostic: DiagnosticBag;
   content_snapshot: ContentSnapshot | null;
+  pogo?: PogoFacts | null;
 }): FactCheckResult {
   const cs = opts.content_snapshot;
+  const pogo = opts.pogo ?? null;
   const unverified: FactCheckResult['unverified'] = [];
   let totalClaims = 0;
   let verified = 0;
@@ -65,6 +81,7 @@ export function factCheckDiagnostic(opts: {
     'traffic_strategy_note',
     'device_optimization_note',
     'outbound_leak_note',
+    'pogo_navboost_assessment',
   ];
 
   for (const field of fieldsToScan) {
@@ -182,6 +199,81 @@ export function factCheckDiagnostic(opts: {
     // If we ever observe a real hallucination here (claim of an offset
     // beyond word_count, or claim of an existing H2 at the wrong offset),
     // we'll add a more targeted check.
+
+    // 6. Sprint-15 — Pogo claims. Verify against the pogo_28d facts.
+    //
+    // The first end-to-end run on Sprint 15 caught a real hallucination :
+    // LLM claimed "n=115 google_sessions, 11 pogo, 9.6%" when actual was
+    // "22 google_sessions, 3 pogo, 13.6%". Adding patterns prevents this
+    // from passing silently in future runs.
+    if (pogo) {
+      // 6a. n=N pattern (most common — "sur n=80" / "(n=80)" / "n=80")
+      for (const m of value.matchAll(/n\s*=\s*(\d[\d\s]{0,5})/gi)) {
+        const claimed = parseInt(m[1]!.replace(/\s+/g, ''), 10);
+        // Only treat as a pogo claim if google_sessions context — check
+        // whether the surrounding text mentions google_sessions/pogo to avoid
+        // matching "n=30" used as a generic statistical threshold mention.
+        const ctx = value.slice(Math.max(0, m.index! - 60), m.index! + m[0].length + 60);
+        if (!/google[_\s]?session|pogo|navboost/i.test(ctx)) continue;
+        totalClaims++;
+        if (pogo.google_sessions == null) {
+          unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.google_sessions', note: 'pogo facts not available' });
+          continue;
+        }
+        // Tolerance: ±2 (snapshot is daily, slight drift OK)
+        if (Math.abs(claimed - pogo.google_sessions) <= 2) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.google_sessions', note: `claimed ${claimed}, actual ${pogo.google_sessions}` });
+      }
+
+      // 6b. "X google_sessions" / "X sessions Google"
+      for (const m of value.matchAll(/(\d[\d\s]{0,5})\s+(?:google[_\s]?sessions?|sessions?\s+google)/gi)) {
+        totalClaims++;
+        const claimed = parseInt(m[1]!.replace(/\s+/g, ''), 10);
+        if (pogo.google_sessions == null) {
+          unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.google_sessions', note: 'pogo facts not available' });
+          continue;
+        }
+        if (Math.abs(claimed - pogo.google_sessions) <= 2) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.google_sessions', note: `claimed ${claimed}, actual ${pogo.google_sessions}` });
+      }
+
+      // 6c. "X pogo" / "X pogo-stick(s)" — but NOT "hard pogo" (handled below)
+      for (const m of value.matchAll(/(?<!hard\s)(\d+)\s+pogo(?:[-_\s]?stick)?s?\b(?!\s*[%])/gi)) {
+        totalClaims++;
+        const claimed = parseInt(m[1]!, 10);
+        if (pogo.pogo_sticks == null) {
+          unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.pogo_sticks', note: 'pogo facts not available' });
+          continue;
+        }
+        if (claimed === pogo.pogo_sticks) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.pogo_sticks', note: `claimed ${claimed}, actual ${pogo.pogo_sticks}` });
+      }
+
+      // 6d. "X hard pogo" / "X hard_pogo"
+      for (const m of value.matchAll(/(\d+)\s+hard[_\s]?pogo/gi)) {
+        totalClaims++;
+        const claimed = parseInt(m[1]!, 10);
+        if (pogo.hard_pogo == null) {
+          unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.hard_pogo', note: 'pogo facts not available' });
+          continue;
+        }
+        if (claimed === pogo.hard_pogo) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.hard_pogo', note: `claimed ${claimed}, actual ${pogo.hard_pogo}` });
+      }
+
+      // 6e. "pogo_rate X%" / "pogo X%" / "rate de X%" — only when pogo context
+      for (const m of value.matchAll(/pogo[_\s]?(?:rate)?\s*(?:de\s+)?(\d+(?:[.,]\d+)?)\s*%/gi)) {
+        totalClaims++;
+        const claimed = parseFloat(m[1]!.replace(',', '.'));
+        if (pogo.pogo_rate_pct == null) {
+          unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.pogo_rate_pct', note: 'pogo facts not available' });
+          continue;
+        }
+        // Tolerance: ±0.5pp (rate already rounded to 1 decimal by Cooked)
+        if (Math.abs(claimed - pogo.pogo_rate_pct) <= 0.5) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.pogo_rate_pct', note: `claimed ${claimed}%, actual ${pogo.pogo_rate_pct}%` });
+      }
+    }
   }
 
   return {

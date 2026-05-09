@@ -78,7 +78,7 @@ import { fetchTrackerFirstSeen } from '../lib/cooked.js';
 import type { ContentSnapshot } from '../lib/page-content-extractor.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 7 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 8 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -370,6 +370,50 @@ function fmtCtaBreakdown(rows: CtaBreakdownRow[] | undefined): string {
     lines.push('');
     lines.push(
       `**Lecture** : ${byPlacement.body} clicks body / ${total} total = **${bodyPct}% intent qualifié** (le reste = clicks ambiants header/footer présents sur toutes les pages).`,
+    );
+  }
+  return lines.join('\n');
+}
+
+/**
+ * Sprint 15 — Pogo-sticking signal (NavBoost negative).
+ *
+ * A "pogo" = visiteur arrive de Google, vue 1 page, repart en <10s. Le hard
+ * pogo ajoute scroll<5% (n'a même pas essayé de lire). C'est le signal
+ * NavBoost négatif le plus fort qu'on puisse capter sans accès aux logs
+ * Google. Cooked publie les 4 colonnes via snapshot_pages_export() depuis
+ * Sprint 15.
+ *
+ * Reliability caveat : `pogo_rate_pct` calculé sur n<30 sessions Google
+ * a une marge de bruit large (CI ~±15-20pp pour n=10). On expose toujours
+ * la valeur mais on annote la fiabilité pour que le LLM ne crie pas au
+ * loup sur un faible n. Le seuil d'alerte (>20%) côté issue body applique
+ * AUSSI un n≥30 — c'est uniquement DANS le prompt qu'on laisse passer le
+ * faible n avec caveat (en cas de signal très fort, ex: 50% à n=10).
+ */
+function fmtPogoSignal(ex: PageSnapshotExtras | null | undefined): string {
+  if (!ex) return '_(Cooked snapshot indisponible)_';
+  const p = ex.pogo_28d;
+  if (p.google_sessions == null || p.google_sessions === 0) {
+    return '_(0 session Google captée sur 28d — pas de signal pogo lisible. Soit la page n\'est pas indexée, soit Cooked vient de démarrer le tracking sur ce path)_';
+  }
+  const lines: string[] = [];
+  lines.push(`- google_sessions_28d: ${p.google_sessions}`);
+  lines.push(`- pogo_sticks_28d: ${p.pogo_sticks ?? 0} (Google → 1 page → <10s)`);
+  lines.push(`- hard_pogo_28d: ${p.hard_pogo ?? 0} (idem + scroll <5%)`);
+  if (p.pogo_rate_pct != null) {
+    lines.push(`- **pogo_rate_28d: ${p.pogo_rate_pct.toFixed(1)}%**`);
+  }
+  // Fiabilité statistique
+  if (p.google_sessions < 30) {
+    lines.push('');
+    lines.push(
+      `_⚠ Échantillon faible (${p.google_sessions} sessions Google < 30) : le rate a une marge de bruit large (CI ~±15-20pp). N'évoquer le pogo comme verdict que si l'écart à la moyenne site est très net, sinon le mentionner comme "à surveiller"._`,
+    );
+  } else if (p.pogo_rate_pct != null && p.pogo_rate_pct > 20) {
+    lines.push('');
+    lines.push(
+      `_🚨 **Signal NavBoost négatif fort** (${p.pogo_rate_pct.toFixed(0)}% > 20% sur n=${p.google_sessions}) : Google a probablement déjà commencé à dérouter cette page. Diagnostic en priorité — c'est l'explication la plus probable de tout écart de position négatif._`,
     );
   }
   return lines.join('\n');
@@ -854,6 +898,12 @@ Détermine où la page se bat. Si trafic 80% Google organic → priorité = CTR 
 ${fmtTrafficProvenance(i.cooked_extras)}
 </traffic_provenance>
 
+<pogo_navboost>
+Sprint 15 — Signal NavBoost négatif. Pogo-stick = visiteur arrive de Google, vue 1 page, repart en <10s sans rien lire. Hard pogo = idem + scroll <5%. Plus le pogo_rate est élevé, plus Google considère la page comme insatisfaisante pour la requête → dérouting progressif (chute de position observable). Lis ce bloc EN PRIORITÉ pour expliquer une position_drift négative : si pogo_rate > 20% sur n≥30, c'est probablement la cause #1. Ne sur-interprète PAS sur n<30 (la marge de bruit du rate est large), mais signale-le quand même comme "à surveiller".
+
+${fmtPogoSignal(i.cooked_extras)}
+</pogo_navboost>
+
 <device_split>
 Calibre les recommandations. 70% mobile + scroll court → fix mobile-first. 70% desktop → marges plus larges, intro plus longue OK.
 
@@ -902,6 +952,7 @@ Produis un diagnostic JSON strict avec ce schéma. **Le champ \`tldr\` vient en 
   "traffic_strategy_note": "1 phrase. À partir du <traffic_provenance>: si top_source=google + top_medium=organic ≥ 70% → 'priorité = CTR snippet (la bataille se joue dans la SERP Google)'. Si top_referrer = social/réseau → 'priorité = OG tags + preview sociale'. Si direct ≥ 50% → 'audience qualifiée connaît déjà le cabinet, fix CTA conversion plutôt qu'acquisition'. Si pas assez de data: 'provenance non significative'.",
   "device_optimization_note": "1 phrase. À partir du <device_split>: si mobile ≥ 65% + scroll_avg < 30% → 'fix mobile-first impératif (intro courte, CTA above-the-fold mobile)'. Si desktop ≥ 65% → 'OK pour intro plus dense, marges latérales plus larges'. Si équilibré : 'audience hybride, vérifier que le snippet et l'intro fonctionnent sur les 2 formats'. Si pas de data: 'split device non significatif'.",
   "outbound_leak_note": "1 phrase ou 'pas de leak significatif'. Lis <top_outbound_destinations>: si la top destination est sémantiquement liée à la thématique de la page (ex: legifrance.gouv.fr / service-public.fr sur une page juridique), c'est une fuite réparable → 'ajoute la citation X in-page au lieu de laisser fuir vers source externe Y'. Sinon : 'fuites externes normales (autorités juridiques officielles), pas un signal de fix'.",
+  "pogo_navboost_assessment": "1-2 phrases. Lis <pogo_navboost>. Si pogo_rate > 20% sur n≥30 google_sessions → cause #1 d'une éventuelle position_drift négative, à mettre en tête des hypothèses : 'NavBoost dérouté la page (pogo XX% sur n=YY) — l'intent ne match pas, soit le snippet ment, soit la page n'apporte pas la réponse attendue dans les 10 premières secondes'. Si n<30, mentionne 'à surveiller, échantillon trop faible pour conclure'. Si pas de signal (0 google_sessions ou tracker récent), écris 'signal pogo non disponible (Cooked vient de démarrer ou page non indexée)'. Si pogo_rate ≤ 10% sur n≥30, écris brièvement 'engagement Google satisfaisant (pogo XX%)' — c'est une info utile à l'inverse pour ne pas fixer ce qui marche.",
   "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le bloc <outbound_links_from_this_page> (ne pas re-suggérer des liens existants), le RÔLE FUNNEL de la page, ET (Sprint-14) **le bloc <page_outline> et le word_count du <page_body>**. Si le word_count est < 1500 mots sur un sujet juridique substantiel, dis 'thin content vs benchmark juridique-FR ~1800 mots médian'. Si une top requête à fort volume n'a pas de H2 dédié dans <page_outline>, dis-le explicitement avec l'offset où l'insérer. Cite le bloc <images> si plusieurs images sans alt-text. ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', traite le maillage éditorial sortant comme INCONNU.** ⚠️ **Si <page_body> est indisponible/vide, écris 'extraction body indisponible' et ne fais PAS de claim sur word_count ou outline.**",
   "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle funnel ? Quels maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs précises du catalogue. (Sprint-14) **Lis aussi <cta_in_body_positions>** — si un CTA existant est très tard dans le body (offset > 70% du word_count) et que scroll_avg Cooked est faible (<50%), recommande explicitement de le repositionner plus tôt avec l'offset cible. ⚠️ **Si <outbound_links_from_this_page> est 'Snapshot pré-Sprint-9', écris : 'maillage éditorial sortant non capturé — réévaluer'.**",
   "internal_authority_assessment": "1-2 phrases sur la position de cette page dans le graph interne (lis EXCLUSIVEMENT le bloc <inbound_links_to_this_page>, JAMAIS le bloc outbound). Si inbound_editorial>=10 → 'page hub à protéger' (les fixes ne doivent pas casser ce statut). Si inbound_editorial==0 et inbound_total>0 → 'page orpheline éditorialement' : prioriser absolument l'ajout de liens depuis 2-3 pages sources naturelles. Sinon → position standard, pas de levier graph spécifique. Si le graph n'est pas encore crawlé, écris 'graph non disponible (premier crawl en cours)'."
