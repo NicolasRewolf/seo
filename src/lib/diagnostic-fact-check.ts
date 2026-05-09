@@ -228,8 +228,11 @@ export function factCheckDiagnostic(opts: {
     // "22 google_sessions, 3 pogo, 13.6%". Adding patterns prevents this
     // from passing silently in future runs.
     if (pogo) {
-      // 6a. n=N pattern (most common — "sur n=80" / "(n=80)" / "n=80")
-      for (const m of value.matchAll(/n\s*=\s*(\d[\d\s]{0,5})/gi)) {
+      // 6a. n=N pattern (most common — "sur n=80" / "(n=80)" / "n=80").
+      // Sprint-17 fix: require word boundary before `n` to avoid matching
+      // inside French words like "média_n_=41s" (false positive observed
+      // on #33 where "médian=41s" was caught as a pogo n= claim).
+      for (const m of value.matchAll(/\bn\s*=\s*(\d[\d\s]{0,5})/gi)) {
         const claimed = parseInt(m[1]!.replace(/\s+/g, ''), 10);
         // Only treat as a pogo claim if google_sessions context — check
         // whether the surrounding text mentions google_sessions/pogo to avoid
@@ -331,15 +334,35 @@ export function factCheckDiagnostic(opts: {
         void isPercentile; // silence linter
       }
 
-      // 7c. mobile/desktop CTA rate. Wider window: up to 30 non-digit chars
-      // between (mobile|desktop) and the %, then context check on the full
-      // surrounding 80 chars for cta/convert/rate keywords. Avoids false
-      // positives on "mobile share 70%" or "audience mobile à 78%".
-      for (const m of value.matchAll(/(mobile|desktop)\b[^%\d\n]{0,30}(\d+(?:[.,]\d+)?)\s*%/gi)) {
+      // 7c. mobile/desktop CTA rate. Sprint-17 fixes:
+      //   (a) context check restricted to the LOCAL SENTENCE (between
+      //       sentence boundaries) so "Mobile 80% du trafic. Sur les
+      //       conversions : 0%" doesn't false-positive (Mobile 80% is
+      //       device share, "conversions" is the next sentence).
+      //   (b) reject when the GAP between (mobile|desktop) and the % cites
+      //       a different metric (scroll, scroll_avg, share, split, trafic,
+      //       audience). The LLM combines metrics like "80% mobile +
+      //       scroll_avg 24.4%" — the 24.4% belongs to scroll, not CTA.
+      for (const m of value.matchAll(/(mobile|desktop)\b([^%\d\n]{0,30})(\d+(?:[.,]\d+)?)\s*%/gi)) {
         const device = m[1]!.toLowerCase();
-        const claimed = parseFloat(m[2]!.replace(',', '.'));
-        const ctx = value.slice(Math.max(0, m.index! - 60), m.index! + m[0].length + 80);
-        if (!/cta|convert|conversion|\brate\b/i.test(ctx)) continue;
+        const gap = m[2]!;
+        const claimed = parseFloat(m[3]!.replace(',', '.'));
+        // (b) negative keywords in the gap → another metric is being cited
+        if (/scroll|\bshare\b|split|trafic|audience|provient|visiteurs?|sessions?\b/i.test(gap)) continue;
+        // (a) Find local sentence : from previous sentence boundary to next.
+        const before = value.slice(0, m.index!);
+        const after = value.slice(m.index! + m[0].length);
+        const lastBoundary = Math.max(
+          before.lastIndexOf('. '), before.lastIndexOf('! '),
+          before.lastIndexOf('? '), before.lastIndexOf(': '),
+          before.lastIndexOf('\n'), -1,
+        );
+        const candidates = ['. ', '! ', '? ', ': ', '\n']
+          .map((s) => after.indexOf(s))
+          .filter((i) => i >= 0);
+        const nextBoundaryRel = candidates.length > 0 ? Math.min(...candidates) : after.length;
+        const localSentence = value.slice(lastBoundary + 1, m.index! + m[0].length + nextBoundaryRel);
+        if (!/cta|convert|conversion|\brate\b/i.test(localSentence)) continue;
         const actual = device === 'mobile' ? s16.cta_rate_mobile_pct : s16.cta_rate_desktop_pct;
         const label = device === 'mobile' ? 'cta_rate_mobile_pct' : 'cta_rate_desktop_pct';
         totalClaims++;
