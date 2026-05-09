@@ -240,3 +240,111 @@ test('Sprint-15 — hard pogo distinguished from regular pogo', () => {
   // 3 pogo (✓), 2 hard pogo (✓), n=22 (✓)
   assert.equal(r.passed, true);
 });
+
+// ---------- Sprint-16 — engagement density + device CTA tests -----------
+
+const sprint16Facts = {
+  mobile_sessions: 70,
+  desktop_sessions: 72,
+  cta_rate_mobile_pct: 1.43,
+  cta_rate_desktop_pct: 6.94,
+  density_sessions: 143,
+  density_dwell_p25: 7,
+  density_dwell_median: 41,
+  density_dwell_p75: 103,
+  density_evenness_score: 0.07,
+};
+
+test('Sprint-16 — verified: evenness within 0.05 tolerance', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: { engagement_pattern_assessment: 'Distribution bimodale (evenness 0.07).' },
+    content_snapshot: null,
+    sprint16: sprint16Facts,
+  });
+  assert.equal(r.passed, true);
+  assert.ok(r.total_numeric_claims >= 1);
+});
+
+test('Sprint-16 — unverified: hallucinated evenness', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: { engagement_pattern_assessment: 'Bonne homogénéité (evenness 0.85).' },
+    content_snapshot: null,
+    sprint16: sprint16Facts,
+  });
+  assert.equal(r.passed, false);
+  assert.ok(r.unverified.some((u) => /0\.85/.test(u.claim)));
+});
+
+test('Sprint-16 — verified: dwell percentiles match', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      engagement_pattern_assessment: 'p25=7s, median=41s, p75=103s — distribution bimodale.',
+    },
+    content_snapshot: null,
+    sprint16: sprint16Facts,
+  });
+  assert.equal(r.passed, true);
+  // 3 percentile claims + evenness mention if any
+  assert.ok(r.total_numeric_claims >= 3);
+});
+
+test('Sprint-16 — unverified: hallucinated p25', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      engagement_pattern_assessment: 'p25=25s, median=41s — engagement OK.',
+    },
+    content_snapshot: null,
+    sprint16: sprint16Facts,
+  });
+  // p25 wrong (25 vs 7), median right
+  assert.equal(r.passed, false);
+  assert.ok(r.unverified.some((u) => /p25/.test(u.claim) && u.note?.includes('25')));
+});
+
+test('Sprint-16 — verified: mobile + desktop CTA rates with CTA context', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      device_optimization_note: 'mobile convertit à 1.43% vs desktop 6.94% — ratio 1:5.',
+    },
+    content_snapshot: null,
+    sprint16: sprint16Facts,
+  });
+  assert.equal(r.passed, true);
+});
+
+test('Sprint-16 — "mobile X%" without CTA context is NOT counted', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      device_optimization_note: 'L\'audience est mobile à 78%, scroll court.',
+    },
+    content_snapshot: null,
+    sprint16: sprint16Facts,
+  });
+  // "mobile à 78%" without conversion/cta/rate context → ignored (audience share, not CTA rate)
+  assert.equal(r.total_numeric_claims, 0);
+  assert.equal(r.passed, true);
+});
+
+test('Sprint-16 — unverified: hallucinated mobile CTA rate', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      device_optimization_note: 'mobile cta rate à 5% vs desktop 6.94%.',
+    },
+    content_snapshot: null,
+    sprint16: sprint16Facts,
+  });
+  // 5% mobile is wrong (real: 1.43)
+  assert.equal(r.passed, false);
+  assert.ok(r.unverified.some((u) => /mobile/i.test(u.claim) && /5/.test(u.claim)));
+});
+
+test('Sprint-16 — sprint16 facts absent → claims not validated, no false alarm', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: { engagement_pattern_assessment: 'evenness 0.42, p25=20s, p75=50s.' },
+    content_snapshot: null,
+    sprint16: null,
+  });
+  // No sprint16 → no claims counted, trivially passed
+  assert.equal(r.total_numeric_claims, 0);
+  assert.equal(r.passed, true);
+});

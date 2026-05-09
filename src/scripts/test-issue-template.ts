@@ -185,7 +185,7 @@ test('empty diagnostic fields are omitted (legacy v1 cleanly renders)', () => {
   assert.ok(!r.body.includes('- **Structure** —'));
 });
 
-test('metrics box uses the Sprint-13 v2 / Sprint-15 2-column × 21-row layout', () => {
+test('metrics box uses the Sprint-13 v2 / Sprint-15 / Sprint-16 2-column × 23-row layout', () => {
   const r = renderIssue(fixture);
   // Header is "Métrique | Valeur" — single 2-col table.
   assert.match(r.body, /\| Métrique \| Valeur \|\n\|---\|---\|/);
@@ -195,9 +195,9 @@ test('metrics box uses the Sprint-13 v2 / Sprint-15 2-column × 21-row layout', 
   const blankLineIdx = afterHeader.indexOf('\n\n');
   const tableBody = afterHeader.slice(0, blankLineIdx);
   const allRows = tableBody.split('\n').filter((l) => l.startsWith('|'));
-  // Sprint-15: bumped 20 → 21 rows after adding "Pogo / NavBoost (28j Google)".
+  // Sprint-15: 20 → 21 (Pogo / NavBoost). Sprint-16: 21 → 23 (CTA per device + Engagement density).
   const dataRows = allRows.filter((l) => !l.includes('---') && !l.includes('Métrique | Valeur'));
-  assert.equal(dataRows.length, 21, `expected 21 data rows, got ${dataRows.length}: ${dataRows.map((r) => r.slice(0, 40)).join('\n')}`);
+  assert.equal(dataRows.length, 23, `expected 23 data rows, got ${dataRows.length}: ${dataRows.map((r) => r.slice(0, 40)).join('\n')}`);
 });
 
 // ---------- Sprint-12 v6 + Cooked extras tests -----------------------------
@@ -689,4 +689,124 @@ test('Sprint-15 — pre-Sprint-15 findings render cleanly without pogo fields', 
   assert.match(r.body, /Pogo \/ NavBoost \(28j Google\) \| —/);
   assert.doesNotMatch(r.body, /Signal NavBoost négatif fort/);
   assert.doesNotMatch(r.body, /- \*\*Pogo \/ NavBoost\*\*/);
+});
+
+// ---------- Sprint-16 — CTA per device + Engagement density tests --------
+
+test('Sprint-16 — CTA per device row appears with mobile/desktop split + ratio', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      mobile_sessions_28d: 70,
+      desktop_sessions_28d: 72,
+      cta_rate_mobile_pct: 1.43,
+      cta_rate_desktop_pct: 6.94,
+    },
+  });
+  assert.match(r.body, /CTA rate par device \(28j\)/);
+  assert.match(r.body, /mob \*\*1\.43%\*\* \/ desk \*\*6\.94%\*\*/);
+  assert.match(r.body, /\(70\/72 · ratio 0\.21\)/);
+});
+
+test('Sprint-16 — mobile-first CAUTION fires when ratio<0.25 AND n_mobile>=30', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      mobile_sessions_28d: 70,
+      desktop_sessions_28d: 72,
+      cta_rate_mobile_pct: 1.43,
+      cta_rate_desktop_pct: 6.94,
+    },
+  });
+  assert.match(r.body, /\[!CAUTION\][\s\S]*Mobile-first urgent/);
+  assert.match(r.body, /mobile convertit à \*\*21%\*\* du desktop/);
+  assert.match(r.body, /1\.43% sur 70 sessions vs 6\.94% sur 72 desktop/);
+});
+
+test('Sprint-16 — mobile-first does NOT fire when n_mobile<30 even if ratio<0.25', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      mobile_sessions_28d: 11,
+      desktop_sessions_28d: 31,
+      cta_rate_mobile_pct: 0.0,
+      cta_rate_desktop_pct: 9.68,
+    },
+  });
+  // Banner doesn't fire (n<30) but the row still shows the value with caveat
+  assert.doesNotMatch(r.body, /Mobile-first urgent/);
+  assert.match(r.body, /mob \*\*0\.00%\*\* \/ desk \*\*9\.68%\*\*/);
+  assert.match(r.body, /n mobile faible/);
+});
+
+test('Sprint-16 — mobile-first does NOT fire when desktop_rate is 0 (pure-info page)', () => {
+  // Article without CTAs in body: 0% both devices — no banner because there's
+  // nothing to compare to (a 0/0 ratio would be undefined anyway).
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      mobile_sessions_28d: 141,
+      desktop_sessions_28d: 34,
+      cta_rate_mobile_pct: 0.0,
+      cta_rate_desktop_pct: 0.0,
+    },
+  });
+  assert.doesNotMatch(r.body, /Mobile-first urgent/);
+});
+
+test('Sprint-16 — engagement density row shows evenness + percentiles', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      density_sessions_28d: 143,
+      density_dwell_p25_seconds: 7,
+      density_dwell_median_seconds: 41,
+      density_dwell_p75_seconds: 103,
+      density_evenness_score: 0.07,
+    },
+  });
+  assert.match(r.body, /Engagement density \(28j\)/);
+  assert.match(r.body, /evenness \*\*0\.07\*\* 🌗 bimodal/);
+  assert.match(r.body, /p25=7s · med=41s · p75=103s, n=143/);
+});
+
+test('Sprint-16 — engagement density "régulier" verdict when evenness > 0.6', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      density_sessions_28d: 80,
+      density_dwell_p25_seconds: 30,
+      density_dwell_median_seconds: 45,
+      density_dwell_p75_seconds: 50,
+      density_evenness_score: 0.65,
+    },
+  });
+  assert.match(r.body, /evenness \*\*0\.65\*\* ✅ régulier/);
+});
+
+test('Sprint-16 — engagement_pattern_assessment bullet appears when present', () => {
+  const r = renderIssue({
+    ...fixture,
+    diagnostic: {
+      ...fixture.diagnostic,
+      engagement_pattern_assessment: 'Distribution bimodale (evenness 0.07) — la page travaille pour certains visiteurs.',
+    },
+  });
+  assert.match(r.body, /- \*\*Engagement pattern\*\*[^\n]*Distribution bimodale/);
+  assert.match(r.body, /Cooked engagement_density_for_path/);
+});
+
+test('Sprint-16 — pre-Sprint-16 findings render cleanly without the new fields', () => {
+  // No mobile/desktop or density fields → both rows show "—", no banner
+  const r = renderIssue(fixture);
+  assert.match(r.body, /CTA rate par device \(28j\) \| —/);
+  assert.match(r.body, /Engagement density \(28j\) \| —/);
+  assert.doesNotMatch(r.body, /Mobile-first urgent/);
+  assert.doesNotMatch(r.body, /- \*\*Engagement pattern\*\*/);
 });

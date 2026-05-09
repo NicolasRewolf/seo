@@ -25,10 +25,12 @@ import {
   fetchSiteContext,
   fetchOutboundDestinations,
   fetchCtaBreakdown,
+  fetchEngagementDensity,
   type PageSnapshotExtras,
   type SiteContext,
   type OutboundDestination,
   type CtaBreakdownRow,
+  type EngagementDensity,
 } from '../lib/cooked.js';
 import { factCheckDiagnostic, type FactCheckResult } from '../lib/diagnostic-fact-check.js';
 import type { ContentSnapshot } from '../lib/page-content-extractor.js';
@@ -65,6 +67,10 @@ const DiagnosticSchema = z.object({
   // Sprint-15 v8: pogo-sticking / NavBoost negative signal. Optional for
   // v1-v7 backcompat (older diagnostics in DB don't have this field).
   pogo_navboost_assessment: z.string().optional().default(''),
+  // Sprint-16 v9: engagement density (intra-session dwell distribution).
+  // device_optimization_note also gets richer in v9 but the schema field
+  // already exists since v6 — only the prompt instruction changed.
+  engagement_pattern_assessment: z.string().optional().default(''),
 });
 
 export type DiagnosticPayload = z.infer<typeof DiagnosticSchema>;
@@ -261,6 +267,16 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
   } catch (err) {
     process.stderr.write(`[diagnose] cooked cta breakdown failed: ${(err as Error).message}\n`);
   }
+  // Sprint-16 — engagement density (intra-session dwell distribution).
+  // Best-effort like the other Cooked calls : if the RPC errors or the page
+  // has no data, the prompt v9 surfaces "non disponible" and the LLM
+  // gracefully degrades.
+  let engagementDensity: EngagementDensity | null = null;
+  try {
+    engagementDensity = await fetchEngagementDensity(pagePath, 28);
+  } catch (err) {
+    process.stderr.write(`[diagnose] cooked engagement_density failed: ${(err as Error).message}\n`);
+  }
 
   // Sprint-12 data quality check: GSC clicks last 28d (NOT the audit period
   // — capture rate is calibrated to the same window as Cooked extras).
@@ -345,6 +361,8 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     cooked_first_seen: cookedFirstSeen,
     // Sprint-14: full content extracted at pull-current-state time
     content_snapshot: (row.content_snapshot as DiagnosticPromptInputs['content_snapshot']) ?? null,
+    // Sprint-16: engagement density (intra-session dwell distribution)
+    engagement_density: engagementDensity,
   };
 }
 
@@ -413,12 +431,12 @@ function buildRetryMessage(unverified: FactCheckResult['unverified']): string {
       `${i + 1}. Champ \`${u.field}\` — claim "${u.claim}" — ${u.note ?? 'introuvable dans les blocs sources'}`,
   );
   return [
-    'Ton diagnostic précédent contient des chiffres qui ne tracent pas vers les blocs sources fournis (<page_body>, <page_outline>, <images>, <cta_in_body_positions>, <pogo_navboost>).',
+    'Ton diagnostic précédent contient des chiffres qui ne tracent pas vers les blocs sources fournis (<page_body>, <page_outline>, <images>, <cta_in_body_positions>, <pogo_navboost>, <engagement_density>, <cta_per_device>).',
     '',
     'Claims à corriger :',
     ...lines,
     '',
-    'Refais le diagnostic complet, en JSON strict, en n\'utilisant QUE les chiffres exacts présents dans les blocs sources. ATTENTION particulièrement aux chiffres pogo (n=, google_sessions, pogo_sticks, pogo_rate, hard_pogo) : recopie-les VERBATIM depuis le bloc <pogo_navboost>. Si tu n\'es pas sûr d\'un nombre, retire-le ou écris-le qualitatif (ex: "court", "long", "plusieurs").',
+    'Refais le diagnostic complet, en JSON strict, en n\'utilisant QUE les chiffres exacts présents dans les blocs sources. ATTENTION particulièrement aux chiffres pogo (n=, google_sessions, pogo_sticks, pogo_rate, hard_pogo), aux percentiles d\'engagement (p25, p75, evenness) et aux taux device (mobile X%, desktop Y%) : recopie-les VERBATIM depuis les blocs sources. Si tu n\'es pas sûr d\'un nombre, retire-le ou écris-le qualitatif (ex: "court", "long", "plusieurs", "fortement", "marginalement").',
   ].join('\n');
 }
 
@@ -442,19 +460,35 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
         pogo_rate_pct: inputs.cooked_extras.pogo_28d.pogo_rate_pct,
       }
     : null;
+  // Sprint-16 facts: device CTA rates + engagement density, sourced from
+  // PageSnapshotExtras.cta_per_device_28d and inputs.engagement_density.
+  const sprint16Facts = inputs.cooked_extras
+    ? {
+        mobile_sessions: inputs.cooked_extras.cta_per_device_28d.mobile_sessions,
+        desktop_sessions: inputs.cooked_extras.cta_per_device_28d.desktop_sessions,
+        cta_rate_mobile_pct: inputs.cooked_extras.cta_per_device_28d.cta_rate_mobile_pct,
+        cta_rate_desktop_pct: inputs.cooked_extras.cta_per_device_28d.cta_rate_desktop_pct,
+        density_sessions: inputs.engagement_density?.sessions ?? null,
+        density_dwell_p25: inputs.engagement_density?.dwell_p25_seconds ?? null,
+        density_dwell_median: inputs.engagement_density?.dwell_median_seconds ?? null,
+        density_dwell_p75: inputs.engagement_density?.dwell_p75_seconds ?? null,
+        density_evenness_score: inputs.engagement_density?.evenness_score ?? null,
+      }
+    : null;
   let factCheck: FactCheckResult & { retry_attempted: boolean } = {
     ...factCheckDiagnostic({
       diagnostic,
       content_snapshot: cs as ContentSnapshot | null,
       pogo: pogoFacts,
+      sprint16: sprint16Facts,
     }),
     retry_attempted: false,
   };
 
-  // Retry triggers when ANY claim is unverified (content_snapshot OR pogo).
-  // We allow retry even when cs is null but pogo facts are present (Sprint-15
-  // hallucinations don't need cs to be detected).
-  if (!factCheck.passed && (cs || pogoFacts)) {
+  // Retry triggers when ANY claim is unverified (content_snapshot OR pogo
+  // OR sprint16). We allow retry even when cs is null but other facts are
+  // present (Sprint-15/16 hallucinations don't need cs to be detected).
+  if (!factCheck.passed && (cs || pogoFacts || sprint16Facts)) {
     const retryMsg = buildRetryMessage(factCheck.unverified);
     process.stderr.write(
       `[diagnose] ${findingId} — fact-check failed (${factCheck.unverified.length} unverified), retrying once\n`,
@@ -468,6 +502,7 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
         diagnostic: retried,
         content_snapshot: cs as ContentSnapshot | null,
         pogo: pogoFacts,
+        sprint16: sprint16Facts,
       });
       // Keep the retried diagnostic even if it still has issues — at worst
       // it's no worse than the first pass, and usually strictly better.

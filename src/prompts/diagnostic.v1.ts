@@ -73,12 +73,13 @@ import type {
   SiteContext,
   OutboundDestination,
   CtaBreakdownRow,
+  EngagementDensity,
 } from '../lib/cooked.js';
 import { fetchTrackerFirstSeen } from '../lib/cooked.js';
 import type { ContentSnapshot } from '../lib/page-content-extractor.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 8 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 9 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -159,6 +160,12 @@ export type DiagnosticPromptInputs = {
    *  CTA positions). When present, the prompt v7 adds 4 new XML blocks
    *  and the LLM stops being limited to intro_first_100_words. */
   content_snapshot?: ContentSnapshot | null;
+  /** Sprint-16: dwell-time distribution (p25/median/p75 + evenness_score).
+   *  Cooked publishes this via the `engagement_density_for_path` RPC.
+   *  When present, the prompt v9 adds an <engagement_density> block to
+   *  give the LLM a read on bimodal vs uniform engagement (a low evenness
+   *  signals that the page works for SOME visitors but not all). */
+  engagement_density?: EngagementDensity | null;
 };
 
 // ---------- formatting helpers ---------------------------------------------
@@ -415,6 +422,117 @@ function fmtPogoSignal(ex: PageSnapshotExtras | null | undefined): string {
     lines.push(
       `_🚨 **Signal NavBoost négatif fort** (${p.pogo_rate_pct.toFixed(0)}% > 20% sur n=${p.google_sessions}) : Google a probablement déjà commencé à dérouter cette page. Diagnostic en priorité — c'est l'explication la plus probable de tout écart de position négatif._`,
     );
+  }
+  return lines.join('\n');
+}
+
+/**
+ * Sprint 16 — CTA rate per device (mobile vs desktop).
+ *
+ * Cooked publie depuis Sprint 16 :
+ *   cta_rate_mobile_28d = (phone + booking) / mobile_sessions * 100
+ *   cta_rate_desktop_28d = (phone + booking) / desktop_sessions * 100
+ *   mobile_sessions_28d, desktop_sessions_28d (denominateurs)
+ *
+ * Garde de fiabilité : on n'allume pas de signal "mobile-first urgent"
+ * si mobile_sessions < 30 (rate trop bruité). En revanche on expose
+ * toujours les valeurs au LLM avec caveat — il peut les mentionner
+ * qualitativement sans les transformer en verdict.
+ *
+ * Heuristique mobile-first : ratio cta_rate_mobile / cta_rate_desktop
+ * < 0.25 ET mobile_sessions ≥ 30 ET desktop_rate > 0 → vrai signal
+ * d'urgence mobile. Sinon mentionner sans alarme.
+ */
+function fmtCtaPerDevice(ex: PageSnapshotExtras | null | undefined): string {
+  if (!ex) return '_(Cooked snapshot indisponible)_';
+  const c = ex.cta_per_device_28d;
+  const ms = c.mobile_sessions ?? 0;
+  const ds = c.desktop_sessions ?? 0;
+  if (ms === 0 && ds === 0) {
+    return '_(0 session captée sur 28d — pas de signal device lisible)_';
+  }
+  const lines: string[] = [];
+  lines.push(
+    `- mobile: ${c.cta_rate_mobile_pct != null ? c.cta_rate_mobile_pct.toFixed(2) : 'n/a'}% sur ${ms} sessions`,
+  );
+  lines.push(
+    `- desktop: ${c.cta_rate_desktop_pct != null ? c.cta_rate_desktop_pct.toFixed(2) : 'n/a'}% sur ${ds} sessions`,
+  );
+  // Lecture comparative
+  if (
+    c.cta_rate_mobile_pct != null &&
+    c.cta_rate_desktop_pct != null &&
+    c.cta_rate_desktop_pct > 0
+  ) {
+    const ratio = c.cta_rate_mobile_pct / c.cta_rate_desktop_pct;
+    lines.push(`- ratio mobile/desktop: ${ratio.toFixed(2)}`);
+    lines.push('');
+    if (ms < 30) {
+      lines.push(
+        `_⚠ mobile_sessions=${ms} < 30 — le ratio est bruité, mentionner qualitativement sans en faire un verdict. Si le ratio est très extrême (ex: 0.0 sur 11 sessions), signaler "à surveiller" sans crier au mobile-first impératif._`,
+      );
+    } else if (ratio < 0.25) {
+      lines.push(
+        `_🚨 **Mobile-first impératif** (mobile convertit à ${(ratio * 100).toFixed(0)}% du desktop sur n=${ms}). Cause #1 probable : CTA in-body absente sur mobile, formulaire trop long, ou bouton sous le fold mobile. À traiter en priorité dans la section conversion._`,
+      );
+    } else if (ratio > 1.3) {
+      lines.push(
+        `_📱 Mobile sur-convertit (ratio ${ratio.toFixed(2)}). Inverse du pattern habituel — soit l'audience mobile est sur-qualifiée, soit le desktop a un blocage UX (popup, formulaire). À investiguer côté desktop._`,
+      );
+    } else {
+      lines.push(`_(parité device acceptable, pas de levier device-specific)_`);
+    }
+  } else if (
+    c.cta_rate_mobile_pct === 0 &&
+    c.cta_rate_desktop_pct === 0 &&
+    ms + ds >= 30
+  ) {
+    lines.push('');
+    lines.push(
+      `_(0 CTA click sur les deux devices avec ${ms + ds} sessions — soit la page n'a pas de CTA in-body, soit l'intent ne pousse pas à la conversion. Cohérent avec un article de blog informationnel)_`,
+    );
+  }
+  return lines.join('\n');
+}
+
+/**
+ * Sprint 16 — Engagement density (distribution intra-session du dwell).
+ *
+ * Cooked publie via la RPC `engagement_density_for_path(path, days)` :
+ *   sessions, dwell_p25, dwell_median, dwell_p75, evenness_score
+ * où evenness_score = dwell_p25 / dwell_p75. Lecture :
+ *   evenness > 0.6 → distribution étroite, lecture régulière
+ *   0.3 ≤ evenness ≤ 0.6 → variabilité normale
+ *   evenness < 0.3 → distribution bimodale (lots de pogos + queue d'engagés)
+ *
+ * Le contraste avec pogo_rate est intéressant : pogo capte les <10s,
+ * evenness capte la queue moyenne — un page peut avoir un pogo OK et un
+ * evenness pourri (= les non-pogos sont quand même mal engagés).
+ */
+function fmtEngagementDensity(d: EngagementDensity | null | undefined): string {
+  if (!d) return '_(densité non disponible — RPC engagement_density_for_path indisponible ou page sans data)_';
+  if (d.sessions === 0) return '_(0 sessions captées — pas de signal lisible)_';
+  const lines: string[] = [];
+  lines.push(`- sessions: ${d.sessions}`);
+  lines.push(
+    `- dwell distribution: p25=${d.dwell_p25_seconds ?? 'n/a'}s | median=${d.dwell_median_seconds ?? 'n/a'}s | p75=${d.dwell_p75_seconds ?? 'n/a'}s`,
+  );
+  if (d.evenness_score != null) {
+    lines.push(`- **evenness_score: ${d.evenness_score.toFixed(2)}**`);
+    lines.push('');
+    if (d.evenness_score < 0.15) {
+      lines.push(
+        `_🌗 **Distribution très bimodale** (evenness=${d.evenness_score.toFixed(2)}) : la page travaille bien pour CERTAINS visiteurs (queue p75=${d.dwell_p75_seconds ?? '?'}s) mais perd les autres très tôt (p25=${d.dwell_p25_seconds ?? '?'}s). Signal d'intent mismatch partiel — le contenu ne match pas l'attente d'une partie du trafic. Croiser avec <pogo_navboost> : si pogo OK, le problème est sur les sessions moyennes (40-60s) qui partent à mi-page._`,
+      );
+    } else if (d.evenness_score < 0.3) {
+      lines.push(
+        `_⚠ Distribution variable (evenness=${d.evenness_score.toFixed(2)}). L'engagement n'est pas homogène — vérifier si la page a une rupture de qualité narrative (intro forte, milieu faible) ou si l'intent attire 2 audiences distinctes._`,
+      );
+    } else if (d.evenness_score > 0.6) {
+      lines.push(
+        `_✅ Engagement régulier (evenness=${d.evenness_score.toFixed(2)}). Quand les visiteurs lisent, ils lisent jusqu'au bout. Bon proxy pour "le contenu retient" — protéger ce signal lors des fixes._`,
+      );
+    }
   }
   return lines.join('\n');
 }
@@ -922,6 +1040,18 @@ Sprint 15 — Signal NavBoost négatif. Pogo-stick = visiteur arrive de Google, 
 ${fmtPogoSignal(i.cooked_extras)}
 </pogo_navboost>
 
+<engagement_density>
+Sprint 16 — Distribution intra-session du temps actif sur la page. Le pogo capture les visites <10s, l'evenness capture la queue moyenne (40-60s) — deux signaux complémentaires. Une page peut avoir un pogo OK et une evenness pourrie : ça veut dire que les non-pogos sont quand même mal engagés (perte à mi-page). À l'inverse, evenness élevée = quand on lit, on lit jusqu'au bout. À croiser avec <pogo_navboost> et avec scroll_avg.
+
+${fmtEngagementDensity(i.engagement_density)}
+</engagement_density>
+
+<cta_per_device>
+Sprint 16 — CTA conversion rate splitté mobile vs desktop. Cooked publie (phone+booking)/sessions par device sur 28d. Lis le ratio mobile/desktop : si <0.25 sur n_mobile≥30 → mobile-first impératif (CTA in-body absente sur mobile, formulaire long, bouton sous le fold). Si >1.3 → mobile sur-convertit, vérifier desktop (popup, formulaire bloquant). Sur n_mobile<30 le ratio est trop bruité pour conclure mais peut être mentionné qualitativement.
+
+${fmtCtaPerDevice(i.cooked_extras)}
+</cta_per_device>
+
 <device_split>
 Calibre les recommandations. 70% mobile + scroll court → fix mobile-first. 70% desktop → marges plus larges, intro plus longue OK.
 
@@ -968,7 +1098,8 @@ Produis un diagnostic JSON strict avec ce schéma. **Le champ \`tldr\` vient en 
   "performance_diagnosis": "Si LCP > 2500ms, INP > 200ms ou CLS > 0.1 (zones 'Needs Improvement' ou 'Poor' Google), explique l'impact NavBoost direct (Google rétrograde les pages lentes/instables) et donne l'action prioritaire (image trop lourde, JS bloquant, layout shift sur header...). Si toutes les valeurs sont null: 'CWV en cours de collecte (n/a)'. Sinon: 'performance technique satisfaisante'.",
   "conversion_assessment": "1-3 phrases. Lis EN PRIORITÉ le bloc <cta_breakdown_by_placement> (pas <conversion_signals> seul) pour évaluer la qualité réelle des conversions. Distingue body (intent qualifié) vs header/footer (ambiant). Exemple : '5 phone_clicks_28d dont 3 body sur 14 sessions = call_rate qualifié de 21%, page convertit fort, fixes doivent renforcer pas perturber'. Ou inverse : '0 phone/email/booking sur 30 sessions, et l'intent des top queries appelle un RDV → CTA in-body manquant prioritaire'. ⚠️ Si data_quality_check verdict ∈ {low capture, tracker cassé} : préfixe ta lecture par 'sous réserve de capture rate insuffisant' et reste en relatif/qualitatif, jamais en absolu.",
   "traffic_strategy_note": "1 phrase. À partir du <traffic_provenance>: si top_source=google + top_medium=organic ≥ 70% → 'priorité = CTR snippet (la bataille se joue dans la SERP Google)'. Si top_referrer = social/réseau → 'priorité = OG tags + preview sociale'. Si direct ≥ 50% → 'audience qualifiée connaît déjà le cabinet, fix CTA conversion plutôt qu'acquisition'. Si pas assez de data: 'provenance non significative'.",
-  "device_optimization_note": "1 phrase. À partir du <device_split>: si mobile ≥ 65% + scroll_avg < 30% → 'fix mobile-first impératif (intro courte, CTA above-the-fold mobile)'. Si desktop ≥ 65% → 'OK pour intro plus dense, marges latérales plus larges'. Si équilibré : 'audience hybride, vérifier que le snippet et l'intro fonctionnent sur les 2 formats'. Si pas de data: 'split device non significatif'.",
+  "device_optimization_note": "1-2 phrases. (Sprint-16) **Lis EN PRIORITÉ <cta_per_device>** plus que <device_split> : c'est le ratio cta_rate_mobile/cta_rate_desktop qui dit si la page convertit autant sur les 2 formats. Si ratio < 0.25 sur n_mobile≥30 → 'mobile-first impératif (CTA mobile X% du desktop), ajouter CTA in-body above-the-fold mobile en priorité absolue'. Si ratio > 1.3 → 'mobile sur-convertit, vérifier blocage UX desktop'. Si ratio en parité → utiliser <device_split> seul : si mobile ≥ 65% + scroll_avg < 30% → 'fix mobile-first impératif (intro courte)', sinon 'audience hybride OK'. Si n_mobile<30 ou pas de data CTA: 'split device non significatif sur les conversions, lecture qualitative seulement'.",
+  "engagement_pattern_assessment": "1-2 phrases. (Sprint-16) Lis <engagement_density>. Si evenness < 0.15 → 'distribution très bimodale, la page travaille pour certains visiteurs (queue p75=Xs) mais perd les autres très tôt (p25=Ys), signal d'intent mismatch partiel'. À CROISER avec <pogo_navboost> : si pogo OK + evenness <0.15 → 'le problème n'est pas la première seconde mais la mi-page (les visiteurs lisent puis abandonnent vers Xs)'. Si evenness > 0.6 → 'engagement régulier, quand on lit on va au bout, contenu retient — protéger ce signal lors des fixes'. Si entre 0.3-0.6 → mention courte, pas de verdict fort. Si pas de data : 'densité d'engagement non disponible'.",
   "outbound_leak_note": "1 phrase ou 'pas de leak significatif'. Lis <top_outbound_destinations>: si la top destination est sémantiquement liée à la thématique de la page (ex: legifrance.gouv.fr / service-public.fr sur une page juridique), c'est une fuite réparable → 'ajoute la citation X in-page au lieu de laisser fuir vers source externe Y'. Sinon : 'fuites externes normales (autorités juridiques officielles), pas un signal de fix'.",
   "pogo_navboost_assessment": "1-2 phrases. Lis <pogo_navboost>. Si pogo_rate > 20% sur n≥30 google_sessions → cause #1 d'une éventuelle position_drift négative, à mettre en tête des hypothèses : 'NavBoost dérouté la page (pogo XX% sur n=YY) — l'intent ne match pas, soit le snippet ment, soit la page n'apporte pas la réponse attendue dans les 10 premières secondes'. Si n<30, mentionne 'à surveiller, échantillon trop faible pour conclure'. Si pas de signal (0 google_sessions ou tracker récent), écris 'signal pogo non disponible (Cooked vient de démarrer ou page non indexée)'. Si pogo_rate ≤ 10% sur n≥30, écris brièvement 'engagement Google satisfaisant (pogo XX%)' — c'est une info utile à l'inverse pour ne pas fixer ce qui marche.",
   "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le bloc <outbound_links_from_this_page> (ne pas re-suggérer des liens existants), le RÔLE FUNNEL de la page, ET (Sprint-14) **le bloc <page_outline> et le word_count du <page_body>**. Si le word_count est < 1500 mots sur un sujet juridique substantiel, dis 'thin content vs benchmark juridique-FR ~1800 mots médian'. Si une top requête à fort volume n'a pas de H2 dédié dans <page_outline>, dis-le explicitement avec l'offset où l'insérer. Cite le bloc <images> si plusieurs images sans alt-text. ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', traite le maillage éditorial sortant comme INCONNU.** ⚠️ **Si <page_body> est indisponible/vide, écris 'extraction body indisponible' et ne fais PAS de claim sur word_count ou outline.**",

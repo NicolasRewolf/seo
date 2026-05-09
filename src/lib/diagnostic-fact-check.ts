@@ -45,6 +45,24 @@ export type PogoFacts = {
 };
 
 /**
+ * Sprint-16 — CTA per-device + engagement density facts. Same pattern
+ * as PogoFacts: optional, fields nullable, the LLM-cited numbers must
+ * trace back here. Fact-checker only validates claims when the
+ * underlying value is non-null (otherwise we can't compare).
+ */
+export type Sprint16Facts = {
+  mobile_sessions: number | null;
+  desktop_sessions: number | null;
+  cta_rate_mobile_pct: number | null;
+  cta_rate_desktop_pct: number | null;
+  density_sessions: number | null;
+  density_dwell_p25: number | null;
+  density_dwell_median: number | null;
+  density_dwell_p75: number | null;
+  density_evenness_score: number | null;
+};
+
+/**
  * Run a best-effort numeric fact-check across the diagnostic JSON.
  *
  * Patterns checked:
@@ -59,9 +77,11 @@ export function factCheckDiagnostic(opts: {
   diagnostic: DiagnosticBag;
   content_snapshot: ContentSnapshot | null;
   pogo?: PogoFacts | null;
+  sprint16?: Sprint16Facts | null;
 }): FactCheckResult {
   const cs = opts.content_snapshot;
   const pogo = opts.pogo ?? null;
+  const s16 = opts.sprint16 ?? null;
   const unverified: FactCheckResult['unverified'] = [];
   let totalClaims = 0;
   let verified = 0;
@@ -82,6 +102,7 @@ export function factCheckDiagnostic(opts: {
     'device_optimization_note',
     'outbound_leak_note',
     'pogo_navboost_assessment',
+    'engagement_pattern_assessment',
   ];
 
   for (const field of fieldsToScan) {
@@ -272,6 +293,62 @@ export function factCheckDiagnostic(opts: {
         // Tolerance: ±0.5pp (rate already rounded to 1 decimal by Cooked)
         if (Math.abs(claimed - pogo.pogo_rate_pct) <= 0.5) verified++;
         else unverified.push({ claim: m[0], field, expected_in: 'pogo_28d.pogo_rate_pct', note: `claimed ${claimed}%, actual ${pogo.pogo_rate_pct}%` });
+      }
+    }
+
+    // 7. Sprint-16 — device CTA + engagement density facts.
+    if (s16) {
+      // 7a. evenness_score — "evenness 0.07" / "evenness=0.07" / "evenness de 0.07"
+      for (const m of value.matchAll(/evenness[_\s]?(?:score)?\s*[=:]?\s*(?:de\s+)?(\d+(?:[.,]\d+)?)/gi)) {
+        totalClaims++;
+        const claimed = parseFloat(m[1]!.replace(',', '.'));
+        if (s16.density_evenness_score == null) {
+          unverified.push({ claim: m[0], field, expected_in: 'engagement_density.evenness_score', note: 'density facts not available' });
+          continue;
+        }
+        if (Math.abs(claimed - s16.density_evenness_score) <= 0.05) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: 'engagement_density.evenness_score', note: `claimed ${claimed}, actual ${s16.density_evenness_score}` });
+      }
+
+      // 7b. dwell percentiles — accepts "p25=7s", "p25 7s", "p75=103s",
+      // and bare "median=41s" / "median 41s" (without p prefix).
+      for (const m of value.matchAll(/(?:p(25|50|75)|(median))\s*[=:]?\s*(\d+(?:[.,]\d+)?)\s*s\b/gi)) {
+        const isPercentile = m[1] != null;
+        const which = (m[1] ?? m[2])!.toLowerCase();
+        const claimed = parseFloat(m[3]!.replace(',', '.'));
+        const actual =
+          which === '25' ? s16.density_dwell_p25 :
+          which === '75' ? s16.density_dwell_p75 :
+          s16.density_dwell_median; // 50 or 'median' → median
+        const label = which === '25' ? 'dwell_p25' : which === '75' ? 'dwell_p75' : 'dwell_median';
+        totalClaims++;
+        if (actual == null) {
+          unverified.push({ claim: m[0], field, expected_in: `engagement_density.${label}`, note: 'density facts not available' });
+          continue;
+        }
+        if (Math.abs(claimed - actual) <= 1) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: `engagement_density.${label}`, note: `claimed ${claimed}s, actual ${actual}s` });
+        void isPercentile; // silence linter
+      }
+
+      // 7c. mobile/desktop CTA rate. Wider window: up to 30 non-digit chars
+      // between (mobile|desktop) and the %, then context check on the full
+      // surrounding 80 chars for cta/convert/rate keywords. Avoids false
+      // positives on "mobile share 70%" or "audience mobile à 78%".
+      for (const m of value.matchAll(/(mobile|desktop)\b[^%\d\n]{0,30}(\d+(?:[.,]\d+)?)\s*%/gi)) {
+        const device = m[1]!.toLowerCase();
+        const claimed = parseFloat(m[2]!.replace(',', '.'));
+        const ctx = value.slice(Math.max(0, m.index! - 60), m.index! + m[0].length + 80);
+        if (!/cta|convert|conversion|\brate\b/i.test(ctx)) continue;
+        const actual = device === 'mobile' ? s16.cta_rate_mobile_pct : s16.cta_rate_desktop_pct;
+        const label = device === 'mobile' ? 'cta_rate_mobile_pct' : 'cta_rate_desktop_pct';
+        totalClaims++;
+        if (actual == null) {
+          unverified.push({ claim: m[0], field, expected_in: `cta_per_device_28d.${label}`, note: 'sprint16 facts not available' });
+          continue;
+        }
+        if (Math.abs(claimed - actual) <= 0.5) verified++;
+        else unverified.push({ claim: m[0], field, expected_in: `cta_per_device_28d.${label}`, note: `claimed ${claimed}%, actual ${actual}%` });
       }
     }
   }

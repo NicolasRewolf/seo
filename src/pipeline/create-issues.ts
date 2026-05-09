@@ -16,7 +16,7 @@ import {
   type IssueMeasurement,
   type IssueProposedFix,
 } from '../prompts/issue-template.js';
-import { fetchPageSnapshotExtras, fetchCtaBreakdown } from '../lib/cooked.js';
+import { fetchPageSnapshotExtras, fetchCtaBreakdown, fetchEngagementDensity } from '../lib/cooked.js';
 import { pathOf } from '../lib/url.js';
 
 const DiagnosticShape = z.object({
@@ -36,6 +36,7 @@ const DiagnosticShape = z.object({
   device_optimization_note: z.string().optional(),
   outbound_leak_note: z.string().optional(),
   pogo_navboost_assessment: z.string().optional(),
+  engagement_pattern_assessment: z.string().optional(),
   top_queries_analysis: z
     .array(
       z.object({
@@ -226,6 +227,14 @@ async function fetchCookedExtrasForIssue(pageUrl: string): Promise<IssueCookedEx
   } catch (err) {
     process.stderr.write(`[create-issues] cta breakdown failed: ${(err as Error).message}\n`);
   }
+  // Sprint-16 — engagement density (intra-session dwell distribution).
+  // Best-effort: leaves nullish fields if RPC errors, banner doesn't fire.
+  let density: Awaited<ReturnType<typeof fetchEngagementDensity>> = null;
+  try {
+    density = await fetchEngagementDensity(path, 28);
+  } catch (err) {
+    process.stderr.write(`[create-issues] engagement density failed: ${(err as Error).message}\n`);
+  }
 
   if (!snap) return undefined;
 
@@ -294,6 +303,16 @@ async function fetchCookedExtrasForIssue(pageUrl: string): Promise<IssueCookedEx
     pogo_sticks_28d: snap.pogo_28d.pogo_sticks,
     hard_pogo_28d: snap.pogo_28d.hard_pogo,
     pogo_rate_pct: snap.pogo_28d.pogo_rate_pct,
+    // Sprint-16 — CTA per device (snapshot) + engagement density (RPC)
+    mobile_sessions_28d: snap.cta_per_device_28d.mobile_sessions,
+    desktop_sessions_28d: snap.cta_per_device_28d.desktop_sessions,
+    cta_rate_mobile_pct: snap.cta_per_device_28d.cta_rate_mobile_pct,
+    cta_rate_desktop_pct: snap.cta_per_device_28d.cta_rate_desktop_pct,
+    density_sessions_28d: density?.sessions ?? null,
+    density_dwell_p25_seconds: density?.dwell_p25_seconds ?? null,
+    density_dwell_median_seconds: density?.dwell_median_seconds ?? null,
+    density_dwell_p75_seconds: density?.dwell_p75_seconds ?? null,
+    density_evenness_score: density?.evenness_score ?? null,
   };
 }
 
