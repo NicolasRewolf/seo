@@ -84,6 +84,8 @@ export type IssueDiagnostic = {
   outbound_leak_note?: string;
   /** Sprint-15 (v8). May be '' on legacy v1-v7 diagnostics. */
   pogo_navboost_assessment?: string;
+  /** Sprint-16 (v9). May be '' on legacy v1-v8 diagnostics. */
+  engagement_pattern_assessment?: string;
   top_queries_analysis: Array<{
     query: string;
     impressions: number;
@@ -151,6 +153,18 @@ export type IssueCookedExtras = {
   pogo_sticks_28d?: number | null;
   hard_pogo_28d?: number | null;
   pogo_rate_pct?: number | null; // 0..100, already computed by Cooked
+  // Sprint-16 — CTA conversion rate split by device + dwell distribution.
+  // The 4 CTA fields come from snapshot_pages_export(), the engagement
+  // density fields come from the engagement_density_for_path RPC.
+  mobile_sessions_28d?: number | null;
+  desktop_sessions_28d?: number | null;
+  cta_rate_mobile_pct?: number | null; // 0..100
+  cta_rate_desktop_pct?: number | null; // 0..100
+  density_sessions_28d?: number | null;
+  density_dwell_p25_seconds?: number | null;
+  density_dwell_median_seconds?: number | null;
+  density_dwell_p75_seconds?: number | null;
+  density_evenness_score?: number | null; // 0..1
 };
 
 export type IssueInputs = {
@@ -645,6 +659,41 @@ export function renderIssueBody(i: IssueInputs): string {
     pogoCell = '_(0 session Google captée)_';
   }
 
+  // Sprint-16 — Device CTA cell. Format: "mobile X% / desktop Y% (n_mob/n_desk)"
+  // with reliability suffix when n_mobile<30. Dash when no data at all.
+  let deviceCtaCell = '—';
+  if (
+    ex?.cta_rate_mobile_pct != null &&
+    ex?.cta_rate_desktop_pct != null &&
+    ex.mobile_sessions_28d != null &&
+    ex.desktop_sessions_28d != null &&
+    ex.mobile_sessions_28d + ex.desktop_sessions_28d > 0
+  ) {
+    const ratio =
+      ex.cta_rate_desktop_pct > 0
+        ? (ex.cta_rate_mobile_pct / ex.cta_rate_desktop_pct).toFixed(2)
+        : null;
+    const ratioPart = ratio ? ` · ratio ${ratio}` : '';
+    const reliability = ex.mobile_sessions_28d < 30 ? ' _n mobile faible_' : '';
+    deviceCtaCell = `mob **${ex.cta_rate_mobile_pct.toFixed(2)}%** / desk **${ex.cta_rate_desktop_pct.toFixed(2)}%** (${ex.mobile_sessions_28d}/${ex.desktop_sessions_28d}${ratioPart})${reliability}${fmtSource('Cooked cta_rate_*_28d')}`;
+  }
+
+  // Sprint-16 — Engagement density cell. Format: "evenness X (p25/median/p75)".
+  let densityCell = '—';
+  if (
+    ex?.density_evenness_score != null &&
+    ex.density_dwell_p25_seconds != null &&
+    ex.density_dwell_p75_seconds != null
+  ) {
+    const evVerdict =
+      ex.density_evenness_score < 0.15
+        ? ' 🌗 bimodal'
+        : ex.density_evenness_score > 0.6
+        ? ' ✅ régulier'
+        : '';
+    densityCell = `evenness **${ex.density_evenness_score.toFixed(2)}**${evVerdict} (p25=${ex.density_dwell_p25_seconds}s · med=${ex.density_dwell_median_seconds ?? '?'}s · p75=${ex.density_dwell_p75_seconds}s, n=${ex.density_sessions_28d ?? '?'})${fmtSource('Cooked engagement_density_for_path')}`;
+  }
+
   const metricsBox = [
     `| Métrique | Valeur |`,
     `|---|---|`,
@@ -667,6 +716,8 @@ export function renderIssueBody(i: IssueInputs): string {
     `| Provenance / Device | ${provCell} • ${deviceCell}${ex ? fmtSource('Cooked') : ''} |`,
     `| Capture rate (qualité Cooked) | ${captureCellTagged} |`,
     `| Pogo / NavBoost (28j Google) | ${pogoCell} |`,
+    `| CTA rate par device (28j) | ${deviceCtaCell} |`,
+    `| Engagement density (28j) | ${densityCell} |`,
     `| Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)})${fmtSource('SEO calc')} |`,
     `| Page | [${shortPath(i.page, 50)}](${i.page}) |`,
   ].join('\n');
@@ -688,6 +739,7 @@ export function renderIssueBody(i: IssueInputs): string {
     fmtDiagBullet('Device optimization', i.diagnostic.device_optimization_note, 'Cooked device_split'),
     fmtDiagBullet('Outbound leak', i.diagnostic.outbound_leak_note, 'Cooked outbound_destinations'),
     fmtDiagBullet('Pogo / NavBoost', i.diagnostic.pogo_navboost_assessment, 'Cooked google_sessions_28d', 'Cooked pogo_rate_28d'),
+    fmtDiagBullet('Engagement pattern', i.diagnostic.engagement_pattern_assessment, 'Cooked engagement_density_for_path'),
   ]
     .filter((s) => s !== '')
     .join('\n');
@@ -720,6 +772,29 @@ export function renderIssueBody(i: IssueInputs): string {
       `> [!CAUTION]`,
       `> **Signal NavBoost négatif fort** — pogo_rate **${pogoExtras.pogo_rate_pct.toFixed(1)}%** sur ${pogoExtras.google_sessions_28d} sessions Google 28j (${pogoExtras.pogo_sticks_28d ?? '?'} pogo, ${pogoExtras.hard_pogo_28d ?? '?'} hard). Google a probablement déjà commencé à dérouter cette page : intent ne match pas, soit le snippet ment, soit la page n'apporte pas la réponse dans les 10 premières secondes. À traiter en priorité — c'est l'explication la plus probable d'une éventuelle chute de position.`,
       `> ${fmtSource('Cooked pogo_rate_28d · seuil >20% sur n≥30').trim()}`,
+    ].join('\n');
+  }
+
+  // ---- Sprint-16 — Mobile-first urgent alert -----------------------------
+  // Triggers when mobile sessions are statistically meaningful (≥30) AND
+  // mobile converts at <25% of desktop AND desktop has a non-zero rate
+  // (otherwise the ratio is meaningless). Doesn't fire on pure-info pages
+  // (0 CTA both devices) — those just don't have a CTA in body, no signal.
+  let mobileFirstBanner = '';
+  const dx = i.cooked_extras;
+  if (
+    dx?.cta_rate_mobile_pct != null &&
+    dx.cta_rate_desktop_pct != null &&
+    dx.mobile_sessions_28d != null &&
+    dx.mobile_sessions_28d >= 30 &&
+    dx.cta_rate_desktop_pct > 0 &&
+    dx.cta_rate_mobile_pct / dx.cta_rate_desktop_pct < 0.25
+  ) {
+    const ratioPct = ((dx.cta_rate_mobile_pct / dx.cta_rate_desktop_pct) * 100).toFixed(0);
+    mobileFirstBanner = [
+      `> [!CAUTION]`,
+      `> **Mobile-first urgent** — mobile convertit à **${ratioPct}%** du desktop (${dx.cta_rate_mobile_pct.toFixed(2)}% sur ${dx.mobile_sessions_28d} sessions vs ${dx.cta_rate_desktop_pct.toFixed(2)}% sur ${dx.desktop_sessions_28d ?? '?'} desktop). La page laisse le trafic mobile s'évaporer sans convertir. Causes probables : CTA in-body absente sur viewport mobile, formulaire trop long, bouton sous le fold, ou tap target trop petit. À traiter en priorité dans les fixes conversion.`,
+      `> ${fmtSource('Cooked cta_rate_mobile_28d / cta_rate_desktop_28d · seuil <0.25 sur n_mobile≥30').trim()}`,
     ].join('\n');
   }
 
@@ -804,6 +879,7 @@ export function renderIssueBody(i: IssueInputs): string {
     metricsBox,
     measurementTable, // Sprint-14: detail delta table sits right after the baseline metrics box
     pogoBanner, // Sprint-15: NavBoost negative alert (CAUTION) — read-first
+    mobileFirstBanner, // Sprint-16: mobile CTA-rate alert (CAUTION) — read-first
     dataQualityBanner,
     `---`,
     diagSection,

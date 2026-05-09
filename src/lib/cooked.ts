@@ -154,6 +154,16 @@ export type PageSnapshotExtras = {
     hard_pogo: number | null;
     pogo_rate_pct: number | null;
   };
+  // Sprint 16 — CTA conversion rate split by device. Cooked computes
+  // (phone_clicks + booking_clicks) / sessions * 100 per device over 28d.
+  // The session counts (denominators) are exposed too so we can apply a
+  // reliability gate (n>=30) before firing a mobile-first CAUTION banner.
+  cta_per_device_28d: {
+    mobile_sessions: number | null;
+    desktop_sessions: number | null;
+    cta_rate_mobile_pct: number | null;
+    cta_rate_desktop_pct: number | null;
+  };
   refreshed_at: string;
 };
 
@@ -226,7 +236,47 @@ function parsePageSnapshotRow(r: Record<string, Numeric>): PageSnapshotExtras {
       hard_pogo: numOrNull(r.hard_pogo_28d),
       pogo_rate_pct: numOrNull(r.pogo_rate_28d),
     },
+    cta_per_device_28d: {
+      mobile_sessions: numOrNull(r.mobile_sessions_28d),
+      desktop_sessions: numOrNull(r.desktop_sessions_28d),
+      cta_rate_mobile_pct: numOrNull(r.cta_rate_mobile_28d),
+      cta_rate_desktop_pct: numOrNull(r.cta_rate_desktop_28d),
+    },
     refreshed_at: String(r.refreshed_at ?? ''),
+  };
+}
+
+/** Sprint 16 — Engagement density per page. Returned by Cooked's
+ *  `engagement_density_for_path(path, days)` RPC. The `evenness_score` =
+ *  `dwell_p25 / dwell_p75` ; close to 1 = lecture régulière, close to 0 =
+ *  distribution bimodale (lots of pogos + a long tail of engaged readers).
+ *  All fields nullable when no data (page not yet captured). */
+export type EngagementDensity = {
+  sessions: number;
+  dwell_p25_seconds: number | null;
+  dwell_median_seconds: number | null;
+  dwell_p75_seconds: number | null;
+  evenness_score: number | null; // 0..1
+};
+
+export async function fetchEngagementDensity(
+  path: string,
+  days = 28,
+): Promise<EngagementDensity | null> {
+  const { data, error } = await cookedSupabase().rpc('engagement_density_for_path', {
+    target_path: path,
+    days,
+  });
+  if (error) throw new Error(`cooked.engagement_density_for_path: ${error.message}`);
+  const rows = (data ?? []) as Array<Record<string, Numeric>>;
+  const r = rows[0];
+  if (!r) return null;
+  return {
+    sessions: num(r.sessions),
+    dwell_p25_seconds: numOrNull(r.dwell_p25),
+    dwell_median_seconds: numOrNull(r.dwell_median),
+    dwell_p75_seconds: numOrNull(r.dwell_p75),
+    evenness_score: numOrNull(r.evenness_score),
   };
 }
 
