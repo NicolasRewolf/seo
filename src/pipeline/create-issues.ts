@@ -35,6 +35,7 @@ const DiagnosticShape = z.object({
   traffic_strategy_note: z.string().optional(),
   device_optimization_note: z.string().optional(),
   outbound_leak_note: z.string().optional(),
+  pogo_navboost_assessment: z.string().optional(),
   top_queries_analysis: z
     .array(
       z.object({
@@ -288,6 +289,11 @@ async function fetchCookedExtrasForIssue(pageUrl: string): Promise<IssueCookedEx
     cooked_sessions_28d: cookedSessions28d,
     gsc_clicks_28d: gscClicks28d,
     capture_rate_pct: captureRatePct,
+    // Sprint-15 — pogo / NavBoost signal
+    google_sessions_28d: snap.pogo_28d.google_sessions,
+    pogo_sticks_28d: snap.pogo_28d.pogo_sticks,
+    hard_pogo_28d: snap.pogo_28d.hard_pogo,
+    pogo_rate_pct: snap.pogo_28d.pogo_rate_pct,
   };
 }
 

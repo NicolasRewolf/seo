@@ -143,6 +143,17 @@ export type PageSnapshotExtras = {
     email_clicks: { '7d': number; '28d': number; '90d': number; '365d': number };
     booking_cta_clicks: { '7d': number; '28d': number; '90d': number; '365d': number };
   };
+  // Sprint 15 — Pogo-sticking from Google (NavBoost negative signal). A pogo
+  // is a Google-origin session with 1 page view and dwell <10s; hard_pogo also
+  // requires scroll <5%. `pogo_rate_28d` = pogo_sticks_28d / google_sessions_28d * 100,
+  // already computed by Cooked. All 4 fields are nullable: a page with zero
+  // Google traffic in 28d gets nulls (cannot divide by zero, no signal to read).
+  pogo_28d: {
+    google_sessions: number | null;
+    pogo_sticks: number | null;
+    hard_pogo: number | null;
+    pogo_rate_pct: number | null;
+  };
   refreshed_at: string;
 };
 
@@ -208,6 +219,12 @@ function parsePageSnapshotRow(r: Record<string, Numeric>): PageSnapshotExtras {
         '7d': num(r.booking_cta_clicks_7d), '28d': num(r.booking_cta_clicks_28d),
         '90d': num(r.booking_cta_clicks_90d), '365d': num(r.booking_cta_clicks_365d),
       },
+    },
+    pogo_28d: {
+      google_sessions: numOrNull(r.google_sessions_28d),
+      pogo_sticks: numOrNull(r.pogo_sticks_28d),
+      hard_pogo: numOrNull(r.hard_pogo_28d),
+      pogo_rate_pct: numOrNull(r.pogo_rate_28d),
     },
     refreshed_at: String(r.refreshed_at ?? ''),
   };

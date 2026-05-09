@@ -185,9 +185,9 @@ test('empty diagnostic fields are omitted (legacy v1 cleanly renders)', () => {
   assert.ok(!r.body.includes('- **Structure** —'));
 });
 
-test('metrics box uses the Sprint-13 v2 2-column × 20-row layout', () => {
+test('metrics box uses the Sprint-13 v2 / Sprint-15 2-column × 21-row layout', () => {
   const r = renderIssue(fixture);
-  // Header is now "Métrique | Valeur" — single 2-col table.
+  // Header is "Métrique | Valeur" — single 2-col table.
   assert.match(r.body, /\| Métrique \| Valeur \|\n\|---\|---\|/);
   // Slice from the table header to the next blank line, then count rows.
   const headerIdx = r.body.indexOf('| Métrique | Valeur |');
@@ -195,9 +195,9 @@ test('metrics box uses the Sprint-13 v2 2-column × 20-row layout', () => {
   const blankLineIdx = afterHeader.indexOf('\n\n');
   const tableBody = afterHeader.slice(0, blankLineIdx);
   const allRows = tableBody.split('\n').filter((l) => l.startsWith('|'));
-  // header (1) + separator (1) + 20 data rows = 22 total
+  // Sprint-15: bumped 20 → 21 rows after adding "Pogo / NavBoost (28j Google)".
   const dataRows = allRows.filter((l) => !l.includes('---') && !l.includes('Métrique | Valeur'));
-  assert.equal(dataRows.length, 20, `expected 20 data rows, got ${dataRows.length}: ${dataRows.map((r) => r.slice(0, 40)).join('\n')}`);
+  assert.equal(dataRows.length, 21, `expected 21 data rows, got ${dataRows.length}: ${dataRows.map((r) => r.slice(0, 40)).join('\n')}`);
 });
 
 // ---------- Sprint-12 v6 + Cooked extras tests -----------------------------
@@ -574,4 +574,119 @@ test('Sprint-14bis — fact-check with 0 claims renders no banner', () => {
     },
   });
   assert.doesNotMatch(r.body, /Fact-check/);
+});
+
+// ---------- Sprint-15 — Pogo / NavBoost tests ----------------------------
+
+test('Sprint-15 — pogo row appears in metrics box with rate + n', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      google_sessions_28d: 50,
+      pogo_sticks_28d: 8,
+      hard_pogo_28d: 4,
+      pogo_rate_pct: 16.0,
+    },
+  });
+  assert.match(r.body, /Pogo \/ NavBoost \(28j Google\)/);
+  assert.match(r.body, /\*\*16\.0%\*\* \(8\/50, hard 4\)/);
+  assert.match(r.body, /Cooked pogo_rate_28d/);
+  // n=50 ≥ 30, so no "échantillon faible" caveat
+  assert.doesNotMatch(r.body, /échantillon faible/);
+});
+
+test('Sprint-15 — pogo row carries reliability caveat when n<30', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      google_sessions_28d: 22,
+      pogo_sticks_28d: 3,
+      hard_pogo_28d: 2,
+      pogo_rate_pct: 13.6,
+    },
+  });
+  assert.match(r.body, /\*\*13\.6%\*\* \(3\/22, hard 2\) _échantillon faible_/);
+});
+
+test('Sprint-15 — pogo row shows "0 session Google captée" when google_sessions_28d=0', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      google_sessions_28d: 0,
+      pogo_sticks_28d: 0,
+      hard_pogo_28d: 0,
+      pogo_rate_pct: null,
+    },
+  });
+  assert.match(r.body, /Pogo \/ NavBoost \(28j Google\) \| _\(0 session Google captée\)_/);
+});
+
+test('Sprint-15 — pogo banner [!CAUTION] fires when rate>20% AND n>=30', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      google_sessions_28d: 80,
+      pogo_sticks_28d: 24,
+      hard_pogo_28d: 18,
+      pogo_rate_pct: 30.0,
+    },
+  });
+  assert.match(r.body, /\[!CAUTION\][\s\S]*Signal NavBoost négatif fort/);
+  assert.match(r.body, /pogo_rate \*\*30\.0%\*\* sur 80 sessions Google 28j/);
+  assert.match(r.body, /\(24 pogo, 18 hard\)/);
+});
+
+test('Sprint-15 — pogo banner does NOT fire on low n even if rate>20%', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      google_sessions_28d: 12,
+      pogo_sticks_28d: 5,
+      hard_pogo_28d: 4,
+      pogo_rate_pct: 41.7,
+    },
+  });
+  // No CAUTION banner (n<30), but the row still shows the value with caveat
+  assert.doesNotMatch(r.body, /Signal NavBoost négatif fort/);
+  assert.match(r.body, /\*\*41\.7%\*\* \(5\/12, hard 4\) _échantillon faible_/);
+});
+
+test('Sprint-15 — pogo banner does NOT fire when n>=30 but rate<=20%', () => {
+  const r = renderIssue({
+    ...fixture,
+    cooked_extras: {
+      ...fixture.cooked_extras,
+      google_sessions_28d: 100,
+      pogo_sticks_28d: 15,
+      hard_pogo_28d: 8,
+      pogo_rate_pct: 15.0,
+    },
+  });
+  assert.doesNotMatch(r.body, /Signal NavBoost négatif fort/);
+});
+
+test('Sprint-15 — pogo bullet appears in diagnostic when assessment present', () => {
+  const r = renderIssue({
+    ...fixture,
+    diagnostic: {
+      ...fixture.diagnostic,
+      pogo_navboost_assessment: 'NavBoost dérouté la page (pogo 25% sur n=80) — l\'intent ne match pas.',
+    },
+  });
+  assert.match(r.body, /- \*\*Pogo \/ NavBoost\*\*[^\n]*NavBoost dérouté/);
+  assert.match(r.body, /Cooked google_sessions_28d/);
+});
+
+test('Sprint-15 — pre-Sprint-15 findings render cleanly without pogo fields', () => {
+  // No google_sessions_28d / pogo_rate_pct in cooked_extras → row shows "—",
+  // no banner, no diag bullet (pogo_navboost_assessment also absent).
+  const r = renderIssue(fixture);
+  assert.match(r.body, /Pogo \/ NavBoost \(28j Google\) \| —/);
+  assert.doesNotMatch(r.body, /Signal NavBoost négatif fort/);
+  assert.doesNotMatch(r.body, /- \*\*Pogo \/ NavBoost\*\*/);
 });

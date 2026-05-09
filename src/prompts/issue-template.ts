@@ -82,6 +82,8 @@ export type IssueDiagnostic = {
   traffic_strategy_note?: string;
   device_optimization_note?: string;
   outbound_leak_note?: string;
+  /** Sprint-15 (v8). May be '' on legacy v1-v7 diagnostics. */
+  pogo_navboost_assessment?: string;
   top_queries_analysis: Array<{
     query: string;
     impressions: number;
@@ -143,6 +145,12 @@ export type IssueCookedExtras = {
   cooked_sessions_28d?: number | null;
   gsc_clicks_28d?: number | null;
   capture_rate_pct?: number | null; // 0..100
+  // Sprint-15 — Pogo-sticking signal (NavBoost negative). All optional; pages
+  // with no Google traffic over 28d get nulls (cannot compute the rate).
+  google_sessions_28d?: number | null;
+  pogo_sticks_28d?: number | null;
+  hard_pogo_28d?: number | null;
+  pogo_rate_pct?: number | null; // 0..100, already computed by Cooked
 };
 
 export type IssueInputs = {
@@ -626,6 +634,16 @@ export function renderIssueBody(i: IssueInputs): string {
   const bodyCellTagged = ex?.cta_body_pct != null
     ? `${bodyPctCell}${fmtSource('SEO calc · depuis Cooked cta_breakdown')}`
     : bodyPctCell;
+  // Sprint-15 — Pogo cell. Format: "X% (sticks/google_sessions, hard Y)" with
+  // a reliability suffix when n<30 (≈ wide CI). Empty dash when no Google
+  // traffic was captured at all.
+  let pogoCell = '—';
+  if (ex?.pogo_rate_pct != null && ex.google_sessions_28d != null) {
+    const reliability = ex.google_sessions_28d < 30 ? ' _échantillon faible_' : '';
+    pogoCell = `**${ex.pogo_rate_pct.toFixed(1)}%** (${ex.pogo_sticks_28d ?? '?'}/${ex.google_sessions_28d}, hard ${ex.hard_pogo_28d ?? '?'})${reliability}${fmtSource('Cooked pogo_rate_28d')}`;
+  } else if (ex?.google_sessions_28d === 0) {
+    pogoCell = '_(0 session Google captée)_';
+  }
 
   const metricsBox = [
     `| Métrique | Valeur |`,
@@ -648,6 +666,7 @@ export function renderIssueBody(i: IssueInputs): string {
     `| Body share (CTA in-body / total) | ${bodyCellTagged} |`,
     `| Provenance / Device | ${provCell} • ${deviceCell}${ex ? fmtSource('Cooked') : ''} |`,
     `| Capture rate (qualité Cooked) | ${captureCellTagged} |`,
+    `| Pogo / NavBoost (28j Google) | ${pogoCell} |`,
     `| Priorité | tier ${i.priority_tier} (score ${i.priority_score.toFixed(2)})${fmtSource('SEO calc')} |`,
     `| Page | [${shortPath(i.page, 50)}](${i.page}) |`,
   ].join('\n');
@@ -668,6 +687,7 @@ export function renderIssueBody(i: IssueInputs): string {
     fmtDiagBullet('Traffic strategy', i.diagnostic.traffic_strategy_note, 'Cooked top_referrer'),
     fmtDiagBullet('Device optimization', i.diagnostic.device_optimization_note, 'Cooked device_split'),
     fmtDiagBullet('Outbound leak', i.diagnostic.outbound_leak_note, 'Cooked outbound_destinations'),
+    fmtDiagBullet('Pogo / NavBoost', i.diagnostic.pogo_navboost_assessment, 'Cooked google_sessions_28d', 'Cooked pogo_rate_28d'),
   ]
     .filter((s) => s !== '')
     .join('\n');
@@ -681,6 +701,25 @@ export function renderIssueBody(i: IssueInputs): string {
       `> [!WARNING]`,
       `> **Data quality** — Cooked capture rate **${rate}%** sur cette page (${i.cooked_extras.cooked_sessions_28d ?? '?'} sessions Cooked vs ${i.cooked_extras.gsc_clicks_28d ?? '?'} GSC clicks 28d). Lis les chiffres Cooked comme un **lower bound**, pas comme des absolus.`,
       `> ${fmtSource('SEO calc · Cooked sessions ÷ GSC clicks 28d').trim()}`,
+    ].join('\n');
+  }
+
+  // ---- Sprint-15 — Pogo / NavBoost alert ---------------------------------
+  // Triggers ONLY when n is statistically meaningful (≥30 google_sessions on
+  // 28d) AND pogo_rate > 20%. Below either threshold the metrics box still
+  // shows the value but no alert fires — avoids spamming on low-traffic pages.
+  let pogoBanner = '';
+  const pogoExtras = i.cooked_extras;
+  if (
+    pogoExtras?.pogo_rate_pct != null &&
+    pogoExtras.google_sessions_28d != null &&
+    pogoExtras.google_sessions_28d >= 30 &&
+    pogoExtras.pogo_rate_pct > 20
+  ) {
+    pogoBanner = [
+      `> [!CAUTION]`,
+      `> **Signal NavBoost négatif fort** — pogo_rate **${pogoExtras.pogo_rate_pct.toFixed(1)}%** sur ${pogoExtras.google_sessions_28d} sessions Google 28j (${pogoExtras.pogo_sticks_28d ?? '?'} pogo, ${pogoExtras.hard_pogo_28d ?? '?'} hard). Google a probablement déjà commencé à dérouter cette page : intent ne match pas, soit le snippet ment, soit la page n'apporte pas la réponse dans les 10 premières secondes. À traiter en priorité — c'est l'explication la plus probable d'une éventuelle chute de position.`,
+      `> ${fmtSource('Cooked pogo_rate_28d · seuil >20% sur n≥30').trim()}`,
     ].join('\n');
   }
 
@@ -764,6 +803,7 @@ export function renderIssueBody(i: IssueInputs): string {
     groupBanner,
     metricsBox,
     measurementTable, // Sprint-14: detail delta table sits right after the baseline metrics box
+    pogoBanner, // Sprint-15: NavBoost negative alert (CAUTION) — read-first
     dataQualityBanner,
     `---`,
     diagSection,

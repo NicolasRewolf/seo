@@ -154,3 +154,89 @@ test('no numeric claims → trivially passed', () => {
   assert.equal(r.total_numeric_claims, 0);
   assert.equal(r.passed, true);
 });
+
+// ---------- Sprint-15 — Pogo claims tests ---------------------------------
+
+const pogoFacts = {
+  google_sessions: 22,
+  pogo_sticks: 3,
+  hard_pogo: 2,
+  pogo_rate_pct: 13.6,
+};
+
+test('Sprint-15 — verified: exact n= match in pogo context', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: { pogo_navboost_assessment: 'pogo_rate 13.6% sur n=22 google_sessions, OK.' },
+    content_snapshot: null,
+    pogo: pogoFacts,
+  });
+  assert.equal(r.passed, true);
+  assert.ok(r.total_numeric_claims >= 2); // n= + rate
+});
+
+test('Sprint-15 — unverified: hallucinated google_sessions count (the real bug we caught on #33)', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      pogo_navboost_assessment:
+        'Pogo_rate 9.6% sur n=115 google_sessions (11 pogo, 5 hard pogo) — engagement OK.',
+    },
+    content_snapshot: null,
+    pogo: pogoFacts,
+  });
+  assert.equal(r.passed, false);
+  // Should catch: n=115 (vs 22), 9.6% (vs 13.6%), 11 pogo (vs 3), 5 hard (vs 2)
+  assert.ok(
+    r.unverified.length >= 4,
+    `expected ≥4 unverified, got ${r.unverified.length}: ${JSON.stringify(r.unverified)}`,
+  );
+  assert.ok(r.unverified.some((u) => /n=115/.test(u.claim)));
+  assert.ok(r.unverified.some((u) => /9\.6%/.test(u.claim)));
+  assert.ok(r.unverified.some((u) => /11 pogo/.test(u.claim)));
+  assert.ok(r.unverified.some((u) => /5 hard/i.test(u.claim)));
+});
+
+test('Sprint-15 — n= without pogo context is NOT counted (avoids false positive on stat thresholds)', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      structural_gaps: 'Le seuil statistique d\'usage est n=30 sessions pour valider.',
+    },
+    content_snapshot: null,
+    pogo: pogoFacts,
+  });
+  // "n=30" without google_session/pogo/navboost in surrounding 60 chars → ignored
+  assert.equal(r.total_numeric_claims, 0);
+  assert.equal(r.passed, true);
+});
+
+test('Sprint-15 — pogo_rate within 0.5pp tolerance passes', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: { pogo_navboost_assessment: 'pogo 13.5% sur n=22 — OK.' },
+    content_snapshot: null,
+    pogo: pogoFacts,
+  });
+  // 13.5% vs 13.6% → within 0.5pp
+  assert.equal(r.passed, true);
+});
+
+test('Sprint-15 — pogo facts absent → claims marked as unverified, not silently passed', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: { pogo_navboost_assessment: 'pogo 25% sur n=80 google_sessions.' },
+    content_snapshot: null,
+    pogo: null,
+  });
+  // No pogo facts → no validation, no claims counted (signal absent ≠ wrong)
+  assert.equal(r.total_numeric_claims, 0);
+  assert.equal(r.passed, true);
+});
+
+test('Sprint-15 — hard pogo distinguished from regular pogo', () => {
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      pogo_navboost_assessment: '3 pogo dont 2 hard pogo sur n=22 google_sessions.',
+    },
+    content_snapshot: null,
+    pogo: pogoFacts,
+  });
+  // 3 pogo (✓), 2 hard pogo (✓), n=22 (✓)
+  assert.equal(r.passed, true);
+});
