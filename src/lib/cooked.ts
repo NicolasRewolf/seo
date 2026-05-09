@@ -316,7 +316,12 @@ export async function fetchSiteContext(): Promise<SiteContext> {
     : [];
   return {
     global_sessions_28d: num(r.global_sessions_28d as Numeric),
-    global_bounce_rate_28d: num(r.global_bounce_rate_28d as Numeric) / 100,
+    // Sprint-17 bug fix : site_context_export() returns global_bounce_rate_28d
+    // already in 0..1 format (verified 2026-05-09 : returns 0.2253 = 22.53%).
+    // Note the per-page bounce_rate_28d in snapshot_pages_export() is still
+    // 0..100 (returns 22.53), so the /100 conversion stays at parsePageSnapshotRow.
+    // Inconsistency lives on Cooked's side but is documented; we conform.
+    global_bounce_rate_28d: num(r.global_bounce_rate_28d as Numeric),
     sessions_per_day_median_28d: num(r.sessions_per_day_median_28d as Numeric),
     sessions_trend_pct_7d_vs_28d: num(r.sessions_trend_pct_7d_vs_28d as Numeric),
     top_sources_28d: topArr.slice(0, 5),

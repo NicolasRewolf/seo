@@ -348,3 +348,74 @@ test('Sprint-16 — sprint16 facts absent → claims not validated, no false ala
   assert.equal(r.total_numeric_claims, 0);
   assert.equal(r.passed, true);
 });
+
+// ---------- Sprint-17 regression tests (false positives caught on #33) ---
+
+test('Sprint-17 — "n=" inside French word "médian=41s" is NOT counted as pogo claim', () => {
+  // Real LLM output observed on #33 v9 run that triggered a false positive
+  // before the Sprint-17 fact-checker fix.
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      engagement_pattern_assessment: 'Distribution bimodale (p25=8s, médian=41s, p75=104s).',
+      pogo_navboost_assessment: 'pogo 9.6% sur n=115 google_sessions.',
+    },
+    content_snapshot: null,
+    pogo: { google_sessions: 115, pogo_sticks: 11, hard_pogo: 5, pogo_rate_pct: 9.6 },
+    sprint16: { ...sprint16Facts, density_dwell_p25: 8, density_dwell_median: 41, density_dwell_p75: 104 },
+  });
+  // The legit n=115 should be verified. "médian=41s" should NOT be matched
+  // as a pogo n= claim. Real claims: p25, median, p75 (3) + n=115 (1) +
+  // pogo_rate 9.6% (1) = 5 claims, all should verify.
+  assert.equal(r.passed, true, `expected passed=true, got unverified: ${JSON.stringify(r.unverified)}`);
+});
+
+test('Sprint-17 — "Mobile 80% du trafic" (device share) is NOT counted as CTA rate claim', () => {
+  // Real LLM output observed on #33 v9 run. The "conversions" word appears
+  // in the NEXT sentence — local-sentence-only context check should reject
+  // matching the "Mobile 80%" phrase as a CTA rate claim.
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      device_optimization_note:
+        'Mobile 80% du trafic, desktop 19% (device_split). Sur les conversions : 0% sur 153 sessions mobile et 0% sur 36 sessions desktop.',
+    },
+    content_snapshot: null,
+    sprint16: {
+      mobile_sessions: 153,
+      desktop_sessions: 36,
+      cta_rate_mobile_pct: 0,
+      cta_rate_desktop_pct: 0,
+      density_sessions: null, density_dwell_p25: null, density_dwell_median: null,
+      density_dwell_p75: null, density_evenness_score: null,
+    },
+  });
+  // Mobile 80% / desktop 19% = SHARE, not CTA rate (not in same sentence as
+  // "conversions"). The 0% / 0% in the second sentence ARE CTA rate claims
+  // and SHOULD verify (0 == 0). Final: 2 verified CTA claims, 0 unverified.
+  assert.equal(r.passed, true, `expected passed=true, got unverified: ${JSON.stringify(r.unverified)}`);
+});
+
+test('Sprint-17 — "mobile + scroll_avg 24.4%" (different metric in gap) is NOT counted as CTA rate', () => {
+  // Real LLM output observed on #33 v9 run. The 24.4% belongs to scroll_avg,
+  // not the mobile CTA rate (which is 0%). The gap between "mobile" and the
+  // number cites "scroll_avg" — should be rejected.
+  const r = factCheckDiagnostic({
+    diagnostic: {
+      device_optimization_note:
+        'Lecture qualitative via device_split : 80% mobile + scroll_avg 24.4% sur l\'ensemble du trafic = fix mobile-first impératif (CTA in-body).',
+    },
+    content_snapshot: null,
+    sprint16: {
+      mobile_sessions: 153,
+      desktop_sessions: 36,
+      cta_rate_mobile_pct: 0,
+      cta_rate_desktop_pct: 0,
+      density_sessions: null, density_dwell_p25: null, density_dwell_median: null,
+      density_dwell_p75: null, density_evenness_score: null,
+    },
+  });
+  // No claim should be counted (scroll_avg is not a CTA rate, "80% mobile"
+  // is share — also rejected because "trafic" appears in the local sentence
+  // wait no, we have "CTA" in the same sentence so the local-sentence
+  // check passes — but the negative keyword in gap rejects).
+  assert.equal(r.passed, true, `expected passed=true, got unverified: ${JSON.stringify(r.unverified)}`);
+});
