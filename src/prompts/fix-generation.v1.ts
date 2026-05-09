@@ -85,6 +85,37 @@ function fmtEnrichedTopQueries(rows: EnrichedTopQuery[]): string {
 }
 
 /**
+ * Sprint 18 — Compact SERP top 3 per query for fix-gen.
+ *
+ * Rendu différent du diagnostic : ici on veut des MUNITIONS pour différencier
+ * le title/meta proposé. Format compact : top 3 organiques par query (suffit
+ * pour identifier les angles à éviter / différencier).
+ *
+ * Le bloc fix-gen est input-only ; le LLM rend des fixes title/meta qui
+ * s'appuient implicitement sur ces concurrents (cf. instructions plus bas).
+ */
+export function fmtSerpTop3ForFixGen(rows: EnrichedTopQuery[]): string {
+  const withSerp = rows.filter((r) => r.serp != null && r.serp.organic.length > 0);
+  if (withSerp.length === 0) return '_(SERP indisponible)_';
+  const sections: string[] = [];
+  for (const r of withSerp) {
+    const s = r.serp!;
+    const featBadges: string[] = [];
+    if (s.features.has_ai_overview) featBadges.push('🤖AI');
+    if (s.features.has_featured_snippet) featBadges.push('📌FS');
+    if (s.features.has_people_also_ask) featBadges.push('❓PAA');
+    if (s.features.has_local_pack) featBadges.push('📍LP');
+    const featStr = featBadges.length > 0 ? ` [${featBadges.join('·')}]` : '';
+    const top3 = s.organic.slice(0, 3).map((it, idx) => {
+      const title = (it.title ?? '').replace(/\s+/g, ' ').slice(0, 70);
+      return `  ${idx + 1}. **${it.domain ?? '?'}** — "${title}"`;
+    }).join('\n');
+    sections.push(`- **"${r.query}"**${featStr} :\n${top3}`);
+  }
+  return sections.join('\n\n');
+}
+
+/**
  * Sprint-11 v2: classification is driven by the Sprint-9 DOM `placement`
  * field stored on each link row, NOT by a regex on the anchor text.
  * Pre-Sprint-9 snapshots have all rows in the `unclassified` bucket — in
@@ -356,6 +387,11 @@ ${fmtInboundForFixes(i.inbound_summary)}
 # Top queries avec volume FR et share of voice
 ${fmtEnrichedTopQueries(enrichedQueries)}
 
+# SERP top 3 par query (Sprint 18 — concurrents directs en SERP Google FR)
+Cette liste te dit QUI tu as à battre. Quand tu écris title/meta, ton angle DOIT se différencier des 3 premiers résultats — sinon le snippet noie dans la masse. Lis aussi les SERP features (AI, Featured Snippet, PAA, Local Pack) : si AI Overview présent, le CTR organique est plafonné, propose plutôt un title qui pousse à cliquer pour la nuance que l'AI ne donne pas.
+
+${fmtSerpTop3ForFixGen(enrichedQueries)}
+
 # Catalogue d'URLs internes RÉELLES (utilise UNIQUEMENT celles-ci pour tout maillage proposé — toute autre URL est une hallucination que le QA rejettera)
 ${fmtCatalogForFixes(i.enrichment?.internal_pages_catalog)}
 
@@ -384,8 +420,8 @@ ${fmtCookedBlockForFixes(i.cooked_extras, i.cta_breakdown, i.gsc_clicks_28d)}
 - Pas de promesse de résultat (déontologie avocat)
 - Pas de "meilleur avocat" ou superlatifs interdits par les ordres
 - Mots-clés naturels, pas de stuffing
-- Title : ≤60 caractères, mot-clé principal en début, angle distinctif (spécificité géographique, donnée chiffrée, ou bénéfice concret)
-- Meta : ≤155 caractères, répond directement à l'intention principale, contient un appel à l'action implicite
+- Title : ≤60 caractères, mot-clé principal en début, angle distinctif (spécificité géographique, donnée chiffrée, ou bénéfice concret). **(Sprint 18) L'angle DOIT se différencier des titles des 3 premiers résultats SERP listés plus haut** — si Wikipedia est en pos 1 sur une query informationnelle, ton angle doit être "avocat/expertise/cas concrets/risque" plutôt qu'une définition encyclopédique.
+- Meta : ≤155 caractères, répond directement à l'intention principale, contient un appel à l'action implicite. **(Sprint 18) Si AI Overview ou Featured Snippet présent dans la SERP, ta meta doit pousser le clic pour la nuance/personnalisation que l'AI ne donne pas** (ex: "selon votre situation", "avec un avocat pénaliste", "cas concrets bordelais"). Sinon, viser le snippet le plus actionnable possible.
 - Intro (100 premiers mots) : répond à la requête principale dans la première phrase, pas d'intro contextuelle, structure "réponse → contexte → ce que tu vas trouver dans la suite"
 - **Pour les liens internes** :
   - URLs proposées DOIVENT venir du catalogue ci-dessus (pas d'invention)

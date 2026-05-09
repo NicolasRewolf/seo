@@ -79,7 +79,7 @@ import { fetchTrackerFirstSeen } from '../lib/cooked.js';
 import type { ContentSnapshot } from '../lib/page-content-extractor.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 9 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 10 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -225,6 +225,56 @@ function fmtEnrichedQueriesTable(rows: EnrichedTopQuery[]): string {
     );
   }
   return lines.join('\n');
+}
+
+/**
+ * Sprint 18 — Competitive SERP landscape per top query.
+ *
+ * Pour chaque top query, rend le top 10 organique Google FR (rank, domaine,
+ * title, snippet truncaté à 100 chars) + les SERP features observées
+ * (AI Overview, featured snippet, PAA box, knowledge graph, local pack).
+ *
+ * Le LLM lit ce bloc EN PRIORITÉ pour analyser :
+ *   - snippet_weakness : pourquoi notre snippet ne convertit pas vs concurrents
+ *   - intent_mismatch : si la SERP est dominée par Wikipedia/.gouv → intent
+ *     informationnel ; si par cabinets d'avocats → intent commercial
+ *   - feature gating : si AI Overview présent, le CTR organique est plafonné
+ *
+ * Truncate snippet à 100 chars : assez pour saisir l'angle, pas assez pour
+ * gonfler le prompt (cap ~2500 input tokens pour 5 queries × 10 résultats).
+ */
+export function fmtSerpCompetitiveLandscape(rows: EnrichedTopQuery[]): string {
+  const withSerp = rows.filter((r) => r.serp != null && r.serp.organic.length > 0);
+  if (withSerp.length === 0) {
+    return '_(SERP indisponible — DataForSEO non configuré ou erreur sur toutes les queries)_';
+  }
+  const sections: string[] = [];
+  for (const r of withSerp) {
+    const s = r.serp!;
+    const featBadges: string[] = [];
+    if (s.features.has_ai_overview) featBadges.push('🤖 AI Overview');
+    if (s.features.has_featured_snippet) featBadges.push('📌 Featured Snippet');
+    if (s.features.has_people_also_ask) featBadges.push('❓ People Also Ask');
+    if (s.features.has_knowledge_graph) featBadges.push('📚 Knowledge Graph');
+    if (s.features.has_local_pack) featBadges.push('📍 Local Pack');
+    if (s.features.has_video) featBadges.push('🎬 Video');
+    const featsLine = featBadges.length > 0 ? featBadges.join(' · ') : '_(aucune SERP feature majeure)_';
+
+    const tableLines = [
+      `### "${r.query}"  ·  features : ${featsLine}`,
+      ``,
+      `| pos | domaine | title | snippet |`,
+      `|---|---|---|---|`,
+    ];
+    for (const item of s.organic.slice(0, 10)) {
+      const snippet = (item.description ?? '').replace(/\s+/g, ' ').slice(0, 100);
+      const title = (item.title ?? '').replace(/\s+/g, ' ').slice(0, 80);
+      const pos = item.rank_group ?? item.rank_absolute ?? '?';
+      tableLines.push(`| ${pos} | ${item.domain ?? '?'} | ${title} | ${snippet} |`);
+    }
+    sections.push(tableLines.join('\n'));
+  }
+  return sections.join('\n\n');
 }
 
 /**
@@ -1005,6 +1055,17 @@ ${fmtInboundBlock(i.inbound_summary)}
 ${fmtEnrichedQueriesTable(enrichedQueries)}
 ${fmtDemandBlock(i.enrichment)}
 
+<serp_competitive_landscape>
+Sprint 18 — Top 10 SERP Google FR (organique) + features observées, pour les top 5 requêtes. C'est la VEILLE CONCURRENTIELLE qui te permet de répondre causalement à \`snippet_weakness\` et \`intent_mismatch\`.
+
+Lis ce bloc EN PRIORITÉ avant d'écrire ces 2 champs :
+- **snippet_weakness** : compare TON title/meta (cf. <état SEO>) aux titles+snippets des 3 premiers résultats. Identifie l'angle qui te manque (bénéfice chiffré ? autorité ? émotion ? action ?). Cite les domaines concurrents par leur nom (ex: "service-public.fr couvre l'aspect officiel, Wikipedia capte l'informationnel pur, le cabinet X mise sur l'angle dégât humain").
+- **intent_mismatch** : la composition du SERP révèle l'intent dominant. SERP dominé par .gouv/.fr et Wikipedia → informationnel pur. SERP avec cabinets d'avocats en top 3 → commercial qualifié. SERP avec local pack + AI Overview → recherche locale immédiate. Confirme ou contredis ton diagnostic basé sur les queries seules.
+- **SERP features** : si AI Overview présent, le CTR organique est plafonné (Google répond avant le clic) → action prioritaire = optimiser pour ÊTRE dans l'AI Overview, pas pour grimper en pos 1. Si Featured Snippet pris par un concurrent, viser à le déloger via meilleure réponse structurée (<= 50 mots, schema FAQPage). Si People Also Ask, vérifier qu'on couvre les questions associées dans nos H2.
+
+${fmtSerpCompetitiveLandscape(enrichedQueries)}
+</serp_competitive_landscape>
+
 # Catalogue d'URLs internes RÉELLES (utilise UNIQUEMENT celles-ci pour tout maillage proposé — toute autre URL est une hallucination)
 ${i.enrichment ? fmtCatalog(i.enrichment.internal_pages_catalog) : '_(catalog non chargé)_'}
 
@@ -1081,8 +1142,8 @@ Produis un diagnostic JSON strict avec ce schéma. **Le champ \`tldr\` vient en 
 
 {
   "tldr": "Synthèse exécutive en MAX 280 caractères : (1) cause #1 du sous-CTR en 1 phrase, (2) action #1 prioritaire en 1 phrase. Ton direct, pas de hedging. Exemple : 'Title trop générique sur \"abandon de poste\" (43% SOV gâchée par un CTR 2× sous benchmark). Action : reframer en \"Abandon de poste : 7 risques que les employeurs ignorent\" pour aligner sur l'intent informationnel.'",
-  "intent_mismatch": "Décris en 1-3 phrases le mismatch entre l'intention dominante des top requêtes (en t'appuyant sur les volumes réels France) et le cadrage actuel du title/meta/H1. Cite les requêtes concernées avec leurs volumes.",
-  "snippet_weakness": "Décris en 1-3 phrases pourquoi le snippet (title + meta) ne convertit pas. Sois précis : trop générique ? Pas de bénéfice chiffré ? Concurrent plus fort dans la SERP ? Si la share of voice est déjà élevée (>50%) le levier est sur le CTR pas sur le ranking.",
+  "intent_mismatch": "Décris en 1-3 phrases le mismatch entre l'intention dominante des top requêtes (en t'appuyant sur les volumes réels France) et le cadrage actuel du title/meta/H1. Cite les requêtes concernées avec leurs volumes. (Sprint 18) **Lis aussi <serp_competitive_landscape>** : la composition du SERP révèle l'intent dominant — SERP dominé par .gouv/Wikipedia → informationnel ; SERP avec cabinets d'avocats en top 3 → commercial qualifié ; AI Overview présent → recherche immédiate plafonnée. Confirme ou contredis ton diagnostic d'intent par ce que la SERP montre VRAIMENT.",
+  "snippet_weakness": "Décris en 1-3 phrases pourquoi le snippet (title + meta) ne convertit pas. Sois précis : trop générique ? Pas de bénéfice chiffré ? Concurrent plus fort dans la SERP ? Si la share of voice est déjà élevée (>50%) le levier est sur le CTR pas sur le ranking. (Sprint 18) **Lis EN PRIORITÉ <serp_competitive_landscape>** : compare ton title/meta aux titles+snippets des 3 premiers résultats organiques de chaque top query. Cite les domaines concurrents par leur nom (ex: 'service-public.fr couvre l'aspect officiel, Wikipedia capte l'informationnel pur, le cabinet X mise sur l'angle dégât humain — ton snippet n'a pas d'angle distinct'). Si AI Overview ou Featured Snippet présent, mentionne explicitement leur impact sur le CTR organique plafonné.",
   "hypothesis": "Une seule phrase : ton hypothèse principale du sous-CTR.",
   "top_queries_analysis": [
     {

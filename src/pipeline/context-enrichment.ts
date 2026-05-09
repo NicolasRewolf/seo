@@ -16,7 +16,12 @@
  * and was dropped along with the GA4 import.
  */
 import { getBlogPostBySlug, getPostMetrics, type WixPostMetrics } from '../lib/wix.js';
-import { getSearchVolumes, type KeywordVolume } from '../lib/dataforseo.js';
+import {
+  getSearchVolumes,
+  getSerpOrganicTop10,
+  type KeywordVolume,
+  type SerpSnapshot,
+} from '../lib/dataforseo.js';
 import {
   WIX_CATEGORIES,
   catalogByRole,
@@ -32,7 +37,13 @@ export type EnrichedTopQuery = {
   cpc: number | null;
   /** impressions / volume → what % of demand we already capture this month. */
   share_of_voice_pct: number | null;
+  /** Sprint 18 — Top 10 SERP Google FR (organic) + features observées.
+   *  Optionnel : null si DataForSEO SERP a échoué pour cette query (best-effort). */
+  serp?: SerpSnapshot | null;
 };
+
+/** Sprint 18 — top-N queries pour lesquelles on fetch un SERP (cap coût). */
+const SERP_TOP_N_QUERIES = 5;
 
 export type EnrichedContext = {
   /** Wix post id, undefined if URL is a static page. */
@@ -121,6 +132,33 @@ async function enrichTopQueries(
       share_of_voice_pct: sov,
     };
   });
+
+  // Sprint 18 — fetch SERP top 10 for the top N queries (cap cost). Parallel
+  // via Promise.all: at N=5 the natural concurrency is fine (no rate limit
+  // pressure on DataForSEO live endpoint). Best-effort per query: 1 failure
+  // = serp:null on that query, the diag still runs with all other signals.
+  const topSerpQueries = enriched.slice(0, SERP_TOP_N_QUERIES);
+  const serpResults = await Promise.all(
+    topSerpQueries.map(async (q) => {
+      try {
+        return await getSerpOrganicTop10({
+          keyword: q.query,
+          locationName: 'France',
+          languageCode: 'fr',
+        });
+      } catch (err) {
+        process.stderr.write(
+          `[enrich] DataForSEO SERP failed on "${q.query}": ${(err as Error).message}\n`,
+        );
+        return null;
+      }
+    }),
+  );
+  // Attach SERP back onto enriched (top N only — beyond N, leave undefined).
+  for (let i = 0; i < topSerpQueries.length; i++) {
+    enriched[i]!.serp = serpResults[i]!;
+  }
+
   return { enriched, totalDemand: anyDemand ? totalDemand : null };
 }
 
