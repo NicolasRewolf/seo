@@ -56,12 +56,38 @@ projet. Il est maintenu par une **session Claude Code séparée**.
 **Les deux agents ne peuvent pas se parler directement.** Nicolas est
 le relais humain entre les sessions.
 
+### Briefing reçu de l'agent Cooked (2026-05-09)
+
+L'agent Cooked a transmis sa carte de capacités complète via Nicolas
+le 2026-05-09. À retenir pour calibrer tes prompts et tes attentes :
+
+- **Live depuis le 5 mai 2026** — fenêtres 90d/365d quasi vides, privilégie
+  7d et 28d. Même 28d peut être borné à <28 jours de data réelle.
+- **Tracking 100% first-party, cookieless, RGPD-exempt, non échantillonné.**
+  Pas de consent bias. Chaque visite est captée.
+- **`anonymous_id` rotate chaque jour** — pas de tracking returning
+  visitors cross-day pour l'instant. Ne formule JAMAIS de claim sur
+  retours / visites multi-jours.
+- **8 types d'events** dans `events` : `pageview`, `page_exit`,
+  `scroll_depth`, `engagement_tick`, `web_vitals`, `click_outbound`,
+  `cta_phone_click`, `cta_booking_click`. Chaque event porte
+  `session_id, anonymous_id, path, referrer, utm_*, device, browser,
+  os, viewport, occurred_at`.
+- **`avg_dwell_seconds` = temps actif réel** (somme des engagement_tick
+  active_ms), pas wall-clock — ne le compare jamais à GA4 sessions.
+- **Cooked ne sait PAS** : SERP, CTR Google, positions, impressions
+  (= GSC) ; ne voit PAS les concurrents (= seulement jplouton-avocat.fr) ;
+  ne tracke PAS les retours multi-jours (anonymous_id rotate).
+- **7 RPCs disponibles** + le snapshot pré-calculé `seo_url_snapshot`
+  (70 cols, refresh nightly 03:00 UTC).
+
 ### 🟢 Tu peux faire SANS coordination
 
 - Lire via les RPCs publiées par Cooked
   (`snapshot_pages_export`, `site_context_export`,
   `outbound_destinations_for_path`, `cta_breakdown_for_path`,
-  `tracker_first_seen_global`, `behavior_pages_for_period`)
+  `tracker_first_seen_global`, `behavior_pages_for_period`,
+  `pogo_rates_for_period`)
 - Modifier ton wrapper `src/lib/cooked.ts` tant que tu consommes les
   RPCs existantes selon leur contrat
 - Modifier tes prompts, tes pipelines, ton issue template
