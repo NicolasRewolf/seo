@@ -445,11 +445,11 @@ export async function extractContentForFinding(pageUrl: string): Promise<Content
       const post = await getBlogPostBySlug(slug);
       if (post) {
         authorOverride = {
-          // member.profile.fullName is not on the WixBlogPost type yet — pull
-          // it via raw API call when needed (TODO Sprint 15: extend the type
-          // + Zod parse). For now, use post.title as a placeholder name fallback
-          // is not informative; leave name undefined and let the LLM see "byline
-          // absent" if no <a rel="author"> in HTML either.
+          // member.profile.fullName is not on the WixBlogPost type yet —
+          // would require a raw call to /v3/members/{id} + extending the Zod
+          // shape. Deferred : on Plouton the byline is extracted from
+          // <a rel="author"> in the HTML in 100% of observed cases, so the
+          // Blog API author name has not been needed in practice.
           date_published: post.firstPublishedDate,
           date_modified: post.lastPublishedDate,
         };
