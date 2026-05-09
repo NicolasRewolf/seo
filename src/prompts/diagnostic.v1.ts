@@ -436,17 +436,35 @@ function fmtDeviceSplit(ex: PageSnapshotExtras | null | undefined): string {
   return `- mobile: ${d.mobile.toFixed(0)}%  |  desktop: ${d.desktop.toFixed(0)}%  |  tablet: ${d.tablet.toFixed(0)}%`;
 }
 
-function fmtMultiWindowTrend(ex: PageSnapshotExtras | null | undefined): string {
+function fmtMultiWindowTrend(
+  ex: PageSnapshotExtras | null | undefined,
+  cookedFirstSeen?: Date,
+): string {
   if (!ex) return '_(Cooked snapshot indisponible)_';
   const w = ex.windows;
   const ratePerDay = (n: number, days: number): string => (days > 0 ? (n / days).toFixed(2) : '0');
-  return [
+  // Cooked agent briefing: "live since 5 mai 2026 — fenêtres 90d et 365d quasi
+  // vides, privilégie 7d et 28d". On annotate la sortie en fonction du nombre
+  // de jours de données réellement collectés depuis cookedFirstSeen.
+  const daysCollected = cookedFirstSeen
+    ? Math.max(0, Math.floor((Date.now() - cookedFirstSeen.getTime()) / (24 * 60 * 60 * 1000)))
+    : null;
+  const lines = [
     `- sessions: 7d=${w['7d'].sessions} (${ratePerDay(w['7d'].sessions, 7)}/jour) | 28d=${w['28d'].sessions} (${ratePerDay(w['28d'].sessions, 28)}/jour) | 90d=${w['90d'].sessions} | 365d=${w['365d'].sessions}`,
     `- bounce_rate: 7d=${(w['7d'].bounce_rate * 100).toFixed(1)}% | 28d=${(w['28d'].bounce_rate * 100).toFixed(1)}% | 90d=${(w['90d'].bounce_rate * 100).toFixed(1)}%`,
     `- scroll_avg: 7d=${w['7d'].scroll_avg.toFixed(1)}% | 28d=${w['28d'].scroll_avg.toFixed(1)}% | 90d=${w['90d'].scroll_avg.toFixed(1)}%`,
     `- avg_dwell: 7d=${w['7d'].avg_dwell_seconds.toFixed(0)}s | 28d=${w['28d'].avg_dwell_seconds.toFixed(0)}s`,
     `- outbound_clicks: 7d=${w['7d'].outbound_clicks} | 28d=${w['28d'].outbound_clicks} | 90d=${w['90d'].outbound_clicks}`,
-  ].join('\n');
+  ];
+  if (daysCollected !== null) {
+    if (daysCollected < 90) {
+      lines.push('');
+      lines.push(
+        `_⚠ Cooked tourne depuis ${daysCollected} jours seulement (live 5 mai 2026). La fenêtre 90d ${daysCollected < 28 ? 'ET 28d sont' : 'est'} en cours de remplissage : ${daysCollected < 90 ? 'la 90d ' : ''}${daysCollected < 365 ? 'et la 365d ' : ''}contiennent ${daysCollected} jours de data réelle, pas plus. N'interprète PAS de "trend stable sur 90 jours" — ce serait du bruit. Compare uniquement 7d vs 28d, et même 28d est borné à ${Math.min(daysCollected, 28)} jours._`,
+      );
+    }
+  }
+  return lines.join('\n');
 }
 
 function fmtOutboundDestinations(rows: OutboundDestination[] | undefined): string {
@@ -913,7 +931,7 @@ ${fmtDeviceSplit(i.cooked_extras)}
 <multi_window_trend>
 Détecte les pages en pic ou en chute. Compare 7d normalisé vs 28d normalisé.
 
-${fmtMultiWindowTrend(i.cooked_extras)}
+${fmtMultiWindowTrend(i.cooked_extras, i.cooked_first_seen ?? undefined)}
 </multi_window_trend>
 
 <top_outbound_destinations>
