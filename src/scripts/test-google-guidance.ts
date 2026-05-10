@@ -127,7 +127,10 @@ import type { GoogleSearchGuidance } from '../lib/google-search-central.js';
 
 const baseGuidance: GoogleSearchGuidance = {
   blog_posts: [],
+  blog_posts_deep: [],
   incidents: [],
+  ranking_systems: [],
+  spam_policies: [],
   fetched_at: '2026-05-10T12:00:00Z',
 };
 
@@ -233,4 +236,69 @@ test('fmtGoogleRecentGuidance: age < 30 days uses "Xj", >= 30 uses "Xmo"', () =>
   });
   assert.match(out, /il y a 9j/);
   assert.match(out, /il y a 2mo/); // 61j → 2mo
+});
+
+// ============================================================================
+// Sprint 19.5 — reference doc sections (ranking systems + spam policies + deep posts)
+// ============================================================================
+
+test('Sprint-19.5: ranking systems section appears with NOM EXACT instruction', () => {
+  const out = fmtGoogleRecentGuidance({
+    ...baseGuidance,
+    ranking_systems: [
+      { id: 'reviews', name: 'Reviews System', description: 'Rewards high-quality reviews with insightful analysis.' },
+      { id: 'reliable-info', name: 'Reliable Information Systems', description: 'Surfaces authoritative pages.' },
+    ],
+  });
+  assert.match(out, /Système de ranking nommés Google/);
+  assert.match(out, /NOM EXACT/);
+  assert.match(out, /\*\*Reviews System\*\* : Rewards high-quality reviews/);
+  assert.match(out, /\*\*Reliable Information Systems\*\*/);
+});
+
+test('Sprint-19.5: spam policies section appears with NOM EXACT instruction', () => {
+  const out = fmtGoogleRecentGuidance({
+    ...baseGuidance,
+    spam_policies: [
+      { id: 'scaled-content', name: 'Scaled content abuse', description: 'Generating many pages with little original value.' },
+      { id: 'cloaking', name: 'Cloaking', description: 'Presenting different content to users vs search engines.' },
+    ],
+  });
+  assert.match(out, /Spam Policies Google/);
+  assert.match(out, /\*\*Scaled content abuse\*\* : Generating/);
+  assert.match(out, /\*\*Cloaking\*\* : Presenting different/);
+});
+
+test('Sprint-19.5: deep-fetched posts get full text appended after summary', () => {
+  const link = 'https://developers.google.com/search/blog/2026/04/eeat';
+  const out = fmtGoogleRecentGuidance({
+    ...baseGuidance,
+    blog_posts: [{
+      title: 'EEAT update',
+      link,
+      summary: '220-char summary',
+      published_date: '2026-04-15',
+      age_days: 25,
+    }],
+    blog_posts_deep: [{ link, body: 'Full text body 1200 chars long...' }],
+  });
+  assert.match(out, /220-char summary/);
+  assert.match(out, /Full text \(Sprint 19\.5 deep-fetch\)/);
+  assert.match(out, /Full text body 1200 chars long/);
+});
+
+test('Sprint-19.5: posts without deep fetch keep summary-only format', () => {
+  const out = fmtGoogleRecentGuidance({
+    ...baseGuidance,
+    blog_posts: [{
+      title: 'No deep',
+      link: 'https://x',
+      summary: 'just summary',
+      published_date: '2026-04-15',
+      age_days: 25,
+    }],
+    blog_posts_deep: [],
+  });
+  assert.match(out, /just summary/);
+  assert.doesNotMatch(out, /Full text \(Sprint 19\.5 deep-fetch\)/);
 });
