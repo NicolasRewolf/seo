@@ -937,17 +937,38 @@ export function fmtGoogleRecentGuidance(g: GoogleSearchGuidance | null | undefin
     sections.push(`## Updates Google récentes terminées (60j)\n\n${lines.join('\n')}`);
   }
 
-  // Section 3 : pivot blog posts
+  // Section 3 : pivot blog posts (avec deep-fetch pour les top 2)
   if (g.blog_posts.length > 0) {
+    const deepByLink = new Map(g.blog_posts_deep.map((d) => [d.link, d.body]));
     const lines = g.blog_posts.map((p) => {
       const ageLabel = p.age_days < 30 ? `${p.age_days}j` : `${Math.floor(p.age_days / 30)}mo`;
-      return `- **${p.published_date}** (il y a ${ageLabel}) — [${p.title}](${p.link})\n  > ${p.summary}`;
+      const deep = deepByLink.get(p.link);
+      const body = deep
+        ? `  > ${p.summary}\n  > _Full text (Sprint 19.5 deep-fetch) :_ ${deep}`
+        : `  > ${p.summary}`;
+      return `- **${p.published_date}** (il y a ${ageLabel}) — [${p.title}](${p.link})\n${body}`;
     });
     sections.push(`## Guidance Google Search Central récente (90j, filtre pivot)\n\n${lines.join('\n\n')}`);
   }
 
+  // Section 4 (Sprint 19.5) : reference doc — Named ranking systems
+  if (g.ranking_systems.length > 0) {
+    const lines = g.ranking_systems.map((r) => `- **${r.name}** : ${r.description}`);
+    sections.push(
+      `## Système de ranking nommés Google (référence officielle, cite-les par leur NOM EXACT)\n\n${lines.join('\n')}`,
+    );
+  }
+
+  // Section 5 (Sprint 19.5) : reference doc — Spam policies
+  if (g.spam_policies.length > 0) {
+    const lines = g.spam_policies.map((p) => `- **${p.name}** : ${p.description}`);
+    sections.push(
+      `## Spam Policies Google (référence officielle, cite-les par leur NOM EXACT si tu détectes le pattern)\n\n${lines.join('\n')}`,
+    );
+  }
+
   if (sections.length === 0) {
-    return '_(rien de pivot dans les 90 derniers jours côté Google — RAS, tu peux raisonner sans signal externe)_';
+    return '_(rien de pivot côté Google + reference docs indisponibles — RAS, tu peux raisonner sans signal externe)_';
   }
   return sections.join('\n\n');
 }
@@ -1024,7 +1045,7 @@ export function renderDiagnosticPrompt(i: DiagnosticPromptInputs): string {
   return `Tu es un consultant SEO senior expert en NavBoost et signaux de clic Google. Tu connais le funnel de conversion d'un cabinet d'avocats : article-ressource → page expertise métier → prise de RDV. Analyse cette page sous-performante et produis un diagnostic structuré.
 
 <google_recent_guidance>
-Sprint 19 — SILO de "ce que Google dit récemment". Lis ce bloc UNIQUEMENT comme regard EXTERNE / autorité Google. Ne le mélange pas avec tes signaux page-data des autres blocs. Règles strictes :
+Sprint 19+19.5 — SILO de "ce que Google dit / a publié officiellement". 5 sources : (1) Search Status Dashboard updates en cours, (2) updates terminées récemment, (3) Search Central blog (last 90j, filtre pivot, top 2 deep-fetched), (4) RÉFÉRENCE OFFICIELLE des 17+ systèmes de ranking nommés, (5) RÉFÉRENCE OFFICIELLE des 20+ spam policies. Lis ce bloc UNIQUEMENT comme regard EXTERNE / autorité Google. Ne le mélange pas avec tes signaux page-data des autres blocs. Règles strictes :
 
 1. **Si une core update / spam update / helpful content update est ACTIVE**, mentionne-la dans \`tldr\` et ouvre \`engagement_diagnosis\` ou \`hypothesis\` par un caveat temporel : "les rankings peuvent bouger ces prochaines semaines indépendamment des fixes proposés, attendre la stabilisation avant de mesurer T+30".
 
@@ -1032,9 +1053,13 @@ Sprint 19 — SILO de "ce que Google dit récemment". Lis ce bloc UNIQUEMENT com
 
 3. **Si une guidance récente RENFORCE** un conseil que tu allais déjà donner, c'est une validation utile : tu peux la citer pour appuyer la priorité.
 
-4. **Si rien dans ce bloc n'est pertinent au diag**, IGNORE-le complètement — ne l'évoque pas, ne fais pas de référence creuse.
+4. **Si tu peux nommer un SYSTÈME DE RANKING précis** affecté par la page (ex: Original Content Systems pour un article de presse, Reviews System pour une page review, Reliable Information Systems pour du contenu YMYL juridique), CITE-LE PAR SON NOM EXACT depuis la référence ci-dessous. Évite "Helpful Content Update" (intégré au core 2024).
 
-5. **N'invente jamais une guidance Google** qui n'est pas dans ce bloc. Si tu veux référencer une best practice Google, elle DOIT venir de ce bloc ou d'une connaissance fondamentale (PageRank, EEAT framework général). Pas de hallucination de "Google a dit récemment X".
+5. **Si la page risque de matcher une SPAM POLICY** (Scaled Content Abuse pour AI sans valeur, Site Reputation Abuse pour third-party content, Hidden Text Abuse, Sneaky Redirects, Cloaking…), FLAGUE-LE explicitement dans \`structural_gaps\` ou \`hypothesis\` en citant le nom officiel de la policy.
+
+6. **Si rien dans ce bloc n'est pertinent au diag**, IGNORE-le complètement — ne l'évoque pas, ne fais pas de référence creuse.
+
+7. **N'invente jamais une guidance Google** qui n'est pas dans ce bloc. Si tu veux référencer une best practice Google, elle DOIT venir de ce bloc ou d'une connaissance fondamentale (PageRank, EEAT framework général). Pas de hallucination de "Google a dit récemment X".
 
 ${fmtGoogleRecentGuidance(i.enrichment?.google_guidance ?? null)}
 </google_recent_guidance>

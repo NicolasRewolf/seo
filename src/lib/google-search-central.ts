@@ -48,9 +48,40 @@ export type StatusIncident = {
   category: 'core_update' | 'spam_update' | 'helpful_content_update' | 'other';
 };
 
+/** Sprint 19.5 — named Google ranking system (from ranking-systems-guide).
+ *  Active systems only — retired ones (Helpful Content System integrated into
+ *  core 2024, Panda, Penguin, Hummingbird) are filtered out at fetch time. */
+export type RankingSystem = {
+  id: string;
+  name: string;
+  description: string; // 1-2 sentences, ≤ 300 chars
+};
+
+/** Sprint 19.5 — enumerated Google spam policy (from spam-policies doc). */
+export type SpamPolicy = {
+  id: string;
+  name: string;
+  description: string; // 1-2 sentences, ≤ 300 chars
+};
+
+/** Sprint 19.5 — full-text body of a "deep-fetched" pivot blog post.
+ *  Extracted only for posts marked as ACTIVE update OR critical policy
+ *  change — adds ~800 chars of structured content vs the 220-char RSS summary. */
+export type BlogPostFullText = {
+  link: string;
+  /** Plaintext body, ≤ 1200 chars, stripped + truncated. */
+  body: string;
+};
+
 export type GoogleSearchGuidance = {
   blog_posts: BlogPost[];
+  /** Sprint 19.5 — full-text body for the top 2 most-pivot posts (rest stay summary-only). */
+  blog_posts_deep: BlogPostFullText[];
   incidents: StatusIncident[];
+  /** Sprint 19.5 — reference doc : 17 named active ranking systems. */
+  ranking_systems: RankingSystem[];
+  /** Sprint 19.5 — reference doc : 20 enumerated spam policies. */
+  spam_policies: SpamPolicy[];
   fetched_at: string; // ISO 8601
 };
 
@@ -280,13 +311,144 @@ export async function fetchActiveAndRecentIncidents(opts?: {
   return incidents;
 }
 
+// ============================================================================
+// Sprint 19.5 — Reference doc fetchers (Ranking Systems + Spam Policies)
+// ============================================================================
+
+import * as cheerio from 'cheerio';
+
+/**
+ * Generic scraper for Google docs that follow the `<h2 id>` + paragraph
+ * structure (used by ranking-systems-guide and spam-policies). Returns
+ * each H2 section as `{id, name, description}` where description is the
+ * first 1-2 paragraphs, stripped + truncated to ~300 chars.
+ *
+ * `excludeAfterH2Id` lets the caller stop parsing when reaching a known
+ * "Retired/Superseded" section (ranking-systems-guide has one).
+ */
+function parseH2Sections(
+  html: string,
+  excludeAfterH2Id?: string,
+): Array<{ id: string; name: string; description: string }> {
+  const $ = cheerio.load(html);
+  const sections: Array<{ id: string; name: string; description: string }> = [];
+  let stopParsing = false;
+
+  $('h2').each((_, h2) => {
+    if (stopParsing) return;
+    const $h2 = $(h2);
+    const id = $h2.attr('id') ?? '';
+    const name = $h2.text().trim();
+    if (!id || !name) return;
+
+    // Exclude wrapper / nav / "Retired" sections
+    if (excludeAfterH2Id && id === excludeAfterH2Id) {
+      stopParsing = true;
+      return;
+    }
+
+    // Walk siblings until next h2 or h1, gather paragraph text
+    const paragraphs: string[] = [];
+    let $next = $h2.next();
+    while ($next.length > 0 && !$next.is('h1, h2')) {
+      if ($next.is('p')) {
+        const txt = $next.text().replace(/\s+/g, ' ').trim();
+        if (txt) paragraphs.push(txt);
+      }
+      $next = $next.next();
+    }
+    const description = paragraphs.slice(0, 2).join(' ').slice(0, 300).trim();
+    if (description) sections.push({ id, name, description });
+  });
+
+  return sections;
+}
+
+/**
+ * Fetch the official list of named Google ranking systems. Excludes the
+ * "Retired/Superseded" section (Hummingbird, Panda, Penguin, Helpful
+ * Content System now-in-core) — those are historical context, not
+ * actionable for current diags.
+ */
+export async function fetchRankingSystems(): Promise<RankingSystem[]> {
+  // ?hl=en forces the English-only render. Without it, Google's docs serve
+  // the page with multiple lang variants concatenated in HTML (Hindi, French,
+  // etc. appear as additional H2 sections), which polluted the prompt input.
+  const res = await fetch(
+    'https://developers.google.com/search/docs/appearance/ranking-systems-guide?hl=en',
+    { headers: { 'User-Agent': 'plouton-seo-bot/1.0 (+nicolas@rewolf.studio)', 'Accept-Language': 'en' } },
+  );
+  if (!res.ok) throw new Error(`ranking systems guide ${res.status}`);
+  const html = await res.text();
+  // The "Retired systems" section starts at H2 id="retired-systems".
+  // Stop parsing there so we only capture ACTIVE systems.
+  return parseH2Sections(html, 'retired-systems');
+}
+
+/**
+ * Fetch the enumerated Google spam policies. All sections are returned
+ * (no retired bucket — the spam policies page is "current state").
+ */
+export async function fetchSpamPolicies(): Promise<SpamPolicy[]> {
+  const res = await fetch(
+    'https://developers.google.com/search/docs/essentials/spam-policies?hl=en',
+    { headers: { 'User-Agent': 'plouton-seo-bot/1.0 (+nicolas@rewolf.studio)', 'Accept-Language': 'en' } },
+  );
+  if (!res.ok) throw new Error(`spam policies ${res.status}`);
+  const html = await res.text();
+  // First "real" policy section starts at #cloaking. Anything before is
+  // intro/overview wrapped in different headings — drop them by filter.
+  const all = parseH2Sections(html);
+  // Keep only policies (the page intro has 1-2 generic H2s like "Our policies"
+  // that don't follow the policy pattern). Heuristic : actual policies have
+  // 1-3 paragraph descriptions. Filter on description length ≥ 50 chars.
+  return all.filter((s) => s.description.length >= 50);
+}
+
+// ============================================================================
+// Sprint 19.5 — Deep-fetch top pivot posts (full text instead of summary)
+// ============================================================================
+
+/**
+ * Pull the full body text of a single blog post URL. Strips header/footer/
+ * sidebar via the article main selector, then truncates to maxChars.
+ *
+ * Used for the top 2 most-pivot posts so the LLM sees the actionable detail
+ * (chiffres, recommendations) instead of just the 220-char RSS summary.
+ */
+export async function fetchBlogPostFullText(
+  link: string,
+  maxChars = 1200,
+): Promise<string> {
+  const res = await fetch(link, {
+    headers: { 'User-Agent': 'plouton-seo-bot/1.0 (+nicolas@rewolf.studio)' },
+  });
+  if (!res.ok) throw new Error(`blog post fetch ${res.status} ${link}`);
+  const html = await res.text();
+  const $ = cheerio.load(html);
+  // developers.google.com blog posts are in <main> + <article>. Strip out
+  // navigation, sidebars, footer, scripts.
+  $('header, nav, footer, aside, script, style, .devsite-banner').remove();
+  const main = $('article').length > 0 ? $('article') : $('main');
+  const text = (main.length > 0 ? main : $('body'))
+    .text()
+    .replace(/\s+/g, ' ')
+    .trim();
+  return text.slice(0, maxChars);
+}
+
 /**
  * Combined fetcher with module-level cache (1h TTL). All consumers go
  * through this — the per-source fetchers above are exported for testing.
+ *
+ * Sprint 19.5: now also pulls reference docs (ranking systems + spam
+ * policies, cached at the same 1h TTL — they change ~1×/year so this
+ * is largely overkill but keeps the cache logic simple) AND deep-fetches
+ * the top 2 most-pivot blog posts for full-text body.
  */
 export async function fetchGoogleGuidance(): Promise<GoogleSearchGuidance> {
   if (cached && cached.expiresAt > Date.now()) return cached.value;
-  const [posts, incidents] = await Promise.all([
+  const [posts, incidents, rankingSystems, spamPolicies] = await Promise.all([
     fetchRecentBlogPosts().catch((err) => {
       process.stderr.write(`[google-guidance] blog feed failed: ${(err as Error).message}\n`);
       return [] as BlogPost[];
@@ -295,10 +457,39 @@ export async function fetchGoogleGuidance(): Promise<GoogleSearchGuidance> {
       process.stderr.write(`[google-guidance] status dashboard failed: ${(err as Error).message}\n`);
       return [] as StatusIncident[];
     }),
+    fetchRankingSystems().catch((err) => {
+      process.stderr.write(`[google-guidance] ranking systems failed: ${(err as Error).message}\n`);
+      return [] as RankingSystem[];
+    }),
+    fetchSpamPolicies().catch((err) => {
+      process.stderr.write(`[google-guidance] spam policies failed: ${(err as Error).message}\n`);
+      return [] as SpamPolicy[];
+    }),
   ]);
+
+  // Sprint 19.5 — deep-fetch the top 2 most-pivot blog posts (cap cost +
+  // latency). "Top pivot" = first 2 by recency since fetchRecentBlogPosts
+  // already filtered for pivot keywords.
+  const deepPostsUrls = posts.slice(0, 2).map((p) => p.link);
+  const deepResults = await Promise.all(
+    deepPostsUrls.map(async (link) => {
+      try {
+        const body = await fetchBlogPostFullText(link);
+        return { link, body };
+      } catch (err) {
+        process.stderr.write(`[google-guidance] deep blog fetch failed for ${link}: ${(err as Error).message}\n`);
+        return null;
+      }
+    }),
+  );
+  const blog_posts_deep = deepResults.filter((d): d is BlogPostFullText => d !== null);
+
   const value: GoogleSearchGuidance = {
     blog_posts: posts,
+    blog_posts_deep,
     incidents,
+    ranking_systems: rankingSystems,
+    spam_policies: spamPolicies,
     fetched_at: new Date().toISOString(),
   };
   cached = { value, expiresAt: Date.now() + CACHE_TTL_MS };
@@ -315,7 +506,10 @@ export async function smokeTest(): Promise<{ ok: boolean; detail: string }> {
     const activeUpdates = g.incidents.filter((i) => i.is_active);
     return {
       ok: true,
-      detail: `${g.blog_posts.length} pivot posts (90d) · ${g.incidents.length} incidents (${activeUpdates.length} active) · cache 1h`,
+      detail:
+        `${g.blog_posts.length} pivot posts (${g.blog_posts_deep.length} deep) · ` +
+        `${g.incidents.length} incidents (${activeUpdates.length} active) · ` +
+        `${g.ranking_systems.length} ranking systems · ${g.spam_policies.length} spam policies · cache 1h`,
     };
   } catch (err) {
     return { ok: false, detail: (err as Error).message };
