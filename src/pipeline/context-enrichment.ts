@@ -27,6 +27,7 @@ import {
   catalogByRole,
   type CategoryInfo,
 } from '../lib/site-catalog.js';
+import { fetchGoogleGuidance, type GoogleSearchGuidance } from '../lib/google-search-central.js';
 
 export type EnrichedTopQuery = {
   query: string;
@@ -62,6 +63,11 @@ export type EnrichedContext = {
 
   /** Categorized list of internal URLs the LLM is allowed to recommend. */
   internal_pages_catalog: ReturnType<typeof catalogByRole>;
+
+  /** Sprint 19 — fresh guidance straight from Google (Search Central blog
+   *  + Status Dashboard). Cached 1h at module level so a batch of findings
+   *  pays only one fetch. Optional : null on fetch failure (best-effort). */
+  google_guidance: GoogleSearchGuidance | null;
 };
 
 function slugFromUrl(pageUrl: string): string | null {
@@ -180,6 +186,16 @@ export async function enrichContext(opts: {
 
   const { enriched, totalDemand } = await enrichTopQueries(opts.topQueries);
 
+  // Sprint 19 — pull fresh Google Search Central guidance. Cached 1h at
+  // module level so a 17-finding batch pays exactly 1 fetch. Best-effort :
+  // on network failure the diag continues without this signal.
+  let googleGuidance: GoogleSearchGuidance | null = null;
+  try {
+    googleGuidance = await fetchGoogleGuidance();
+  } catch (err) {
+    process.stderr.write(`[enrich] Google Search Central guidance failed: ${(err as Error).message}\n`);
+  }
+
   return {
     wix_post_id: meta?.postId,
     category,
@@ -187,5 +203,6 @@ export async function enrichContext(opts: {
     enriched_top_queries: enriched,
     total_monthly_demand_fr: totalDemand,
     internal_pages_catalog: catalogByRole(),
+    google_guidance: googleGuidance,
   };
 }

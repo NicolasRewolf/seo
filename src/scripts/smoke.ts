@@ -11,6 +11,7 @@ import { smokeTest as gscSmoke } from '../lib/gsc.js';
 import { smokeTest as cookedSmoke } from '../lib/cooked.js';
 import { smokeTest as wixSmoke } from '../lib/wix.js';
 import { smokeTest as dataforseoSmoke } from '../lib/dataforseo.js';
+import { smokeTest as googleSearchCentralSmoke } from '../lib/google-search-central.js';
 
 type Probe = { name: string; required: string[]; run: () => Promise<{ ok: boolean; detail: string }> };
 
@@ -30,6 +31,7 @@ const probes: Probe[] = [
   },
   { name: 'Wix', required: ['WIX_API_KEY', 'WIX_SITE_ID', 'WIX_ACCOUNT_ID'], run: wixSmoke },
   { name: 'DataForSEO', required: ['DATAFORSEO_AUTH'], run: dataforseoSmoke },
+  { name: 'Google Search Central', required: [], run: googleSearchCentralSmoke },
 ];
 
 function missing(keys: string[]): string[] {

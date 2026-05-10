@@ -77,9 +77,10 @@ import type {
 } from '../lib/cooked.js';
 import { fetchTrackerFirstSeen } from '../lib/cooked.js';
 import type { ContentSnapshot } from '../lib/page-content-extractor.js';
+import type { GoogleSearchGuidance } from '../lib/google-search-central.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 10 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 11 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -902,6 +903,55 @@ function fmtCtaPositions(c: ContentSnapshot | null | undefined): string {
   return lines.join('\n');
 }
 
+/**
+ * Sprint 19 — Render the Google Search Central guidance block.
+ *
+ * SILO logic : this is "what Google says recently", separate from page-data
+ * signals. Output a list of pivot blog posts (last 90 days, filtered for
+ * relevance) + active or recent ranking-system updates (core/spam/helpful
+ * content). Empty string when there's truly nothing pivot to surface —
+ * downstream the prompt block is omitted entirely.
+ */
+export function fmtGoogleRecentGuidance(g: GoogleSearchGuidance | null | undefined): string {
+  if (!g) return '_(guidance Google indisponible — fetch a échoué)_';
+  const sections: string[] = [];
+
+  // Section 1 : currently ACTIVE updates (highest priority signal)
+  const active = g.incidents.filter((i) => i.is_active);
+  if (active.length > 0) {
+    const lines = active.map((i) => {
+      const sinceDays = Math.floor((Date.now() - new Date(i.begin).getTime()) / (24 * 60 * 60 * 1000));
+      return `- 🔴 **${i.title}** — démarré ${i.begin.slice(0, 10)} (en cours depuis ${sinceDays}j)`;
+    });
+    sections.push(`## ⚠ Updates Google EN COURS (Search Status Dashboard)\n\n${lines.join('\n')}`);
+  }
+
+  // Section 2 : recent (ended) ranking updates
+  const recent = g.incidents.filter((i) => !i.is_active);
+  if (recent.length > 0) {
+    const lines = recent.slice(0, 5).map((i) => {
+      const endDate = i.end ? i.end.slice(0, 10) : '?';
+      const daysAgo = i.end ? Math.floor((Date.now() - new Date(i.end).getTime()) / (24 * 60 * 60 * 1000)) : 0;
+      return `- ✅ **${i.title}** — terminé ${endDate} (il y a ${daysAgo}j)`;
+    });
+    sections.push(`## Updates Google récentes terminées (60j)\n\n${lines.join('\n')}`);
+  }
+
+  // Section 3 : pivot blog posts
+  if (g.blog_posts.length > 0) {
+    const lines = g.blog_posts.map((p) => {
+      const ageLabel = p.age_days < 30 ? `${p.age_days}j` : `${Math.floor(p.age_days / 30)}mo`;
+      return `- **${p.published_date}** (il y a ${ageLabel}) — [${p.title}](${p.link})\n  > ${p.summary}`;
+    });
+    sections.push(`## Guidance Google Search Central récente (90j, filtre pivot)\n\n${lines.join('\n\n')}`);
+  }
+
+  if (sections.length === 0) {
+    return '_(rien de pivot dans les 90 derniers jours côté Google — RAS, tu peux raisonner sans signal externe)_';
+  }
+  return sections.join('\n\n');
+}
+
 function fmtCatalog(catalog: EnrichedContext['internal_pages_catalog']): string {
   const sections: string[] = [];
   const fmtList = (entries: CatalogEntry[]): string =>
@@ -972,6 +1022,22 @@ export function renderDiagnosticPrompt(i: DiagnosticPromptInputs): string {
     }));
 
   return `Tu es un consultant SEO senior expert en NavBoost et signaux de clic Google. Tu connais le funnel de conversion d'un cabinet d'avocats : article-ressource → page expertise métier → prise de RDV. Analyse cette page sous-performante et produis un diagnostic structuré.
+
+<google_recent_guidance>
+Sprint 19 — SILO de "ce que Google dit récemment". Lis ce bloc UNIQUEMENT comme regard EXTERNE / autorité Google. Ne le mélange pas avec tes signaux page-data des autres blocs. Règles strictes :
+
+1. **Si une core update / spam update / helpful content update est ACTIVE**, mentionne-la dans \`tldr\` et ouvre \`engagement_diagnosis\` ou \`hypothesis\` par un caveat temporel : "les rankings peuvent bouger ces prochaines semaines indépendamment des fixes proposés, attendre la stabilisation avant de mesurer T+30".
+
+2. **Si une guidance récente CONTREDIT ou NUANCE** un conseil que tu allais donner sur ta seule formation, défère à Google : ajuste ton conseil et MENTIONNE EXPLICITEMENT la source ("Per Google Search Central [titre du post du DATE], ...").
+
+3. **Si une guidance récente RENFORCE** un conseil que tu allais déjà donner, c'est une validation utile : tu peux la citer pour appuyer la priorité.
+
+4. **Si rien dans ce bloc n'est pertinent au diag**, IGNORE-le complètement — ne l'évoque pas, ne fais pas de référence creuse.
+
+5. **N'invente jamais une guidance Google** qui n'est pas dans ce bloc. Si tu veux référencer une best practice Google, elle DOIT venir de ce bloc ou d'une connaissance fondamentale (PageRank, EEAT framework général). Pas de hallucination de "Google a dit récemment X".
+
+${fmtGoogleRecentGuidance(i.enrichment?.google_guidance ?? null)}
+</google_recent_guidance>
 
 # Identité de la page
 ${fmtIdentityBlock(i.url, i.enrichment)}
