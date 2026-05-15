@@ -1,0 +1,91 @@
+{
+  "tldr": "Title verbeux (110 car.) noyé dans une SERP dominée par Dalloz/Légifrance/Citoyens-Justice ; CTR 0.93% vs 1.70% attendu en pos 7.8. Action #1 : reframer title en 'ARSE : conditions, durée et droits | Avocat pénaliste Bordeaux' + ajouter H2/H3 structurés (page actuellement sans outline).",
+  "intent_mismatch": "Intent dominant = informationnel juridique pur (SERP top 3 sur 'arse' = citoyens-justice.fr, dalloz.fr, cnrtl.fr ; sur 'assignation à résidence sous surveillance électronique' = legifrance + dalloz + service-public). La requête 'arse' (9 725 imp) est par ailleurs ambigüe (cf. SERP avec cnrtl, wiktionnaire, Wikipédia Arse commune, et 'l'arse' renvoyant à l'ARCE France Travail) — d'où un CTR effondré à 0.08%. Le H1 actuel est aligné sur l'intent informationnel mais ne capte ni les angles procéduraux à fort CTR ('enquête de faisabilité arse' 6.21% CTR à pos 4.1, 'arse code de procédure pénale' à pos 4.6) ni le SERP commercial qualifié (le cabinet est en pos 7 sandwich entre Dalloz et cabinets concurrents Bouzerara/Brochard/Abitbol).",
+  "snippet_weakness": "Title à 110 caractères tronqué en SERP avec doublon sémantique 'Assignation à Résidence Sous Surveillance Électronique (ARSE) | Bracelet électronique avant jugement' — Google affiche probablement '...ARSE) | Bracelet électr...'. Face à Dalloz ('Mesure privative de liberté de degré intermédiaire...') qui pose une définition juridique nette, citoyens-justice.fr ('alternative à la détention provisoire') qui capte la reformulation grand public, et legifrance.gouv.fr qui détient l'autorité réglementaire + Featured Snippet sur 'assignation residence bracelet', le snippet jplouton n'a aucun angle distinct : ni autorité (pas d'auteur visible), ni angle praticien ('vu par un avocat de la défense'), ni bénéfice chiffré (durée max, taux d'octroi, délais). Featured Snippet pris par Légifrance + PAA sur 4/5 top queries → CTR organique structurellement plafonné si on ne se positionne pas en réponse ultra-structurée.",
+  "hypothesis": "Title générique sans angle praticien + page non structurée (zéro H2/H3) qui ne peut pas capter de Featured Snippet ni de PAA face à Dalloz/Légifrance/Citoyens-Justice, dans une SERP dont 60% du volume vient de la requête ambigüe 'arse' (CTR plafonné à 0.08% par confusion ARSE/ARCE/Arse-commune).",
+  "top_queries_analysis": [
+    {
+      "query": "arse",
+      "impressions": 9725,
+      "ctr": 0.0008,
+      "position": 7.8,
+      "intent_match": "no",
+      "note": "9 725 imp mais CTR 0.08% catastrophique : la SERP mélange ARSE pénal, ARCE France Travail, cnrtl/wiktionnaire (verbe ardre), Wikipedia (commune). Sur cette query, viser pos 1-3 ne servira presque à rien — l'intent est dilué. Ne pas optimiser pour 'arse' seul."
+    },
+    {
+      "query": "assignation residence bracelet",
+      "impressions": 1032,
+      "ctr": 0,
+      "position": 15.2,
+      "intent_match": "yes",
+      "note": "Intent parfaitement aligné mais pos 15.2 hors SERP utile. Featured Snippet pris par legifrance — viser pos 4-6 atteignable (le cabinet est déjà pos 4 sur 'arse code de procédure pénale')."
+    },
+    {
+      "query": "arse code de procédure pénale",
+      "impressions": 249,
+      "ctr": 0.008,
+      "position": 4.6,
+      "intent_match": "yes",
+      "note": "Pos 4.6 = sweet spot, mais CTR 0.8% sous benchmark. La page est déjà reconnue par Google sur l'angle juridique technique — c'est le SNIPPET qui ne convertit pas, pas le ranking."
+    },
+    {
+      "query": "assignation à résidence sous surveillance électronique",
+      "impressions": 205,
+      "ctr": 0.0244,
+      "position": 7.1,
+      "intent_match": "yes",
+      "note": "97.6% de share of voice du volume FR (70 rech/mois) → levier = CTR pas ranking. SERP 100% institutionnelle (legifrance, dalloz, service-public, justice.gouv) — le cabinet doit jouer l'angle 'avocat praticien' pour se différencier."
+    },
+    {
+      "query": "enquête de faisabilité arse",
+      "impressions": 145,
+      "ctr": 0.0621,
+      "position": 4.1,
+      "intent_match": "yes",
+      "note": "MEILLEUR CTR de la page (6.21%) à pos 4.1 sur une long-tail procédurale qualifiée — l'utilisateur en recherche pratique CONVERTIT bien. Confirme que l'angle 'praticien procédural' est le bon."
+    },
+    {
+      "query": "assignation à résidence sous surveillance électronique mineur",
+      "impressions": 137,
+      "ctr": 0,
+      "position": 6.8,
+      "intent_match": "partial",
+      "note": "CTR 0% à pos 6.8 — la page ne traite probablement pas le cas mineur (justice.gouv.fr capte cette query via CJPM). Manque H2 dédié 'ARSE et mineurs (CJPM)'."
+    },
+    {
+      "query": "assignation à résidence sans bracelet électronique",
+      "impressions": 116,
+      "ctr": 0.0086,
+      "position": 9.8,
+      "intent_match": "partial",
+      "note": "Variante de l'assignation simple (CPP 142-1) souvent confondue avec ARSE. Manque H2 distinguant ARSE vs assignation à résidence simple."
+    },
+    {
+      "query": "arse cpp",
+      "impressions": 112,
+      "ctr": 0,
+      "position": 6.8,
+      "intent_match": "yes",
+      "note": "CTR 0% sur 112 imp — synonyme de 'arse code de procédure pénale' qui converti à 0.8%. Le snippet ne mentionne pas explicitement les articles 142-5 à 142-13 dans la meta."
+    },
+    {
+      "query": "contrôle judiciaire et bracelet électronique",
+      "impressions": 100,
+      "ctr": 0,
+      "position": 7.9,
+      "intent_match": "partial",
+      "note": "Confusion fréquente CJ/ARSE — manque H2 comparatif 'ARSE vs contrôle judiciaire' (cf. Dalloz et droit.cairn.info qui captent cette query)."
+    }
+  ],
+  "engagement_diagnosis": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j — les rankings peuvent encore bouger, attendre T+30 pour mesurer les fixes. Engagement bimodal et globalement faible : scroll_avg 23.4%, pages/session 0.95, 1 seul clic sortant sur 35 sessions, dwell median 40s. La queue p75=102s montre qu'une partie des visiteurs (probablement les arrivées de 'enquête de faisabilité arse' et 'arse cpp') trouvent matière à lire, mais p25=11s confirme que les arrivées de la query ambigüe 'arse' rebondissent immédiatement. Cohérent avec la verdict NavBoost ci-dessous.",
+  "performance_diagnosis": "CWV en zone Poor sur LCP (4114ms) et TTFB (3057ms), Needs Improvement sur INP (466ms) et CLS (0.110). TTFB 3s = serveur Wix lent + pas de cache edge optimal, c'est la cause racine du LCP. Impact NavBoost direct : Google rétrograde les pages lentes, et un TTFB 3s sur mobile pénalise la première impression avant même que le contenu s'affiche — contribue probablement au pogo 26%. Action prioritaire : auditer le poids JS Wix (apps non utilisées à désactiver), vérifier qu'aucune image hero ne bloque le LCP, et activer la compression+CDN Wix si pas déjà fait. CLS 0.110 = layout shift à la pose des polices ou d'un widget — vérifier le header sticky.",
+  "structural_gaps": "Extraction body indisponible (content_snapshot pré-Sprint-14), mais le bloc <page_outline> est ground truth : AUCUN H2/H3/H4 détecté. C'est le gap structurel #1 — une page YMYL juridique sans outline ne peut ni candidater au Featured Snippet (pris par Légifrance sur 2/5 top queries), ni capter le PAA (présent sur 5/5 top queries), ni être lue en mode scan. Manques de sections vs top requêtes : (a) 'Articles 142-5 à 142-13 CPP' (pour 'arse cpp' et 'arse code de procédure pénale'), (b) 'ARSE vs contrôle judiciaire' (pour 'contrôle judiciaire et bracelet électronique'), (c) 'ARSE pour mineurs (CJPM)' (137 imp à CTR 0%), (d) 'Enquête de faisabilité' (best-CTR de la page, à isoler en H2 dédié), (e) 'Différence ARSE / assignation simple sans bracelet'. Absence totale d'auteur/date visible (E-E-A-T faible, particulièrement pénalisant en YMYL juridique — le Reliable Information Systems de Google cherche explicitement des signaux d'autorité sur ce type de contenu). Schema FAQPage présent — bien, mais à enrichir avec les questions PAA réelles. Aucune image (zéro illustration sur un sujet procédural complexe = manque d'aide à la compréhension, et zéro chance en Image Search).",
+  "funnel_assessment": "La page ne remplit PAS son rôle funnel : <outbound_links_from_this_page> = 0 lien interne sortant. Sur 35 sessions et 119s de dwell moyen, le lecteur qualifié sort de la page sans piste pour aller plus loin. Maillons manquants critiques à ajouter : (1) lien vers /defense-penale/droit-penal en CTA contextuel ('Faire face à une demande d'ARSE ? Notre expertise en droit pénal'), (2) lien vers /honoraires-rendez-vous en CTA final ('Demander un RDV avec Me Plouton'), (3) liens latéraux vers /post/qu-est-ce-que-le-bracelet-anti-rapprochement et les affaires emblématiques /post/escroquerie-à-plus-de-6-millions et /post/de-la-tentative-de-meurtre qui mentionnent l'ARSE (preuve de pratique réelle = E-E-A-T 'Experience'), (4) lien vers /notre-cabinet pour signal d'autorité auteur.",
+  "internal_authority_assessment": "Page hub éditorial à protéger : 9 inbound links éditoriaux depuis 8 pages distinctes, dont la page expertise /defense-penale/droit-penal, la catégorie ressources, et 6 articles d'affaires emblématiques. C'est un nœud central du silo pénal du site — les fixes (reframe title, restructuration H2, ajout liens sortants) doivent préserver l'URL actuelle et le H1 sémantique 'ARSE'. Aucune redirection, aucun changement de slug. Bonne nouvelle : le statut hub fait que les fixes structurels auront un effet démultiplié.",
+  "conversion_assessment": "Sous réserve de la fenêtre Cooked de 9 jours seulement : 0 phone / 0 email / 0 booking sur 35 sessions est cohérent avec le rôle funnel (article de ressources informationnel, pas page expertise). Le vrai problème n'est pas l'absence de conversion directe mais l'ABSENCE TOTALE DE CTA in-body et de liens sortants vers la page expertise /defense-penale/droit-penal — la page ne joue pas son rôle de funnel intermédiaire. 1 clic sortant total (vers legifrance) confirme que rien ne retient le lecteur dans l'écosystème du site.",
+  "traffic_strategy_note": "top_referrer = google.com et top_source = chatgpt.com : la bataille se joue à 90% dans la SERP Google (priorité absolue = CTR snippet + structuration pour Featured Snippet/PAA), avec un signal émergent à surveiller sur ChatGPT/Perplexity — per Google Search Central [A new resource for optimizing for generative AI in Google Search, 15 mai 2026], les SEO best practices restent foundationnelles pour les features génératives, donc le fix structurel servira les deux canaux.",
+  "device_optimization_note": "Split 50/50 mobile/desktop avec 0 CTA click des deux côtés sur 35 sessions = lecture qualitative seulement, pas de verdict device. Néanmoins avec LCP 4114ms et TTFB 3057ms, l'expérience mobile est probablement plus dégradée que desktop — à prioriser dans le fix CWV.",
+  "outbound_leak_note": "1 clic sortant total vers legifrance.gouv.fr sur 35 sessions — fuite mineure mais sémantiquement significative : citer in-page les articles 142-5 à 142-13 CPP avec leur texte clé (encadré bleu) plutôt que de laisser le lecteur partir, ça nourrit aussi le Featured Snippet sur 'arse code de procédure pénale'.",
+  "pogo_navboost_assessment": "Pogo_rate 26.1% sur n=23 google_sessions — au-dessus du seuil de 20% mais échantillon sous le n≥30 requis, donc à classer 'à surveiller' plutôt que verdict. Néanmoins cohérent avec l'hypothèse principale : la query 'arse' (9 725 imp, 60% du trafic) draine des intentions parasites (ARCE France Travail, Arse commune, verbe ardre) qui rebondissent en <10s. Le pogo se résoudra mécaniquement si on reframe le snippet pour SIGNALER 'pénal/avocat/bracelet' dès le title — éviter d'apparaître sur la query 'arse' nue.",
+  "engagement_pattern_assessment": "Evenness 0.11 = distribution très bimodale : la page retient bien ceux qui matchent l'intent procédural (p75=102s, queue jusqu'à 'enquête de faisabilité' et 'arse cpp') mais perd brutalement les autres (p25=11s, arrivées de la query ambigüe 'arse'). Croisé avec pogo 26% : le problème est dual — pogo précoce sur intent mismatch ('arse' polysémique) + abandon à mi-page sur les sessions moyennes (probablement parce que la page est un mur de texte sans H2 qui empêche le scan)."
+}

@@ -1,0 +1,951 @@
+{
+  "started_at": "2026-05-15T22:18:32.369Z",
+  "finished_at": "2026-05-15T22:22:30.796Z",
+  "duration_ms": 238427,
+  "prompt_version": 12,
+  "model": "claude-opus-4-7",
+  "total_cases": 5,
+  "passed_cases": 5,
+  "failed_cases": 0,
+  "total_assertions": 27,
+  "passed_assertions": 27,
+  "failed_assertions": 0,
+  "cases": [
+    {
+      "case_id": "arse-pos8-pogo-stick",
+      "what": "Pos 7.78, pps 0.95, scroll 1.37%, evenness 0.07 bimodal, LCP Poor 4258ms, page is THIN (0 H2, 0 image, 0 outbound link). Tests recognition of structural thinness as #1 cause + pogo signal interpretation with caveat on small n=7 + competing institutional authorities (dalloz/.gouv).",
+      "passed": true,
+      "pass_count": 6,
+      "fail_count": 0,
+      "results": [
+        {
+          "assertion": {
+            "field": "tldr",
+            "kind": "min_length",
+            "length": 80,
+            "why": "Substantive synthesis required."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Title verbeux (110 car.) noyé dans une SERP dominée par Dalloz/Légifrance/Citoyens-Justice ; CTR 0.93% vs 1.70% attendu en pos 7.8. Action #1 : reframer title en 'ARSE : conditions, durée et droits | Avocat pénaliste Bordeaux' + ajouter H2/H3 structurés (page actuellement sans outline)."
+        },
+        {
+          "assertion": {
+            "field": "snippet_weakness",
+            "kind": "must_contain_any",
+            "patterns": [
+              "dalloz",
+              "gouv",
+              "service-public",
+              "autorité",
+              "institut"
+            ],
+            "why": "Top 3 SERP is dalloz / .gouv — diagnosing snippet weakness without naming the institutional competition produces wrong fixes."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Title à 110 caractères tronqué en SERP avec doublon sémantique 'Assignation à Résidence Sous Surveillance Électronique (ARSE) | Bracelet électronique avant jugement' — Google affiche probablement '...ARSE) | Bracelet électr...'. Face à Dalloz ('Mesure privative de liberté de degré intermédiaire...')…"
+        },
+        {
+          "assertion": {
+            "field": "engagement_diagnosis",
+            "kind": "must_contain_any",
+            "patterns": [
+              "scroll",
+              "bimodal",
+              "evenness",
+              "dwell",
+              "distribution"
+            ],
+            "why": "scroll 1.37% + bimodal dwell distribution (p25=6s, p75=80s, evenness 0.07) is THE engagement story — must surface at least one of these signals."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j — les rankings peuvent encore bouger, attendre T+30 pour mesurer les fixes. Engagement bimodal et globalement faible : scroll_avg 23.4%, pages/session 0.95, 1 seul clic sortant sur 35 sessions, dwell median 40s. La queue p75=102s …"
+        },
+        {
+          "assertion": {
+            "field": "engagement_diagnosis",
+            "kind": "must_not_contain_any",
+            "patterns": [
+              "satisfaisant",
+              "engagement bon",
+              "bonne lecture",
+              "correct"
+            ],
+            "why": "Worst engagement profile in the corpus — calling it satisfaisant would invalidate the diagnostic."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j — les rankings peuvent encore bouger, attendre T+30 pour mesurer les fixes. Engagement bimodal et globalement faible : scroll_avg 23.4%, pages/session 0.95, 1 seul clic sortant sur 35 sessions, dwell median 40s. La queue p75=102s …"
+        },
+        {
+          "assertion": {
+            "field": "structural_gaps",
+            "kind": "must_contain_any",
+            "patterns": [
+              "H2",
+              "h2",
+              "thin",
+              "structure",
+              "section",
+              "court",
+              "manque"
+            ],
+            "why": "Page literally has 0 H2 sections + 0 images on a YMYL legal topic — structural gap is the #1 fixable cause and must appear as a structural finding."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Extraction body indisponible (content_snapshot pré-Sprint-14), mais le bloc <page_outline> est ground truth : AUCUN H2/H3/H4 détecté. C'est le gap structurel #1 — une page YMYL juridique sans outline ne peut ni candidater au Featured Snippet (pris par Légifrance sur 2/5 top queries), ni capter le PA…"
+        },
+        {
+          "assertion": {
+            "field": "conversion_assessment",
+            "kind": "must_contain_any",
+            "patterns": [
+              "CTA",
+              "cta",
+              "lien",
+              "in-body",
+              "interne",
+              "cul-de-sac",
+              "dead-end",
+              "aucun",
+              "0 lien"
+            ],
+            "why": "0 outbound + 0 conversions on 11 sessions = total dead-end — must surface as funnel finding."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Sous réserve de la fenêtre Cooked de 9 jours seulement : 0 phone / 0 email / 0 booking sur 35 sessions est cohérent avec le rôle funnel (article de ressources informationnel, pas page expertise). Le vrai problème n'est pas l'absence de conversion directe mais l'ABSENCE TOTALE DE CTA in-body et de li…"
+        }
+      ],
+      "output": {
+        "tldr": "Title verbeux (110 car.) noyé dans une SERP dominée par Dalloz/Légifrance/Citoyens-Justice ; CTR 0.93% vs 1.70% attendu en pos 7.8. Action #1 : reframer title en 'ARSE : conditions, durée et droits | Avocat pénaliste Bordeaux' + ajouter H2/H3 structurés (page actuellement sans outline).",
+        "intent_mismatch": "Intent dominant = informationnel juridique pur (SERP top 3 sur 'arse' = citoyens-justice.fr, dalloz.fr, cnrtl.fr ; sur 'assignation à résidence sous surveillance électronique' = legifrance + dalloz + service-public). La requête 'arse' (9 725 imp) est par ailleurs ambigüe (cf. SERP avec cnrtl, wiktionnaire, Wikipédia Arse commune, et 'l'arse' renvoyant à l'ARCE France Travail) — d'où un CTR effondré à 0.08%. Le H1 actuel est aligné sur l'intent informationnel mais ne capte ni les angles procéduraux à fort CTR ('enquête de faisabilité arse' 6.21% CTR à pos 4.1, 'arse code de procédure pénale' à pos 4.6) ni le SERP commercial qualifié (le cabinet est en pos 7 sandwich entre Dalloz et cabinets concurrents Bouzerara/Brochard/Abitbol).",
+        "snippet_weakness": "Title à 110 caractères tronqué en SERP avec doublon sémantique 'Assignation à Résidence Sous Surveillance Électronique (ARSE) | Bracelet électronique avant jugement' — Google affiche probablement '...ARSE) | Bracelet électr...'. Face à Dalloz ('Mesure privative de liberté de degré intermédiaire...') qui pose une définition juridique nette, citoyens-justice.fr ('alternative à la détention provisoire') qui capte la reformulation grand public, et legifrance.gouv.fr qui détient l'autorité réglementaire + Featured Snippet sur 'assignation residence bracelet', le snippet jplouton n'a aucun angle distinct : ni autorité (pas d'auteur visible), ni angle praticien ('vu par un avocat de la défense'), ni bénéfice chiffré (durée max, taux d'octroi, délais). Featured Snippet pris par Légifrance + PAA sur 4/5 top queries → CTR organique structurellement plafonné si on ne se positionne pas en réponse ultra-structurée.",
+        "hypothesis": "Title générique sans angle praticien + page non structurée (zéro H2/H3) qui ne peut pas capter de Featured Snippet ni de PAA face à Dalloz/Légifrance/Citoyens-Justice, dans une SERP dont 60% du volume vient de la requête ambigüe 'arse' (CTR plafonné à 0.08% par confusion ARSE/ARCE/Arse-commune).",
+        "top_queries_analysis": [
+          {
+            "query": "arse",
+            "impressions": 9725,
+            "ctr": 0.0008,
+            "position": 7.8,
+            "intent_match": "no",
+            "note": "9 725 imp mais CTR 0.08% catastrophique : la SERP mélange ARSE pénal, ARCE France Travail, cnrtl/wiktionnaire (verbe ardre), Wikipedia (commune). Sur cette query, viser pos 1-3 ne servira presque à rien — l'intent est dilué. Ne pas optimiser pour 'arse' seul."
+          },
+          {
+            "query": "assignation residence bracelet",
+            "impressions": 1032,
+            "ctr": 0,
+            "position": 15.2,
+            "intent_match": "yes",
+            "note": "Intent parfaitement aligné mais pos 15.2 hors SERP utile. Featured Snippet pris par legifrance — viser pos 4-6 atteignable (le cabinet est déjà pos 4 sur 'arse code de procédure pénale')."
+          },
+          {
+            "query": "arse code de procédure pénale",
+            "impressions": 249,
+            "ctr": 0.008,
+            "position": 4.6,
+            "intent_match": "yes",
+            "note": "Pos 4.6 = sweet spot, mais CTR 0.8% sous benchmark. La page est déjà reconnue par Google sur l'angle juridique technique — c'est le SNIPPET qui ne convertit pas, pas le ranking."
+          },
+          {
+            "query": "assignation à résidence sous surveillance électronique",
+            "impressions": 205,
+            "ctr": 0.0244,
+            "position": 7.1,
+            "intent_match": "yes",
+            "note": "97.6% de share of voice du volume FR (70 rech/mois) → levier = CTR pas ranking. SERP 100% institutionnelle (legifrance, dalloz, service-public, justice.gouv) — le cabinet doit jouer l'angle 'avocat praticien' pour se différencier."
+          },
+          {
+            "query": "enquête de faisabilité arse",
+            "impressions": 145,
+            "ctr": 0.0621,
+            "position": 4.1,
+            "intent_match": "yes",
+            "note": "MEILLEUR CTR de la page (6.21%) à pos 4.1 sur une long-tail procédurale qualifiée — l'utilisateur en recherche pratique CONVERTIT bien. Confirme que l'angle 'praticien procédural' est le bon."
+          },
+          {
+            "query": "assignation à résidence sous surveillance électronique mineur",
+            "impressions": 137,
+            "ctr": 0,
+            "position": 6.8,
+            "intent_match": "partial",
+            "note": "CTR 0% à pos 6.8 — la page ne traite probablement pas le cas mineur (justice.gouv.fr capte cette query via CJPM). Manque H2 dédié 'ARSE et mineurs (CJPM)'."
+          },
+          {
+            "query": "assignation à résidence sans bracelet électronique",
+            "impressions": 116,
+            "ctr": 0.0086,
+            "position": 9.8,
+            "intent_match": "partial",
+            "note": "Variante de l'assignation simple (CPP 142-1) souvent confondue avec ARSE. Manque H2 distinguant ARSE vs assignation à résidence simple."
+          },
+          {
+            "query": "arse cpp",
+            "impressions": 112,
+            "ctr": 0,
+            "position": 6.8,
+            "intent_match": "yes",
+            "note": "CTR 0% sur 112 imp — synonyme de 'arse code de procédure pénale' qui converti à 0.8%. Le snippet ne mentionne pas explicitement les articles 142-5 à 142-13 dans la meta."
+          },
+          {
+            "query": "contrôle judiciaire et bracelet électronique",
+            "impressions": 100,
+            "ctr": 0,
+            "position": 7.9,
+            "intent_match": "partial",
+            "note": "Confusion fréquente CJ/ARSE — manque H2 comparatif 'ARSE vs contrôle judiciaire' (cf. Dalloz et droit.cairn.info qui captent cette query)."
+          }
+        ],
+        "engagement_diagnosis": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j — les rankings peuvent encore bouger, attendre T+30 pour mesurer les fixes. Engagement bimodal et globalement faible : scroll_avg 23.4%, pages/session 0.95, 1 seul clic sortant sur 35 sessions, dwell median 40s. La queue p75=102s montre qu'une partie des visiteurs (probablement les arrivées de 'enquête de faisabilité arse' et 'arse cpp') trouvent matière à lire, mais p25=11s confirme que les arrivées de la query ambigüe 'arse' rebondissent immédiatement. Cohérent avec la verdict NavBoost ci-dessous.",
+        "performance_diagnosis": "CWV en zone Poor sur LCP (4114ms) et TTFB (3057ms), Needs Improvement sur INP (466ms) et CLS (0.110). TTFB 3s = serveur Wix lent + pas de cache edge optimal, c'est la cause racine du LCP. Impact NavBoost direct : Google rétrograde les pages lentes, et un TTFB 3s sur mobile pénalise la première impression avant même que le contenu s'affiche — contribue probablement au pogo 26%. Action prioritaire : auditer le poids JS Wix (apps non utilisées à désactiver), vérifier qu'aucune image hero ne bloque le LCP, et activer la compression+CDN Wix si pas déjà fait. CLS 0.110 = layout shift à la pose des polices ou d'un widget — vérifier le header sticky.",
+        "structural_gaps": "Extraction body indisponible (content_snapshot pré-Sprint-14), mais le bloc <page_outline> est ground truth : AUCUN H2/H3/H4 détecté. C'est le gap structurel #1 — une page YMYL juridique sans outline ne peut ni candidater au Featured Snippet (pris par Légifrance sur 2/5 top queries), ni capter le PAA (présent sur 5/5 top queries), ni être lue en mode scan. Manques de sections vs top requêtes : (a) 'Articles 142-5 à 142-13 CPP' (pour 'arse cpp' et 'arse code de procédure pénale'), (b) 'ARSE vs contrôle judiciaire' (pour 'contrôle judiciaire et bracelet électronique'), (c) 'ARSE pour mineurs (CJPM)' (137 imp à CTR 0%), (d) 'Enquête de faisabilité' (best-CTR de la page, à isoler en H2 dédié), (e) 'Différence ARSE / assignation simple sans bracelet'. Absence totale d'auteur/date visible (E-E-A-T faible, particulièrement pénalisant en YMYL juridique — le Reliable Information Systems de Google cherche explicitement des signaux d'autorité sur ce type de contenu). Schema FAQPage présent — bien, mais à enrichir avec les questions PAA réelles. Aucune image (zéro illustration sur un sujet procédural complexe = manque d'aide à la compréhension, et zéro chance en Image Search).",
+        "funnel_assessment": "La page ne remplit PAS son rôle funnel : <outbound_links_from_this_page> = 0 lien interne sortant. Sur 35 sessions et 119s de dwell moyen, le lecteur qualifié sort de la page sans piste pour aller plus loin. Maillons manquants critiques à ajouter : (1) lien vers /defense-penale/droit-penal en CTA contextuel ('Faire face à une demande d'ARSE ? Notre expertise en droit pénal'), (2) lien vers /honoraires-rendez-vous en CTA final ('Demander un RDV avec Me Plouton'), (3) liens latéraux vers /post/qu-est-ce-que-le-bracelet-anti-rapprochement et les affaires emblématiques /post/escroquerie-à-plus-de-6-millions et /post/de-la-tentative-de-meurtre qui mentionnent l'ARSE (preuve de pratique réelle = E-E-A-T 'Experience'), (4) lien vers /notre-cabinet pour signal d'autorité auteur.",
+        "internal_authority_assessment": "Page hub éditorial à protéger : 9 inbound links éditoriaux depuis 8 pages distinctes, dont la page expertise /defense-penale/droit-penal, la catégorie ressources, et 6 articles d'affaires emblématiques. C'est un nœud central du silo pénal du site — les fixes (reframe title, restructuration H2, ajout liens sortants) doivent préserver l'URL actuelle et le H1 sémantique 'ARSE'. Aucune redirection, aucun changement de slug. Bonne nouvelle : le statut hub fait que les fixes structurels auront un effet démultiplié.",
+        "conversion_assessment": "Sous réserve de la fenêtre Cooked de 9 jours seulement : 0 phone / 0 email / 0 booking sur 35 sessions est cohérent avec le rôle funnel (article de ressources informationnel, pas page expertise). Le vrai problème n'est pas l'absence de conversion directe mais l'ABSENCE TOTALE DE CTA in-body et de liens sortants vers la page expertise /defense-penale/droit-penal — la page ne joue pas son rôle de funnel intermédiaire. 1 clic sortant total (vers legifrance) confirme que rien ne retient le lecteur dans l'écosystème du site.",
+        "traffic_strategy_note": "top_referrer = google.com et top_source = chatgpt.com : la bataille se joue à 90% dans la SERP Google (priorité absolue = CTR snippet + structuration pour Featured Snippet/PAA), avec un signal émergent à surveiller sur ChatGPT/Perplexity — per Google Search Central [A new resource for optimizing for generative AI in Google Search, 15 mai 2026], les SEO best practices restent foundationnelles pour les features génératives, donc le fix structurel servira les deux canaux.",
+        "device_optimization_note": "Split 50/50 mobile/desktop avec 0 CTA click des deux côtés sur 35 sessions = lecture qualitative seulement, pas de verdict device. Néanmoins avec LCP 4114ms et TTFB 3057ms, l'expérience mobile est probablement plus dégradée que desktop — à prioriser dans le fix CWV.",
+        "outbound_leak_note": "1 clic sortant total vers legifrance.gouv.fr sur 35 sessions — fuite mineure mais sémantiquement significative : citer in-page les articles 142-5 à 142-13 CPP avec leur texte clé (encadré bleu) plutôt que de laisser le lecteur partir, ça nourrit aussi le Featured Snippet sur 'arse code de procédure pénale'.",
+        "pogo_navboost_assessment": "Pogo_rate 26.1% sur n=23 google_sessions — au-dessus du seuil de 20% mais échantillon sous le n≥30 requis, donc à classer 'à surveiller' plutôt que verdict. Néanmoins cohérent avec l'hypothèse principale : la query 'arse' (9 725 imp, 60% du trafic) draine des intentions parasites (ARCE France Travail, Arse commune, verbe ardre) qui rebondissent en <10s. Le pogo se résoudra mécaniquement si on reframe le snippet pour SIGNALER 'pénal/avocat/bracelet' dès le title — éviter d'apparaître sur la query 'arse' nue.",
+        "engagement_pattern_assessment": "Evenness 0.11 = distribution très bimodale : la page retient bien ceux qui matchent l'intent procédural (p75=102s, queue jusqu'à 'enquête de faisabilité' et 'arse cpp') mais perd brutalement les autres (p25=11s, arrivées de la query ambigüe 'arse'). Croisé avec pogo 26% : le problème est dual — pogo précoce sur intent mismatch ('arse' polysémique) + abandon à mi-page sur les sessions moyennes (probablement parce que la page est un mur de texte sans H2 qui empêche le scan)."
+      },
+      "duration_ms": 90923
+    },
+    {
+      "case_id": "gav-duree-pos5-volume",
+      "what": "Pos 4.52, 115k impr, snippet gap modéré (CTR 4.67% vs 7.22% expected). Tests prompt restraint when ranking is already strong + competitor recognition (service-public.gouv.fr top 1) + scroll-based engagement diagnosis when scroll_complete is catastrophic (0.9%) but dwell is OK.",
+      "passed": true,
+      "pass_count": 6,
+      "fail_count": 0,
+      "results": [
+        {
+          "assertion": {
+            "field": "tldr",
+            "kind": "min_length",
+            "length": 80,
+            "why": "tldr must be a substantive synthesis, not a one-liner — 80 chars is the minimum for a useful one-sentence diagnosis."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Page hub #2 SERP avec 38k imp/mois mais CTR 4.67% vs 7.22% attendu : title trop générique vs service-public.gouv.fr en #1. Action : reframer title en 'Durée garde à vue 2026 : 24h, 48h, 96h, 144h — Vos droits à chaque palier' pour ajouter angle 'droits' qui distingue d'un site institutionnel."
+        },
+        {
+          "assertion": {
+            "field": "snippet_weakness",
+            "kind": "must_contain_any",
+            "patterns": [
+              "service-public",
+              "gouv",
+              "institutionnel",
+              "autorité"
+            ],
+            "why": "service-public.gouv.fr holds #1 with institutional authority — diagnosing snippet weakness without naming the dominant competitor is generic and useless for action."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Le title actuel 'Durée de la garde à vue : 24h, 48h, 96h... Combien de temps maximum ?' est purement descriptif et factuel, exactement comme service-public.gouv.fr ('Garde à vue') et village-justice.com ('La garde à vue en 10 questions'). En position #2 systématique, tu perds le clic au profit du .g…"
+        },
+        {
+          "assertion": {
+            "field": "snippet_weakness",
+            "kind": "must_contain_any",
+            "patterns": [
+              "title",
+              "meta",
+              "angle"
+            ],
+            "why": "Snippet weakness must point at a surface-level lever (title/meta/angle) since the page already ranks pos 4.52 — content rewrite is not the right action."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Le title actuel 'Durée de la garde à vue : 24h, 48h, 96h... Combien de temps maximum ?' est purement descriptif et factuel, exactement comme service-public.gouv.fr ('Garde à vue') et village-justice.com ('La garde à vue en 10 questions'). En position #2 systématique, tu perds le clic au profit du .g…"
+        },
+        {
+          "assertion": {
+            "field": "engagement_diagnosis",
+            "kind": "must_contain_any",
+            "patterns": [
+              "scroll"
+            ],
+            "why": "scroll_avg 23.8% / scroll_complete 0.9% on a 2588-word article is the dominant engagement signal — a diagnosis that ignores it is asleep at the wheel."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Pages/session 1.03 (quasi nul → aucun funnel vers expertise), scroll_avg 24.3% (très bas, scroll complet seulement 0.7% des sessions), 0 clics sortants sur 550 sessions. Dwell 78s avec evenness 0.15 → distribution bimodale (p25=15.8s vs p75=108s) : une partie des visiteurs lit, l'autre rebondit. Sur…"
+        },
+        {
+          "assertion": {
+            "field": "engagement_diagnosis",
+            "kind": "must_not_contain_any",
+            "patterns": [
+              "catastrophique",
+              "désastreux",
+              "rédhibitoire"
+            ],
+            "why": "Engagement is mixed (good dwell, bad scroll) — alarmist wording would over-call the verdict and trigger wrong fixes."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Pages/session 1.03 (quasi nul → aucun funnel vers expertise), scroll_avg 24.3% (très bas, scroll complet seulement 0.7% des sessions), 0 clics sortants sur 550 sessions. Dwell 78s avec evenness 0.15 → distribution bimodale (p25=15.8s vs p75=108s) : une partie des visiteurs lit, l'autre rebondit. Sur…"
+        },
+        {
+          "assertion": {
+            "field": "conversion_assessment",
+            "kind": "must_contain_any",
+            "patterns": [
+              "CTA",
+              "cta",
+              "rdv",
+              "rendez-vous",
+              "téléphone",
+              "phone",
+              "contact"
+            ],
+            "why": "0 conversions on 219 sessions with a CTA buried below scroll_avg is the actionable funnel finding — must surface it."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Sous réserve que Cooked tourne depuis 9 jours seulement : 0 phone / 0 email / 0 booking sur 550 sessions, et 0 click sur l'unique CTA conversion in-body ('Contactez le Cabinet Plouton' à l'offset ~2090, soit ~80% du body). Avec un scroll_avg de 24.3%, ce CTA est mort dans 95%+ des sessions — il n'a …"
+        }
+      ],
+      "output": {
+        "tldr": "Page hub #2 SERP avec 38k imp/mois mais CTR 4.67% vs 7.22% attendu : title trop générique vs service-public.gouv.fr en #1. Action : reframer title en 'Durée garde à vue 2026 : 24h, 48h, 96h, 144h — Vos droits à chaque palier' pour ajouter angle 'droits' qui distingue d'un site institutionnel.",
+        "intent_mismatch": "L'intent dominant est informationnel pur (top requêtes 'durée garde à vue' 880/mo, 'combien de temps dure une garde à vue' 390/mo, 'garde à vue durée' 880/mo) et la page y répond correctement. Mais la SERP confirme : top 3 = service-public.gouv.fr, jplouton (toi), village-justice.com — aucun cabinet en #1, l'intent est 100% informationnel/éducatif. Le cadrage actuel matche bien l'intent, pas de mismatch sémantique — le problème est ailleurs (CTR + funnel).",
+        "snippet_weakness": "Le title actuel 'Durée de la garde à vue : 24h, 48h, 96h... Combien de temps maximum ?' est purement descriptif et factuel, exactement comme service-public.gouv.fr ('Garde à vue') et village-justice.com ('La garde à vue en 10 questions'). En position #2 systématique, tu perds le clic au profit du .gouv.fr qui inspire l'autorité institutionnelle. Featured Snippet capté par service-public.gouv.fr sur 4 des 5 top queries → ton CTR organique est plafonné mécaniquement. Aucun angle distinct (urgence, droits, défense, 2026, conseil avocat) dans ton snippet pour justifier de cliquer #2 vs #1 institutionnel. La meta description répète le title sans ajouter de promesse (pas de mention 'rédigé par avocat pénaliste', 'droits concrets', 'erreurs procédurales').",
+        "hypothesis": "Le sous-CTR (-35.3%) vient du Featured Snippet capté par service-public.gouv.fr couplé à un title sans angle distinctif d'avocat (pas d'EEAT visible dans le snippet), pas d'un problème de contenu ni d'intent.",
+        "top_queries_analysis": [
+          {
+            "query": "durée garde à vue",
+            "impressions": 1703,
+            "ctr": 11.92,
+            "position": 3,
+            "intent_match": "yes",
+            "note": "Volume FR 880/mo, SOV 64.5% — page capte déjà l'essentiel. CTR 11.92% en pos 3 est correct mais plafonné par Featured Snippet service-public.gouv.fr."
+          },
+          {
+            "query": "garde a vue temps",
+            "impressions": 1567,
+            "ctr": 7.47,
+            "position": 2.8,
+            "intent_match": "yes",
+            "note": "Volume FR 480/mo, SOV >100% (page sur-capte la demande mesurée). CTR sous attendu pour pos 2.8 — Featured Snippet pris par service-public."
+          },
+          {
+            "query": "garde a vue",
+            "impressions": 1265,
+            "ctr": 4.9,
+            "position": 4.1,
+            "intent_match": "partial",
+            "note": "Volume FR 9 900/mo (la requête mère). SOV seulement 4.3% — gisement énorme inexploité. Page 'durée' ne matche pas l'intent générique 'garde à vue' (où Wikipedia + service-public dominent). Créer/optimiser une page pilier 'Garde à vue : tout comprendre' serait plus puissant que d'essayer de capter avec cette page."
+          },
+          {
+            "query": "combien de temps dure une garde à vue",
+            "impressions": 1023,
+            "ctr": 5.96,
+            "position": 2.8,
+            "intent_match": "yes",
+            "note": "Volume FR 390/mo, SOV 87.4%. CTR pos 2.8 anormalement bas — la formulation interrogative du title pourrait justement match cette query, à exploiter pour un Featured Snippet ciblé."
+          },
+          {
+            "query": "garde à vue moins de 24h",
+            "impressions": 791,
+            "ctr": 2.78,
+            "position": 4.5,
+            "intent_match": "partial",
+            "note": "Volume FR 320/mo. Page est #1 sur cette query mais CTR de 2.78% catastrophique — title ne mentionne pas 'moins de 24h' ni l'angle 'sortir avant'. Section dédiée manquante dans page_outline."
+          },
+          {
+            "query": "peut-on sortir de garde à vue la nuit",
+            "impressions": 693,
+            "ctr": 1.44,
+            "position": 9,
+            "intent_match": "no",
+            "note": "Volume FR 880/mo. Intent ≠ durée légale → intent 'libération conditions horaires'. Pas de section dédiée dans la page. Soit créer un article dédié, soit ajouter H2 'Peut-on sortir de garde à vue la nuit ? Horaires de levée'."
+          },
+          {
+            "query": "garde à vue durée",
+            "impressions": 639,
+            "ctr": 10.33,
+            "position": 2.5,
+            "intent_match": "yes",
+            "note": "Volume FR 880/mo, SOV 24.2%. Bon CTR en pos 2.5, performe le mieux."
+          },
+          {
+            "query": "temps maximum en cellule de dégrisement",
+            "impressions": 501,
+            "ctr": 0.6,
+            "position": 7.6,
+            "intent_match": "partial",
+            "note": "Volume FR 210/mo. CTR 0.60% en pos 7.6 — la page mentionne le dégrisement en passant (1 paragraphe) mais aucun H2 dédié. Opportunité de capter via H2 'Temps maximum en cellule de dégrisement' avec offset ~450."
+          }
+        ],
+        "engagement_diagnosis": "Pages/session 1.03 (quasi nul → aucun funnel vers expertise), scroll_avg 24.3% (très bas, scroll complet seulement 0.7% des sessions), 0 clics sortants sur 550 sessions. Dwell 78s avec evenness 0.15 → distribution bimodale (p25=15.8s vs p75=108s) : une partie des visiteurs lit, l'autre rebondit. Sur mobile 78% + 2588 mots, les utilisateurs trouvent leur réponse dans les premières lignes (Featured Snippet inversé : on lit ta réponse mais on quitte) et ne descendent pas. C'est un signal de page satisfaisante en surface mais qui ne RETIENT pas ni ne FUNNEL.",
+        "performance_diagnosis": "LCP 1283ms Good, TTFB 354ms Good. Mais INP 288ms (Needs Improvement, seuil 200ms) et CLS 0.160 (Needs Improvement, seuil 0.1) sont problématiques. CLS 0.160 sur mobile-dominant (78%) explique partiellement le scroll faible : les sauts de mise en page Wix (likely le tableau récapitulatif + images injectées tardivement) dégradent l'expérience. Action : fixer dimensions explicites sur l'image body + container du tableau pour stabiliser CLS sous 0.1.",
+        "structural_gaps": "Word count 2588 mots > benchmark juridique-FR 1800 → contenu substantiel, pas thin. MAIS : (1) **bug d'extraction grave** — chaque ligne du tableau et chaque bullet de liste apparaît DUPLIQUÉE dans le body brut (ex: 'En cas d'interpellation dans la rue...' x2, lignes du tableau x2). Si c'est rendu ainsi côté DOM utilisateur, c'est un signal qualité dégradé voire pattern proche de **Scaled content abuse** (contenu dupliqué dans la même page) à investiguer en priorité absolue. (2) Aucun schema JSON-LD : manque FAQPage (les 5 top queries sont des questions, opportunité Featured Snippet directe) + Article + LegalService. (3) Byline auteur ABSENT sur YMYL juridique → fort risque sur **Reliable Information Systems** (le système Google qui élève l'autorité sur YMYL). (4) Sections manquantes vs queries à fort volume : H2 dédié 'Peut-on sortir de garde à vue la nuit ?' (693 imp pos 9 → 880/mo FR), H2 'Temps maximum en cellule de dégrisement' (501 imp pos 7.6), H2 'Garde à vue moins de 24h : libération anticipée' (791 imp pos 4.5). (5) Conclusion mal hiérarchisée : ### H3 enfant de ## H2 'Que se passe-t-il si...' au lieu de ## H2 autonome.",
+        "funnel_assessment": "Funnel cassé. La page a 6 liens éditoriaux vers /defense-penale/droit-penal (bon) et 1 vers /honoraires-rendez-vous (le CTA conversion), mais TOUS placés dans les 30% supérieurs ou à 80%+ du body. Avec scroll_avg 24.3%, aucun de ces liens n'est exposé. Maillons manquants vers le catalogue : (a) lien contextuel vers https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant dans la section 'Criminalité organisée et trafic de stupéfiants' (offset 1045) — section parfaitement alignée et actuellement orpheline ; (b) lien vers https://www.jplouton-avocat.fr/defense-penale/proces-criminel dans la section 'prolongations exceptionnelles' (offset 993) ; (c) repositionner le CTA conversion /honoraires-rendez-vous de l'offset ~2090 vers offset ~600 (avant la section 48h) en encart 'Garde à vue en cours ? Assistance Bordeaux 24/7' — pour qu'il soit dans la zone effectivement scrollée par le p75 (108s de dwell).",
+        "internal_authority_assessment": "4 inbound éditoriaux depuis 4 pages distinctes toutes thématiquement cohérentes (/mes-droits-en-garde-a-vue, /la-garde-à-vue-définition, /nullité-de-la-poursuite, /surpopulation-carcérale) → position de hub thématique secondaire sur le cluster 'garde à vue'. Statut correct mais sous-exploité : à renforcer en ajoutant 2-3 inbounds depuis les articles existants sur droits/procédure pénale qui ne linkent pas encore, pour consolider le PageRank interne sur cette page qui capte déjà 38k imp/mois.",
+        "conversion_assessment": "Sous réserve que Cooked tourne depuis 9 jours seulement : 0 phone / 0 email / 0 booking sur 550 sessions, et 0 click sur l'unique CTA conversion in-body ('Contactez le Cabinet Plouton' à l'offset ~2090, soit ~80% du body). Avec un scroll_avg de 24.3%, ce CTA est mort dans 95%+ des sessions — il n'a quasi jamais été VU. La page ne convertit pas parce que les CTAs ne sont pas dans le champ visuel des lecteurs.",
+        "traffic_strategy_note": "Top referrer = www.google.com (organic dominant cohérent avec 38k imp/mois GSC) → priorité absolue = CTR snippet + maillage funnel interne, la bataille se joue dans la SERP Google et dans la rétention post-clic.",
+        "device_optimization_note": "78% mobile + scroll_avg 24.3% + 0 CTA click sur n_mobile=426 (échantillon solide) → mobile-first impératif. Le CTA RDV unique est à 80% du body, donc invisible sur mobile où l'utilisateur ne descend pas. Action prioritaire : insérer un CTA in-body 'Assistance immédiate garde à vue Bordeaux' sticky/in-flow avant l'offset 600 (avant la section 48h, soit ~25% du body, dans la zone effectivement scrollée).",
+        "outbound_leak_note": "Pas de leak significatif (0 click sortant sur 28d) — mais c'est précisément le problème inverse : la page ne FUNNEL pas vers les pages expertise internes. Aucune fuite externe à colmater, tout le travail est sur la rétention interne.",
+        "pogo_navboost_assessment": "Pogo_rate 10.5% sur n=373 google_sessions (échantillon solide) → engagement Google satisfaisant, la page ne match pas mal l'intent dans les 10 premières secondes. Ce n'est PAS la cause #1 du sous-CTR. Le problème est en amont (clic non donné dans la SERP) pas en aval (clic regretté). À protéger lors des fixes.",
+        "engagement_pattern_assessment": "Evenness 0.15 = distribution très bimodale : p25=15.8s (quart des visiteurs partent immédiatement, satisfaits par le H1/intro qui répond '24h') vs p75=108s (quart lisent vraiment). À croiser avec pogo 10.5% (correct) : le problème n'est pas la première seconde mais la mi-page — les lecteurs engagés décrochent vers 1-2 min, probablement au tableau récapitulatif (offset 1428) qui est massivement dupliqué/cassé visuellement (chaque cellule apparaît 2x dans le body brut)."
+      },
+      "duration_ms": 80940
+    },
+    {
+      "case_id": "premeditation-pos5-snippet-gap",
+      "what": "Pos 5, CTR halved (1.42% vs 3.64% expected), scroll 3.35%. SERP locked by definitional sources (Légifrance/Wikipedia/Larousse/CNRTL). Tests joint snippet + above-fold engagement diagnosis + recognition that competing on definitional intent is hopeless.",
+      "passed": true,
+      "pass_count": 6,
+      "fail_count": 0,
+      "results": [
+        {
+          "assertion": {
+            "field": "tldr",
+            "kind": "min_length",
+            "length": 80,
+            "why": "Substantive synthesis required."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Title purement définitionnel sur des requêtes lexicales (590-720 vol/mois sur 'prémédité def/définition') où le SERP est dominé par Larousse/CNRTL/Légifrance. CTR 1.42% vs 3.64% attendu. Action #1 : reframer title sur l'angle avocat pénaliste + conséquences (assassinat, perpétuité) pour sortir du co…"
+        },
+        {
+          "assertion": {
+            "field": "snippet_weakness",
+            "kind": "must_contain_any",
+            "patterns": [
+              "légifrance",
+              "wikipedia",
+              "larousse",
+              "cnrtl",
+              "dictionnaire",
+              "définition",
+              "institutionnel"
+            ],
+            "why": "The SERP is dominated by definitional/institutional sources — a snippet diagnosis that doesn't recognize this proposes the wrong fix (rewriting title for definitional intent is futile against Larousse)."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Le snippet actuel ('définition juridique, ses conséquences (assassinat) et les stratégies de défense') est correct sur l'angle avocat mais noyé en position 3-4 derrière Légifrance (pos 1, source officielle imbattable), CNRTL/Wikipedia (pos 2-4). Aucun concurrent cabinet en top 5 sur 'préméditation' …"
+        },
+        {
+          "assertion": {
+            "field": "engagement_diagnosis",
+            "kind": "must_contain_any",
+            "patterns": [
+              "scroll",
+              "abandon",
+              "décrochage"
+            ],
+            "why": "scroll_avg 3.35% with 0% reaching 100% is the dominant engagement signal — the page loses readers above the fold."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j, les rankings peuvent encore bouger légèrement, mesurer T+30 après fixes. Cooked en phase d'amorçage (9.2j) mais verdict ground truth. Signaux mitigés : scroll_avg 20.8% très faible (sur 28d) MAIS dwell median=45s et p75=108s — di…"
+        },
+        {
+          "assertion": {
+            "field": "engagement_diagnosis",
+            "kind": "must_not_contain_any",
+            "patterns": [
+              "satisfaisant",
+              "engagement bon",
+              "bonne lecture",
+              "engagement correct"
+            ],
+            "why": "scroll 3.35% is unambiguously bad — calling engagement satisfaisant would mask the core issue."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j, les rankings peuvent encore bouger légèrement, mesurer T+30 après fixes. Cooked en phase d'amorçage (9.2j) mais verdict ground truth. Signaux mitigés : scroll_avg 20.8% très faible (sur 28d) MAIS dwell median=45s et p75=108s — di…"
+        },
+        {
+          "assertion": {
+            "field": "pogo_navboost_assessment",
+            "kind": "must_contain_any",
+            "patterns": [
+              "n=",
+              "échantillon",
+              "faible",
+              "<30",
+              "insuffisant",
+              "trop peu",
+              "small sample"
+            ],
+            "why": "Only n=10 google_sessions captured — must caveat that pogo_rate 10% is non-conclusive at this sample size, otherwise the LLM hallucinates a NavBoost verdict."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Pogo_rate 5.9% sur n=34 google_sessions (échantillon limite, à surveiller mais significatif) = engagement Google satisfaisant — la page ne déclenche PAS de signal NavBoost négatif immédiat malgré son LCP catastrophique (probablement parce que le contenu textuel charge avant le LCP element). Bonne no…"
+        },
+        {
+          "assertion": {
+            "field": "conversion_assessment",
+            "kind": "must_contain_any",
+            "patterns": [
+              "CTA",
+              "cta",
+              "lien",
+              "in-body",
+              "0 lien",
+              "aucun"
+            ],
+            "why": "0 internal links + 0 conversions is the funnel-mort signal — must propose injecting a CTA / internal link."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "0 phone / 0 email / 0 booking sur 68 sessions (data_quality_check verdict ✅ ground truth). Cohérent avec le diagnostic <cta_per_device> : la page n'a probablement aucun CTA in-body (ni outbound interne détecté). C'est un article informationnel pur qui ne funnel vers rien — perte totale du capital tr…"
+        }
+      ],
+      "output": {
+        "tldr": "Title purement définitionnel sur des requêtes lexicales (590-720 vol/mois sur 'prémédité def/définition') où le SERP est dominé par Larousse/CNRTL/Légifrance. CTR 1.42% vs 3.64% attendu. Action #1 : reframer title sur l'angle avocat pénaliste + conséquences (assassinat, perpétuité) pour sortir du combat dictionnaire.",
+        "intent_mismatch": "Mismatch partiel : la page cible un intent juridique-stratégique (titre 'définition ET conséquences juridiques') mais 4 des 5 top requêtes en volume ('prémédité', 'prémédité def', 'premeditation', 'prémédité définition' = ~3 000 imp/mois cumulées) sont des recherches purement lexicales/dictionnaire. Le SERP le confirme brutalement : sur 'prémédité' et 'prémédité def', le top 5 est 100% dictionnaires (Larousse, Linternaute, CNRTL, Robert, Académie française) avec Featured Snippet pris par Larousse — un cabinet d'avocats n'a aucune légitimité à se battre là. En revanche sur 'meurtre avec préméditation' (210 vol, intent qualifié), la page est en position 1 avec Featured Snippet : c'est LE vrai créneau commercial.",
+        "snippet_weakness": "Le snippet actuel ('définition juridique, ses conséquences (assassinat) et les stratégies de défense') est correct sur l'angle avocat mais noyé en position 3-4 derrière Légifrance (pos 1, source officielle imbattable), CNRTL/Wikipedia (pos 2-4). Aucun concurrent cabinet en top 5 sur 'préméditation' — donc l'angle 'avocat pénaliste Bordeaux + défense' n'est pas surexploité, il est sous-exploité dans le title. Larousse couvre le lexical, Légifrance couvre l'article 132-72 brut, Wikipedia capte l'encyclopédique : ton title n'a pas d'angle distinct car il commence par 'définition' (terrain perdu d'avance) au lieu de l'angle bénéfice/risque ('assassinat', 'perpétuité', 'requalification', 'stratégie de défense'). Featured Snippet pris par toi sur 'meurtre avec préméditation' = preuve que l'angle juridique fonctionne quand l'intent matche.",
+        "hypothesis": "Le title commence par 'définition' et entre en compétition frontale perdante avec Larousse/Légifrance/Wikipedia sur des requêtes lexicales à fort volume, gâchant le CTR là où la page est bien positionnée (pos 5).",
+        "top_queries_analysis": [
+          {
+            "query": "préméditation",
+            "impressions": 2956,
+            "ctr": 0.37,
+            "position": 5.5,
+            "intent_match": "partial",
+            "note": "590 vol/mois, SOV 167% (sur-exposée vs demande). SERP dominé par Légifrance/CNRTL/Wikipedia — intent mixte lexical+juridique. CTR catastrophique (0.37%) car snippet 'définition' n'est pas distinctif en pos 3."
+          },
+          {
+            "query": "prémédité",
+            "impressions": 2502,
+            "ctr": 0.08,
+            "position": 5.5,
+            "intent_match": "no",
+            "note": "590 vol/mois. SERP 100% dictionnaires + Featured Snippet Larousse → intent lexical pur. Un cabinet d'avocats ne convertira jamais ici. CTR 0.08% confirme : ces impressions sont du bruit, ne pas optimiser pour cette requête."
+          },
+          {
+            "query": "prémédité def",
+            "impressions": 1227,
+            "ctr": 0,
+            "position": 7.3,
+            "intent_match": "no",
+            "note": "720 vol/mois. 0 clic. Intent purement dictionnaire (Featured Snippet Larousse). Abandonner cette requête, ne pas la cibler."
+          },
+          {
+            "query": "premeditation",
+            "impressions": 864,
+            "ctr": 0.46,
+            "position": 7.6,
+            "intent_match": "partial",
+            "note": "210 vol/mois, SOV 137%. Variante sans accent, SERP identique à 'préméditation'. Même diagnostic."
+          },
+          {
+            "query": "meurtre avec préméditation",
+            "impressions": 502,
+            "ctr": 0.6,
+            "position": 4.9,
+            "intent_match": "yes",
+            "note": "210 vol/mois. INTENT QUALIFIÉ : la page est en pos 1 avec Featured Snippet (cf SERP). CTR 0.60% en moyenne sur 4.9 = anomalie — vérifier si la pos moyenne tire vers le bas (autres mots-clés associés). C'est LA requête à protéger et amplifier."
+          },
+          {
+            "query": "préméditation def",
+            "impressions": 471,
+            "ctr": 0.85,
+            "position": 5.9,
+            "intent_match": "partial",
+            "note": "720 vol/mois mais CTR très bas — SERP dictionnaires dominent."
+          },
+          {
+            "query": "premedite",
+            "impressions": 440,
+            "ctr": 0,
+            "position": 6.5,
+            "intent_match": "no",
+            "note": "0 clic. Variante lexicale, intent dictionnaire."
+          },
+          {
+            "query": "prémédité définition",
+            "impressions": 410,
+            "ctr": 0.24,
+            "position": 6.5,
+            "intent_match": "no",
+            "note": "Intent dictionnaire pur, à dé-prioriser."
+          },
+          {
+            "query": "préméditation définition",
+            "impressions": 398,
+            "ctr": 1.01,
+            "position": 7.3,
+            "intent_match": "partial",
+            "note": "Légèrement mieux mais reste lexical."
+          },
+          {
+            "query": "préméditation code pénal",
+            "impressions": 327,
+            "ctr": 4.59,
+            "position": 3.9,
+            "intent_match": "yes",
+            "note": "70 vol/mois mais CTR 4.59% = au-dessus benchmark. INTENT JURIDIQUE QUALIFIÉ. Petit volume mais haute qualité — la page convertit bien quand l'intent matche le cadrage juridique."
+          }
+        ],
+        "engagement_diagnosis": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j, les rankings peuvent encore bouger légèrement, mesurer T+30 après fixes. Cooked en phase d'amorçage (9.2j) mais verdict ground truth. Signaux mitigés : scroll_avg 20.8% très faible (sur 28d) MAIS dwell median=45s et p75=108s — distribution bimodale (evenness 0.14) confirmée : un sous-groupe lit vraiment, l'autre rebondit vite. Pages/session 1.02 + 0 clic sortant interne = la page est un cul-de-sac funnel total. C'est cohérent avec l'absence totale de liens internes sortants détectés.",
+        "performance_diagnosis": "ALERTE rouge : LCP 24.6s (Poor, 10× le seuil 2.5s) et TTFB 2.97s (Poor) — la page est techniquement quasi-inutilisable. Impact NavBoost direct : Google rétrograde activement les pages avec LCP > 4s, et 24s est aberrant (probablement image hero Wix non optimisée + JS Wix bloquant). Action prioritaire #1 technique : auditer le LCP element (vraisemblablement une image Wix non lazy + non WebP) et le TTFB (hébergement Wix mutualisé — peu de leviers, mais activer CDN/cache si pas fait). Sans ce fix, aucune optimisation snippet ne tiendra à long terme.",
+        "structural_gaps": "Manques structurels MAJEURS : (1) aucun H2/H3/H4 détecté dans <page_outline> — la page est un bloc de texte plat, illisible en scan mobile, ce qui explique scroll_avg 20.8% ; (2) <author_eeat> vide alors qu'on est en YMYL juridique pur — signal critique pour le système Reliable Information Systems de Google (pages juridiques YMYL doivent afficher auteur expert, date, sources) ; (3) aucune image — perte d'opportunité Image Search mais aussi de balisage visuel pour aérer le texte ; (4) word_count indisponible (content_snapshot manquant) mais la SERP top 10 (Wikipedia, cabinetaci.com, mce-avocat.fr) suggère que les concurrents avocats développent 1500-2500 mots structurés — benchmark juridique-FR médian ~1800 mots ; (5) schema FAQPage présent ✅ mais devrait être enrichi avec LegalService + Article + Person (auteur) pour appuyer E-E-A-T. Per la nouvelle guidance Google Search Central du 2026-05-15 sur l'optimisation pour Generative AI, le contenu 'valuable, unique, non-commodity' est explicitement requis — une page sans auteur, sans structure, sans angle distinct vs Wikipedia/Larousse risque d'être considérée comme commodity.",
+        "funnel_assessment": "Funnel TOTALEMENT cassé : 0 lien interne sortant détecté sur une page qui reçoit 3 368 vues cumulées et capte un intent juridique qualifié sur 'meurtre avec préméditation' (pos 1, Featured Snippet) et 'préméditation code pénal' (CTR 4.59%). Maillons manquants impératifs à ajouter in-body : (a) lien contextuel vers https://www.jplouton-avocat.fr/defense-penale/proces-criminel (cour d'assises = juridiction de l'assassinat) ; (b) lien vers https://www.jplouton-avocat.fr/defense-penale/droit-penal pour l'expertise racine ; (c) lien vers https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides (les féminicides sont souvent qualifiés assassinat) ; (d) CTA conversion vers https://www.jplouton-avocat.fr/honoraires-rendez-vous en fin de section 'conséquences juridiques' ; (e) lien trust vers https://www.jplouton-avocat.fr/nos-affaires (le cabinet a plaidé des affaires d'assassinat documentées, cf. inbound depuis /post/assassinat-à-commensacq et /post/assassinat-sur-conjoint). Sans content_snapshot on ne peut pas positionner l'offset précis mais cible : 1 lien expertise au tiers de l'article, 1 CTA aux 2/3, 1 trust en bas.",
+        "internal_authority_assessment": "3 inbound éditoriaux depuis 3 affaires emblématiques (/agression-machette-yser, /assassinat-commensacq, /assassinat-conjoint) — position standard, ni orpheline ni hub. Signal intéressant : les pages d'affaires plaidées par Me Plouton pointent ICI pour expliquer la préméditation = la page sert de référence pédagogique au sein du site. Levier inexploité : ces inbounds prouvent l'expertise terrain de l'auteur, ce qui DOIT remonter dans <author_eeat> (bio Me Plouton + lien vers /nos-affaires) pour activer pleinement le système Reliable Information Systems sur YMYL juridique.",
+        "conversion_assessment": "0 phone / 0 email / 0 booking sur 68 sessions (data_quality_check verdict ✅ ground truth). Cohérent avec le diagnostic <cta_per_device> : la page n'a probablement aucun CTA in-body (ni outbound interne détecté). C'est un article informationnel pur qui ne funnel vers rien — perte totale du capital trafic (3 368 vues cumulées, 0 conversion). Action : ajouter CTA in-body 'Mis en cause pour assassinat ou meurtre prémédité ? Contactez Me Plouton' avec lien vers /defense-penale/proces-criminel + bouton vers /honoraires-rendez-vous.",
+        "traffic_strategy_note": "Top referrer = google.com (organique pur sur cette page d'après <traffic_provenance> et site_context) → priorité absolue = CTR snippet (la bataille se joue dans la SERP Google) + fix LCP pour éviter le décrochage NavBoost.",
+        "device_optimization_note": "53% mobile / 46% desktop avec 0 CTA click sur les 2 devices (n_mobile=36, n_desktop=31) — split device non significatif pour les conversions car la page n'a vraisemblablement pas de CTA in-body. Lecture qualitative : avec scroll_avg 20.8% et un audience mobile majoritaire, tout CTA ajouté doit être placé above-the-fold mobile OU à offset ~25-30% du body maximum.",
+        "outbound_leak_note": "1 clic vers courdecassation.fr sur 28j — fuite externe normale et légitime (autorité juridique officielle), pas un signal de fix prioritaire. Vérifier toutefois que cette citation est bien doublée d'un lien interne vers /nos-affaires ou /defense-penale/proces-criminel pour ne pas laisser fuir 100% de l'autorité.",
+        "pogo_navboost_assessment": "Pogo_rate 5.9% sur n=34 google_sessions (échantillon limite, à surveiller mais significatif) = engagement Google satisfaisant — la page ne déclenche PAS de signal NavBoost négatif immédiat malgré son LCP catastrophique (probablement parce que le contenu textuel charge avant le LCP element). Bonne nouvelle : le ranking pos 5.2 est défendable, le levier est bien le CTR snippet et non la rétention 10s.",
+        "engagement_pattern_assessment": "Evenness 0.14 = distribution très bimodale confirmée : la page retient un sous-groupe (p75=108s, dwell 7d=54s en hausse) mais en perd un autre très tôt (p25=15s). Croisé avec pogo_rate 5.9% (sain), le problème N'EST PAS la première seconde — c'est la mi-page : les visiteurs ouvrent, lisent l'intro juridique, puis abandonnent vers 15-30s probablement parce qu'aucune structure H2/H3 ne leur permet de scanner (page non structurée, scroll 3.35%). Signal d'intent mismatch partiel : ceux qui cherchent du dictionnaire repartent, ceux qui cherchent du juridique restent."
+      },
+      "duration_ms": 88615
+    },
+    {
+      "case_id": "trafic-stups-pos12-silo",
+      "what": "Pos 12.18, silo expertise page /défense-pénale/trafic-de-stupéfiant (not /post/). SERP saturated with COMPETITOR LAW FIRMS (Gabeaud, Paganelli, Zerbib, DCH) — pure commercial intent, zero institutional sources. Tests silo treatment + recognition that the page must compete on lawyer expertise differentiation, not on definitional content.",
+      "passed": true,
+      "pass_count": 5,
+      "fail_count": 0,
+      "results": [
+        {
+          "assertion": {
+            "field": "tldr",
+            "kind": "min_length",
+            "length": 80,
+            "why": "Substantive synthesis required."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Page pos 7 sur 'avocat trafic de stupéfiants' (480 imp/3mo, 0% CTR) : snippet générique noyé dans une SERP de cabinets parisiens hyper-spécialisés. Action #1 : reframer title en 'Avocat Trafic de Stupéfiants Bordeaux | Go Fast, JIRS, Bande Organisée' + meta avec preuve chiffrée (dossiers Air Cocaïne…"
+        },
+        {
+          "assertion": {
+            "field": "intent_mismatch",
+            "kind": "must_contain_any",
+            "patterns": [
+              "commercial",
+              "transactionnel",
+              "avocat",
+              "cabinet",
+              "concurrent",
+              "expertise"
+            ],
+            "why": "Top 5 SERP positions all held by lawyer firms — the page faces commercial-intent SERP, not informational. A diagnosis that misses this proposes content/definitional fixes when the real lever is positioning differentiation."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Intent 100% commercial qualifié : les 9 top requêtes (sauf 'cabinet plouton' brand) cherchent un avocat pénaliste défense — 'avocat trafic de stupéfiants' (480 imp, 90 vol FR), 'avocat spécialisé stupéfiant' (244 imp), 'meilleur avocat pour trafic de stupéfiants' (88 imp). La SERP confirme : top 10 …"
+        },
+        {
+          "assertion": {
+            "field": "snippet_weakness",
+            "kind": "must_contain_any",
+            "patterns": [
+              "gabeaud",
+              "paganelli",
+              "zerbib",
+              "goudard",
+              "dch",
+              "cabinet",
+              "concurrent",
+              "avocat"
+            ],
+            "why": "Naming at least one lawyer-competitor anchors the snippet diagnosis in real differentiation work — generic 'meilleur snippet' advice without competitive context is useless."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Title 'Avocat Trafic de Stupéfiant à Bordeaux | Cabinet Plouton' est le SEUL en pos 1-9 à mentionner Bordeaux — c'est une force locale mais une faiblesse nationale car 80% du volume FR est non-géolocalisé. Concurrents top 3 misent sur des angles forts : avocatgoudard.com = 'Expert en dossier' + auto…"
+        },
+        {
+          "assertion": {
+            "field": "snippet_weakness",
+            "kind": "must_contain_any",
+            "patterns": [
+              "title",
+              "meta",
+              "snippet",
+              "angle",
+              "bénéfice",
+              "claim",
+              "expertise"
+            ],
+            "why": "Must point at a surface-level lever (title/meta/angle) — page is silo expertise so structural changes are not the right action vs snippet rewrite."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Title 'Avocat Trafic de Stupéfiant à Bordeaux | Cabinet Plouton' est le SEUL en pos 1-9 à mentionner Bordeaux — c'est une force locale mais une faiblesse nationale car 80% du volume FR est non-géolocalisé. Concurrents top 3 misent sur des angles forts : avocatgoudard.com = 'Expert en dossier' + auto…"
+        },
+        {
+          "assertion": {
+            "field": "conversion_assessment",
+            "kind": "must_contain_any",
+            "patterns": [
+              "CTA",
+              "cta",
+              "rdv",
+              "rendez-vous",
+              "contact",
+              "honoraires",
+              "in-body"
+            ],
+            "why": "Commercial intent + 81s dwell + 0 conversion = CTA placement is the funnel lever — diagnosis must propose CTA work."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Sous réserve de capture rate insuffisant (Cooked en démarrage). Aucun signal conversion lisible sur 28d. Sur une page YMYL défense pénale avec intent 'avocat pour me défendre' (urgence garde à vue mentionnée dans la meta), l'absence d'un CTA téléphone in-body above-the-fold + sticky mobile est proba…"
+        }
+      ],
+      "output": {
+        "tldr": "Page pos 7 sur 'avocat trafic de stupéfiants' (480 imp/3mo, 0% CTR) : snippet générique noyé dans une SERP de cabinets parisiens hyper-spécialisés. Action #1 : reframer title en 'Avocat Trafic de Stupéfiants Bordeaux | Go Fast, JIRS, Bande Organisée' + meta avec preuve chiffrée (dossiers Air Cocaïne, JIRS Bordeaux).",
+        "intent_mismatch": "Intent 100% commercial qualifié : les 9 top requêtes (sauf 'cabinet plouton' brand) cherchent un avocat pénaliste défense — 'avocat trafic de stupéfiants' (480 imp, 90 vol FR), 'avocat spécialisé stupéfiant' (244 imp), 'meilleur avocat pour trafic de stupéfiants' (88 imp). La SERP confirme : top 10 = 100% cabinets d'avocats (avocatgoudard, gabeaud, dch-avocat, paganelli, curiel…), zéro .gouv/Wikipedia/justifit hors agrégateur. Intent commercial pur, le H1/title actuels sont alignés sur l'intent mais sous-différenciés.",
+        "snippet_weakness": "Title 'Avocat Trafic de Stupéfiant à Bordeaux | Cabinet Plouton' est le SEUL en pos 1-9 à mentionner Bordeaux — c'est une force locale mais une faiblesse nationale car 80% du volume FR est non-géolocalisé. Concurrents top 3 misent sur des angles forts : avocatgoudard.com = 'Expert en dossier' + autorité personnelle, avocat-gabeaud.fr = géo Paris 7 + 'pénaliste', justifit.fr = annuaire qui rassure par le choix. La meta Plouton est en réalité la PLUS riche du SERP ('Go Fast, réseau, détention provisoire, 24h/24') mais le title ne capitalise pas dessus. Featured Snippet présent sur 'avocat trafic de stupéfiant' (pris par avocat-gabeaud.fr) → CTR organique plafonné sur cette query, viser le délogement via FAQPage schema. PAA sur 5/5 top queries → opportunité de capter via H2 questions.",
+        "hypothesis": "Title trop générique + ancrage Bordeaux qui dilue sur 80% du volume non-géolocalisé, combiné à une absence totale de preuves d'autorité dans le snippet (alors que le cabinet a des affaires JIRS / Air Cocaïne qui le différencieraient massivement).",
+        "top_queries_analysis": [
+          {
+            "query": "avocat trafic de stupéfiants",
+            "impressions": 480,
+            "ctr": 0,
+            "position": 9.2,
+            "intent_match": "yes",
+            "note": "Top query commerciale (90 vol FR/mois, SOV 177% = sur-exposition). 0 clic sur 480 imp = snippet ne convertit pas en pos 7-9. Levier #1."
+          },
+          {
+            "query": "avocat spécialisé stupéfiant",
+            "impressions": 244,
+            "ctr": 0,
+            "position": 8.5,
+            "intent_match": "yes",
+            "note": "90 vol FR, SOV 90%. Mot 'spécialisé' absent du title — facile à intégrer."
+          },
+          {
+            "query": "avocat stupefiant",
+            "impressions": 200,
+            "ctr": 0,
+            "position": 7.6,
+            "intent_match": "yes",
+            "note": "170 vol FR, SOV 39% : marge de progression sur la requête sans accent (souvent mobile)."
+          },
+          {
+            "query": "avocat trafic de stupefiant",
+            "impressions": 198,
+            "ctr": 0,
+            "position": 6.7,
+            "intent_match": "yes",
+            "note": "Meilleure position du top 5, SOV 73%. CTR 0% en pos 6.7 est anormal → problème snippet pur."
+          },
+          {
+            "query": "avocat trafic de stupéfiant",
+            "impressions": 160,
+            "ctr": 0.63,
+            "position": 8.2,
+            "intent_match": "yes",
+            "note": "Seul CTR non-nul (1 clic). Featured Snippet pris par concurrent → CTR plafonné structurellement."
+          },
+          {
+            "query": "avocat pour affaire de stupéfiant",
+            "impressions": 125,
+            "ctr": 0,
+            "position": 6.9,
+            "intent_match": "yes",
+            "note": "Formulation 'pour affaire de' = intent défense réactive. À capter via H2 'Vous êtes mis en cause ?'."
+          },
+          {
+            "query": "cabinet plouton",
+            "impressions": 116,
+            "ctr": 0,
+            "position": 1.8,
+            "intent_match": "partial",
+            "note": "Brand en pos 1.8 avec 0% CTR : cette page n'est PAS la bonne destination brand (homepage devrait capter). Anomalie à investiguer."
+          },
+          {
+            "query": "avocat stupéfiants au volant nimes",
+            "impressions": 98,
+            "ctr": 0,
+            "position": 63.1,
+            "intent_match": "no",
+            "note": "Stupéfiants au volant ≠ trafic de stupéfiants + Nîmes ≠ Bordeaux. Pas un levier."
+          },
+          {
+            "query": "meilleur avocat pour trafic de stupéfiants",
+            "impressions": 88,
+            "ctr": 0,
+            "position": 8.3,
+            "intent_match": "yes",
+            "note": "Requête 'meilleur' = comparatif. Concurrent direct (nicolas-paganelli-avocat.fr) a positionné un title spécifiquement sur cette query."
+          },
+          {
+            "query": "avocat stupéfiants",
+            "impressions": 83,
+            "ctr": 0,
+            "position": 23.7,
+            "intent_match": "yes",
+            "note": "Pos 23 = page 3, hors zone de clic. À récupérer via consolidation contenu (1800+ mots)."
+          }
+        ],
+        "engagement_diagnosis": "Caveat temporel : March 2026 core update terminée il y a 37j, les rankings peuvent encore bouger — attendre stabilisation T+30 avant de mesurer l'impact des fixes. Données Cooked indisponibles (capture en cours). Néanmoins le scroll_avg 26.92% sur 81s d'active duration est un signal Sprint-pré-Cooked exploitable : les visiteurs lisent à peine plus d'un quart de la page avant de partir — soit la page est très longue et l'intro déçoit, soit la page est si courte qu'il n'y a plus rien à scroller passé l'intro. Pages/session 1.13 = quasi aucun visiteur ne va vers une autre page du site = funnel cassé.",
+        "performance_diagnosis": "CWV en cours de collecte (n/a) — à prioriser dans l'audit technique car page Wix (LCP souvent dégradé par chargement d'images/fonts cabinet d'avocats).",
+        "structural_gaps": "Extraction body indisponible (snapshot pré-Sprint-14), mais signaux convergents très forts : <page_outline> ne détecte AUCUN H2/H3/H4 (page non structurée), <images> 0 image, <author_eeat> aucun signal auteur/date — c'est critique en YMYL juridique où le Reliable information systems pondère lourdement l'autorité. Manques prioritaires : (1) bio Maître Plouton + barre / dates / affaires emblématiques (E-E-A-T), (2) H2 structurés sur 'Go Fast', 'Bande organisée', 'JIRS', 'Détention provisoire', 'ICO', 'Stupéfiants au volant' (qui couvrent les variantes de requêtes + PAA), (3) FAQPage schema pour capter le Featured Snippet pris par avocat-gabeaud.fr sur 'avocat trafic de stupéfiant', (4) Person schema lié à Attorney existant. Pas de risque de spam policy détecté.",
+        "funnel_assessment": "Maillage éditorial sortant non capturé (snapshot pré-Sprint-9) — réévaluer au prochain crawl. Néanmoins pages/session 1.13 indique factuellement que le funnel ne fonctionne pas : cible naturelle de cette page = https://www.jplouton-avocat.fr/honoraires-rendez-vous (CTA RDV), https://www.jplouton-avocat.fr/defense-penale/droit-penal (page parente), https://www.jplouton-avocat.fr/nos-affaires (preuve sociale Air Cocaïne / JIRS), https://www.jplouton-avocat.fr/notre-cabinet (E-E-A-T). À confirmer présence au prochain audit.",
+        "internal_authority_assessment": "Page hub à protéger : 10 inbound éditoriaux depuis 9 pages distinctes, toutes thématiquement alignées (posts d'affaires Air Cocaïne, Libourne-Castillon, Marseille-Corrèze, fusillade Lormont). Ancres variées et naturelles ('trafic de stupéfiants', 'expertise en droit pénal des stupéfiants', 'saisir le Cabinet'). C'est un signal d'autorité interne solide — les fixes (refonte title, ajout structure H2, FAQPage) ne doivent PAS casser l'URL : conserver /defense-penale/trafic-de-stupefiant tel quel pour préserver les 10 liens éditoriaux.",
+        "conversion_assessment": "Sous réserve de capture rate insuffisant (Cooked en démarrage). Aucun signal conversion lisible sur 28d. Sur une page YMYL défense pénale avec intent 'avocat pour me défendre' (urgence garde à vue mentionnée dans la meta), l'absence d'un CTA téléphone in-body above-the-fold + sticky mobile est probablement le levier #1 de conversion une fois le CTR remonté.",
+        "traffic_strategy_note": "Site_context montre google referral = 54% du trafic global (3366/6228) → priorité = CTR snippet, la bataille se joue dans la SERP Google. Direct 19% suggère une part brand récurrente à protéger côté homepage.",
+        "device_optimization_note": "Split device non significatif sur les conversions (Cooked indisponible), lecture qualitative seulement. Sur défense pénale (garde à vue, urgence), l'audience mobile est structurellement majoritaire — la meta 'Assistance 24h/24' implique un usage mobile prioritaire, click-to-call sticky mobile = must-have.",
+        "outbound_leak_note": "Pas de leak significatif détectable (aucun click sortant capturé sur 28d Cooked).",
+        "pogo_navboost_assessment": "Signal pogo non disponible (Cooked vient de démarrer). À surveiller en priorité au prochain audit : avec un CTR 78% sous benchmark en pos 7-9, si les rares clics qui arrivent pogo-stick, NavBoost va dérouter la page de manière cumulative et la sortir du top 10. Caveat : March 2026 core update terminée à 37j, les mouvements de ranking observables peuvent venir de la stabilisation post-update et pas des fixes — attendre T+30 avant de mesurer.",
+        "engagement_pattern_assessment": "Densité d'engagement non disponible (0 sessions captées Cooked). Le scroll_avg 26.92% combiné à 81s active suggère qualitativement que les visiteurs lisent l'intro puis abandonnent — pattern 'lecture courte puis sortie' typique d'une page sans accroche structurante ni jalons (H2, listes, CTA intermédiaires)."
+      },
+      "duration_ms": 69723
+    },
+    {
+      "case_id": "vc-feminicides-pos14-thin",
+      "what": "Pos 13.94, low impr (1.5k), meta description TRUNCATED at 'd' (incomplete in SERP). YMYL emotional + Bordeaux-local intent. Tests recognition of a broken meta as #1 fix + emotional-victim intent + caveat on tiny pogo sample (n=2).",
+      "passed": true,
+      "pass_count": 4,
+      "fail_count": 0,
+      "results": [
+        {
+          "assertion": {
+            "field": "tldr",
+            "kind": "min_length",
+            "length": 80,
+            "why": "Substantive synthesis required."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Title trop générique sur SERP saturée de cabinets concurrents (Tomasini, Steyer, Del Vecchio) — pos 9 sur 'avocat violence conjugale' (330 imp) à 0% CTR. Action #1 : reframer title sur angle distinctif local + bénéfice (ex: 'Avocat Violences Conjugales Bordeaux — Ordonnance de protection 48h | Plout…"
+        },
+        {
+          "assertion": {
+            "field": "snippet_weakness",
+            "kind": "must_contain_any",
+            "patterns": [
+              "meta",
+              "tronquée",
+              "tronqué",
+              "incomplète",
+              "incomplete",
+              "coupée",
+              "cut",
+              "broken"
+            ],
+            "why": "The meta description is literally broken — truncated mid-word at 'd'. This is the highest-ROI fix and must be flagged. Missing it = the diagnostic leaves the most obvious bug untouched."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Sur 'avocat violence conjugale' (SERP commerciale), tu es pos 9 face à barreausolidarite.org (institutionnel), justifit.fr (annuaire), avocat-steyer.fr (Me Steyer = spécialiste reconnue, angle 'Défense Femmes Battues'), delvecchio-avocats.fr ('Cabinet spécialisé'). Ton meta tronqué ('Notre cabinet d…"
+        },
+        {
+          "assertion": {
+            "field": "intent_mismatch",
+            "kind": "must_contain_any",
+            "patterns": [
+              "victime",
+              "femme",
+              "battue",
+              "urgent",
+              "réassurance",
+              "émotionnel",
+              "local",
+              "bordeaux",
+              "ymyl"
+            ],
+            "why": "Intent is YMYL emotional + local — diagnosis must recognize the user state (victim seeking immediate reassurance) to drive the right tonal/CTA fixes."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Intent dominant = commercial qualifié local (cabinets en top 3 sur 4/5 requêtes, Local Pack présent partout). Le H1 'Avocat violences conjugales et féminicides' est aligné, mais le title ne capitalise pas sur l'angle local Bordeaux pour les requêtes génériques 'avocat violence conjugale' (330 imp/3m…"
+        },
+        {
+          "assertion": {
+            "field": "pogo_navboost_assessment",
+            "kind": "must_contain_any",
+            "patterns": [
+              "n=",
+              "échantillon",
+              "faible",
+              "insuffisant",
+              "<30",
+              "trop peu",
+              "small sample",
+              "non concluant"
+            ],
+            "why": "n=2 google_sessions is laughably small — pogo_rate 50% is meaningless without the caveat. A diagnostic that conclues NavBoost from this would be a hallucination."
+          },
+          "passed": true,
+          "detail": null,
+          "observed": "Pogo_rate 22.2% (2 pogo / 9 google_sessions, 1 hard pogo) — au-dessus du seuil de 20%, MAIS échantillon n=9 trop faible pour conclure (CI ~±20pp). À surveiller comme hypothèse #2 derrière le snippet weakness : si le rate se confirme sur n≥30, ce sera la cause principale d'une éventuelle dérive de po…"
+        }
+      ],
+      "output": {
+        "tldr": "Title trop générique sur SERP saturée de cabinets concurrents (Tomasini, Steyer, Del Vecchio) — pos 9 sur 'avocat violence conjugale' (330 imp) à 0% CTR. Action #1 : reframer title sur angle distinctif local + bénéfice (ex: 'Avocat Violences Conjugales Bordeaux — Ordonnance de protection 48h | Plouton').",
+        "intent_mismatch": "Intent dominant = commercial qualifié local (cabinets en top 3 sur 4/5 requêtes, Local Pack présent partout). Le H1 'Avocat violences conjugales et féminicides' est aligné, mais le title ne capitalise pas sur l'angle local Bordeaux pour les requêtes génériques 'avocat violence conjugale' (330 imp/3mo, pos 14.6) et 'avocat violences conjugales' (72 imp, pos 24.4) — la page se classe mieux sur la requête géo-spécifique (pos 6 sur 'bordeaux') que sur les génériques, ce qui suggère un déficit d'autorité thématique nationale qu'il faut compenser par un angle local fort.",
+        "snippet_weakness": "Sur 'avocat violence conjugale' (SERP commerciale), tu es pos 9 face à barreausolidarite.org (institutionnel), justifit.fr (annuaire), avocat-steyer.fr (Me Steyer = spécialiste reconnue, angle 'Défense Femmes Battues'), delvecchio-avocats.fr ('Cabinet spécialisé'). Ton meta tronqué ('Notre cabinet d…') est probablement coupé côté Google et n'expose AUCUN angle distinctif : ni nominatif (Me Plouton), ni preuve (affaires Chahinez/Mérignac/Nasrine que tu traites pourtant en blog), ni action concrète (ordonnance de protection). People Also Ask sur 3/5 requêtes = opportunité FAQ non exploitée.",
+        "hypothesis": "Snippet générique + page très peu structurée (aucun H2 détecté) sur une SERP saturée de cabinets à angle distinctif fort — le clic se fait sur le 1er cabinet qui donne un signal de spécialisation ou de preuve sociale, pas sur le 9e résultat indifférencié.",
+        "top_queries_analysis": [
+          {
+            "query": "avocat violence conjugale",
+            "impressions": 330,
+            "ctr": 0,
+            "position": 14.6,
+            "intent_match": "partial",
+            "note": "Volume principal (65% des impressions). Intent commercial national, mais tu rankes en bordure top 2 page. SERP dominée par institutionnels + cabinets à angle nominatif. 0 clic sur 330 imp = snippet invisible/non distinctif."
+          },
+          {
+            "query": "avocat violences conjugales",
+            "impressions": 72,
+            "ctr": 0,
+            "position": 24.4,
+            "intent_match": "partial",
+            "note": "Pos 24 = page 3, hors zone clic. Levier ranking avant CTR."
+          },
+          {
+            "query": "avocat violence conjugale bordeaux",
+            "impressions": 57,
+            "ctr": 1.75,
+            "position": 6,
+            "intent_match": "yes",
+            "note": "Seule requête qui convertit (1 clic). Intent géo parfaitement matché — pos 2 sur la SERP affichée. À protéger absolument."
+          },
+          {
+            "query": "avocat violence psychologique",
+            "impressions": 55,
+            "ctr": 0,
+            "position": 6.6,
+            "intent_match": "partial",
+            "note": "Pos 4 sur la SERP capturée, mais 0 clic. Concurrents top 3 (sab-avocat, tomasini, cclavocats) mettent 'violence psychologique' DANS le title — ton title 'Violences Conjugales & Féminicide' ne contient pas 'psychologique', donc Google te montre une URL sans match exact mot-clé."
+          },
+          {
+            "query": "avocat spécialisé violence psychologique",
+            "impressions": 38,
+            "ctr": 0,
+            "position": 7.7,
+            "intent_match": "partial",
+            "note": "Idem : ranking correct mais title non aligné. Potentiel H2 dédié 'Violence psychologique' à créer."
+          },
+          {
+            "query": "avocat femme battue",
+            "impressions": 27,
+            "ctr": 0,
+            "position": 28.2,
+            "intent_match": "partial",
+            "note": "Pos 28 = page 3, terminologie 'femme battue' probablement absente du body (à vérifier)."
+          }
+        ],
+        "engagement_diagnosis": "Caveat temporel : March 2026 core update terminé il y a 37j — rankings probablement stabilisés mais à re-mesurer T+30. Sur les signaux Cooked (ground truth full volume, capture ✅✅) : scroll_avg 10.5% sur 28d (et 11.8% sur 7d) est très bas, dwell 41s médian, pages/session 1.71. Mais distribution très bimodale (evenness 0.09) : p75 dwell = 85.8s vs p25 = 7.5s — une partie du trafic lit vraiment, l'autre rebondit immédiatement. Combiné à scroll 10% et aucun H2 détecté, signal fort que la page perd les visiteurs faute de structure visible — ils ne voient pas de promesse de réponse en scrollant.",
+        "performance_diagnosis": "LCP/INP/CLS tous Good, MAIS TTFB p75 = 3755ms = Poor (seuil Google 800ms). Sur Wix avec un TTFB de cet ordre, c'est probablement du rendu serveur lent ou pas de cache edge. Impact NavBoost direct : Google pénalise les pages lentes au premier byte, et sur mobile (57% du trafic) le ressenti est aggravé. Action : vérifier la configuration Wix (cache, optimisation Velo si scripts custom), c'est un blocage transverse à toutes les pages du site, pas spécifique à celle-ci.",
+        "structural_gaps": "Trois manques critiques : (1) **Aucun H2/H3/H4 détecté dans le body** — page totalement plate, illisible pour le passage ranking system de Google et pour les scanners humains (explique le scroll 10% + evenness bimodale). Ajouter au minimum H2 'Violences psychologiques et harcèlement moral' (capture 'avocat violence psychologique' 55 imp + 'avocat spécialisé violence psychologique' 38 imp), H2 'Ordonnance de protection en urgence (48h)' (angle différenciant SERP), H2 'Femme battue : que faire dans les premières 24h ?' (capture 'avocat femme battue' 27 imp), H2 'FAQ' avec les questions du People Also Ask. (2) **Aucune info auteur/date détectée** = signal E-E-A-T très faible sur sujet YMYL juridique — ajouter bio Me Plouton, mention barreau, expérience violences conjugales (et lien vers /notre-cabinet et /nos-affaires). (3) **Word_count non capturé** (extraction body indisponible Sprint-14) — à benchmarker au prochain crawl vs médian juridique-FR ~1800 mots. Schema Attorney + LegalService + BreadcrumbList déjà présents = OK, ne pas dupliquer ; ajouter FAQPage schema quand FAQ créée.",
+        "funnel_assessment": "Page expertise au cœur du funnel défense pénale, bien reliée en inbound (6 liens éditoriaux dont 3 depuis posts féminicides Chahinez/Nasrine/Mérignac = silo thématique cohérent). Maillage éditorial sortant non capturé (snapshot pré-Sprint-9) — à réévaluer au prochain crawl. À ajouter en priorité au moment de la restructuration : liens contextuels vers /honoraires-rendez-vous (CTA), /indemnisation-des-victimes/victimes-de-delits-ou-crimes (parcours indemnisation post-pénal), /droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux (sortie civile parallèle), /notre-cabinet (E-E-A-T). Position CTA in-body non capturée — à intégrer au mot ~150 (above-the-fold mobile) ET en fin de page.",
+        "internal_authority_assessment": "6 inbound éditoriaux depuis 5 sources distinctes (home + page divorce + 3 posts féminicides) = page semi-hub thématique du silo 'violences conjugales' du cabinet. Statut à protéger : tout fix structurel doit conserver les ancres existantes ('violences conjugales', 'des féminicides', 'victime d'appels téléphoniques malveillants', 'violences faites aux femmes'). Levier d'amplification : ajouter 2-3 inbound depuis /defense-penale (racine) et /defense-penale/droit-penal (silo parent) qui ne linkent pas encore vers cette page expertise.",
+        "conversion_assessment": "0 phone / 0 email / 0 booking sur 34 sessions Cooked (capture ✅✅ ground truth, donc c'est vraiment 0, pas un manque de tracking). Le top_source est adwords/ppc + 0 CTA breakdown capturé = soit la page n'a pas de CTA in-body soit ils sont invisibles. Sur une page d'expertise YMYL traitant de violences conjugales (intent émotionnel fort, urgence ordonnance de protection), absence totale de conversion sur 34 sessions est anormal — CTA in-body 'Prendre RDV en urgence' / 'Appel confidentiel 24h' manquant prioritaire.",
+        "traffic_strategy_note": "top_source = adwords/ppc : la page est principalement servie par campagnes payantes, pas par SEO organique (9 sessions Google sur 34). Priorité dédoublée : (1) fix snippet pour récupérer le SEO organique, (2) auditer la cohérence landing page vs ad copy car 0 conversion sur trafic payant = budget brûlé.",
+        "device_optimization_note": "Split 57% mobile / 43% desktop, 0 conversion sur les 2 (19 mobile + 15 desktop), n_mobile<30 donc ratio non significatif. Lecture qualitative : avec scroll_avg 10.5% global et mobile majoritaire, l'absence de CTA above-the-fold mobile est probablement le bloqueur — à valider avec test de positionnement CTA au mot 100-150 du body.",
+        "outbound_leak_note": "1 clic vers justice.gouv.fr sur 28j — fuite externe normale et faible volume, pas un signal de fix prioritaire. À surveiller : si volume monte, intégrer in-page une mini-section 'cadre légal (articles 222-13, 222-14 CP)' avec citation directe pour retenir.",
+        "pogo_navboost_assessment": "Pogo_rate 22.2% (2 pogo / 9 google_sessions, 1 hard pogo) — au-dessus du seuil de 20%, MAIS échantillon n=9 trop faible pour conclure (CI ~±20pp). À surveiller comme hypothèse #2 derrière le snippet weakness : si le rate se confirme sur n≥30, ce sera la cause principale d'une éventuelle dérive de position dans les semaines à venir (post-March 2026 core update).",
+        "engagement_pattern_assessment": "Evenness 0.09 = distribution extrêmement bimodale : p75 dwell 85.8s (lecteurs engagés qui restent ~1min30) vs p25 7.5s (bounces immédiats). Croisé avec pogo_rate 22.2% (à surveiller, n=9 faible) : le problème n'est PAS uniquement la première seconde — il y a aussi une perte à mi-parcours. Hypothèse : intent mismatch partiel entre visiteurs cherchant info pratique (qui partent) vs visiteurs cherchant un avocat à contacter (qui lisent). À résoudre par structure H2 explicite donnant à chacun son chemin dès le scroll."
+      },
+      "duration_ms": 77775
+    }
+  ]
+}

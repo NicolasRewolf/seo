@@ -1,0 +1,67 @@
+{
+  "tldr": "Title trop générique sur SERP saturée de cabinets concurrents (Tomasini, Steyer, Del Vecchio) — pos 9 sur 'avocat violence conjugale' (330 imp) à 0% CTR. Action #1 : reframer title sur angle distinctif local + bénéfice (ex: 'Avocat Violences Conjugales Bordeaux — Ordonnance de protection 48h | Plouton').",
+  "intent_mismatch": "Intent dominant = commercial qualifié local (cabinets en top 3 sur 4/5 requêtes, Local Pack présent partout). Le H1 'Avocat violences conjugales et féminicides' est aligné, mais le title ne capitalise pas sur l'angle local Bordeaux pour les requêtes génériques 'avocat violence conjugale' (330 imp/3mo, pos 14.6) et 'avocat violences conjugales' (72 imp, pos 24.4) — la page se classe mieux sur la requête géo-spécifique (pos 6 sur 'bordeaux') que sur les génériques, ce qui suggère un déficit d'autorité thématique nationale qu'il faut compenser par un angle local fort.",
+  "snippet_weakness": "Sur 'avocat violence conjugale' (SERP commerciale), tu es pos 9 face à barreausolidarite.org (institutionnel), justifit.fr (annuaire), avocat-steyer.fr (Me Steyer = spécialiste reconnue, angle 'Défense Femmes Battues'), delvecchio-avocats.fr ('Cabinet spécialisé'). Ton meta tronqué ('Notre cabinet d…') est probablement coupé côté Google et n'expose AUCUN angle distinctif : ni nominatif (Me Plouton), ni preuve (affaires Chahinez/Mérignac/Nasrine que tu traites pourtant en blog), ni action concrète (ordonnance de protection). People Also Ask sur 3/5 requêtes = opportunité FAQ non exploitée.",
+  "hypothesis": "Snippet générique + page très peu structurée (aucun H2 détecté) sur une SERP saturée de cabinets à angle distinctif fort — le clic se fait sur le 1er cabinet qui donne un signal de spécialisation ou de preuve sociale, pas sur le 9e résultat indifférencié.",
+  "top_queries_analysis": [
+    {
+      "query": "avocat violence conjugale",
+      "impressions": 330,
+      "ctr": 0,
+      "position": 14.6,
+      "intent_match": "partial",
+      "note": "Volume principal (65% des impressions). Intent commercial national, mais tu rankes en bordure top 2 page. SERP dominée par institutionnels + cabinets à angle nominatif. 0 clic sur 330 imp = snippet invisible/non distinctif."
+    },
+    {
+      "query": "avocat violences conjugales",
+      "impressions": 72,
+      "ctr": 0,
+      "position": 24.4,
+      "intent_match": "partial",
+      "note": "Pos 24 = page 3, hors zone clic. Levier ranking avant CTR."
+    },
+    {
+      "query": "avocat violence conjugale bordeaux",
+      "impressions": 57,
+      "ctr": 1.75,
+      "position": 6,
+      "intent_match": "yes",
+      "note": "Seule requête qui convertit (1 clic). Intent géo parfaitement matché — pos 2 sur la SERP affichée. À protéger absolument."
+    },
+    {
+      "query": "avocat violence psychologique",
+      "impressions": 55,
+      "ctr": 0,
+      "position": 6.6,
+      "intent_match": "partial",
+      "note": "Pos 4 sur la SERP capturée, mais 0 clic. Concurrents top 3 (sab-avocat, tomasini, cclavocats) mettent 'violence psychologique' DANS le title — ton title 'Violences Conjugales & Féminicide' ne contient pas 'psychologique', donc Google te montre une URL sans match exact mot-clé."
+    },
+    {
+      "query": "avocat spécialisé violence psychologique",
+      "impressions": 38,
+      "ctr": 0,
+      "position": 7.7,
+      "intent_match": "partial",
+      "note": "Idem : ranking correct mais title non aligné. Potentiel H2 dédié 'Violence psychologique' à créer."
+    },
+    {
+      "query": "avocat femme battue",
+      "impressions": 27,
+      "ctr": 0,
+      "position": 28.2,
+      "intent_match": "partial",
+      "note": "Pos 28 = page 3, terminologie 'femme battue' probablement absente du body (à vérifier)."
+    }
+  ],
+  "engagement_diagnosis": "Caveat temporel : March 2026 core update terminé il y a 37j — rankings probablement stabilisés mais à re-mesurer T+30. Sur les signaux Cooked (ground truth full volume, capture ✅✅) : scroll_avg 10.5% sur 28d (et 11.8% sur 7d) est très bas, dwell 41s médian, pages/session 1.71. Mais distribution très bimodale (evenness 0.09) : p75 dwell = 85.8s vs p25 = 7.5s — une partie du trafic lit vraiment, l'autre rebondit immédiatement. Combiné à scroll 10% et aucun H2 détecté, signal fort que la page perd les visiteurs faute de structure visible — ils ne voient pas de promesse de réponse en scrollant.",
+  "performance_diagnosis": "LCP/INP/CLS tous Good, MAIS TTFB p75 = 3755ms = Poor (seuil Google 800ms). Sur Wix avec un TTFB de cet ordre, c'est probablement du rendu serveur lent ou pas de cache edge. Impact NavBoost direct : Google pénalise les pages lentes au premier byte, et sur mobile (57% du trafic) le ressenti est aggravé. Action : vérifier la configuration Wix (cache, optimisation Velo si scripts custom), c'est un blocage transverse à toutes les pages du site, pas spécifique à celle-ci.",
+  "structural_gaps": "Trois manques critiques : (1) **Aucun H2/H3/H4 détecté dans le body** — page totalement plate, illisible pour le passage ranking system de Google et pour les scanners humains (explique le scroll 10% + evenness bimodale). Ajouter au minimum H2 'Violences psychologiques et harcèlement moral' (capture 'avocat violence psychologique' 55 imp + 'avocat spécialisé violence psychologique' 38 imp), H2 'Ordonnance de protection en urgence (48h)' (angle différenciant SERP), H2 'Femme battue : que faire dans les premières 24h ?' (capture 'avocat femme battue' 27 imp), H2 'FAQ' avec les questions du People Also Ask. (2) **Aucune info auteur/date détectée** = signal E-E-A-T très faible sur sujet YMYL juridique — ajouter bio Me Plouton, mention barreau, expérience violences conjugales (et lien vers /notre-cabinet et /nos-affaires). (3) **Word_count non capturé** (extraction body indisponible Sprint-14) — à benchmarker au prochain crawl vs médian juridique-FR ~1800 mots. Schema Attorney + LegalService + BreadcrumbList déjà présents = OK, ne pas dupliquer ; ajouter FAQPage schema quand FAQ créée.",
+  "funnel_assessment": "Page expertise au cœur du funnel défense pénale, bien reliée en inbound (6 liens éditoriaux dont 3 depuis posts féminicides Chahinez/Nasrine/Mérignac = silo thématique cohérent). Maillage éditorial sortant non capturé (snapshot pré-Sprint-9) — à réévaluer au prochain crawl. À ajouter en priorité au moment de la restructuration : liens contextuels vers /honoraires-rendez-vous (CTA), /indemnisation-des-victimes/victimes-de-delits-ou-crimes (parcours indemnisation post-pénal), /droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux (sortie civile parallèle), /notre-cabinet (E-E-A-T). Position CTA in-body non capturée — à intégrer au mot ~150 (above-the-fold mobile) ET en fin de page.",
+  "internal_authority_assessment": "6 inbound éditoriaux depuis 5 sources distinctes (home + page divorce + 3 posts féminicides) = page semi-hub thématique du silo 'violences conjugales' du cabinet. Statut à protéger : tout fix structurel doit conserver les ancres existantes ('violences conjugales', 'des féminicides', 'victime d'appels téléphoniques malveillants', 'violences faites aux femmes'). Levier d'amplification : ajouter 2-3 inbound depuis /defense-penale (racine) et /defense-penale/droit-penal (silo parent) qui ne linkent pas encore vers cette page expertise.",
+  "conversion_assessment": "0 phone / 0 email / 0 booking sur 34 sessions Cooked (capture ✅✅ ground truth, donc c'est vraiment 0, pas un manque de tracking). Le top_source est adwords/ppc + 0 CTA breakdown capturé = soit la page n'a pas de CTA in-body soit ils sont invisibles. Sur une page d'expertise YMYL traitant de violences conjugales (intent émotionnel fort, urgence ordonnance de protection), absence totale de conversion sur 34 sessions est anormal — CTA in-body 'Prendre RDV en urgence' / 'Appel confidentiel 24h' manquant prioritaire.",
+  "traffic_strategy_note": "top_source = adwords/ppc : la page est principalement servie par campagnes payantes, pas par SEO organique (9 sessions Google sur 34). Priorité dédoublée : (1) fix snippet pour récupérer le SEO organique, (2) auditer la cohérence landing page vs ad copy car 0 conversion sur trafic payant = budget brûlé.",
+  "device_optimization_note": "Split 57% mobile / 43% desktop, 0 conversion sur les 2 (19 mobile + 15 desktop), n_mobile<30 donc ratio non significatif. Lecture qualitative : avec scroll_avg 10.5% global et mobile majoritaire, l'absence de CTA above-the-fold mobile est probablement le bloqueur — à valider avec test de positionnement CTA au mot 100-150 du body.",
+  "outbound_leak_note": "1 clic vers justice.gouv.fr sur 28j — fuite externe normale et faible volume, pas un signal de fix prioritaire. À surveiller : si volume monte, intégrer in-page une mini-section 'cadre légal (articles 222-13, 222-14 CP)' avec citation directe pour retenir.",
+  "pogo_navboost_assessment": "Pogo_rate 22.2% (2 pogo / 9 google_sessions, 1 hard pogo) — au-dessus du seuil de 20%, MAIS échantillon n=9 trop faible pour conclure (CI ~±20pp). À surveiller comme hypothèse #2 derrière le snippet weakness : si le rate se confirme sur n≥30, ce sera la cause principale d'une éventuelle dérive de position dans les semaines à venir (post-March 2026 core update).",
+  "engagement_pattern_assessment": "Evenness 0.09 = distribution extrêmement bimodale : p75 dwell 85.8s (lecteurs engagés qui restent ~1min30) vs p25 7.5s (bounces immédiats). Croisé avec pogo_rate 22.2% (à surveiller, n=9 faible) : le problème n'est PAS uniquement la première seconde — il y a aussi une perte à mi-parcours. Hypothèse : intent mismatch partiel entre visiteurs cherchant info pratique (qui partent) vs visiteurs cherchant un avocat à contacter (qui lisent). À résoudre par structure H2 explicite donnant à chacun son chemin dès le scroll."
+}

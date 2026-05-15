@@ -1,0 +1,99 @@
+{
+  "tldr": "Page pos 7 sur 'avocat trafic de stupéfiants' (480 imp/3mo, 0% CTR) : snippet générique noyé dans une SERP de cabinets parisiens hyper-spécialisés. Action #1 : reframer title en 'Avocat Trafic de Stupéfiants Bordeaux | Go Fast, JIRS, Bande Organisée' + meta avec preuve chiffrée (dossiers Air Cocaïne, JIRS Bordeaux).",
+  "intent_mismatch": "Intent 100% commercial qualifié : les 9 top requêtes (sauf 'cabinet plouton' brand) cherchent un avocat pénaliste défense — 'avocat trafic de stupéfiants' (480 imp, 90 vol FR), 'avocat spécialisé stupéfiant' (244 imp), 'meilleur avocat pour trafic de stupéfiants' (88 imp). La SERP confirme : top 10 = 100% cabinets d'avocats (avocatgoudard, gabeaud, dch-avocat, paganelli, curiel…), zéro .gouv/Wikipedia/justifit hors agrégateur. Intent commercial pur, le H1/title actuels sont alignés sur l'intent mais sous-différenciés.",
+  "snippet_weakness": "Title 'Avocat Trafic de Stupéfiant à Bordeaux | Cabinet Plouton' est le SEUL en pos 1-9 à mentionner Bordeaux — c'est une force locale mais une faiblesse nationale car 80% du volume FR est non-géolocalisé. Concurrents top 3 misent sur des angles forts : avocatgoudard.com = 'Expert en dossier' + autorité personnelle, avocat-gabeaud.fr = géo Paris 7 + 'pénaliste', justifit.fr = annuaire qui rassure par le choix. La meta Plouton est en réalité la PLUS riche du SERP ('Go Fast, réseau, détention provisoire, 24h/24') mais le title ne capitalise pas dessus. Featured Snippet présent sur 'avocat trafic de stupéfiant' (pris par avocat-gabeaud.fr) → CTR organique plafonné sur cette query, viser le délogement via FAQPage schema. PAA sur 5/5 top queries → opportunité de capter via H2 questions.",
+  "hypothesis": "Title trop générique + ancrage Bordeaux qui dilue sur 80% du volume non-géolocalisé, combiné à une absence totale de preuves d'autorité dans le snippet (alors que le cabinet a des affaires JIRS / Air Cocaïne qui le différencieraient massivement).",
+  "top_queries_analysis": [
+    {
+      "query": "avocat trafic de stupéfiants",
+      "impressions": 480,
+      "ctr": 0,
+      "position": 9.2,
+      "intent_match": "yes",
+      "note": "Top query commerciale (90 vol FR/mois, SOV 177% = sur-exposition). 0 clic sur 480 imp = snippet ne convertit pas en pos 7-9. Levier #1."
+    },
+    {
+      "query": "avocat spécialisé stupéfiant",
+      "impressions": 244,
+      "ctr": 0,
+      "position": 8.5,
+      "intent_match": "yes",
+      "note": "90 vol FR, SOV 90%. Mot 'spécialisé' absent du title — facile à intégrer."
+    },
+    {
+      "query": "avocat stupefiant",
+      "impressions": 200,
+      "ctr": 0,
+      "position": 7.6,
+      "intent_match": "yes",
+      "note": "170 vol FR, SOV 39% : marge de progression sur la requête sans accent (souvent mobile)."
+    },
+    {
+      "query": "avocat trafic de stupefiant",
+      "impressions": 198,
+      "ctr": 0,
+      "position": 6.7,
+      "intent_match": "yes",
+      "note": "Meilleure position du top 5, SOV 73%. CTR 0% en pos 6.7 est anormal → problème snippet pur."
+    },
+    {
+      "query": "avocat trafic de stupéfiant",
+      "impressions": 160,
+      "ctr": 0.63,
+      "position": 8.2,
+      "intent_match": "yes",
+      "note": "Seul CTR non-nul (1 clic). Featured Snippet pris par concurrent → CTR plafonné structurellement."
+    },
+    {
+      "query": "avocat pour affaire de stupéfiant",
+      "impressions": 125,
+      "ctr": 0,
+      "position": 6.9,
+      "intent_match": "yes",
+      "note": "Formulation 'pour affaire de' = intent défense réactive. À capter via H2 'Vous êtes mis en cause ?'."
+    },
+    {
+      "query": "cabinet plouton",
+      "impressions": 116,
+      "ctr": 0,
+      "position": 1.8,
+      "intent_match": "partial",
+      "note": "Brand en pos 1.8 avec 0% CTR : cette page n'est PAS la bonne destination brand (homepage devrait capter). Anomalie à investiguer."
+    },
+    {
+      "query": "avocat stupéfiants au volant nimes",
+      "impressions": 98,
+      "ctr": 0,
+      "position": 63.1,
+      "intent_match": "no",
+      "note": "Stupéfiants au volant ≠ trafic de stupéfiants + Nîmes ≠ Bordeaux. Pas un levier."
+    },
+    {
+      "query": "meilleur avocat pour trafic de stupéfiants",
+      "impressions": 88,
+      "ctr": 0,
+      "position": 8.3,
+      "intent_match": "yes",
+      "note": "Requête 'meilleur' = comparatif. Concurrent direct (nicolas-paganelli-avocat.fr) a positionné un title spécifiquement sur cette query."
+    },
+    {
+      "query": "avocat stupéfiants",
+      "impressions": 83,
+      "ctr": 0,
+      "position": 23.7,
+      "intent_match": "yes",
+      "note": "Pos 23 = page 3, hors zone de clic. À récupérer via consolidation contenu (1800+ mots)."
+    }
+  ],
+  "engagement_diagnosis": "Caveat temporel : March 2026 core update terminée il y a 37j, les rankings peuvent encore bouger — attendre stabilisation T+30 avant de mesurer l'impact des fixes. Données Cooked indisponibles (capture en cours). Néanmoins le scroll_avg 26.92% sur 81s d'active duration est un signal Sprint-pré-Cooked exploitable : les visiteurs lisent à peine plus d'un quart de la page avant de partir — soit la page est très longue et l'intro déçoit, soit la page est si courte qu'il n'y a plus rien à scroller passé l'intro. Pages/session 1.13 = quasi aucun visiteur ne va vers une autre page du site = funnel cassé.",
+  "performance_diagnosis": "CWV en cours de collecte (n/a) — à prioriser dans l'audit technique car page Wix (LCP souvent dégradé par chargement d'images/fonts cabinet d'avocats).",
+  "structural_gaps": "Extraction body indisponible (snapshot pré-Sprint-14), mais signaux convergents très forts : <page_outline> ne détecte AUCUN H2/H3/H4 (page non structurée), <images> 0 image, <author_eeat> aucun signal auteur/date — c'est critique en YMYL juridique où le Reliable information systems pondère lourdement l'autorité. Manques prioritaires : (1) bio Maître Plouton + barre / dates / affaires emblématiques (E-E-A-T), (2) H2 structurés sur 'Go Fast', 'Bande organisée', 'JIRS', 'Détention provisoire', 'ICO', 'Stupéfiants au volant' (qui couvrent les variantes de requêtes + PAA), (3) FAQPage schema pour capter le Featured Snippet pris par avocat-gabeaud.fr sur 'avocat trafic de stupéfiant', (4) Person schema lié à Attorney existant. Pas de risque de spam policy détecté.",
+  "funnel_assessment": "Maillage éditorial sortant non capturé (snapshot pré-Sprint-9) — réévaluer au prochain crawl. Néanmoins pages/session 1.13 indique factuellement que le funnel ne fonctionne pas : cible naturelle de cette page = https://www.jplouton-avocat.fr/honoraires-rendez-vous (CTA RDV), https://www.jplouton-avocat.fr/defense-penale/droit-penal (page parente), https://www.jplouton-avocat.fr/nos-affaires (preuve sociale Air Cocaïne / JIRS), https://www.jplouton-avocat.fr/notre-cabinet (E-E-A-T). À confirmer présence au prochain audit.",
+  "internal_authority_assessment": "Page hub à protéger : 10 inbound éditoriaux depuis 9 pages distinctes, toutes thématiquement alignées (posts d'affaires Air Cocaïne, Libourne-Castillon, Marseille-Corrèze, fusillade Lormont). Ancres variées et naturelles ('trafic de stupéfiants', 'expertise en droit pénal des stupéfiants', 'saisir le Cabinet'). C'est un signal d'autorité interne solide — les fixes (refonte title, ajout structure H2, FAQPage) ne doivent PAS casser l'URL : conserver /defense-penale/trafic-de-stupefiant tel quel pour préserver les 10 liens éditoriaux.",
+  "conversion_assessment": "Sous réserve de capture rate insuffisant (Cooked en démarrage). Aucun signal conversion lisible sur 28d. Sur une page YMYL défense pénale avec intent 'avocat pour me défendre' (urgence garde à vue mentionnée dans la meta), l'absence d'un CTA téléphone in-body above-the-fold + sticky mobile est probablement le levier #1 de conversion une fois le CTR remonté.",
+  "traffic_strategy_note": "Site_context montre google referral = 54% du trafic global (3366/6228) → priorité = CTR snippet, la bataille se joue dans la SERP Google. Direct 19% suggère une part brand récurrente à protéger côté homepage.",
+  "device_optimization_note": "Split device non significatif sur les conversions (Cooked indisponible), lecture qualitative seulement. Sur défense pénale (garde à vue, urgence), l'audience mobile est structurellement majoritaire — la meta 'Assistance 24h/24' implique un usage mobile prioritaire, click-to-call sticky mobile = must-have.",
+  "outbound_leak_note": "Pas de leak significatif détectable (aucun click sortant capturé sur 28d Cooked).",
+  "pogo_navboost_assessment": "Signal pogo non disponible (Cooked vient de démarrer). À surveiller en priorité au prochain audit : avec un CTR 78% sous benchmark en pos 7-9, si les rares clics qui arrivent pogo-stick, NavBoost va dérouter la page de manière cumulative et la sortir du top 10. Caveat : March 2026 core update terminée à 37j, les mouvements de ranking observables peuvent venir de la stabilisation post-update et pas des fixes — attendre T+30 avant de mesurer.",
+  "engagement_pattern_assessment": "Densité d'engagement non disponible (0 sessions captées Cooked). Le scroll_avg 26.92% combiné à 81s active suggère qualitativement que les visiteurs lisent l'intro puis abandonnent — pattern 'lecture courte puis sortie' typique d'une page sans accroche structurante ni jalons (H2, listes, CTA intermédiaires)."
+}

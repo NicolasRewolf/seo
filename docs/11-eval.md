@@ -190,3 +190,21 @@ A healthy run looks like :
   don't compare run N against run N-1 to flag "these 3 fields changed".
   If we need that, add an `eval:diff` script that diffs the per-case
   output JSONs.
+
+## Baseline reference
+
+`eval/baseline/v<N>-*` contains the most recent green-run snapshot per
+prompt version. Use it as the gold for textual diffing :
+
+```bash
+diff eval/baseline/v12-gav-duree-pos5-volume-output.json \
+     eval/results/<latest>/gav-duree-pos5-volume-output.json
+```
+
+The current baseline is **prompt v12, 5/5 cases, 27/27 assertions, run
+2026-05-15** (see `eval/baseline/v12-report.md`). When bumping to v13 :
+- Run `npm run eval`. If 5/5 still pass : promote the new run by copying
+  its outputs over `eval/baseline/v13-*`.
+- If any case fails : decide between real regression (revert / iterate)
+  or assertion drift (loosen the assertion + commit). Promote v13 baseline
+  only when 5/5 pass again.

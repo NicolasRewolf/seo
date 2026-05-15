@@ -1,0 +1,83 @@
+{
+  "tldr": "Page hub #2 SERP avec 38k imp/mois mais CTR 4.67% vs 7.22% attendu : title trop générique vs service-public.gouv.fr en #1. Action : reframer title en 'Durée garde à vue 2026 : 24h, 48h, 96h, 144h — Vos droits à chaque palier' pour ajouter angle 'droits' qui distingue d'un site institutionnel.",
+  "intent_mismatch": "L'intent dominant est informationnel pur (top requêtes 'durée garde à vue' 880/mo, 'combien de temps dure une garde à vue' 390/mo, 'garde à vue durée' 880/mo) et la page y répond correctement. Mais la SERP confirme : top 3 = service-public.gouv.fr, jplouton (toi), village-justice.com — aucun cabinet en #1, l'intent est 100% informationnel/éducatif. Le cadrage actuel matche bien l'intent, pas de mismatch sémantique — le problème est ailleurs (CTR + funnel).",
+  "snippet_weakness": "Le title actuel 'Durée de la garde à vue : 24h, 48h, 96h... Combien de temps maximum ?' est purement descriptif et factuel, exactement comme service-public.gouv.fr ('Garde à vue') et village-justice.com ('La garde à vue en 10 questions'). En position #2 systématique, tu perds le clic au profit du .gouv.fr qui inspire l'autorité institutionnelle. Featured Snippet capté par service-public.gouv.fr sur 4 des 5 top queries → ton CTR organique est plafonné mécaniquement. Aucun angle distinct (urgence, droits, défense, 2026, conseil avocat) dans ton snippet pour justifier de cliquer #2 vs #1 institutionnel. La meta description répète le title sans ajouter de promesse (pas de mention 'rédigé par avocat pénaliste', 'droits concrets', 'erreurs procédurales').",
+  "hypothesis": "Le sous-CTR (-35.3%) vient du Featured Snippet capté par service-public.gouv.fr couplé à un title sans angle distinctif d'avocat (pas d'EEAT visible dans le snippet), pas d'un problème de contenu ni d'intent.",
+  "top_queries_analysis": [
+    {
+      "query": "durée garde à vue",
+      "impressions": 1703,
+      "ctr": 11.92,
+      "position": 3,
+      "intent_match": "yes",
+      "note": "Volume FR 880/mo, SOV 64.5% — page capte déjà l'essentiel. CTR 11.92% en pos 3 est correct mais plafonné par Featured Snippet service-public.gouv.fr."
+    },
+    {
+      "query": "garde a vue temps",
+      "impressions": 1567,
+      "ctr": 7.47,
+      "position": 2.8,
+      "intent_match": "yes",
+      "note": "Volume FR 480/mo, SOV >100% (page sur-capte la demande mesurée). CTR sous attendu pour pos 2.8 — Featured Snippet pris par service-public."
+    },
+    {
+      "query": "garde a vue",
+      "impressions": 1265,
+      "ctr": 4.9,
+      "position": 4.1,
+      "intent_match": "partial",
+      "note": "Volume FR 9 900/mo (la requête mère). SOV seulement 4.3% — gisement énorme inexploité. Page 'durée' ne matche pas l'intent générique 'garde à vue' (où Wikipedia + service-public dominent). Créer/optimiser une page pilier 'Garde à vue : tout comprendre' serait plus puissant que d'essayer de capter avec cette page."
+    },
+    {
+      "query": "combien de temps dure une garde à vue",
+      "impressions": 1023,
+      "ctr": 5.96,
+      "position": 2.8,
+      "intent_match": "yes",
+      "note": "Volume FR 390/mo, SOV 87.4%. CTR pos 2.8 anormalement bas — la formulation interrogative du title pourrait justement match cette query, à exploiter pour un Featured Snippet ciblé."
+    },
+    {
+      "query": "garde à vue moins de 24h",
+      "impressions": 791,
+      "ctr": 2.78,
+      "position": 4.5,
+      "intent_match": "partial",
+      "note": "Volume FR 320/mo. Page est #1 sur cette query mais CTR de 2.78% catastrophique — title ne mentionne pas 'moins de 24h' ni l'angle 'sortir avant'. Section dédiée manquante dans page_outline."
+    },
+    {
+      "query": "peut-on sortir de garde à vue la nuit",
+      "impressions": 693,
+      "ctr": 1.44,
+      "position": 9,
+      "intent_match": "no",
+      "note": "Volume FR 880/mo. Intent ≠ durée légale → intent 'libération conditions horaires'. Pas de section dédiée dans la page. Soit créer un article dédié, soit ajouter H2 'Peut-on sortir de garde à vue la nuit ? Horaires de levée'."
+    },
+    {
+      "query": "garde à vue durée",
+      "impressions": 639,
+      "ctr": 10.33,
+      "position": 2.5,
+      "intent_match": "yes",
+      "note": "Volume FR 880/mo, SOV 24.2%. Bon CTR en pos 2.5, performe le mieux."
+    },
+    {
+      "query": "temps maximum en cellule de dégrisement",
+      "impressions": 501,
+      "ctr": 0.6,
+      "position": 7.6,
+      "intent_match": "partial",
+      "note": "Volume FR 210/mo. CTR 0.60% en pos 7.6 — la page mentionne le dégrisement en passant (1 paragraphe) mais aucun H2 dédié. Opportunité de capter via H2 'Temps maximum en cellule de dégrisement' avec offset ~450."
+    }
+  ],
+  "engagement_diagnosis": "Pages/session 1.03 (quasi nul → aucun funnel vers expertise), scroll_avg 24.3% (très bas, scroll complet seulement 0.7% des sessions), 0 clics sortants sur 550 sessions. Dwell 78s avec evenness 0.15 → distribution bimodale (p25=15.8s vs p75=108s) : une partie des visiteurs lit, l'autre rebondit. Sur mobile 78% + 2588 mots, les utilisateurs trouvent leur réponse dans les premières lignes (Featured Snippet inversé : on lit ta réponse mais on quitte) et ne descendent pas. C'est un signal de page satisfaisante en surface mais qui ne RETIENT pas ni ne FUNNEL.",
+  "performance_diagnosis": "LCP 1283ms Good, TTFB 354ms Good. Mais INP 288ms (Needs Improvement, seuil 200ms) et CLS 0.160 (Needs Improvement, seuil 0.1) sont problématiques. CLS 0.160 sur mobile-dominant (78%) explique partiellement le scroll faible : les sauts de mise en page Wix (likely le tableau récapitulatif + images injectées tardivement) dégradent l'expérience. Action : fixer dimensions explicites sur l'image body + container du tableau pour stabiliser CLS sous 0.1.",
+  "structural_gaps": "Word count 2588 mots > benchmark juridique-FR 1800 → contenu substantiel, pas thin. MAIS : (1) **bug d'extraction grave** — chaque ligne du tableau et chaque bullet de liste apparaît DUPLIQUÉE dans le body brut (ex: 'En cas d'interpellation dans la rue...' x2, lignes du tableau x2). Si c'est rendu ainsi côté DOM utilisateur, c'est un signal qualité dégradé voire pattern proche de **Scaled content abuse** (contenu dupliqué dans la même page) à investiguer en priorité absolue. (2) Aucun schema JSON-LD : manque FAQPage (les 5 top queries sont des questions, opportunité Featured Snippet directe) + Article + LegalService. (3) Byline auteur ABSENT sur YMYL juridique → fort risque sur **Reliable Information Systems** (le système Google qui élève l'autorité sur YMYL). (4) Sections manquantes vs queries à fort volume : H2 dédié 'Peut-on sortir de garde à vue la nuit ?' (693 imp pos 9 → 880/mo FR), H2 'Temps maximum en cellule de dégrisement' (501 imp pos 7.6), H2 'Garde à vue moins de 24h : libération anticipée' (791 imp pos 4.5). (5) Conclusion mal hiérarchisée : ### H3 enfant de ## H2 'Que se passe-t-il si...' au lieu de ## H2 autonome.",
+  "funnel_assessment": "Funnel cassé. La page a 6 liens éditoriaux vers /defense-penale/droit-penal (bon) et 1 vers /honoraires-rendez-vous (le CTA conversion), mais TOUS placés dans les 30% supérieurs ou à 80%+ du body. Avec scroll_avg 24.3%, aucun de ces liens n'est exposé. Maillons manquants vers le catalogue : (a) lien contextuel vers https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant dans la section 'Criminalité organisée et trafic de stupéfiants' (offset 1045) — section parfaitement alignée et actuellement orpheline ; (b) lien vers https://www.jplouton-avocat.fr/defense-penale/proces-criminel dans la section 'prolongations exceptionnelles' (offset 993) ; (c) repositionner le CTA conversion /honoraires-rendez-vous de l'offset ~2090 vers offset ~600 (avant la section 48h) en encart 'Garde à vue en cours ? Assistance Bordeaux 24/7' — pour qu'il soit dans la zone effectivement scrollée par le p75 (108s de dwell).",
+  "internal_authority_assessment": "4 inbound éditoriaux depuis 4 pages distinctes toutes thématiquement cohérentes (/mes-droits-en-garde-a-vue, /la-garde-à-vue-définition, /nullité-de-la-poursuite, /surpopulation-carcérale) → position de hub thématique secondaire sur le cluster 'garde à vue'. Statut correct mais sous-exploité : à renforcer en ajoutant 2-3 inbounds depuis les articles existants sur droits/procédure pénale qui ne linkent pas encore, pour consolider le PageRank interne sur cette page qui capte déjà 38k imp/mois.",
+  "conversion_assessment": "Sous réserve que Cooked tourne depuis 9 jours seulement : 0 phone / 0 email / 0 booking sur 550 sessions, et 0 click sur l'unique CTA conversion in-body ('Contactez le Cabinet Plouton' à l'offset ~2090, soit ~80% du body). Avec un scroll_avg de 24.3%, ce CTA est mort dans 95%+ des sessions — il n'a quasi jamais été VU. La page ne convertit pas parce que les CTAs ne sont pas dans le champ visuel des lecteurs.",
+  "traffic_strategy_note": "Top referrer = www.google.com (organic dominant cohérent avec 38k imp/mois GSC) → priorité absolue = CTR snippet + maillage funnel interne, la bataille se joue dans la SERP Google et dans la rétention post-clic.",
+  "device_optimization_note": "78% mobile + scroll_avg 24.3% + 0 CTA click sur n_mobile=426 (échantillon solide) → mobile-first impératif. Le CTA RDV unique est à 80% du body, donc invisible sur mobile où l'utilisateur ne descend pas. Action prioritaire : insérer un CTA in-body 'Assistance immédiate garde à vue Bordeaux' sticky/in-flow avant l'offset 600 (avant la section 48h, soit ~25% du body, dans la zone effectivement scrollée).",
+  "outbound_leak_note": "Pas de leak significatif (0 click sortant sur 28d) — mais c'est précisément le problème inverse : la page ne FUNNEL pas vers les pages expertise internes. Aucune fuite externe à colmater, tout le travail est sur la rétention interne.",
+  "pogo_navboost_assessment": "Pogo_rate 10.5% sur n=373 google_sessions (échantillon solide) → engagement Google satisfaisant, la page ne match pas mal l'intent dans les 10 premières secondes. Ce n'est PAS la cause #1 du sous-CTR. Le problème est en amont (clic non donné dans la SERP) pas en aval (clic regretté). À protéger lors des fixes.",
+  "engagement_pattern_assessment": "Evenness 0.15 = distribution très bimodale : p25=15.8s (quart des visiteurs partent immédiatement, satisfaits par le H1/intro qui répond '24h') vs p75=108s (quart lisent vraiment). À croiser avec pogo 10.5% (correct) : le problème n'est pas la première seconde mais la mi-page — les lecteurs engagés décrochent vers 1-2 min, probablement au tableau récapitulatif (offset 1428) qui est massivement dupliqué/cassé visuellement (chaque cellule apparaît 2x dans le body brut)."
+}

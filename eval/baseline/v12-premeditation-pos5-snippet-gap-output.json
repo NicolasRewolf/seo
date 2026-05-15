@@ -1,0 +1,99 @@
+{
+  "tldr": "Title purement définitionnel sur des requêtes lexicales (590-720 vol/mois sur 'prémédité def/définition') où le SERP est dominé par Larousse/CNRTL/Légifrance. CTR 1.42% vs 3.64% attendu. Action #1 : reframer title sur l'angle avocat pénaliste + conséquences (assassinat, perpétuité) pour sortir du combat dictionnaire.",
+  "intent_mismatch": "Mismatch partiel : la page cible un intent juridique-stratégique (titre 'définition ET conséquences juridiques') mais 4 des 5 top requêtes en volume ('prémédité', 'prémédité def', 'premeditation', 'prémédité définition' = ~3 000 imp/mois cumulées) sont des recherches purement lexicales/dictionnaire. Le SERP le confirme brutalement : sur 'prémédité' et 'prémédité def', le top 5 est 100% dictionnaires (Larousse, Linternaute, CNRTL, Robert, Académie française) avec Featured Snippet pris par Larousse — un cabinet d'avocats n'a aucune légitimité à se battre là. En revanche sur 'meurtre avec préméditation' (210 vol, intent qualifié), la page est en position 1 avec Featured Snippet : c'est LE vrai créneau commercial.",
+  "snippet_weakness": "Le snippet actuel ('définition juridique, ses conséquences (assassinat) et les stratégies de défense') est correct sur l'angle avocat mais noyé en position 3-4 derrière Légifrance (pos 1, source officielle imbattable), CNRTL/Wikipedia (pos 2-4). Aucun concurrent cabinet en top 5 sur 'préméditation' — donc l'angle 'avocat pénaliste Bordeaux + défense' n'est pas surexploité, il est sous-exploité dans le title. Larousse couvre le lexical, Légifrance couvre l'article 132-72 brut, Wikipedia capte l'encyclopédique : ton title n'a pas d'angle distinct car il commence par 'définition' (terrain perdu d'avance) au lieu de l'angle bénéfice/risque ('assassinat', 'perpétuité', 'requalification', 'stratégie de défense'). Featured Snippet pris par toi sur 'meurtre avec préméditation' = preuve que l'angle juridique fonctionne quand l'intent matche.",
+  "hypothesis": "Le title commence par 'définition' et entre en compétition frontale perdante avec Larousse/Légifrance/Wikipedia sur des requêtes lexicales à fort volume, gâchant le CTR là où la page est bien positionnée (pos 5).",
+  "top_queries_analysis": [
+    {
+      "query": "préméditation",
+      "impressions": 2956,
+      "ctr": 0.37,
+      "position": 5.5,
+      "intent_match": "partial",
+      "note": "590 vol/mois, SOV 167% (sur-exposée vs demande). SERP dominé par Légifrance/CNRTL/Wikipedia — intent mixte lexical+juridique. CTR catastrophique (0.37%) car snippet 'définition' n'est pas distinctif en pos 3."
+    },
+    {
+      "query": "prémédité",
+      "impressions": 2502,
+      "ctr": 0.08,
+      "position": 5.5,
+      "intent_match": "no",
+      "note": "590 vol/mois. SERP 100% dictionnaires + Featured Snippet Larousse → intent lexical pur. Un cabinet d'avocats ne convertira jamais ici. CTR 0.08% confirme : ces impressions sont du bruit, ne pas optimiser pour cette requête."
+    },
+    {
+      "query": "prémédité def",
+      "impressions": 1227,
+      "ctr": 0,
+      "position": 7.3,
+      "intent_match": "no",
+      "note": "720 vol/mois. 0 clic. Intent purement dictionnaire (Featured Snippet Larousse). Abandonner cette requête, ne pas la cibler."
+    },
+    {
+      "query": "premeditation",
+      "impressions": 864,
+      "ctr": 0.46,
+      "position": 7.6,
+      "intent_match": "partial",
+      "note": "210 vol/mois, SOV 137%. Variante sans accent, SERP identique à 'préméditation'. Même diagnostic."
+    },
+    {
+      "query": "meurtre avec préméditation",
+      "impressions": 502,
+      "ctr": 0.6,
+      "position": 4.9,
+      "intent_match": "yes",
+      "note": "210 vol/mois. INTENT QUALIFIÉ : la page est en pos 1 avec Featured Snippet (cf SERP). CTR 0.60% en moyenne sur 4.9 = anomalie — vérifier si la pos moyenne tire vers le bas (autres mots-clés associés). C'est LA requête à protéger et amplifier."
+    },
+    {
+      "query": "préméditation def",
+      "impressions": 471,
+      "ctr": 0.85,
+      "position": 5.9,
+      "intent_match": "partial",
+      "note": "720 vol/mois mais CTR très bas — SERP dictionnaires dominent."
+    },
+    {
+      "query": "premedite",
+      "impressions": 440,
+      "ctr": 0,
+      "position": 6.5,
+      "intent_match": "no",
+      "note": "0 clic. Variante lexicale, intent dictionnaire."
+    },
+    {
+      "query": "prémédité définition",
+      "impressions": 410,
+      "ctr": 0.24,
+      "position": 6.5,
+      "intent_match": "no",
+      "note": "Intent dictionnaire pur, à dé-prioriser."
+    },
+    {
+      "query": "préméditation définition",
+      "impressions": 398,
+      "ctr": 1.01,
+      "position": 7.3,
+      "intent_match": "partial",
+      "note": "Légèrement mieux mais reste lexical."
+    },
+    {
+      "query": "préméditation code pénal",
+      "impressions": 327,
+      "ctr": 4.59,
+      "position": 3.9,
+      "intent_match": "yes",
+      "note": "70 vol/mois mais CTR 4.59% = au-dessus benchmark. INTENT JURIDIQUE QUALIFIÉ. Petit volume mais haute qualité — la page convertit bien quand l'intent matche le cadrage juridique."
+    }
+  ],
+  "engagement_diagnosis": "Caveat temporel : la March 2026 core update s'est terminée il y a 37j, les rankings peuvent encore bouger légèrement, mesurer T+30 après fixes. Cooked en phase d'amorçage (9.2j) mais verdict ground truth. Signaux mitigés : scroll_avg 20.8% très faible (sur 28d) MAIS dwell median=45s et p75=108s — distribution bimodale (evenness 0.14) confirmée : un sous-groupe lit vraiment, l'autre rebondit vite. Pages/session 1.02 + 0 clic sortant interne = la page est un cul-de-sac funnel total. C'est cohérent avec l'absence totale de liens internes sortants détectés.",
+  "performance_diagnosis": "ALERTE rouge : LCP 24.6s (Poor, 10× le seuil 2.5s) et TTFB 2.97s (Poor) — la page est techniquement quasi-inutilisable. Impact NavBoost direct : Google rétrograde activement les pages avec LCP > 4s, et 24s est aberrant (probablement image hero Wix non optimisée + JS Wix bloquant). Action prioritaire #1 technique : auditer le LCP element (vraisemblablement une image Wix non lazy + non WebP) et le TTFB (hébergement Wix mutualisé — peu de leviers, mais activer CDN/cache si pas fait). Sans ce fix, aucune optimisation snippet ne tiendra à long terme.",
+  "structural_gaps": "Manques structurels MAJEURS : (1) aucun H2/H3/H4 détecté dans <page_outline> — la page est un bloc de texte plat, illisible en scan mobile, ce qui explique scroll_avg 20.8% ; (2) <author_eeat> vide alors qu'on est en YMYL juridique pur — signal critique pour le système Reliable Information Systems de Google (pages juridiques YMYL doivent afficher auteur expert, date, sources) ; (3) aucune image — perte d'opportunité Image Search mais aussi de balisage visuel pour aérer le texte ; (4) word_count indisponible (content_snapshot manquant) mais la SERP top 10 (Wikipedia, cabinetaci.com, mce-avocat.fr) suggère que les concurrents avocats développent 1500-2500 mots structurés — benchmark juridique-FR médian ~1800 mots ; (5) schema FAQPage présent ✅ mais devrait être enrichi avec LegalService + Article + Person (auteur) pour appuyer E-E-A-T. Per la nouvelle guidance Google Search Central du 2026-05-15 sur l'optimisation pour Generative AI, le contenu 'valuable, unique, non-commodity' est explicitement requis — une page sans auteur, sans structure, sans angle distinct vs Wikipedia/Larousse risque d'être considérée comme commodity.",
+  "funnel_assessment": "Funnel TOTALEMENT cassé : 0 lien interne sortant détecté sur une page qui reçoit 3 368 vues cumulées et capte un intent juridique qualifié sur 'meurtre avec préméditation' (pos 1, Featured Snippet) et 'préméditation code pénal' (CTR 4.59%). Maillons manquants impératifs à ajouter in-body : (a) lien contextuel vers https://www.jplouton-avocat.fr/defense-penale/proces-criminel (cour d'assises = juridiction de l'assassinat) ; (b) lien vers https://www.jplouton-avocat.fr/defense-penale/droit-penal pour l'expertise racine ; (c) lien vers https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides (les féminicides sont souvent qualifiés assassinat) ; (d) CTA conversion vers https://www.jplouton-avocat.fr/honoraires-rendez-vous en fin de section 'conséquences juridiques' ; (e) lien trust vers https://www.jplouton-avocat.fr/nos-affaires (le cabinet a plaidé des affaires d'assassinat documentées, cf. inbound depuis /post/assassinat-à-commensacq et /post/assassinat-sur-conjoint). Sans content_snapshot on ne peut pas positionner l'offset précis mais cible : 1 lien expertise au tiers de l'article, 1 CTA aux 2/3, 1 trust en bas.",
+  "internal_authority_assessment": "3 inbound éditoriaux depuis 3 affaires emblématiques (/agression-machette-yser, /assassinat-commensacq, /assassinat-conjoint) — position standard, ni orpheline ni hub. Signal intéressant : les pages d'affaires plaidées par Me Plouton pointent ICI pour expliquer la préméditation = la page sert de référence pédagogique au sein du site. Levier inexploité : ces inbounds prouvent l'expertise terrain de l'auteur, ce qui DOIT remonter dans <author_eeat> (bio Me Plouton + lien vers /nos-affaires) pour activer pleinement le système Reliable Information Systems sur YMYL juridique.",
+  "conversion_assessment": "0 phone / 0 email / 0 booking sur 68 sessions (data_quality_check verdict ✅ ground truth). Cohérent avec le diagnostic <cta_per_device> : la page n'a probablement aucun CTA in-body (ni outbound interne détecté). C'est un article informationnel pur qui ne funnel vers rien — perte totale du capital trafic (3 368 vues cumulées, 0 conversion). Action : ajouter CTA in-body 'Mis en cause pour assassinat ou meurtre prémédité ? Contactez Me Plouton' avec lien vers /defense-penale/proces-criminel + bouton vers /honoraires-rendez-vous.",
+  "traffic_strategy_note": "Top referrer = google.com (organique pur sur cette page d'après <traffic_provenance> et site_context) → priorité absolue = CTR snippet (la bataille se joue dans la SERP Google) + fix LCP pour éviter le décrochage NavBoost.",
+  "device_optimization_note": "53% mobile / 46% desktop avec 0 CTA click sur les 2 devices (n_mobile=36, n_desktop=31) — split device non significatif pour les conversions car la page n'a vraisemblablement pas de CTA in-body. Lecture qualitative : avec scroll_avg 20.8% et un audience mobile majoritaire, tout CTA ajouté doit être placé above-the-fold mobile OU à offset ~25-30% du body maximum.",
+  "outbound_leak_note": "1 clic vers courdecassation.fr sur 28j — fuite externe normale et légitime (autorité juridique officielle), pas un signal de fix prioritaire. Vérifier toutefois que cette citation est bien doublée d'un lien interne vers /nos-affaires ou /defense-penale/proces-criminel pour ne pas laisser fuir 100% de l'autorité.",
+  "pogo_navboost_assessment": "Pogo_rate 5.9% sur n=34 google_sessions (échantillon limite, à surveiller mais significatif) = engagement Google satisfaisant — la page ne déclenche PAS de signal NavBoost négatif immédiat malgré son LCP catastrophique (probablement parce que le contenu textuel charge avant le LCP element). Bonne nouvelle : le ranking pos 5.2 est défendable, le levier est bien le CTR snippet et non la rétention 10s.",
+  "engagement_pattern_assessment": "Evenness 0.14 = distribution très bimodale confirmée : la page retient un sous-groupe (p75=108s, dwell 7d=54s en hausse) mais en perd un autre très tôt (p25=15s). Croisé avec pogo_rate 5.9% (sain), le problème N'EST PAS la première seconde — c'est la mi-page : les visiteurs ouvrent, lisent l'intro juridique, puis abandonnent vers 15-30s probablement parce qu'aucune structure H2/H3 ne leur permet de scanner (page non structurée, scroll 3.35%). Signal d'intent mismatch partiel : ceux qui cherchent du dictionnaire repartent, ceux qui cherchent du juridique restent."
+}
