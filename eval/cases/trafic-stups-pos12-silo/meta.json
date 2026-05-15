@@ -1,0 +1,8 @@
+{
+  "case_id": "trafic-stups-pos12-silo",
+  "what": "Pos 12.18, silo /défense-pénale/ (not /post/). Tests silo treatment + ranking-improvement (not just CTR) fixes.",
+  "source_finding_id": "5665d5c3-a9a9-4746-9dec-86f9afee5aa9",
+  "page_url": "https://www.jplouton-avocat.fr/défense-pénale/trafic-de-stupéfiant",
+  "captured_at": "2026-05-15T21:51:30.396Z",
+  "prompt_version_at_capture": 12
+}

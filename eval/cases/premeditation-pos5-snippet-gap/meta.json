@@ -1,0 +1,8 @@
+{
+  "case_id": "premeditation-pos5-snippet-gap",
+  "what": "Pos 5, CTR halved (1.42 vs 3.64), scroll 3.35%. Tests joint snippet + above-fold engagement diagnosis.",
+  "source_finding_id": "6b5ddb7d-a5e1-4fa5-8f2d-2b21cf23929b",
+  "page_url": "https://www.jplouton-avocat.fr/post/la-préméditation-en-droit-pénal-français-définition-et-conséquences-juridiques",
+  "captured_at": "2026-05-15T21:50:43.447Z",
+  "prompt_version_at_capture": 12
+}

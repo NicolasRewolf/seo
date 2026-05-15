@@ -1,0 +1,36 @@
+{
+  "case_id": "trafic-stups-pos12-silo",
+  "what": "Pos 12.18, silo expertise page /défense-pénale/trafic-de-stupéfiant (not /post/). SERP saturated with COMPETITOR LAW FIRMS (Gabeaud, Paganelli, Zerbib, DCH) — pure commercial intent, zero institutional sources. Tests silo treatment + recognition that the page must compete on lawyer expertise differentiation, not on definitional content.",
+  "asserts": [
+    {
+      "field": "tldr",
+      "kind": "min_length",
+      "length": 80,
+      "why": "Substantive synthesis required."
+    },
+    {
+      "field": "intent_mismatch",
+      "kind": "must_contain_any",
+      "patterns": ["commercial", "transactionnel", "avocat", "cabinet", "concurrent", "expertise"],
+      "why": "Top 5 SERP positions all held by lawyer firms — the page faces commercial-intent SERP, not informational. A diagnosis that misses this proposes content/definitional fixes when the real lever is positioning differentiation."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["gabeaud", "paganelli", "zerbib", "goudard", "dch", "cabinet", "concurrent", "avocat"],
+      "why": "Naming at least one lawyer-competitor anchors the snippet diagnosis in real differentiation work — generic 'meilleur snippet' advice without competitive context is useless."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["title", "meta", "snippet", "angle", "bénéfice", "claim", "expertise"],
+      "why": "Must point at a surface-level lever (title/meta/angle) — page is silo expertise so structural changes are not the right action vs snippet rewrite."
+    },
+    {
+      "field": "conversion_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["CTA", "cta", "rdv", "rendez-vous", "contact", "honoraires", "in-body"],
+      "why": "Commercial intent + 81s dwell + 0 conversion = CTA placement is the funnel lever — diagnosis must propose CTA work."
+    }
+  ]
+}

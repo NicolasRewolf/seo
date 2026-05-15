@@ -1,0 +1,8 @@
+{
+  "case_id": "arse-pos8-pogo-stick",
+  "what": "Pos 7.78, pps 0.95, scroll 1.37% (worst engagement, 24k impr). Tests pogo-stick / wrong-intent diagnosis at scale.",
+  "source_finding_id": "79adbc7f-aa98-44fa-a516-e47a5348bdf2",
+  "page_url": "https://www.jplouton-avocat.fr/post/l-assignation-à-résidence-sous-surveillance-électronique-arse-comprendre",
+  "captured_at": "2026-05-15T21:51:03.760Z",
+  "prompt_version_at_capture": 12
+}

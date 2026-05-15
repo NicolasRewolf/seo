@@ -458,7 +458,11 @@ async function fetchGscClicksLast28d(page: string): Promise<number | null> {
   return Math.round(Number(r.clicks) * (28 / days));
 }
 
-async function callDiagnosticLLM(prompt: string, extraMessages: Array<{ role: 'user' | 'assistant'; content: string }> = []): Promise<DiagnosticPayload> {
+// Vague-3 eval framework reads this directly to replay frozen prompts
+// against the current LLM with the EXACT same call params (model, max_tokens,
+// JSON unfencing, schema validation). Don't fork a copy in the eval script
+// — any divergence would silently invalidate the eval.
+export async function callDiagnosticLLM(prompt: string, extraMessages: Array<{ role: 'user' | 'assistant'; content: string }> = []): Promise<DiagnosticPayload> {
   // AMDEC M9 — retry exponentiel sur 429/5xx Anthropic (cf. anthropic.ts).
   const res = await messagesCreateWithRetry({
     model: model(),

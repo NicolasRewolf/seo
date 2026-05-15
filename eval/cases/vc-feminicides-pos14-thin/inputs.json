@@ -1,0 +1,1486 @@
+{
+  "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+  "avg_position": 13.94,
+  "position_drift": null,
+  "impressions_monthly": 507,
+  "ctr_actual": 0.0066,
+  "ctr_expected": 0.0175,
+  "ctr_gap_pct": 62.31,
+  "pages_per_session": 1.71,
+  "avg_duration_seconds": 377,
+  "scroll_depth": 40,
+  "scroll_complete_pct": 0,
+  "outbound_clicks": 1,
+  "lcp_p75_ms": 2418.5,
+  "inp_p75_ms": 96,
+  "cls_p75": 0.08,
+  "ttfb_p75_ms": 3754.85,
+  "current_title": "Avocat Violences Conjugales & Féminicide à Bordeaux | Cabinet Plouton",
+  "current_meta": "Victime de violences conjugales ? Notre cabinet d",
+  "current_h1": "Avocat violences conjugales et féminicides",
+  "current_intro": "Menu Close Affaires Médias Ressources Équipe Search Contactez - nous Accueil Je prends rendez-vous Équipe Rendez-vous, accès & honoraires Horaires & accès Honoraires Horaires & accès Honoraires La défense pénale Droit Pénal Procès Criminels Trafic de stupéfiants Violences conjugales et feminicides Droit pénal des affaires Droit Pénal Procès Criminels Trafic de stupéfiants Violences conjugales et feminicides Droit pénal des affaires L'indemnisation des victimes Victimes de délits ou crimes Accidents de la route Droit et accidents du travail Accidents et erreurs médicales Accidents de la vie courante Victimes de délits ou crimes Accidents de la route Droit et accidents du travail",
+  "current_schema_jsonld": [
+    {
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.8368,
+        "longitude": -0.569
+      },
+      "url": "https://www.jplouton-avocat.fr",
+      "name": "Cabinet Plouton - Avocat à Bordeaux",
+      "@type": "Attorney",
+      "image": "https://static.wixstatic.com/media/d05c9e_75eb8b18d2b247eab8afa1356a161f79~mv2.jpg",
+      "sameAs": [
+        "https://www.instagram.com/jploutonavocat/",
+        "https://www.facebook.com/jploutonavocat/",
+        "https://www.linkedin.com/in/julien-plouton-12255b37/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "postalCode": "33000",
+        "addressRegion": "Nouvelle-Aquitaine",
+        "streetAddress": "45 Cours d'Alsace-et-Lorraine",
+        "addressCountry": "FR",
+        "addressLocality": "Bordeaux"
+      },
+      "@context": "https://schema.org",
+      "telephone": "+33556443596",
+      "areaServed": [
+        {
+          "name": "Bordeaux",
+          "@type": "City"
+        },
+        {
+          "name": "Gironde",
+          "@type": "AdministrativeArea"
+        },
+        {
+          "name": "Nouvelle-Aquitaine",
+          "@type": "AdministrativeArea"
+        }
+      ],
+      "knowsAbout": [
+        "Accident de la route",
+        "Indemnisation des victimes",
+        "Dommage corporel",
+        "Droit pénal",
+        "Loi Badinter"
+      ],
+      "priceRange": "€€",
+      "description": "Le Cabinet Plouton, avocat spécialisé à Bordeaux depuis plus de 20 ans, accompagne les victimes d'accidents de la route pour obtenir une indemnisation juste et intégrale.",
+      "alternateName": "Cabinet d'Avocats Julien Plouton SELAS",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "bestRating": "5",
+        "ratingValue": "4.6",
+        "reviewCount": "184"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@context": "https://schema.org",
+      "itemListElement": [
+        {
+          "item": "https://www.jplouton-avocat.fr/",
+          "name": "Accueil",
+          "@type": "ListItem",
+          "position": 1
+        },
+        {
+          "item": "https://www.jplouton-avocat.fr/défense-pénale",
+          "name": "Défense pénale",
+          "@type": "ListItem",
+          "position": 2
+        },
+        {
+          "item": "https://www.jplouton-avocat.fr/défense-pénale/violences-conjugales-et-féminicides",
+          "name": "Violences conjugales et féminicides",
+          "@type": "ListItem",
+          "position": 3
+        }
+      ]
+    },
+    {
+      "url": "https://www.jplouton-avocat.fr/défense-pénale/violences-conjugales-et-féminicides",
+      "name": "Avocat violences conjugales Bordeaux — Cabinet Plouton",
+      "@type": "LegalService",
+      "@context": "https://schema.org",
+      "provider": {
+        "url": "https://www.jplouton-avocat.fr/",
+        "name": "Cabinet Plouton",
+        "@type": "Attorney",
+        "address": {
+          "@type": "PostalAddress",
+          "postalCode": "33000",
+          "addressRegion": "Nouvelle-Aquitaine",
+          "streetAddress": "45 Cours d'Alsace-et-Lorraine",
+          "addressCountry": "FR",
+          "addressLocality": "Bordeaux"
+        },
+        "telephone": "+33556443596"
+      },
+      "areaServed": {
+        "name": "Bordeaux",
+        "@type": "City"
+      },
+      "description": "Défense en matière de violences conjugales et féminicides à Bordeaux. Comparution immédiate, contrôle judiciaire. Cabinet d'avocats spécialisé.",
+      "serviceType": "Défense violences conjugales"
+    }
+  ],
+  "current_internal_links": [
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal"
+    },
+    {
+      "anchor": "Procès criminels",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel"
+    },
+    {
+      "anchor": "Trafic de stupéfiants",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant"
+    },
+    {
+      "anchor": "Violences conjugales et féminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides"
+    },
+    {
+      "anchor": "Droit pénal des affaires",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires"
+    },
+    {
+      "anchor": "Victimes de délits ou crimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes"
+    },
+    {
+      "anchor": "Accidents de la route",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route"
+    },
+    {
+      "anchor": "Droit et accidents du travail",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail"
+    },
+    {
+      "anchor": "Accidents et erreurs médicales",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales"
+    },
+    {
+      "anchor": "Accidents de la vie courante",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et professionnels",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels"
+    },
+    {
+      "anchor": "Défense des consommateurs",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs"
+    },
+    {
+      "anchor": "Droit de la famille",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille"
+    },
+    {
+      "anchor": "Divorce",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux"
+    },
+    {
+      "anchor": "Affaires",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires"
+    },
+    {
+      "anchor": "Médias",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/m%C3%A9dias"
+    },
+    {
+      "anchor": "Ressources",
+      "target": "https://www.jplouton-avocat.fr/comprendre-le-droit"
+    },
+    {
+      "anchor": "Équipe",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet"
+    },
+    {
+      "anchor": "Contactez - nous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Accueil",
+      "target": "https://www.jplouton-avocat.fr/"
+    },
+    {
+      "anchor": "Je prends rendez-vous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Équipe",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet"
+    },
+    {
+      "anchor": "Rendez-vous, accès & honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Horaires & accès",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Horaires & accès",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "La défense pénale",
+      "target": "https://www.jplouton-avocat.fr/defense-penale"
+    },
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal"
+    },
+    {
+      "anchor": "Procès Criminels",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel"
+    }
+  ],
+  "top_queries": [
+    {
+      "query": "avocat violence conjugale",
+      "impressions": 330,
+      "ctr": 0,
+      "position": 14.56
+    },
+    {
+      "query": "avocat violences conjugales",
+      "impressions": 72,
+      "ctr": 0,
+      "position": 24.42
+    },
+    {
+      "query": "avocat violence conjugale bordeaux",
+      "impressions": 57,
+      "ctr": 0.0175,
+      "position": 5.98
+    },
+    {
+      "query": "avocat violence psychologique",
+      "impressions": 55,
+      "ctr": 0,
+      "position": 6.64
+    },
+    {
+      "query": "avocat spécialisé violence psychologique",
+      "impressions": 38,
+      "ctr": 0,
+      "position": 7.66
+    },
+    {
+      "query": "avocat victime agression bordeaux",
+      "impressions": 35,
+      "ctr": 0,
+      "position": 13.66
+    },
+    {
+      "query": "avocat victime violences conjugales",
+      "impressions": 32,
+      "ctr": 0,
+      "position": 15.38
+    },
+    {
+      "query": "avocat violences",
+      "impressions": 30,
+      "ctr": 0,
+      "position": 11.07
+    },
+    {
+      "query": "avocat violences conjugales victime",
+      "impressions": 29,
+      "ctr": 0,
+      "position": 7.38
+    },
+    {
+      "query": "avocat femme battue",
+      "impressions": 27,
+      "ctr": 0,
+      "position": 28.22
+    }
+  ],
+  "enrichment": {
+    "category": null,
+    "wix_metrics": null,
+    "enriched_top_queries": [
+      {
+        "query": "avocat violence conjugale",
+        "impressions": 330,
+        "ctr": 0,
+        "position": 14.56,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "avocat violence conjugale",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "title": "Agissons ensemble contre les violences faites aux femmes",
+              "url": "https://www.barreausolidarite.org/nos-actions/agissons-ensemble-contre-les-violences-faites-aux-femmes.html",
+              "domain": "barreausolidarite.org",
+              "description": "Le Barreau de Paris Solidarité a mis en place des permanences bénévoles dédiée aux femmes victimes de violences, qu'elles soient commises au sein du couple ou ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 6,
+              "title": "Trouvez un Avocat en violences conjugales",
+              "url": "https://www.justifit.fr/avocats/q/violences-conjugales/?srsltid=AfmBOoq1YjBOInBk6cY5bwPm5NINuarh5kcFtUurc-x9f0HcpX2soG0W",
+              "domain": "justifit.fr",
+              "description": "Votre partenaire ou ex-partenaire est violent par ses actes, propos ou comportement ? Contactez sans plus attendre un avocat en violence conjugale ou un avocat ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 7,
+              "title": "Association Avocat & Violence conjugale (AAVC)",
+              "url": "https://www.aaetviolenceconjugale.org/",
+              "domain": "aaetviolenceconjugale.org",
+              "description": "L'Association Avocat et Violence Conjugale regroupe des avocats formés aux violences conjugales · La lutte contre toutes les formes de violences au sein du ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "title": "Violences conjugales",
+              "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F12544",
+              "domain": "service-public.gouv.fr",
+              "description": "Qu'appelle-t-on violences conjugales ? · Violence physique · Violence sexuelle · Violence psychologique · Violence économique."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "title": "Cabinet d'avocats spécialisé violences conjugales Lyon",
+              "url": "https://www.delvecchio-avocats.fr/violence-conjugale/",
+              "domain": "delvecchio-avocats.fr",
+              "description": "Le cabinet DEL VECCHIO-ZINSCH à Lyon accompagne les victimes de violences conjugales. NOUS CONTACTER POUR UNE PROCÉDURE DE VIOLENCE CONJUGALE ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 13,
+              "title": "Avocat Violences conjugales | Défense Femmes Battues",
+              "url": "https://www.avocat-steyer.fr/",
+              "domain": "avocat-steyer.fr",
+              "description": "Me Isabelle Steyer est avocat en droit pénal et droit de la famille. Elle est spécialiste du droit des femmes et des enfants victimes de violences physiques ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 14,
+              "title": "Avocat à Rennes - Droit des victimes, violences conjugales",
+              "url": "https://marieblandin-avocate.fr/droit-des-victimes/",
+              "domain": "marieblandin-avocate.fr",
+              "description": "Mineur victime : intervention au soutien des intérêts des enfants ou des parents pour des dossiers de violence, maltraitance, inceste, pédophilie, bébé secoué…"
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 15,
+              "title": "Avocat victime de violences conjugales Amiens",
+              "url": "https://www.avocat-canu-renahy.com/avocat-violences-conjugales.php",
+              "domain": "avocat-canu-renahy.com",
+              "description": "La violence verbale, la violence psychologique, la violence physique, la violence ... Votre avocat compétent en violences conjugales à Amiens et Abbeville, dans ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 16,
+              "title": "Avocat Violences Conjugales & Féminicide à Bordeaux",
+              "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+              "domain": "jplouton-avocat.fr",
+              "description": "Victime de violences conjugales ? Notre cabinet d'avocats à Bordeaux vous protège (ordonnance de protection, BAR) et vous accompagne pour obtenir justice et ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 17,
+              "title": "Avocat violences conjugales et intrafamiliales à La Roche- ...",
+              "url": "https://www.cabinet-sarday.fr/avocat-violence",
+              "domain": "cabinet-sarday.fr",
+              "description": "Que vous soyez victime de violences physiques ou psychologiques au sein de votre couple ou de la famille, notre avocat est là pour assurer votre défense."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": true,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:56:26.125Z"
+        }
+      },
+      {
+        "query": "avocat violences conjugales",
+        "impressions": 72,
+        "ctr": 0,
+        "position": 24.42,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "avocat violences conjugales",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 4,
+              "title": "Agissons ensemble contre les violences faites aux femmes",
+              "url": "https://www.barreausolidarite.org/nos-actions/agissons-ensemble-contre-les-violences-faites-aux-femmes.html",
+              "domain": "barreausolidarite.org",
+              "description": "Chaque année, 225 000 femmes sont victimes de violences conjugales, 84 000 femmes sont victimes de violences sexuelles, et des milliers d'entre elles sont ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 5,
+              "title": "Trouvez un Avocat en violences conjugales",
+              "url": "https://www.justifit.fr/avocats/q/violences-conjugales/?srsltid=AfmBOoqU_DMYLlIZreehypylbhTUyz0V0551mKc7G_KBJIlEW7fMjMXe",
+              "domain": "justifit.fr",
+              "description": "Contactez sans plus attendre un avocat en violence conjugale ou un avocat ... Avocat Violences Conjugales Aix-en-Provence · Avocat Violences Conjugales ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 6,
+              "title": "Violences intrafamiliales - Barreau des Hauts-de-Seine",
+              "url": "https://www.barreau92.com/fr/violences-intrafamiliales",
+              "domain": "barreau92.com",
+              "description": "plateforme d'écoute des victimes de violences conjugales, sexistes et sexuelles. Le Barreau; Le Bâtonnier · Le Conseil de l'Ordre · Les services de l'Ordre · La ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "title": "Comment bien choisir son avocat pour violence conjugale ...",
+              "url": "https://www.lapaixavocat.fr/details-comment+bien+choisir+son+avocat+pour+violence+conjugale+a+paris+et+en+france-25",
+              "domain": "lapaixavocat.fr",
+              "description": "Comment bien choisir son avocat pour violence conjugale à Paris et en France ? Vous subissez des violences de la part de votre conjoint et vous cherchez un ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "title": "Avocat Violences conjugales | Défense Femmes Battues",
+              "url": "https://www.avocat-steyer.fr/",
+              "domain": "avocat-steyer.fr",
+              "description": "Me Steyer est spécialisée en défense des femmes et des enfants victimes violences. Avocat Paris violences conjugales femme battue."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "title": "Association Avocat & Violence conjugale (AAVC)",
+              "url": "https://www.aaetviolenceconjugale.org/",
+              "domain": "aaetviolenceconjugale.org",
+              "description": "L'Association Avocat et Violence Conjugale regroupe des avocats formés aux violences conjugales · La lutte contre toutes les formes de violences au sein du ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "title": "Avocat à Rennes - Droit des victimes, violences conjugales",
+              "url": "https://marieblandin-avocate.fr/droit-des-victimes/",
+              "domain": "marieblandin-avocate.fr",
+              "description": "Par exception aux règles de procédure civile, la victime de violence conjugale peut être autorisée à dissimuler son adresse. Le juge rend une décision dans les ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 11,
+              "title": "Avocat Violences conjugales & Harcèlement | Tomasini ...",
+              "url": "https://www.tomasini-avocats-violences-conjugales.fr/",
+              "domain": "tomasini-avocats-violences-conjugales.fr",
+              "description": "Avocat Violences Conjugales. Maître Nathalie Tomasini a fondé en 2020 un cabinet qui a pour expertise la défense des victimes tant dans son approche ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 12,
+              "title": "Violences conjugales",
+              "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F12544",
+              "domain": "service-public.gouv.fr",
+              "description": "Les violences conjugales sont les violences commises au sein du couple. Elles sont punies par la loi, qu'elles soient physiques, psychologiques ou ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 13,
+              "title": "Cabinet d'avocats spécialisé violences conjugales Lyon",
+              "url": "https://www.delvecchio-avocats.fr/violence-conjugale/",
+              "domain": "delvecchio-avocats.fr",
+              "description": "Le cabinet DEL VECCHIO-ZINSCH à Lyon accompagne les victimes de violences conjugales. NOUS CONTACTER POUR UNE PROCÉDURE DE VIOLENCE CONJUGALE ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": false,
+            "has_knowledge_graph": false,
+            "has_local_pack": true,
+            "has_video": true
+          },
+          "fetched_at": "2026-05-15T21:56:27.255Z"
+        }
+      },
+      {
+        "query": "avocat violence conjugale bordeaux",
+        "impressions": 57,
+        "ctr": 0.0175,
+        "position": 5.98,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "avocat violence conjugale bordeaux",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Avocat violences conjugales Bordeaux",
+              "url": "https://www.justifit.fr/avocats/bordeaux/q/violences-conjugales/?srsltid=AfmBOoq0hZ_119DvLHEjb_Qb5juUxnXhL7KdFWhWigAkCkpEBtZ5R4kL",
+              "domain": "justifit.fr",
+              "description": "Avocats violences conjugales Bordeaux ; Maître Baudouin BOKOLOMBE. Maître Baudouin BOKOLOMBE Bordeaux. 10 rue Charles Martin · 33300 ; Maître Amandine TROUVÉ."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "title": "Avocat Violences Conjugales & Féminicide à Bordeaux",
+              "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+              "domain": "jplouton-avocat.fr",
+              "description": "Victime de violences conjugales ? Notre cabinet d'avocats à Bordeaux vous protège (ordonnance de protection, BAR) et vous accompagne pour obtenir justice et ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 6,
+              "title": "Avocat pour victime de violence conjugale à Bordeaux",
+              "url": "https://www.plumelet-avocat.fr/avocat-violence-conjugale-bordeaux",
+              "domain": "plumelet-avocat.fr",
+              "description": "Contactez un avocat en cas de violences conjugales à Bordeaux. Vous n'avez pas à subir la violence de votre conjoint. Dites stop et faites valoir vos droits ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "title": "violences conjugales à Bordeaux",
+              "url": "https://avocat-poulou-33.fr/violences-conjugales/bordeaux",
+              "domain": "avocat-poulou-33.fr",
+              "description": "Les violences conjugales représentent un fléau social d'une ampleur préoccupante à Bordeaux. Ces actes de violence, qu'ils soient physiques, psychologiques, ou ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "title": "Être accompagnée - Infos Violences Femmes Bordeaux",
+              "url": "https://infos-violences-femmes-bordeaux.fr/jai-besoin-daide/etre-accompagnee/",
+              "domain": "infos-violences-femmes-bordeaux.fr",
+              "description": "Horaires : Du lundi au vendredi de 9h à 22h, les samedi, dimanche et jours fériés de 9h à 18h. Ecoute et information pour les femmes victimes de violences, mais ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "title": "Coralie Fournier | Avocate en Dommage Corporel, Bordeaux",
+              "url": "https://coraliefournier-avocat.fr/",
+              "domain": "coraliefournier-avocat.fr",
+              "description": "... Bordeaux et inscrite à la permanence des violences conjugales. Travailler pour les victimes d'accident ou d'agression est une réelle vocation et nécessite ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "title": "Maître Emmanuelle Plumelet: Avocat droit des victimes à ...",
+              "url": "https://www.plumelet-avocat.fr/",
+              "domain": "plumelet-avocat.fr",
+              "description": "Avocat pour la défense des victimes d'agression. Vous avez été victime de violences conjugales ou d'une agression physique, verbale ou sexuelle ? Ne restez pas ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 11,
+              "title": "Avocat Droit Pénal Bordeaux : Les violences conjugales",
+              "url": "https://alter-avocats-bordeaux.fr/droit-penal-les-violences-conjugales/",
+              "domain": "alter-avocats-bordeaux.fr",
+              "description": "obligation de suivre des soins (gestion de la violence, prise en charge d'addictions, etc.), ... Avocat violences conjugales Bordeaux : Comment peut-il vous aider ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 12,
+              "title": "défense des droits des victimes à Bordeaux",
+              "url": "https://avocat-poulou-33.fr/defense-des-droits-des-victimes/bordeaux",
+              "domain": "avocat-poulou-33.fr",
+              "description": "... Bordeaux cabinet@avocat-poulou.fr. Vous disposez de droits d'accès, de ... violence conjugale à Bordeaux. violence conjugale · avocat garde d'enfants à ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 13,
+              "title": "Avocat en Droit de la famille, Droit civil et Droit pénal à Bordeaux",
+              "url": "https://www.sophiethomas-avocat.fr/domaines-competences",
+              "domain": "sophiethomas-avocat.fr",
+              "description": "Je suis hautement compétente pour vous défendre avec combativité et obtenir votre protection avec rapidité face à des faits de violences conjugales (physiques, ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": false,
+            "has_knowledge_graph": false,
+            "has_local_pack": true,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:56:26.230Z"
+        }
+      },
+      {
+        "query": "avocat violence psychologique",
+        "impressions": 55,
+        "ctr": 0,
+        "position": 6.64,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "avocat violence psychologique",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "title": "Victimes de violences psychologiques",
+              "url": "https://sab-avocat.com/victimes-violences-psychologiques/",
+              "domain": "sab-avocat.com",
+              "description": "La violence psychologique, parfois appelée abus émotionnel ou harcèlement moral, est un fléau silencieux qui frappe bien trop souvent au sein du foyer. Si elle ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 6,
+              "title": "Victime de violence psychologique : contactez un avocat",
+              "url": "https://www.tomasini-avocats-violences-conjugales.fr/avocat-violence-psychologique",
+              "domain": "tomasini-avocats-violences-conjugales.fr",
+              "description": "Victime de violence psychologique : contactez un avocat. La défense des victimes de violences et de harcèlement."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 7,
+              "title": "Avocat contre les pervers narcissique à Paris 7",
+              "url": "https://www.cclavocats-paris.com/pervers-narcissique.php",
+              "domain": "cclavocats-paris.com",
+              "description": "... harcèlement que le pervers narcissique va faire subir à sa victime sont des attitudes très difficiles à prouver. Et même si les violences psychologiques ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "title": "Avocat Violences Conjugales & Féminicide à Bordeaux",
+              "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+              "domain": "jplouton-avocat.fr",
+              "description": "Avocat pénaliste – Violences conjugales, incestes et féminicides ... Cette mécanique est souvent qualifiée de contrôle coercitif, une forme de violence ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "title": "Violences conjugales en droit pénal",
+              "url": "https://www.justifit.fr/b/guides/droit-penal/trouver/avocats/france/avocat-en-ligne/violences-conjugales/?srsltid=AfmBOoprJr28Fm1bNyTcUQdGQu6VEVRWl2A5qfqXMijkZYmpQzZsk_sY",
+              "domain": "justifit.fr",
+              "description": "La maltraitance psychologique désigne une forme de violence ou d'abus se manifestant par un comportement violent ou agressif vis-à-vis d'une personne. La ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "title": "Avocat victime de violences conjugales Amiens",
+              "url": "https://www.avocat-canu-renahy.com/avocat-violences-conjugales.php",
+              "domain": "avocat-canu-renahy.com",
+              "description": "La violence verbale, la violence psychologique, la violence physique, la violence sexuelle et la violence économique sont toutes des violences conjugales ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "title": "J'ai besoin d'aide",
+              "url": "https://arretonslesviolences.gouv.fr/besoin-d-aide",
+              "domain": "arretonslesviolences.gouv.fr",
+              "description": "Quelle que soit la violence subie, qu'elle soit ancienne ou récente, ses ... avocate ou une association spécialisée dans la lutte contre les violences ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 12,
+              "title": "Cabinet d'avocats spécialisé violences conjugales Lyon",
+              "url": "https://www.delvecchio-avocats.fr/violence-conjugale/",
+              "domain": "delvecchio-avocats.fr",
+              "description": "Le cabinet DEL VECCHIO-ZINSCH à Lyon accompagne les victimes de violences conjugales. NOUS CONTACTER POUR UNE PROCÉDURE DE VIOLENCE CONJUGALE ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 13,
+              "title": "Avocat défendre victime violences psychologiques dans le ...",
+              "url": "https://www.avocathaumesser.fr/details-avocat+defendre+victime+violences+psychologiques+dans+le+couple+aubagne-137",
+              "domain": "avocathaumesser.fr",
+              "description": "Dans le contexte des femmes, ces violences peuvent revêtir diverses formes, telles que le harcèlement moral, le contrôle excessif, l'isolement social, la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 14,
+              "title": "Porter plainte pour harcèlement psychologique",
+              "url": "https://www.tomasini-avocats-violences-conjugales.fr/plainte-harcelement-psychologique",
+              "domain": "tomasini-avocats-violences-conjugales.fr",
+              "description": "Maître Tomasini a fait des cas de harcèlement et de violence psychologique son domaine de prédilection. Les victimes seront prises en charge par un avocat ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": true,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:56:30.050Z"
+        }
+      },
+      {
+        "query": "avocat spécialisé violence psychologique",
+        "impressions": 38,
+        "ctr": 0,
+        "position": 7.66,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "avocat spécialisé violence psychologique",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Victimes de violences psychologiques",
+              "url": "https://sab-avocat.com/victimes-violences-psychologiques/",
+              "domain": "sab-avocat.com",
+              "description": "La violence psychologique, parfois appelée abus émotionnel ou harcèlement moral, est un fléau silencieux qui frappe bien trop souvent au sein du foyer. Si elle ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 6,
+              "title": "Avocat contre les pervers narcissique à Paris 7",
+              "url": "https://www.cclavocats-paris.com/pervers-narcissique.php",
+              "domain": "cclavocats-paris.com",
+              "description": "... harcèlement que le pervers narcissique va faire subir à sa victime sont des attitudes très difficiles à prouver. Et même si les violences psychologiques ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 7,
+              "title": "Victime de violence psychologique : contactez un avocat",
+              "url": "https://www.tomasini-avocats-violences-conjugales.fr/avocat-violence-psychologique",
+              "domain": "tomasini-avocats-violences-conjugales.fr",
+              "description": "Victime de violence psychologique : contactez un avocat. La défense des victimes de violences et de harcèlement."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "title": "Avocat Violences Conjugales & Féminicide à Bordeaux",
+              "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+              "domain": "jplouton-avocat.fr",
+              "description": "Violences psychologiques : Insultes, menaces, harcèlement moral, isolement, dévalorisation et chantage affectif. Violences sexuelles : Toute contrainte à subir ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "title": "Violences conjugales en droit pénal",
+              "url": "https://www.justifit.fr/b/guides/droit-penal/trouver/avocats/france/avocat-en-ligne/violences-conjugales/?srsltid=AfmBOopJ785wIyEzVGV6nKvlxmDybrU3Al2yLQ_ztQQDB9YHjG2SpN9j",
+              "domain": "justifit.fr",
+              "description": "La maltraitance psychologique désigne une forme de violence ou d'abus se manifestant par un comportement violent ou agressif vis-à-vis d'une personne. La ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "title": "Avocat Violences conjugales | Défense Femmes Battues",
+              "url": "https://www.avocat-steyer.fr/",
+              "domain": "avocat-steyer.fr",
+              "description": "Me Isabelle Steyer est avocat en droit pénal et droit de la famille. Elle est spécialiste du droit des femmes et des enfants victimes de violences physiques ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "title": "Cabinet d'avocats spécialisé violences conjugales Lyon",
+              "url": "https://www.delvecchio-avocats.fr/violence-conjugale/",
+              "domain": "delvecchio-avocats.fr",
+              "description": "Le cabinet DEL VECCHIO-ZINSCH à Lyon accompagne les victimes de violences conjugales. NOUS CONTACTER POUR UNE PROCÉDURE DE VIOLENCE CONJUGALE ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 12,
+              "title": "Avocat défendre victime violences psychologiques dans le ...",
+              "url": "https://www.avocathaumesser.fr/details-avocat+defendre+victime+violences+psychologiques+dans+le+couple+aubagne-137",
+              "domain": "avocathaumesser.fr",
+              "description": "Dans le contexte des femmes, ces violences peuvent revêtir diverses formes, telles que le harcèlement moral, le contrôle excessif, l'isolement social, la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 16,
+              "title": "Avocat violences conjugales Vannes : Faites vous protéger",
+              "url": "https://www.leguillant-avocate.fr/violence-conjugale.php",
+              "domain": "leguillant-avocate.fr",
+              "description": "Ensuite, les violences psychologiques, comprenant le harcèlement moral, les brimades, les insultes et les humiliations. Enfin, les violences sexuelles, ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 17,
+              "title": "Avocat pour violences conjugales",
+              "url": "https://www.adeline-kempf.fr/violences-conjugales.html",
+              "domain": "adeline-kempf.fr",
+              "description": "Les violences physiques : des actes de violence directe causant des blessures physiques, telles que des coups, des gifles ou des agressions. Les violences ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": true,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:56:24.213Z"
+        }
+      },
+      {
+        "query": "avocat victime agression bordeaux",
+        "impressions": 35,
+        "ctr": 0,
+        "position": 13.66,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "avocat victime violences conjugales",
+        "impressions": 32,
+        "ctr": 0,
+        "position": 15.38,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "avocat violences",
+        "impressions": 30,
+        "ctr": 0,
+        "position": 11.07,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "avocat violences conjugales victime",
+        "impressions": 29,
+        "ctr": 0,
+        "position": 7.38,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "avocat femme battue",
+        "impressions": 27,
+        "ctr": 0,
+        "position": 28.22,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      }
+    ],
+    "total_monthly_demand_fr": null,
+    "internal_pages_catalog": {
+      "expertise": [
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale",
+          "role": "expertise",
+          "topic": "Défense pénale (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+          "role": "expertise",
+          "topic": "Droit pénal général"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+          "role": "expertise",
+          "topic": "Procès criminels (cour d'assises)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+          "role": "expertise",
+          "topic": "Violences conjugales et féminicides"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+          "role": "expertise",
+          "topic": "Trafic de stupéfiants"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+          "role": "expertise",
+          "topic": "Droit pénal des affaires"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+          "role": "expertise",
+          "topic": "Indemnisation des victimes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+          "role": "expertise",
+          "topic": "Accidents de la vie courante"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+          "role": "expertise",
+          "topic": "Victimes de délits ou crimes"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+          "role": "expertise",
+          "topic": "Accidents et erreurs médicales"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+          "role": "expertise",
+          "topic": "Droit et accidents du travail"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+          "role": "expertise",
+          "topic": "Accidents de la route"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+          "role": "expertise",
+          "topic": "Droit des contrats et des personnes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+          "role": "expertise",
+          "topic": "Défense des consommateurs"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+          "role": "expertise",
+          "topic": "Droit des assurances"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+          "role": "expertise",
+          "topic": "Droit de la famille"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+          "role": "expertise",
+          "topic": "Divorce (Bordeaux)"
+        }
+      ],
+      "cta": [
+        {
+          "url": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+          "role": "cta",
+          "topic": "Honoraires & prise de rendez-vous"
+        }
+      ],
+      "trust": [
+        {
+          "url": "https://www.jplouton-avocat.fr/notre-cabinet",
+          "role": "trust",
+          "topic": "Présentation du cabinet"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/nos-affaires",
+          "role": "trust",
+          "topic": "Affaires emblématiques"
+        }
+      ],
+      "blog_root": [
+        {
+          "url": "https://www.jplouton-avocat.fr/blog",
+          "role": "blog_root"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/comprendre-le-droit",
+          "role": "blog_root"
+        }
+      ],
+      "homepage": [
+        {
+          "url": "https://www.jplouton-avocat.fr",
+          "role": "homepage"
+        }
+      ],
+      "legal": [
+        {
+          "url": "https://www.jplouton-avocat.fr/mentions-legales",
+          "role": "legal"
+        }
+      ]
+    },
+    "google_guidance": {
+      "blog_posts": [
+        {
+          "title": "A new resource for optimizing for generative AI in Google Search",
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "summary": "As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for ap",
+          "published_date": "2026-05-15",
+          "age_days": 0
+        },
+        {
+          "title": "Introducing a new spam policy for \"back button hijacking\"",
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "summary": "Today, we are expanding our spam policies to address a deceptive practice known as \"back button hijacking\", which will become an explicit violation of the \"malicious practices\" of spam policies, leading to potential spam",
+          "published_date": "2026-04-13",
+          "age_days": 32
+        },
+        {
+          "title": "Inside Googlebot: demystifying crawling, fetching, and the bytes we process",
+          "link": "https://developers.google.com/search/blog/2026/03/crawler-blog-post",
+          "summary": "If you tuned into episode 105 of the Search Off the Record podcast, you might have heard us diving deep into a topic that is close to our hearts (and our servers): the inner workings of Googlebot.",
+          "published_date": "2026-03-31",
+          "age_days": 45
+        }
+      ],
+      "blog_posts_deep": [
+        {
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "body": "Home Search Central Google Search Central Blog Send feedback A new resource for optimizing for generative AI in Google Search Friday, May 15, 2026 As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for appearance in generative AI features in Search, and in turn Google Search overall. In the new guide, optimizing your website for generative AI features on Google Search, you'll find: Guidance on the importance of providing valuable, unique, non-commodity content Tips about providing local, shopping, image, and video content Mythbusting common \"AEO/GEO\" misconceptions Initial guidance related to AI agents, a quickly emerging and evolving space Information about why SEO best practices remain relevant and foundational to success with our generative AI features We hope this guide provides more clarity to help you continue to create great content that reaches your audience effectively through Google Search. As always, if you have any feedback, share your comments on LinkedIn or post in the Google Search Central Community. Posted"
+        },
+        {
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "body": "ホーム Search Central Google Search Central Blog フィードバックを送信 「戻るボタンのハイジャック」に関する新しいスパムポリシーの導入 2026 年 4 月 13 日 本日、Google は、スパムに関するポリシーを拡大し、「戻るボタンのハイジャック」と呼ばれる欺瞞行為に対処します。この行為は、スパムに関するポリシーの悪意のある行為に明確に違反する行為となり、スパム対策の対象となる可能性があります。 [戻る] ボタンのハイジャックとは ユーザーがブラウザの [戻る] ボタンをクリックすると、前のページに戻ることを明確に期待します。「戻る」ボタンのハイジャックは、この基本的な期待を裏切るものです。サイトがユーザーのブラウザ ナビゲーションを妨害し、ユーザーが [戻る] ボタンを使用して元のページにすぐに戻れないようにしている場合に発生します。代わりに、ユーザーが以前にアクセスしたことのないページにリダイレクトされたり、未承諾のおすすめや広告が表示されたり、ウェブを通常どおりに閲覧できなくなったりする可能性があります。 措置を講じる理由 Google は、ユーザー エクスペリエンスを最優先に考えています。[戻る] ボタンのハイジャックは、ブラウザの機能を妨害し、ユーザーが想定する操作を妨げ、ユーザーの不満につながります。ユーザーは操作されていると感じ、最終的には見慣れないサイトにアクセスすることに抵抗を感じるようになります。以前にもお伝えしたとおり、ユーザーのブラウザ履歴に不正なページや操作されたページを挿入することは、Google 検索の基本事項に違反します。 この種の行為が増加しているため、悪意のある行為に関するポリシーの明らかな違反として指定します。このポリシーには次のように記載されています。 悪意のある行為は、ユーザーの期待と実際の結果の間に不一致を生み出し、ユーザー エクスペリエンスを低下させ、ユーザーのセキュリティやプライバシーを侵害します。 戻るボタンのハイジャックを行っているページは、手動によるスパム対策や自動による降格の対象となる可能性があり、Google 検索の検索結果におけるサイトのパフォーマンスに影響を与えることがあります。サイト所有者が必要な変更を行う時間を確保するため、このポリシーは 2026 年 6 月 15 日の施行の 2 か月前に公開されます。 サイト所有者が行うべきこと ユーザーがブラウザの履歴を操作する機能を妨げるような行為は行わないでください。 現在、ユーザーのブラウザ履歴に不正なページや操作的なページを挿入または置き換えるスクリプトや手法を使用していて、ユーザーが [戻る] ボタンを押してもすぐに元のページに戻れないようにしている場合は、そのスクリプトや手法を削除または無効にして"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "7eTbAa2jWdToLkraZj5y",
+          "title": "March 2026 core update",
+          "begin": "2026-03-27T09:00:00+00:00",
+          "end": "2026-04-08T13:00:00+00:00",
+          "is_active": false,
+          "category": "core_update"
+        },
+        {
+          "id": "VbnSXAH4SmEcxPtx4YSD",
+          "title": "March 2026 spam update",
+          "begin": "2026-03-24T19:00:00+00:00",
+          "end": "2026-03-25T14:30:00+00:00",
+          "is_active": false,
+          "category": "spam_update"
+        }
+      ],
+      "ranking_systems": [
+        {
+          "id": "bert",
+          "name": "BERT",
+          "description": "Bidirectional Encoder Representations from Transformers (BERT) is an AI system Google uses that allows us to understand how combinations of words express different meanings and intent."
+        },
+        {
+          "id": "crisis-info",
+          "name": "Crisis information systems",
+          "description": "Google has developed systems to provide helpful and timely information during times of crisis, whether those involve personal crisis situations, natural disasters, or other wide-spread crisis situations:"
+        },
+        {
+          "id": "deduplication",
+          "name": "Deduplication systems",
+          "description": "Searches on Google may find thousands or even millions of matching web pages. Some of these may be very similar to each other. In such cases, our systems show only the most relevant results to avoid unhelpful duplication. Learn more about how deduplication works and how to see omitted results if des"
+        },
+        {
+          "id": "exact-match",
+          "name": "Exact match domain system",
+          "description": "Our ranking systems consider the words in domain names as one of many factors to determine if content is relevant to a search. However, our exact match domain system works to ensure we don't give too much credit for content hosted under domains designed to exactly match particular queries. For examp"
+        },
+        {
+          "id": "freshness",
+          "name": "Freshness systems",
+          "description": "We have various \"query deserves freshness\" systems designed to show fresher content for queries where it would be expected. For example, if someone is searching about a movie that's just been released, they probably want recent reviews rather than older articles from when production began. For anoth"
+        },
+        {
+          "id": "link-analysis",
+          "name": "Link analysis systems and PageRank",
+          "description": "We have various systems that understand how pages link to each other as a way to determine what pages are about and which might be most helpful in response to a query. Among these is PageRank, one of our core ranking systems used when Google first launched. Those curious can learn more by reading th"
+        },
+        {
+          "id": "local-news",
+          "name": "Local news systems",
+          "description": "We have systems that work to identify and surface local sources of news whenever relevant, such as through our \"Top stories\" and \"Local news\" features."
+        },
+        {
+          "id": "mum",
+          "name": "MUM",
+          "description": "Multitask Unified Model (MUM) is an AI system capable of both understanding and generating language. It's not currently used for general ranking in Search but rather for some specific applications such as to improve searches for COVID-19 vaccine information and to improve featured snippet callouts w"
+        },
+        {
+          "id": "neural-matching",
+          "name": "Neural matching",
+          "description": "Neural matching is an AI system that Google uses to understand representations of concepts in queries and pages and match them to one another."
+        },
+        {
+          "id": "original-content",
+          "name": "Original content systems",
+          "description": "We have systems to help ensure we are showing original content prominently in search results, including original reporting, ahead of those who merely cite it. This includes support of a special canonical markup creators can use to help us better understand what is the primary page if a page has been"
+        },
+        {
+          "id": "removals",
+          "name": "Removal-based demotion systems",
+          "description": "Google has policies that allow the removal of certain types of content. If we process a significant volume of such removals involving a particular site, we use that as a signal to improve our results. In particular:"
+        },
+        {
+          "id": "passage-ranking-system",
+          "name": "Passage ranking system",
+          "description": "Passage ranking is an AI system we use to identify individual sections or \"passages\" of a web page to better understand how relevant a page is to a search."
+        },
+        {
+          "id": "rankbrain",
+          "name": "RankBrain",
+          "description": "RankBrain is an AI system that helps us understand how words are related to concepts. It means we can better return relevant content even if it doesn't contain all the exact words used in a search, by understanding the content is related to other words and concepts."
+        },
+        {
+          "id": "reliable-information-systems",
+          "name": "Reliable information systems",
+          "description": "Multiple systems work in various ways to show the most reliable information possible, such as to help surface more authoritative pages and demote low-quality content and to elevate quality journalism. In cases where reliable information might be lacking, our systems automatically display content adv"
+        },
+        {
+          "id": "reviews-system",
+          "name": "Reviews system",
+          "description": "The reviews system aims to better reward high quality reviews, content that provides insightful analysis and original research, and is written by experts or enthusiasts who know the topic well."
+        },
+        {
+          "id": "site-diversity-system",
+          "name": "Site diversity system",
+          "description": "Our site diversity system works so that we generally won't show more than two web page listings from the same site in our top results, so that no single site tends to dominate all the top results. However, we may still show more than two listings in cases where our systems determine it's especially"
+        },
+        {
+          "id": "spam-detection-systems",
+          "name": "Spam detection systems",
+          "description": "No one wants their email inbox filled with spam, which is why spam filters are so helpful. Search faces a similar challenge, because the internet includes huge amounts of spam that, if not dealt with, would prevent us from showing the most helpful and relevant results. We employ a range of spam dete"
+        }
+      ],
+      "spam_policies": [
+        {
+          "id": "cloaking",
+          "name": "Cloaking",
+          "description": "Cloaking refers to the practice of presenting different content to users and search engines with the intent to manipulate search rankings and mislead users. Examples of cloaking include: If your site uses technologies that search engines have difficulty accessing, like JavaScript or images, see our"
+        },
+        {
+          "id": "doorways",
+          "name": "Doorway abuse",
+          "description": "Doorway abuse is when sites or pages are created to rank for specific, similar search queries. They lead users to intermediate pages that are not as useful as the final destination. Examples of doorway abuse include:"
+        },
+        {
+          "id": "expired-domains",
+          "name": "Expired domain abuse",
+          "description": "Expired domain abuse is where an expired domain name is purchased and repurposed primarily to manipulate search rankings by hosting content that provides little to no value to users. Illustrative examples include, but are not limited to:"
+        },
+        {
+          "id": "hacked-content",
+          "name": "Hacked content",
+          "description": "Hacked content is any content placed on a site without permission, due to vulnerabilities in a site's security. Hacked content gives poor search results to our users and can potentially install malicious content on their machines. Examples of hacking include: Here are our tips on fixing hacked sites"
+        },
+        {
+          "id": "hidden-text-and-links",
+          "name": "Hidden text and link abuse",
+          "description": "Hidden text or link abuse is the practice of placing content on a page in a way solely to manipulate search engines and not to be easily viewable by human visitors. Examples of hidden text or link abuse include: There are many web design elements today that utilize showing and hiding content in a dy"
+        },
+        {
+          "id": "keyword-stuffing",
+          "name": "Keyword stuffing",
+          "description": "Keyword stuffing refers to the practice of filling a web page with keywords or numbers in an attempt to manipulate rankings in Google Search results. Often these keywords appear in a list or group, unnaturally, or out of context. Examples of keyword stuffing include:"
+        },
+        {
+          "id": "link-spam",
+          "name": "Link spam",
+          "description": "Link spam is the practice of creating links to or from a site primarily for the purpose of manipulating search rankings. The following are examples of link spam: Google does understand that buying and selling links is a normal part of the economy of the web for advertising and sponsorship purposes."
+        },
+        {
+          "id": "machine-generated-traffic",
+          "name": "Machine-generated traffic",
+          "description": "Machine-generated traffic (also called automated traffic) refers to the practice of sending automated queries to Google. This includes scraping results for rank-checking purposes or other types of automated access to Google Search conducted without express permission. Machine-generated traffic consu"
+        },
+        {
+          "id": "malicious-practices",
+          "name": "Malicious practices",
+          "description": "Malicious practices create a mismatch between user expectations and the actual outcome, leading to a negative and deceptive user experience, or compromised user security or privacy. The following are common examples of malicious practices:"
+        },
+        {
+          "id": "misleading-functionality",
+          "name": "Misleading functionality",
+          "description": "Misleading functionality refers to the practice of intentionally creating sites that trick users into thinking they would be able to access some content or services but in reality can't. Examples of misleading functionality include:"
+        },
+        {
+          "id": "scaled-content",
+          "name": "Scaled content abuse",
+          "description": "Scaled content abuse is when many pages are generated for the primary purpose of manipulating search rankings and not helping users. This abusive practice is typically focused on creating large amounts of unoriginal content that provides little to no value to users, no matter how it's created. Examp"
+        },
+        {
+          "id": "scraped-content",
+          "name": "Scraping",
+          "description": "Scraping refers to the practice of taking content from other sites, often through automated means, and hosting it with the purpose of manipulating search rankings. Examples of abusive scraping include:"
+        },
+        {
+          "id": "site-reputation",
+          "name": "Site reputation abuse",
+          "description": "Site reputation abuse is a tactic where third-party content is published on a host site mainly because of that host's already-established ranking signals, which it has earned primarily from its first-party content. The goal of this tactic is for the content to rank better than it could otherwise on"
+        },
+        {
+          "id": "sneaky-redirects",
+          "name": "Sneaky redirects",
+          "description": "Redirecting is the act of sending a visitor to a different URL than the one they initially requested. Sneaky redirecting is the practice of doing this maliciously in order to either show users and search engines different content or show users unexpected content that does not fulfill their original"
+        },
+        {
+          "id": "thin-affiliate-pages",
+          "name": "Thin affiliation",
+          "description": "Thin affiliation is the practice of publishing content with product affiliate links where the product descriptions and reviews are copied directly from the original merchant without any original content or added value. Affiliate pages can be considered thin if they are a part of a program that distr"
+        },
+        {
+          "id": "user-generated-spam",
+          "name": "User-generated spam",
+          "description": "User-generated spam is spammy content added to a site by users through a channel intended for user content. Often site owners are unaware of the spammy content. Examples of spammy user-generated content include: Here are several tips on how to prevent abuse of your site's public areas. Here are our"
+        },
+        {
+          "id": "other-behaviors-that-can-lead-to-demotion-or-removal",
+          "name": "Other practices that can lead to demotion or removal",
+          "description": "When we receive a significant volume of valid copyright removal requests involving a given site, we are able to use that to demote other content from the site in our results. This way, if there is other infringing content, people are less likely to encounter it versus the original content. We apply"
+        }
+      ],
+      "fetched_at": "2026-05-15T21:56:31.976Z"
+    }
+  },
+  "inbound_summary": {
+    "outbound_total": 0,
+    "inbound_total": 1053,
+    "inbound_distinct_sources": 349,
+    "inbound_editorial": 6,
+    "inbound_nav_footer": 1047,
+    "top_editorial_sources": [
+      {
+        "source_path": "/",
+        "anchor_text": "View More"
+      },
+      {
+        "source_path": "/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+        "anchor_text": "violences conjugales"
+      },
+      {
+        "source_path": "/post/affaire-chahinez-un-féminicide-qui-aurait-pu-être-évité",
+        "anchor_text": "des féminicides"
+      },
+      {
+        "source_path": "/post/appels-téléphoniques-malveillants-les-proches-de-la-victime-peuvent-aussi-être-indemnisés",
+        "anchor_text": "victime d’appels téléphoniques malveillants"
+      },
+      {
+        "source_path": "/post/féminicide-de-nasrine-à-cenon",
+        "anchor_text": "violences conjugales"
+      },
+      {
+        "source_path": "/post/reconstitution-criminelle-du-féminicide-de-mérignac",
+        "anchor_text": "violences faites aux femmes"
+      }
+    ]
+  },
+  "cooked_extras": {
+    "path": "/defense-penale/violences-conjugales-et-feminicides",
+    "windows": {
+      "7d": {
+        "views": 31,
+        "unique_visitors": 31,
+        "sessions": 30,
+        "bounce_rate": 0.35,
+        "avg_dwell_seconds": 41.4,
+        "scroll_avg": 11.8,
+        "scroll_median": 0,
+        "scroll_complete_pct": 0,
+        "entry_count": 20,
+        "exit_count": 24,
+        "outbound_clicks": 1
+      },
+      "28d": {
+        "views": 35,
+        "unique_visitors": 35,
+        "sessions": 34,
+        "bounce_rate": 0.39130000000000004,
+        "avg_dwell_seconds": 41.4,
+        "scroll_avg": 10.5,
+        "scroll_median": 0,
+        "scroll_complete_pct": 0,
+        "entry_count": 23,
+        "exit_count": 27,
+        "outbound_clicks": 1
+      },
+      "90d": {
+        "views": 35,
+        "unique_visitors": 35,
+        "sessions": 34,
+        "bounce_rate": 0.39130000000000004,
+        "avg_dwell_seconds": 41.4,
+        "scroll_avg": 10.5,
+        "scroll_median": 0,
+        "scroll_complete_pct": 0,
+        "entry_count": 23,
+        "exit_count": 27,
+        "outbound_clicks": 1
+      },
+      "365d": {
+        "views": 35,
+        "unique_visitors": 35,
+        "sessions": 34,
+        "bounce_rate": 0.39130000000000004,
+        "avg_dwell_seconds": 41.4,
+        "scroll_avg": 10.5,
+        "scroll_median": 0,
+        "scroll_complete_pct": 0,
+        "entry_count": 23,
+        "exit_count": 27,
+        "outbound_clicks": 1
+      }
+    },
+    "cwv_28d": {
+      "lcp_p75_ms": 2418.5,
+      "inp_p75_ms": 96,
+      "cls_p75": 0.08,
+      "ttfb_p75_ms": 3754.85
+    },
+    "provenance_28d": {
+      "top_referrer": "www.jplouton-avocat.fr",
+      "top_source": "adwords",
+      "top_medium": "ppc"
+    },
+    "device_split_28d": {
+      "desktop": 42.9,
+      "mobile": 57.1,
+      "tablet": 0
+    },
+    "conversion": {
+      "phone_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "email_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "booking_cta_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      }
+    },
+    "pogo_28d": {
+      "google_sessions": 9,
+      "pogo_sticks": 2,
+      "hard_pogo": 1,
+      "pogo_rate_pct": 22.2
+    },
+    "cta_per_device_28d": {
+      "mobile_sessions": 19,
+      "desktop_sessions": 15,
+      "cta_rate_mobile_pct": 0,
+      "cta_rate_desktop_pct": 0
+    },
+    "refreshed_at": "2026-05-15T03:00:00.176656+00:00"
+  },
+  "cooked_site_context": {
+    "global_sessions_28d": 6231,
+    "global_bounce_rate_28d": 0.1549,
+    "sessions_per_day_median_28d": 598,
+    "sessions_trend_pct_7d_vs_28d": 203.32,
+    "top_sources_28d": [
+      {
+        "source": "www.google.com",
+        "medium": "referral",
+        "sessions": 3368
+      },
+      {
+        "source": "direct",
+        "medium": "none",
+        "sessions": 1208
+      },
+      {
+        "source": "www.jplouton-avocat.fr",
+        "medium": "referral",
+        "sessions": 460
+      },
+      {
+        "source": "adwords",
+        "medium": "ppc",
+        "sessions": 409
+      },
+      {
+        "source": "www.bing.com",
+        "medium": "referral",
+        "sessions": 192
+      }
+    ]
+  },
+  "outbound_destinations": [
+    {
+      "hostname": "www.justice.gouv.fr",
+      "clicks": 1
+    }
+  ],
+  "cta_breakdown": [],
+  "gsc_clicks_28d": 3,
+  "cooked_first_seen": "2026-05-06T17:14:47.130Z",
+  "content_snapshot": null,
+  "engagement_density": {
+    "sessions": 22,
+    "dwell_p25_seconds": 7.5,
+    "dwell_median_seconds": 29.5,
+    "dwell_p75_seconds": 85.8,
+    "evenness_score": 0.09
+  },
+  "cooked_health": {
+    "snapshot_extras": "ok",
+    "site_context": "ok",
+    "outbound": "ok",
+    "cta": "empty",
+    "engagement_density": "ok",
+    "failure_messages": []
+  }
+}

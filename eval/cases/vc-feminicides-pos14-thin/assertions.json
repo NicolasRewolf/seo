@@ -1,0 +1,30 @@
+{
+  "case_id": "vc-feminicides-pos14-thin",
+  "what": "Pos 13.94, low impr (1.5k), meta description TRUNCATED at 'd' (incomplete in SERP). YMYL emotional + Bordeaux-local intent. Tests recognition of a broken meta as #1 fix + emotional-victim intent + caveat on tiny pogo sample (n=2).",
+  "asserts": [
+    {
+      "field": "tldr",
+      "kind": "min_length",
+      "length": 80,
+      "why": "Substantive synthesis required."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["meta", "tronquée", "tronqué", "incomplète", "incomplete", "coupée", "cut", "broken"],
+      "why": "The meta description is literally broken — truncated mid-word at 'd'. This is the highest-ROI fix and must be flagged. Missing it = the diagnostic leaves the most obvious bug untouched."
+    },
+    {
+      "field": "intent_mismatch",
+      "kind": "must_contain_any",
+      "patterns": ["victime", "femme", "battue", "urgent", "réassurance", "émotionnel", "local", "bordeaux", "ymyl"],
+      "why": "Intent is YMYL emotional + local — diagnosis must recognize the user state (victim seeking immediate reassurance) to drive the right tonal/CTA fixes."
+    },
+    {
+      "field": "pogo_navboost_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["n=", "échantillon", "faible", "insuffisant", "<30", "trop peu", "small sample", "non concluant"],
+      "why": "n=2 google_sessions is laughably small — pogo_rate 50% is meaningless without the caveat. A diagnostic that conclues NavBoost from this would be a hallucination."
+    }
+  ]
+}

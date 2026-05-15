@@ -1,0 +1,42 @@
+{
+  "case_id": "arse-pos8-pogo-stick",
+  "what": "Pos 7.78, pps 0.95, scroll 1.37%, evenness 0.07 bimodal, LCP Poor 4258ms, page is THIN (0 H2, 0 image, 0 outbound link). Tests recognition of structural thinness as #1 cause + pogo signal interpretation with caveat on small n=7 + competing institutional authorities (dalloz/.gouv).",
+  "asserts": [
+    {
+      "field": "tldr",
+      "kind": "min_length",
+      "length": 80,
+      "why": "Substantive synthesis required."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["dalloz", "gouv", "service-public", "autorité", "institut"],
+      "why": "Top 3 SERP is dalloz / .gouv — diagnosing snippet weakness without naming the institutional competition produces wrong fixes."
+    },
+    {
+      "field": "engagement_diagnosis",
+      "kind": "must_contain_any",
+      "patterns": ["scroll", "bimodal", "evenness", "dwell", "distribution"],
+      "why": "scroll 1.37% + bimodal dwell distribution (p25=6s, p75=80s, evenness 0.07) is THE engagement story — must surface at least one of these signals."
+    },
+    {
+      "field": "engagement_diagnosis",
+      "kind": "must_not_contain_any",
+      "patterns": ["satisfaisant", "engagement bon", "bonne lecture", "correct"],
+      "why": "Worst engagement profile in the corpus — calling it satisfaisant would invalidate the diagnostic."
+    },
+    {
+      "field": "structural_gaps",
+      "kind": "must_contain_any",
+      "patterns": ["H2", "h2", "thin", "structure", "section", "court", "manque"],
+      "why": "Page literally has 0 H2 sections + 0 images on a YMYL legal topic — structural gap is the #1 fixable cause and must appear as a structural finding."
+    },
+    {
+      "field": "conversion_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["CTA", "cta", "lien", "in-body", "interne", "cul-de-sac", "dead-end", "aucun", "0 lien"],
+      "why": "0 outbound + 0 conversions on 11 sessions = total dead-end — must surface as funnel finding."
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "case_id": "gav-duree-pos5-volume",
+  "what": "Pos 4.52, 115k impr, snippet gap modéré (CTR 4.67% vs 7.22% expected). Tests prompt restraint when ranking is already strong + competitor recognition (service-public.gouv.fr top 1) + scroll-based engagement diagnosis when scroll_complete is catastrophic (0.9%) but dwell is OK.",
+  "asserts": [
+    {
+      "field": "tldr",
+      "kind": "min_length",
+      "length": 80,
+      "why": "tldr must be a substantive synthesis, not a one-liner — 80 chars is the minimum for a useful one-sentence diagnosis."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["service-public", "gouv", "institutionnel", "autorité"],
+      "why": "service-public.gouv.fr holds #1 with institutional authority — diagnosing snippet weakness without naming the dominant competitor is generic and useless for action."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["title", "meta", "angle"],
+      "why": "Snippet weakness must point at a surface-level lever (title/meta/angle) since the page already ranks pos 4.52 — content rewrite is not the right action."
+    },
+    {
+      "field": "engagement_diagnosis",
+      "kind": "must_contain_any",
+      "patterns": ["scroll"],
+      "why": "scroll_avg 23.8% / scroll_complete 0.9% on a 2588-word article is the dominant engagement signal — a diagnosis that ignores it is asleep at the wheel."
+    },
+    {
+      "field": "engagement_diagnosis",
+      "kind": "must_not_contain_any",
+      "patterns": ["catastrophique", "désastreux", "rédhibitoire"],
+      "why": "Engagement is mixed (good dwell, bad scroll) — alarmist wording would over-call the verdict and trigger wrong fixes."
+    },
+    {
+      "field": "conversion_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["CTA", "cta", "rdv", "rendez-vous", "téléphone", "phone", "contact"],
+      "why": "0 conversions on 219 sessions with a CTA buried below scroll_avg is the actionable funnel finding — must surface it."
+    }
+  ]
+}

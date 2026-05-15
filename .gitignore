@@ -14,3 +14,7 @@ gsc-oauth-credentials.json
 gsc-token.json
 ga4-oauth-credentials.json
 ga4-token.json
+
+# Eval framework — results are per-run timestamped artefacts, not committed.
+# `eval/cases/*` (frozen inputs + assertions + baseline) ARE committed.
+eval/results/

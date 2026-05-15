@@ -1,0 +1,1274 @@
+{
+  "url": "https://www.jplouton-avocat.fr/post/la-préméditation-en-droit-pénal-français-définition-et-conséquences-juridiques",
+  "avg_position": 5.17,
+  "position_drift": null,
+  "impressions_monthly": 11777,
+  "ctr_actual": 0.0142,
+  "ctr_expected": 0.0364,
+  "ctr_gap_pct": 61.019999999999996,
+  "pages_per_session": 1.02,
+  "avg_duration_seconds": 136,
+  "scroll_depth": 3.35,
+  "scroll_complete_pct": 0,
+  "outbound_clicks": 0,
+  "lcp_p75_ms": 24664,
+  "inp_p75_ms": 244,
+  "cls_p75": 0.05,
+  "ttfb_p75_ms": 2967.625,
+  "current_title": "La préméditation en droit pénal français : définition et conséquences juridiques",
+  "current_meta": "Qu'est-ce que la préméditation en droit pénal français ? Découvrez sa définition juridique, ses conséquences (assassinat) et les stratégies de défense avec Me Julien Plouton, avocat à Bordeaux.",
+  "current_h1": "La préméditation en droit pénal français : définition et conséquences juridiques",
+  "current_intro": "Vous avez peut-être entendu parler de la \"préméditation\" dans les affaires criminelles médiatisées ou dans les séries policières. Mais que signifie exactement ce terme en droit pénal français et quelles en sont les implications pour l'accusé ? Notre Cabinet Plouton, avocats pénalistes à Bordeaux, vous explique cette notion juridique essentielle. Qu'est-ce que la préméditation en droit français ? La préméditation est définie par l'article 132-72 du Code pénal comme : \"Le dessein formé avant l'action d'attenter à la personne d'un individu déterminé, ou même de celui qui sera trouvé ou rencontré, quand même ce dessein serait dépendant de quelque circonstance",
+  "current_schema_jsonld": [
+    {
+      "@type": "FAQPage",
+      "@context": "https://schema.org",
+      "mainEntity": [
+        {
+          "name": "Qu'est-ce que la préméditation en droit français ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "La préméditation est définie par l'article 132-72 du Code pénal comme le dessein formé avant l'action d'attenter à la personne d'un individu. Elle implique deux éléments fondamentaux : un élément temporel (délai entre la décision et l'acte) et un élément psychologique (réflexion, préparation et organisation de l'acte).",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "Quelles sont les conséquences juridiques de la préméditation ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "La principale conséquence est la transformation du meurtre en assassinat, passible de la réclusion criminelle à perpétuité au lieu de 30 ans. La préméditation constitue également une circonstance aggravante pour d'autres infractions comme les violences volontaires, l'empoisonnement et les actes de torture.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "Comment la préméditation est-elle établie par la justice ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "La préméditation doit être prouvée par l'accusation à travers des éléments matériels comme la préparation d'un plan, l'acquisition d'une arme, des recherches sur internet, des repérages, des communications révélant l'intention ou la mise en place d'un guet-apens.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "Quelle est la différence entre préméditation et guet-apens ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "Le guet-apens est défini comme le fait d'attendre un certain temps une ou plusieurs personnes dans un lieu déterminé pour commettre une infraction. Si tout guet-apens implique une forme de préméditation, l'inverse n'est pas toujours vrai. La préméditation peut exister sans guet-apens, comme dans le cas d'un empoisonnement progressif.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "La préméditation s'applique-t-elle aux mineurs ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "Oui, la préméditation peut être retenue contre un mineur. Toutefois, en vertu de l'ordonnance du 2 février 1945 et du Code de justice pénale des mineurs, l'âge du prévenu sera pris en compte dans la détermination de la peine.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "Peut-on être condamné pour tentative d'assassinat ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "Oui, la tentative d'assassinat est punissable des mêmes peines que l'assassinat consommé, soit la réclusion criminelle à perpétuité, conformément à l'article 121-4 du Code pénal.",
+            "@type": "Answer"
+          }
+        }
+      ]
+    }
+  ],
+  "current_internal_links": [],
+  "top_queries": [
+    {
+      "query": "préméditation",
+      "impressions": 2956,
+      "ctr": 0.0037,
+      "position": 5.46
+    },
+    {
+      "query": "prémédité",
+      "impressions": 2502,
+      "ctr": 0.0008,
+      "position": 5.49
+    },
+    {
+      "query": "prémédité def",
+      "impressions": 1227,
+      "ctr": 0,
+      "position": 7.31
+    },
+    {
+      "query": "premeditation",
+      "impressions": 864,
+      "ctr": 0.0046,
+      "position": 7.62
+    },
+    {
+      "query": "meurtre avec préméditation",
+      "impressions": 502,
+      "ctr": 0.006,
+      "position": 4.87
+    },
+    {
+      "query": "préméditation def",
+      "impressions": 471,
+      "ctr": 0.0085,
+      "position": 5.86
+    },
+    {
+      "query": "premedite",
+      "impressions": 440,
+      "ctr": 0,
+      "position": 6.45
+    },
+    {
+      "query": "prémédité définition",
+      "impressions": 410,
+      "ctr": 0.0024,
+      "position": 6.54
+    },
+    {
+      "query": "préméditation définition",
+      "impressions": 398,
+      "ctr": 0.0101,
+      "position": 7.26
+    },
+    {
+      "query": "préméditation code pénal",
+      "impressions": 327,
+      "ctr": 0.0459,
+      "position": 3.9
+    }
+  ],
+  "enrichment": {
+    "wix_post_id": "d348d627-9a0e-4951-b7f1-7ffe769839b6",
+    "category": {
+      "id": "9477320f-5902-40e9-ace3-b0e3b6b8b51f",
+      "label": "Ressources et notions juridiques",
+      "role": "knowledge_brick"
+    },
+    "wix_metrics": {
+      "views": 3368,
+      "likes": 2,
+      "comments": 0
+    },
+    "enriched_top_queries": [
+      {
+        "query": "préméditation",
+        "impressions": 2956,
+        "ctr": 0.0037,
+        "position": 5.46,
+        "monthly_volume_fr": 590,
+        "cpc": null,
+        "share_of_voice_pct": 167,
+        "serp": {
+          "keyword": "préméditation",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Article 132-72 - Code pénal",
+              "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417491/2002-01-01",
+              "domain": "legifrance.gouv.fr",
+              "description": "La préméditation est le dessein formé avant l'action de commettre un crime ou un délit déterminé. Voir les versions. Comparer les versions"
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Définition de PRÉMÉDITATION",
+              "url": "https://www.cnrtl.fr/definition/pr%C3%A9m%C3%A9ditation",
+              "domain": "cnrtl.fr",
+              "description": "PRÉMÉDITATION, subst. fém. A. − Action de préméditer; intention mûrie, délibérée. Les carreaux [de la fenêtre] avaient l'air, par une préméditation ou une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "La préméditation en droit pénal français : définition et ...",
+              "url": "https://www.jplouton-avocat.fr/post/la-pr%C3%A9m%C3%A9ditation-en-droit-p%C3%A9nal-fran%C3%A7ais-d%C3%A9finition-et-cons%C3%A9quences-juridiques",
+              "domain": "jplouton-avocat.fr",
+              "description": "11 déc. 2024 — \"Le dessein formé avant l'action d'attenter à la personne d'un individu déterminé, ou même de celui qui sera trouvé ou rencontré, quand même ce ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "Préméditation en droit pénal français",
+              "url": "https://fr.wikipedia.org/wiki/Pr%C3%A9m%C3%A9ditation_en_droit_p%C3%A9nal_fran%C3%A7ais",
+              "domain": "fr.wikipedia.org",
+              "description": "La préméditation est définie en droit pénal français comme étant le « dessein formé avant l'action, de commettre un crime ou un délit déterminé »."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Préméditation",
+              "url": "https://lesbosseuses.cnrs.fr/glossary/premeditation/",
+              "domain": "lesbosseuses.cnrs.fr",
+              "description": "Fait de préparer son acte (crime ou délit) en décidant à l'avance de la manière de le réaliser, du moment choisi, des personnes recrutées pour aider à l' ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "La préméditation",
+              "url": "https://www.cabinetaci.com/la-premeditation/",
+              "domain": "cabinetaci.com",
+              "description": "Elle est « le dessein formé avant l'action » de donner intentionnellement la mort à autrui. Cette définition est issue de l'article 132-72 ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Code pénal - Article 132-72",
+              "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417492",
+              "domain": "legifrance.gouv.fr",
+              "description": "La préméditation est le dessein formé avant l'action de commettre un crime ou un délit déterminé. Voir les versions. Comparer les versions"
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "Définitions : préméditation - Dictionnaire de français ...",
+              "url": "https://www.larousse.fr/dictionnaires/francais/pr%C3%A9m%C3%A9ditation/63546",
+              "domain": "larousse.fr",
+              "description": "Résolution prise à l'avance d'effectuer telle action, en particulier un acte délictueux, criminel. (Elle constitue une circonstance aggravante des coups et ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "préméditation",
+              "url": "https://dvlf.uchicago.edu/mot/pr%C3%A9m%C3%A9ditation",
+              "domain": "dvlf.uchicago.edu",
+              "description": "PRÉMÉDITATION, subst. fém. A. −Action de préméditer; intention mûrie, délibérée. Les carreaux [de la fenêtre] avaient l'air, par une préméditation ou une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 12,
+              "title": "Préméditation - MCE Avocat",
+              "url": "https://mce-avocat.fr/lexique-dictionnaire-juridique/premeditation",
+              "domain": "mce-avocat.fr",
+              "description": "La préméditation est le dessein formé avant l'action de commettre un crime ou un délit déterminé (Article 132-72 du Code pénal).La préméditation est une ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": true,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:50:41.193Z"
+        }
+      },
+      {
+        "query": "prémédité",
+        "impressions": 2502,
+        "ctr": 0.0008,
+        "position": 5.49,
+        "monthly_volume_fr": 590,
+        "cpc": null,
+        "share_of_voice_pct": 141.4,
+        "serp": {
+          "keyword": "prémédité",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Définitions : préméditer, être prémédité - Dictionnaire",
+              "url": "https://www.larousse.fr/dictionnaires/francais/pr%C3%A9m%C3%A9diter/63547",
+              "domain": "larousse.fr",
+              "description": "Préparer par une mûre réflexion l'accomplissement d'un acte délictueux ou coupable. Synonymes : calculer - combiner (familier) - machiner - manigancer (familier) ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Prémédité : Définition simple et facile du dictionnaire",
+              "url": "https://www.linternaute.fr/dictionnaire/fr/definition/premedite/",
+              "domain": "linternaute.fr",
+              "description": "Participe passé du verbe préméditer. Intentionnel, ourdi, calculé. Mise à jour le 18/08/25. Trouver une définition. Les Synonymes Les thèmes Les usages ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "La préméditation en droit pénal français : définition et ...",
+              "url": "https://www.jplouton-avocat.fr/post/la-pr%C3%A9m%C3%A9ditation-en-droit-p%C3%A9nal-fran%C3%A7ais-d%C3%A9finition-et-cons%C3%A9quences-juridiques",
+              "domain": "jplouton-avocat.fr",
+              "description": "11 déc. 2024 — La conclusion la plus connue de la préméditation est la requalification du meurtre en assassinat. Alors que le meurtre (homicide volontaire) est ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "préméditation | Dictionnaire de l'Académie française | 9e ...",
+              "url": "https://www.dictionnaire-academie.fr/article/A9P4050",
+              "domain": "dictionnaire-academie.fr",
+              "description": "Action de préméditer ; résolution prise à l'avance d'exécuter un acte. La préméditation de son coup de force. ▫ Marque de domaine : droit ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Préméditation en droit pénal français",
+              "url": "https://fr.wikipedia.org/wiki/Pr%C3%A9m%C3%A9ditation_en_droit_p%C3%A9nal_fran%C3%A7ais",
+              "domain": "fr.wikipedia.org",
+              "description": "La préméditation est définie en droit pénal français comme étant le « dessein formé avant l'action, de commettre un crime ou un délit déterminé »."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Prémédité : définition, signification et usage du mot",
+              "url": "https://www.universalis.fr/dictionnaire/pr%C3%A9m%C3%A9dit%C3%A9/",
+              "domain": "universalis.fr",
+              "description": "Prémédité · Adjectif masculin singulier · Verbe au participe passé masculin singulier. Définition et usage. projeté, prévu, intentionnel. Forme dérivée du verbe ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "définition et synonyme de préméditer en français",
+              "url": "https://langue-francaise.tv5monde.com/decouvrir/dictionnaire/p/premediter",
+              "domain": "langue-francaise.tv5monde.com",
+              "description": "La définition de Préméditer dans le dictionnaire français de TV5MONDE. Découvrez également les synonymes de préméditer sur TV5MONDE."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "Définition de PRÉMÉDITÉ",
+              "url": "https://www.cnrtl.fr/lexicographie/pr%C3%A9m%C3%A9dit%C3%A9",
+              "domain": "cnrtl.fr",
+              "description": "PRÉMÉDITER, verbe trans. A. − Préparer avec calcul, mûrir le projet de. Préméditer une intervention, un plan de bataille, la guerre. Je prémédite mon départ ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "prémédité - Synonymes et antonymes",
+              "url": "https://dictionnaire.lerobert.com/synonymes/premediter",
+              "domain": "dictionnaire.lerobert.com",
+              "description": "Décider, préparer avec calcul. ➙ projeter. Elle avait prémédité sa fuite, de s'enfuir. au participe passé Un crime prémédité. Voir la définition complète."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": true,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:50:23.375Z"
+        }
+      },
+      {
+        "query": "prémédité def",
+        "impressions": 1227,
+        "ctr": 0,
+        "position": 7.31,
+        "monthly_volume_fr": 720,
+        "cpc": null,
+        "share_of_voice_pct": 56.8,
+        "serp": {
+          "keyword": "prémédité def",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Définitions : préméditer, être prémédité - Dictionnaire",
+              "url": "https://www.larousse.fr/dictionnaires/francais/pr%C3%A9m%C3%A9diter/63547",
+              "domain": "larousse.fr",
+              "description": "Préparer par une mûre réflexion l'accomplissement d'un acte délictueux ou coupable. Synonymes : calculer - combiner (familier) - machiner - manigancer ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Prémédité : Définition simple et facile du dictionnaire",
+              "url": "https://www.linternaute.fr/dictionnaire/fr/definition/premedite/",
+              "domain": "linternaute.fr",
+              "description": "Participe passé du verbe préméditer. Intentionnel, ourdi, calculé. Mise à jour le 18/08/25. Trouver une définition. Les Synonymes Les thèmes Les usages ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "préméditée - Définitions, synonymes, prononciation ...",
+              "url": "https://dictionnaire.lerobert.com/definition/premeditee",
+              "domain": "dictionnaire.lerobert.com",
+              "description": "4 févr. 2026 — Faite à l'improviste, l'observation d'autrefois est moins explicite que celle d'aujourd'hui, préméditée et accomplie dans les conditions ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "préméditation | Dictionnaire de l'Académie française | 9e ...",
+              "url": "https://www.dictionnaire-academie.fr/article/A9P4050",
+              "domain": "dictionnaire-academie.fr",
+              "description": "Action de préméditer ; résolution prise à l'avance d'exécuter un acte. La préméditation de son coup de force. ▫ Marque de domaine : droit. Dessein réfléchi ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Prémédité : définition, signification et usage du mot",
+              "url": "https://www.universalis.fr/dictionnaire/pr%C3%A9m%C3%A9dit%C3%A9/",
+              "domain": "universalis.fr",
+              "description": "Prémédité · Adjectif masculin singulier · Verbe au participe passé masculin singulier. Définition et usage. projeté, prévu, intentionnel. Forme dérivée du verbe ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Définition de PRÉMÉDITÉ",
+              "url": "https://www.cnrtl.fr/lexicographie/pr%C3%A9m%C3%A9dit%C3%A9",
+              "domain": "cnrtl.fr",
+              "description": "PRÉMÉDITER, verbe trans. A. − Préparer avec calcul, mûrir le projet de. Préméditer une intervention, un plan de bataille, la guerre. Je prémédite mon départ ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "définition et synonyme de préméditer en français",
+              "url": "https://langue-francaise.tv5monde.com/decouvrir/dictionnaire/p/premediter",
+              "domain": "langue-francaise.tv5monde.com",
+              "description": "La définition de Préméditer dans le dictionnaire français de TV5MONDE. Découvrez également les synonymes de préméditer sur TV5MONDE."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "Prémédité - Définition et étymologie - Dicode",
+              "url": "https://dicode.fr/mot/premedite/",
+              "domain": "dicode.fr",
+              "description": "Qui a été préparé et réfléchi à l'avance, pas fait par hasard. Caractérise une action, particulièrement dans le domaine judiciaire, qui résulte d'une décision ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "prémédité - définition, citations, étymologie",
+              "url": "https://www.littre.org/definition/pr%C3%A9m%C3%A9dit%C3%A9",
+              "domain": "littre.org",
+              "description": "prémédité, ée ; Ce calme paraît assez prémédité Pour ne répondre pas de sa tranquillité · Corneille, Suréna, III, 1. ; Il me faudrait pour l'ambassade Quelque ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:50:20.171Z"
+        }
+      },
+      {
+        "query": "premeditation",
+        "impressions": 864,
+        "ctr": 0.0046,
+        "position": 7.62,
+        "monthly_volume_fr": 210,
+        "cpc": null,
+        "share_of_voice_pct": 137.1,
+        "serp": {
+          "keyword": "premeditation",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Article 132-72 - Code pénal",
+              "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417491/2002-01-01",
+              "domain": "legifrance.gouv.fr",
+              "description": "La préméditation est le dessein formé avant l'action de commettre un crime ou un délit déterminé. Voir les versions. Comparer les versions"
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Définitions : préméditation - Dictionnaire de français ...",
+              "url": "https://www.larousse.fr/dictionnaires/francais/pr%C3%A9m%C3%A9ditation/63546",
+              "domain": "larousse.fr",
+              "description": "Résolution prise à l'avance d'effectuer telle action, en particulier un acte délictueux, criminel. (Elle constitue une circonstance aggravante des coups et ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "Préméditation en droit pénal français",
+              "url": "https://fr.wikipedia.org/wiki/Pr%C3%A9m%C3%A9ditation_en_droit_p%C3%A9nal_fran%C3%A7ais",
+              "domain": "fr.wikipedia.org",
+              "description": "La préméditation est définie en droit pénal français comme étant le « dessein formé avant l'action, de commettre un crime ou un délit déterminé »."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "La préméditation en droit pénal français : définition et ...",
+              "url": "https://www.jplouton-avocat.fr/post/la-pr%C3%A9m%C3%A9ditation-en-droit-p%C3%A9nal-fran%C3%A7ais-d%C3%A9finition-et-cons%C3%A9quences-juridiques",
+              "domain": "jplouton-avocat.fr",
+              "description": "11 déc. 2024 — \"Le dessein formé avant l'action d'attenter à la personne d'un individu déterminé, ou même de celui qui sera trouvé ou rencontré, quand même ce ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Code pénal - Article 132-72",
+              "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417492",
+              "domain": "legifrance.gouv.fr",
+              "description": "La préméditation est le dessein formé avant l'action de commettre un crime ou un délit déterminé. Voir les versions. Comparer les versions"
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Définition de PRÉMÉDITATION",
+              "url": "https://www.cnrtl.fr/definition/pr%C3%A9m%C3%A9ditation",
+              "domain": "cnrtl.fr",
+              "description": "PRÉMÉDITATION, subst. fém. A. − Action de préméditer; intention mûrie, délibérée. Les carreaux [de la fenêtre] avaient l'air, par une préméditation ou une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Préméditation - MCE Avocat",
+              "url": "https://mce-avocat.fr/lexique-dictionnaire-juridique/premeditation",
+              "domain": "mce-avocat.fr",
+              "description": "La préméditation est le dessein formé avant l'action de commettre un crime ou un délit déterminé (Article 132-72 du Code pénal).La préméditation est une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "préméditation | Dictionnaire de l'Académie française | 9e ...",
+              "url": "https://www.dictionnaire-academie.fr/article/A9P4050",
+              "domain": "dictionnaire-academie.fr",
+              "description": "Action de préméditer ; résolution prise à l'avance d'exécuter un acte. La préméditation de son coup de force. ▫ Marque de domaine : droit ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "préméditation",
+              "url": "https://dvlf.uchicago.edu/mot/pr%C3%A9m%C3%A9ditation",
+              "domain": "dvlf.uchicago.edu",
+              "description": "PRÉMÉDITATION, subst. fém. A. −Action de préméditer; intention mûrie, délibérée. Les carreaux [de la fenêtre] avaient l'air, par une préméditation ou une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 12,
+              "title": "La préméditation",
+              "url": "https://www.cabinetaci.com/la-premeditation/",
+              "domain": "cabinetaci.com",
+              "description": "Elle est « le dessein formé avant l'action » de donner intentionnellement la mort à autrui. Cette définition est issue de l'article 132-72 ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": true,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:50:28.894Z"
+        }
+      },
+      {
+        "query": "meurtre avec préméditation",
+        "impressions": 502,
+        "ctr": 0.006,
+        "position": 4.87,
+        "monthly_volume_fr": 210,
+        "cpc": null,
+        "share_of_voice_pct": 79.7,
+        "serp": {
+          "keyword": "meurtre avec préméditation",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "La préméditation en droit pénal français : définition et ...",
+              "url": "https://www.jplouton-avocat.fr/post/la-pr%C3%A9m%C3%A9ditation-en-droit-p%C3%A9nal-fran%C3%A7ais-d%C3%A9finition-et-cons%C3%A9quences-juridiques",
+              "domain": "jplouton-avocat.fr",
+              "description": "11 déc. 2024 — Article 221-3 : \"Le meurtre commis avec préméditation constitue un assassinat. Il est puni de la réclusion criminelle à perpétuité.\" ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Meurtre, assassinat, homicide : quelles différences en droit ...",
+              "url": "https://www.teboulavocat.com/blog/difference-entre-meurtre-et-assassinat",
+              "domain": "teboulavocat.com",
+              "description": "L'article 221-3 du Code pénal qualifie l'assassinat comme un meurtre commis avec préméditation. Caractéristique principale : la préméditation distingue l' ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "Meurtre : définition juridique, différence avec l'assassinat ...",
+              "url": "https://monexpertdudroit.com/infractions-penales-contravention-delit-crime/meurtre-definition/",
+              "domain": "monexpertdudroit.com",
+              "description": "L'homicide volontaire a été prémédité : il s'agit d'un assassinat. « Prémédité » signifie que l'action de tuer a été planifiée à l'avance et mûrement réfléchie ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "Article 221-3 - Code pénal",
+              "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417564/2008-05-29",
+              "domain": "legifrance.gouv.fr",
+              "description": "Le meurtre commis avec préméditation constitue un assassinat. Il est puni de la réclusion criminelle à perpétuité. Les deux premiers alinéas de l'article ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Quelle est la différence entre un meurtre et un assassinat ?",
+              "url": "https://www.justifit.fr/b/guides/droit-penal/difference-meurtre-assassinat/?srsltid=AfmBOooqFqRdQkvXRPzqRDDO4BSOu-XF2gmGIdBRY_meahNc11XLwS9l",
+              "domain": "justifit.fr",
+              "description": "26 mars 2024 — La préméditation est une circonstance aggravante qui permet de distinguer juridiquement, le meurtre de l'assassinat. Ce dernier a été planifié ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Préméditation en droit pénal français",
+              "url": "https://fr.wikipedia.org/wiki/Pr%C3%A9m%C3%A9ditation_en_droit_p%C3%A9nal_fran%C3%A7ais",
+              "domain": "fr.wikipedia.org",
+              "description": "Un homicide commis avec préméditation et volonté de le commettre est juridiquement qualifié d'assassinat. En droit civil français, la préméditation est ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "L'homicide volontaire",
+              "url": "https://criminocorpus.org/fr/visites/au-tribunal/droit-penal/homicide/",
+              "domain": "criminocorpus.org",
+              "description": "5 oct. 2016 — L'art. 221-3 CP énonce que « Le meurtre commis avec préméditation constitue un assassinat. Il est puni de la réclusion criminelle à perpétuité » ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 11,
+              "title": "Meurtre et assassinat : quelles distinctions et ...",
+              "url": "https://www.village-justice.com/articles/meurtre-assassinat-quelles-distinctions-quelles-sanctions,53003.html",
+              "domain": "village-justice.com",
+              "description": "9 avr. 2025 — Selon l'article 221-3 du Code pénal, l'assassinat est en effet un meurtre commis avec préméditation ou guet-apens. La préméditation implique que ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": true
+          },
+          "fetched_at": "2026-05-15T21:50:21.532Z"
+        }
+      },
+      {
+        "query": "préméditation def",
+        "impressions": 471,
+        "ctr": 0.0085,
+        "position": 5.86,
+        "monthly_volume_fr": 720,
+        "cpc": null,
+        "share_of_voice_pct": 21.8
+      },
+      {
+        "query": "premedite",
+        "impressions": 440,
+        "ctr": 0,
+        "position": 6.45,
+        "monthly_volume_fr": 590,
+        "cpc": null,
+        "share_of_voice_pct": 24.9
+      },
+      {
+        "query": "prémédité définition",
+        "impressions": 410,
+        "ctr": 0.0024,
+        "position": 6.54,
+        "monthly_volume_fr": 720,
+        "cpc": null,
+        "share_of_voice_pct": 19
+      },
+      {
+        "query": "préméditation définition",
+        "impressions": 398,
+        "ctr": 0.0101,
+        "position": 7.26,
+        "monthly_volume_fr": 720,
+        "cpc": null,
+        "share_of_voice_pct": 18.4
+      },
+      {
+        "query": "préméditation code pénal",
+        "impressions": 327,
+        "ctr": 0.0459,
+        "position": 3.9,
+        "monthly_volume_fr": 70,
+        "cpc": null,
+        "share_of_voice_pct": 155.7
+      }
+    ],
+    "total_monthly_demand_fr": 5140,
+    "internal_pages_catalog": {
+      "expertise": [
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale",
+          "role": "expertise",
+          "topic": "Défense pénale (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+          "role": "expertise",
+          "topic": "Droit pénal général"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+          "role": "expertise",
+          "topic": "Procès criminels (cour d'assises)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+          "role": "expertise",
+          "topic": "Violences conjugales et féminicides"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+          "role": "expertise",
+          "topic": "Trafic de stupéfiants"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+          "role": "expertise",
+          "topic": "Droit pénal des affaires"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+          "role": "expertise",
+          "topic": "Indemnisation des victimes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+          "role": "expertise",
+          "topic": "Accidents de la vie courante"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+          "role": "expertise",
+          "topic": "Victimes de délits ou crimes"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+          "role": "expertise",
+          "topic": "Accidents et erreurs médicales"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+          "role": "expertise",
+          "topic": "Droit et accidents du travail"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+          "role": "expertise",
+          "topic": "Accidents de la route"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+          "role": "expertise",
+          "topic": "Droit des contrats et des personnes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+          "role": "expertise",
+          "topic": "Défense des consommateurs"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+          "role": "expertise",
+          "topic": "Droit des assurances"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+          "role": "expertise",
+          "topic": "Droit de la famille"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+          "role": "expertise",
+          "topic": "Divorce (Bordeaux)"
+        }
+      ],
+      "cta": [
+        {
+          "url": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+          "role": "cta",
+          "topic": "Honoraires & prise de rendez-vous"
+        }
+      ],
+      "trust": [
+        {
+          "url": "https://www.jplouton-avocat.fr/notre-cabinet",
+          "role": "trust",
+          "topic": "Présentation du cabinet"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/nos-affaires",
+          "role": "trust",
+          "topic": "Affaires emblématiques"
+        }
+      ],
+      "blog_root": [
+        {
+          "url": "https://www.jplouton-avocat.fr/blog",
+          "role": "blog_root"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/comprendre-le-droit",
+          "role": "blog_root"
+        }
+      ],
+      "homepage": [
+        {
+          "url": "https://www.jplouton-avocat.fr",
+          "role": "homepage"
+        }
+      ],
+      "legal": [
+        {
+          "url": "https://www.jplouton-avocat.fr/mentions-legales",
+          "role": "legal"
+        }
+      ]
+    },
+    "google_guidance": {
+      "blog_posts": [
+        {
+          "title": "A new resource for optimizing for generative AI in Google Search",
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "summary": "As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for ap",
+          "published_date": "2026-05-15",
+          "age_days": 0
+        },
+        {
+          "title": "Introducing a new spam policy for \"back button hijacking\"",
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "summary": "Today, we are expanding our spam policies to address a deceptive practice known as \"back button hijacking\", which will become an explicit violation of the \"malicious practices\" of spam policies, leading to potential spam",
+          "published_date": "2026-04-13",
+          "age_days": 32
+        },
+        {
+          "title": "Inside Googlebot: demystifying crawling, fetching, and the bytes we process",
+          "link": "https://developers.google.com/search/blog/2026/03/crawler-blog-post",
+          "summary": "If you tuned into episode 105 of the Search Off the Record podcast, you might have heard us diving deep into a topic that is close to our hearts (and our servers): the inner workings of Googlebot.",
+          "published_date": "2026-03-31",
+          "age_days": 45
+        }
+      ],
+      "blog_posts_deep": [
+        {
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "body": "Home Search Central Google Search Central Blog Send feedback A new resource for optimizing for generative AI in Google Search Friday, May 15, 2026 As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for appearance in generative AI features in Search, and in turn Google Search overall. In the new guide, optimizing your website for generative AI features on Google Search, you'll find: Guidance on the importance of providing valuable, unique, non-commodity content Tips about providing local, shopping, image, and video content Mythbusting common \"AEO/GEO\" misconceptions Initial guidance related to AI agents, a quickly emerging and evolving space Information about why SEO best practices remain relevant and foundational to success with our generative AI features We hope this guide provides more clarity to help you continue to create great content that reaches your audience effectively through Google Search. As always, if you have any feedback, share your comments on LinkedIn or post in the Google Search Central Community. Posted"
+        },
+        {
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "body": "หน้าแรก Search Central Google Search Central Blog ส่งความคิดเห็น ขอแนะนำนโยบายสแปมใหม่สำหรับ \"การดักปุ่มย้อนกลับ\" 13 เมษายน 2026 ในวันนี้ เรากำลังขยายนโยบายสแปมเพื่อจัดการกับพฤติกรรมหลอกลวงที่เรียกว่า \"การดักปุ่มย้อนกลับ\" ซึ่งจะถือเป็นการละเมิดอย่างชัดเจนต่อนโยบายสแปมในส่วนของ \"การกระทำที่เป็นอันตราย\" โดยอาจนำไปสู่การดำเนินการกับสแปมได้ การดักปุ่มย้อนกลับคืออะไร เมื่อผู้ใช้คลิกปุ่ม \"ย้อนกลับ\" ในเบราว์เซอร์ พวกเขามีความคาดหวังที่ชัดเจนว่าต้องการกลับไปยังหน้าก่อนหน้า การดักปุ่มย้อนกลับทำลายความคาดหวังพื้นฐานนี้ โดยเกิดขึ้นเมื่อเว็บไซต์ขัดขวางการไปยังส่วนต่างๆ ในเบราว์เซอร์ของผู้ใช้และป้องกันไม่ให้ผู้ใช้สามารถใช้ปุ่มย้อนกลับเพื่อกลับไปยังหน้าต้นทางได้ในทันที ในทางกลับกัน ผู้ใช้อาจถูกส่งไปยังหน้าที่ไม่เคยเข้าชมมาก่อน ได้รับคำแนะนำหรือโฆษณาที่ไม่พึงประสงค์ หรือถูกขัดขวางไม่ให้ท่องเว็บได้ตามปกติ สาเหตุที่เราดำเนินการ เราเชื่อว่าประสบการณ์ของผู้ใช้เป็นสิ่งที่สำคัญที่สุด การดักปุ่มย้อนกลับขัดขวางฟังก์ชันการทำงานของเบราว์เซอร์ ทำให้เส้นทางของผู้ใช้ไม่เป็นไปตามที่คาดไว้ และส่งผลให้ผู้ใช้ไม่พอใจ ผู้ใช้รายงานว่ารู้สึกเหมือนถูกควบคุม และในที่สุดก็จะลดความเชื่อมั่นในการเข้าชมเว็บไซต์ที่ไม่คุ้นเคย ตามที่เราได้ระบุไว้ก่อนหน้านี้ การแทรกหน้าเว็บที่หลอกลวงหรือบิดเบือนลงในประวัติการท่องเว็บของผู้ใช้ถ"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "7eTbAa2jWdToLkraZj5y",
+          "title": "March 2026 core update",
+          "begin": "2026-03-27T09:00:00+00:00",
+          "end": "2026-04-08T13:00:00+00:00",
+          "is_active": false,
+          "category": "core_update"
+        },
+        {
+          "id": "VbnSXAH4SmEcxPtx4YSD",
+          "title": "March 2026 spam update",
+          "begin": "2026-03-24T19:00:00+00:00",
+          "end": "2026-03-25T14:30:00+00:00",
+          "is_active": false,
+          "category": "spam_update"
+        }
+      ],
+      "ranking_systems": [
+        {
+          "id": "bert",
+          "name": "BERT",
+          "description": "Bidirectional Encoder Representations from Transformers (BERT) is an AI system Google uses that allows us to understand how combinations of words express different meanings and intent."
+        },
+        {
+          "id": "crisis-info",
+          "name": "Crisis information systems",
+          "description": "Google has developed systems to provide helpful and timely information during times of crisis, whether those involve personal crisis situations, natural disasters, or other wide-spread crisis situations:"
+        },
+        {
+          "id": "deduplication",
+          "name": "Deduplication systems",
+          "description": "Searches on Google may find thousands or even millions of matching web pages. Some of these may be very similar to each other. In such cases, our systems show only the most relevant results to avoid unhelpful duplication. Learn more about how deduplication works and how to see omitted results if des"
+        },
+        {
+          "id": "exact-match",
+          "name": "Exact match domain system",
+          "description": "Our ranking systems consider the words in domain names as one of many factors to determine if content is relevant to a search. However, our exact match domain system works to ensure we don't give too much credit for content hosted under domains designed to exactly match particular queries. For examp"
+        },
+        {
+          "id": "freshness",
+          "name": "Freshness systems",
+          "description": "We have various \"query deserves freshness\" systems designed to show fresher content for queries where it would be expected. For example, if someone is searching about a movie that's just been released, they probably want recent reviews rather than older articles from when production began. For anoth"
+        },
+        {
+          "id": "link-analysis",
+          "name": "Link analysis systems and PageRank",
+          "description": "We have various systems that understand how pages link to each other as a way to determine what pages are about and which might be most helpful in response to a query. Among these is PageRank, one of our core ranking systems used when Google first launched. Those curious can learn more by reading th"
+        },
+        {
+          "id": "local-news",
+          "name": "Local news systems",
+          "description": "We have systems that work to identify and surface local sources of news whenever relevant, such as through our \"Top stories\" and \"Local news\" features."
+        },
+        {
+          "id": "mum",
+          "name": "MUM",
+          "description": "Multitask Unified Model (MUM) is an AI system capable of both understanding and generating language. It's not currently used for general ranking in Search but rather for some specific applications such as to improve searches for COVID-19 vaccine information and to improve featured snippet callouts w"
+        },
+        {
+          "id": "neural-matching",
+          "name": "Neural matching",
+          "description": "Neural matching is an AI system that Google uses to understand representations of concepts in queries and pages and match them to one another."
+        },
+        {
+          "id": "original-content",
+          "name": "Original content systems",
+          "description": "We have systems to help ensure we are showing original content prominently in search results, including original reporting, ahead of those who merely cite it. This includes support of a special canonical markup creators can use to help us better understand what is the primary page if a page has been"
+        },
+        {
+          "id": "removals",
+          "name": "Removal-based demotion systems",
+          "description": "Google has policies that allow the removal of certain types of content. If we process a significant volume of such removals involving a particular site, we use that as a signal to improve our results. In particular:"
+        },
+        {
+          "id": "passage-ranking-system",
+          "name": "Passage ranking system",
+          "description": "Passage ranking is an AI system we use to identify individual sections or \"passages\" of a web page to better understand how relevant a page is to a search."
+        },
+        {
+          "id": "rankbrain",
+          "name": "RankBrain",
+          "description": "RankBrain is an AI system that helps us understand how words are related to concepts. It means we can better return relevant content even if it doesn't contain all the exact words used in a search, by understanding the content is related to other words and concepts."
+        },
+        {
+          "id": "reliable-information-systems",
+          "name": "Reliable information systems",
+          "description": "Multiple systems work in various ways to show the most reliable information possible, such as to help surface more authoritative pages and demote low-quality content and to elevate quality journalism. In cases where reliable information might be lacking, our systems automatically display content adv"
+        },
+        {
+          "id": "reviews-system",
+          "name": "Reviews system",
+          "description": "The reviews system aims to better reward high quality reviews, content that provides insightful analysis and original research, and is written by experts or enthusiasts who know the topic well."
+        },
+        {
+          "id": "site-diversity-system",
+          "name": "Site diversity system",
+          "description": "Our site diversity system works so that we generally won't show more than two web page listings from the same site in our top results, so that no single site tends to dominate all the top results. However, we may still show more than two listings in cases where our systems determine it's especially"
+        },
+        {
+          "id": "spam-detection-systems",
+          "name": "Spam detection systems",
+          "description": "No one wants their email inbox filled with spam, which is why spam filters are so helpful. Search faces a similar challenge, because the internet includes huge amounts of spam that, if not dealt with, would prevent us from showing the most helpful and relevant results. We employ a range of spam dete"
+        }
+      ],
+      "spam_policies": [
+        {
+          "id": "cloaking",
+          "name": "Cloaking",
+          "description": "Cloaking refers to the practice of presenting different content to users and search engines with the intent to manipulate search rankings and mislead users. Examples of cloaking include: If your site uses technologies that search engines have difficulty accessing, like JavaScript or images, see our"
+        },
+        {
+          "id": "doorways",
+          "name": "Doorway abuse",
+          "description": "Doorway abuse is when sites or pages are created to rank for specific, similar search queries. They lead users to intermediate pages that are not as useful as the final destination. Examples of doorway abuse include:"
+        },
+        {
+          "id": "expired-domains",
+          "name": "Expired domain abuse",
+          "description": "Expired domain abuse is where an expired domain name is purchased and repurposed primarily to manipulate search rankings by hosting content that provides little to no value to users. Illustrative examples include, but are not limited to:"
+        },
+        {
+          "id": "hacked-content",
+          "name": "Hacked content",
+          "description": "Hacked content is any content placed on a site without permission, due to vulnerabilities in a site's security. Hacked content gives poor search results to our users and can potentially install malicious content on their machines. Examples of hacking include: Here are our tips on fixing hacked sites"
+        },
+        {
+          "id": "hidden-text-and-links",
+          "name": "Hidden text and link abuse",
+          "description": "Hidden text or link abuse is the practice of placing content on a page in a way solely to manipulate search engines and not to be easily viewable by human visitors. Examples of hidden text or link abuse include: There are many web design elements today that utilize showing and hiding content in a dy"
+        },
+        {
+          "id": "keyword-stuffing",
+          "name": "Keyword stuffing",
+          "description": "Keyword stuffing refers to the practice of filling a web page with keywords or numbers in an attempt to manipulate rankings in Google Search results. Often these keywords appear in a list or group, unnaturally, or out of context. Examples of keyword stuffing include:"
+        },
+        {
+          "id": "link-spam",
+          "name": "Link spam",
+          "description": "Link spam is the practice of creating links to or from a site primarily for the purpose of manipulating search rankings. The following are examples of link spam: Google does understand that buying and selling links is a normal part of the economy of the web for advertising and sponsorship purposes."
+        },
+        {
+          "id": "machine-generated-traffic",
+          "name": "Machine-generated traffic",
+          "description": "Machine-generated traffic (also called automated traffic) refers to the practice of sending automated queries to Google. This includes scraping results for rank-checking purposes or other types of automated access to Google Search conducted without express permission. Machine-generated traffic consu"
+        },
+        {
+          "id": "malicious-practices",
+          "name": "Malicious practices",
+          "description": "Malicious practices create a mismatch between user expectations and the actual outcome, leading to a negative and deceptive user experience, or compromised user security or privacy. The following are common examples of malicious practices:"
+        },
+        {
+          "id": "misleading-functionality",
+          "name": "Misleading functionality",
+          "description": "Misleading functionality refers to the practice of intentionally creating sites that trick users into thinking they would be able to access some content or services but in reality can't. Examples of misleading functionality include:"
+        },
+        {
+          "id": "scaled-content",
+          "name": "Scaled content abuse",
+          "description": "Scaled content abuse is when many pages are generated for the primary purpose of manipulating search rankings and not helping users. This abusive practice is typically focused on creating large amounts of unoriginal content that provides little to no value to users, no matter how it's created. Examp"
+        },
+        {
+          "id": "scraped-content",
+          "name": "Scraping",
+          "description": "Scraping refers to the practice of taking content from other sites, often through automated means, and hosting it with the purpose of manipulating search rankings. Examples of abusive scraping include:"
+        },
+        {
+          "id": "site-reputation",
+          "name": "Site reputation abuse",
+          "description": "Site reputation abuse is a tactic where third-party content is published on a host site mainly because of that host's already-established ranking signals, which it has earned primarily from its first-party content. The goal of this tactic is for the content to rank better than it could otherwise on"
+        },
+        {
+          "id": "sneaky-redirects",
+          "name": "Sneaky redirects",
+          "description": "Redirecting is the act of sending a visitor to a different URL than the one they initially requested. Sneaky redirecting is the practice of doing this maliciously in order to either show users and search engines different content or show users unexpected content that does not fulfill their original"
+        },
+        {
+          "id": "thin-affiliate-pages",
+          "name": "Thin affiliation",
+          "description": "Thin affiliation is the practice of publishing content with product affiliate links where the product descriptions and reviews are copied directly from the original merchant without any original content or added value. Affiliate pages can be considered thin if they are a part of a program that distr"
+        },
+        {
+          "id": "user-generated-spam",
+          "name": "User-generated spam",
+          "description": "User-generated spam is spammy content added to a site by users through a channel intended for user content. Often site owners are unaware of the spammy content. Examples of spammy user-generated content include: Here are several tips on how to prevent abuse of your site's public areas. Here are our"
+        },
+        {
+          "id": "other-behaviors-that-can-lead-to-demotion-or-removal",
+          "name": "Other practices that can lead to demotion or removal",
+          "description": "When we receive a significant volume of valid copyright removal requests involving a given site, we are able to use that to demote other content from the site in our results. This way, if there is other infringing content, people are less likely to encounter it versus the original content. We apply"
+        }
+      ],
+      "fetched_at": "2026-05-15T21:50:42.412Z"
+    }
+  },
+  "inbound_summary": {
+    "outbound_total": 80,
+    "inbound_total": 3,
+    "inbound_distinct_sources": 3,
+    "inbound_editorial": 3,
+    "inbound_nav_footer": 0,
+    "top_editorial_sources": [
+      {
+        "source_path": "/post/agression-à-la-machette-sur-le-cour-de-l-yser-intervention-en-partie-civile-devant-la-cour-d-assis",
+        "anchor_text": "préméditation en droit pénal"
+      },
+      {
+        "source_path": "/post/assassinat-à-commensacq-40-affaire-guy-lecomte-revivez-cette-enquête-hors-norme-et-le-procès-d",
+        "anchor_text": "le mobile du passage à l'acte"
+      },
+      {
+        "source_path": "/post/assassinat-sur-conjoint-la-défense-fait-écarter-la-réclusion-criminelle-à-perpétuité",
+        "anchor_text": "préméditation"
+      }
+    ]
+  },
+  "cooked_extras": {
+    "path": "/post/la-préméditation-en-droit-pénal-français-définition-et-conséquences-juridiques",
+    "windows": {
+      "7d": {
+        "views": 60,
+        "unique_visitors": 57,
+        "sessions": 59,
+        "bounce_rate": 0.0862,
+        "avg_dwell_seconds": 53.8,
+        "scroll_avg": 21.6,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0,
+        "entry_count": 58,
+        "exit_count": 59,
+        "outbound_clicks": 0
+      },
+      "28d": {
+        "views": 70,
+        "unique_visitors": 66,
+        "sessions": 68,
+        "bounce_rate": 0.08960000000000001,
+        "avg_dwell_seconds": 75.4,
+        "scroll_avg": 20.8,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0,
+        "entry_count": 67,
+        "exit_count": 68,
+        "outbound_clicks": 0
+      },
+      "90d": {
+        "views": 70,
+        "unique_visitors": 66,
+        "sessions": 68,
+        "bounce_rate": 0.08960000000000001,
+        "avg_dwell_seconds": 75.4,
+        "scroll_avg": 20.8,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0,
+        "entry_count": 67,
+        "exit_count": 68,
+        "outbound_clicks": 0
+      },
+      "365d": {
+        "views": 70,
+        "unique_visitors": 66,
+        "sessions": 68,
+        "bounce_rate": 0.08960000000000001,
+        "avg_dwell_seconds": 75.4,
+        "scroll_avg": 20.8,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0,
+        "entry_count": 67,
+        "exit_count": 68,
+        "outbound_clicks": 0
+      }
+    },
+    "cwv_28d": {
+      "lcp_p75_ms": 24664,
+      "inp_p75_ms": 244,
+      "cls_p75": 0.05,
+      "ttfb_p75_ms": 2967.625
+    },
+    "provenance_28d": {
+      "top_referrer": "www.google.com",
+      "top_source": null,
+      "top_medium": null
+    },
+    "device_split_28d": {
+      "desktop": 45.7,
+      "mobile": 52.9,
+      "tablet": 1.4
+    },
+    "conversion": {
+      "phone_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "email_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "booking_cta_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      }
+    },
+    "pogo_28d": {
+      "google_sessions": 34,
+      "pogo_sticks": 2,
+      "hard_pogo": 2,
+      "pogo_rate_pct": 5.9
+    },
+    "cta_per_device_28d": {
+      "mobile_sessions": 36,
+      "desktop_sessions": 31,
+      "cta_rate_mobile_pct": 0,
+      "cta_rate_desktop_pct": 0
+    },
+    "refreshed_at": "2026-05-15T03:00:00.176656+00:00"
+  },
+  "cooked_site_context": {
+    "global_sessions_28d": 6228,
+    "global_bounce_rate_28d": 0.1549,
+    "sessions_per_day_median_28d": 598,
+    "sessions_trend_pct_7d_vs_28d": 203.34,
+    "top_sources_28d": [
+      {
+        "source": "www.google.com",
+        "medium": "referral",
+        "sessions": 3366
+      },
+      {
+        "source": "direct",
+        "medium": "none",
+        "sessions": 1208
+      },
+      {
+        "source": "www.jplouton-avocat.fr",
+        "medium": "referral",
+        "sessions": 459
+      },
+      {
+        "source": "adwords",
+        "medium": "ppc",
+        "sessions": 409
+      },
+      {
+        "source": "www.bing.com",
+        "medium": "referral",
+        "sessions": 192
+      }
+    ]
+  },
+  "outbound_destinations": [
+    {
+      "hostname": "www.courdecassation.fr",
+      "clicks": 1
+    }
+  ],
+  "cta_breakdown": [],
+  "gsc_clicks_28d": 158,
+  "cooked_first_seen": "2026-05-06T17:14:47.130Z",
+  "content_snapshot": null,
+  "engagement_density": {
+    "sessions": 58,
+    "dwell_p25_seconds": 15,
+    "dwell_median_seconds": 45,
+    "dwell_p75_seconds": 108,
+    "evenness_score": 0.14
+  },
+  "cooked_health": {
+    "snapshot_extras": "ok",
+    "site_context": "ok",
+    "outbound": "ok",
+    "cta": "empty",
+    "engagement_density": "ok",
+    "failure_messages": []
+  }
+}

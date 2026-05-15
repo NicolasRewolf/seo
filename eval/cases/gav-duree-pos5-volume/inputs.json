@@ -1,0 +1,1858 @@
+{
+  "url": "https://www.jplouton-avocat.fr/post/durée-de-la-garde-à-vue-24h-48h-96h-combien-de-temps-maximum",
+  "avg_position": 4.52,
+  "position_drift": null,
+  "impressions_monthly": 38479,
+  "ctr_actual": 0.0467,
+  "ctr_expected": 0.0722,
+  "ctr_gap_pct": 35.32,
+  "pages_per_session": 1.0254545454545454,
+  "avg_duration_seconds": 78.3,
+  "scroll_depth": 24.3,
+  "scroll_complete_pct": 0.7,
+  "outbound_clicks": 0,
+  "lcp_p75_ms": 1283,
+  "inp_p75_ms": 288,
+  "cls_p75": 0.16,
+  "ttfb_p75_ms": 353.5,
+  "current_title": " Durée de la garde à vue : 24h, 48h, 96h... Combien de temps maximum ?",
+  "current_meta": "Quelle est la durée légale d'une garde à vue? 24h, 48h, 72h, 96h ou plus? Découvrez les règles de prolongation et vos droits pour chaque étape.",
+  "current_h1": " Durée de la garde à vue : 24h, 48h, 96h... Combien de temps maximum ?",
+  "current_intro": "— Article mis à jour le 10 Avril 2026 La garde à vue est une épreuve soudaine et déstabilisante, tant pour la personne qui la subit que pour ses proches. Dans ce moment de confusion et d'angoisse, une question revient sans cesse : combien de temps cela va-t-il durer ? 24 heures ? 48 heures ? Plus encore ? Notre cabinet d'avocat pénaliste Plouton sait parfaitement que l'incertitude est l'un des aspects les plus difficiles de cette mesure. Cet article a pour but de vous éclairer, de manière simple et transparente. Nous allons décortiquer, étape par étape, les différentes durées",
+  "current_schema_jsonld": null,
+  "current_internal_links": [
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Procès criminels",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Trafic de stupéfiants",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Violences conjugales et féminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit pénal des affaires",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Victimes de délits ou crimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Accidents de la route",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit et accidents du travail",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Accidents et erreurs médicales",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Accidents de la vie courante",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et professionnels",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Défense des consommateurs",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit de la famille",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Divorce",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "placement": "nav"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Affaires",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Médias",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/médias",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Ressources",
+      "target": "https://www.jplouton-avocat.fr/comprendre-le-droit",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Équipe",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Contactez - nous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Accueil",
+      "target": "https://www.jplouton-avocat.fr/",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Je prends rendez-vous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Prise de rendez-vous, accès & honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Horaires & accès",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "La défense pénale",
+      "target": "https://www.jplouton-avocat.fr/defense-penale",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Violences conjugales et feminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+      "placement": "nav"
+    },
+    {
+      "anchor": "L'indemnisation des victimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Les droits des contrats et des personnes",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et pro",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Médias",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires/categories/médias",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Mentions Légales",
+      "target": "https://www.jplouton-avocat.fr/mentions-legales",
+      "placement": "nav"
+    },
+    {
+      "anchor": "RDV",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Tous les articles",
+      "target": "https://www.jplouton-avocat.fr/blog",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/droit-pénal",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Procès criminels",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/droit-criminel",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Violences Conjugales et féminicides",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/violences-conjugales-féminicides",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Trafic de stupéfiants",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/trafic-de-stupéfiants",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit pénal des affaires",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/droit-pénal-des-affaires",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Victimes de délits ou crimes",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/indemnisation-des-victimes-pénale",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Accidents et erreurs médicales",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/accidents-erreurs-médicales",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Accidents de la route",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/accidents-de-la-route",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit et accidents du travail",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/droit-et-accidents-du-travail",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Accidents de la vie courante",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/accidents-de-la-vie-courante",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit des assurances",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/droit-des-assurances",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Défense des consommateurs",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/défense-des-consommateurs",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Droit de la famille",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/droit-de-la-famille",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Ressources et notions juridiques",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/ressources-et-notions-juridiques",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Divorce",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/divorce",
+      "placement": "nav"
+    },
+    {
+      "anchor": "d'avocat pénaliste Plouton",
+      "target": "https://www.jplouton-avocat.fr/défense-pénale/droit-pénal",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "un réflexe essentiel pour un avocat pénaliste",
+      "target": "https://www.jplouton-avocat.fr/défense-pénale/droit-pénal",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "l'expertise d'un pénaliste est déterminante.",
+      "target": "https://www.jplouton-avocat.fr/défense-pénale/droit-pénal",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "avocat spécialisé en droit pénal",
+      "target": "https://www.jplouton-avocat.fr/défense-pénale/droit-pénal",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "",
+      "target": "https://www.jplouton-avocat.fr/défense-pénale/droit-pénal",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Contactez le Cabinet Plouton pour une assistance immédiate et une défense efficace.",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "rj-droit-pénal",
+      "target": "https://www.jplouton-avocat.fr/blog/tags/rj-droit-pénal",
+      "placement": "footer"
+    },
+    {
+      "anchor": "Voir tout",
+      "target": "https://www.jplouton-avocat.fr/blog",
+      "placement": "nav"
+    },
+    {
+      "anchor": "Responsabilité du fait des choses : quels recours en cas de chute, d’objet tombé ou d’équipement défectueux ?",
+      "target": "https://www.jplouton-avocat.fr/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Délai déraisonnable dans une procédure judiciaire : comment engager la responsabilité de l’Etat ?",
+      "target": "https://www.jplouton-avocat.fr/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Auto-entrepreneur victime d'un accident : comment obtenir une indemnisation complète ?",
+      "target": "https://www.jplouton-avocat.fr/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Lire",
+      "target": "https://www.jplouton-avocat.fr/comprendre-le-droit",
+      "placement": "editorial"
+    },
+    {
+      "anchor": "Je prends rendez vous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "footer"
+    },
+    {
+      "anchor": "Notre cabinet",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet",
+      "placement": "footer"
+    },
+    {
+      "anchor": "Rendez-vous, accès & honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+      "placement": "footer"
+    },
+    {
+      "anchor": "Nos affaires",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires",
+      "placement": "footer"
+    },
+    {
+      "anchor": "Défense Pénale",
+      "target": "https://www.jplouton-avocat.fr/defense-penale",
+      "placement": "footer"
+    },
+    {
+      "anchor": "Indemnisation des victimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+      "placement": "footer"
+    },
+    {
+      "anchor": "Droit des contrats et des personnes",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+      "placement": "footer"
+    }
+  ],
+  "top_queries": [
+    {
+      "query": "durée garde à vue",
+      "impressions": 1703,
+      "ctr": 0.1192,
+      "position": 2.97
+    },
+    {
+      "query": "garde a vue temps",
+      "impressions": 1567,
+      "ctr": 0.0747,
+      "position": 2.82
+    },
+    {
+      "query": "garde a vue",
+      "impressions": 1265,
+      "ctr": 0.049,
+      "position": 4.14
+    },
+    {
+      "query": "combien de temps dure une garde à vue",
+      "impressions": 1023,
+      "ctr": 0.0596,
+      "position": 2.79
+    },
+    {
+      "query": "garde à vue moins de 24h",
+      "impressions": 791,
+      "ctr": 0.0278,
+      "position": 4.48
+    },
+    {
+      "query": "garde à vue 72 heures",
+      "impressions": 738,
+      "ctr": 0.0556,
+      "position": 3.72
+    },
+    {
+      "query": "peut-on sortir de garde à vue la nuit",
+      "impressions": 693,
+      "ctr": 0.0144,
+      "position": 9
+    },
+    {
+      "query": "garde à vue durée",
+      "impressions": 639,
+      "ctr": 0.1033,
+      "position": 2.55
+    },
+    {
+      "query": "temps maximum en cellule de dégrisement",
+      "impressions": 501,
+      "ctr": 0.006,
+      "position": 7.6
+    },
+    {
+      "query": "duree garde a vue",
+      "impressions": 486,
+      "ctr": 0.0782,
+      "position": 3.56
+    }
+  ],
+  "enrichment": {
+    "wix_post_id": "35828dcd-81c8-4092-8f6b-16cae9d71af7",
+    "category": {
+      "id": "9477320f-5902-40e9-ace3-b0e3b6b8b51f",
+      "label": "Ressources et notions juridiques",
+      "role": "knowledge_brick"
+    },
+    "wix_metrics": {
+      "views": 14483,
+      "likes": 1,
+      "comments": 0
+    },
+    "enriched_top_queries": [
+      {
+        "query": "durée garde à vue",
+        "impressions": 1703,
+        "ctr": 0.1192,
+        "position": 2.97,
+        "monthly_volume_fr": 880,
+        "cpc": 0.41,
+        "share_of_voice_pct": 64.5,
+        "serp": {
+          "keyword": "durée garde à vue",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Garde à vue",
+              "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F14837",
+              "domain": "service-public.gouv.fr",
+              "description": "Quelle est la durée d'une garde à vue ? Durée initiale. La durée de la garde à vue est de 24 heures, mais cette durée peut être abrégée ou prolongée. Le ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Durée de la garde à vue : 24h, 48h, 96h... Combien de ...",
+              "url": "https://www.jplouton-avocat.fr/post/dur%C3%A9e-de-la-garde-%C3%A0-vue-24h-48h-96h-combien-de-temps-maximum",
+              "domain": "jplouton-avocat.fr",
+              "description": "16 déc. 2024 — La règle de base, inscrite dans le Code de procédure pénale, est que la durée initiale d'une garde à vue ne peut excéder 24 heures. C'est le ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "La garde à vue en 10 questions.",
+              "url": "https://www.village-justice.com/articles/garde-vue-questions,52955.html",
+              "domain": "village-justice.com",
+              "description": "4 avr. 2025 — En principe, la durée de la garde à vue ne peut excéder 24 heures. Toutefois, elle peut être prolongée pour un nouveau délai de vingt-quatre ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "Garde à vue : quelle durée en France ? Quels sont mes droits ?",
+              "url": "https://www.leger-avocat.fr/garde-a-vue---quelle-duree-en-france---quels-sont-mes-droits--_ad88.html",
+              "domain": "leger-avocat.fr",
+              "description": "5 janv. 2024 — La durée légale de la garde à vue en France pour une personne majeure est de 24 heures maximum, à compter du moment de l'interpellation de la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Quels sont vos droits en garde à vue ?",
+              "url": "https://www.ldh-france.org/defendre-vos-droits/vos-droits/en-garde-a-vue/quels-sont-vos-droits-en-garde-a-vue/",
+              "domain": "ldh-france.org",
+              "description": "... durée maximale de 12 heures et dans certains cas pour une durée maximale de 48 heuresou de 72 heures : du droit d'être assisté par un interprète. du ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Qu'est-ce que la garde à vue",
+              "url": "https://www.vie-publique.fr/fiches/291379-quest-ce-que-la-garde-vue",
+              "domain": "vie-publique.fr",
+              "description": "12 nov. 2024 — Dans un premier temps, une garde à vue est prononcée pour une durée de 24 heures. Elle débute à partir du moment où l'officier de police ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Section 3 : De la garde à vue (Articles 706-88 à 706-88-2)",
+              "url": "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006167521/",
+              "domain": "legifrance.gouv.fr",
+              "description": "A l'expiration de la quatre-vingt-seizième heure, la personne dont la prolongation de la garde à vue est ainsi décidée peut demander à s'entretenir avec un ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "Garde à vue : combien de temps peut-elle durer et quels ...",
+              "url": "https://trouvervotreavocat.com/fiche-pratique/droit-penal/procedures-penales/garde-a-vu-temps/",
+              "domain": "trouvervotreavocat.com",
+              "description": "23 août 2025 — La garde à vue peut durer 48 heures si les faits constituent un délit grave. C'est le cas pour des infractions punies d'au moins un an de prison ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "Garde à vue : procédure et durée",
+              "url": "https://www.franck-cohen-avocat.fr/droit-penal/auteurs-infractions/tout-savoir-sur-garde-vue",
+              "domain": "franck-cohen-avocat.fr",
+              "description": "La durée légale maximale d'une garde à vue est de 24 heures. Si la peine encourue est d'au moins une année d'emprisonnement, elle peut être prolongée de 24 ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:49:54.172Z"
+        }
+      },
+      {
+        "query": "garde a vue temps",
+        "impressions": 1567,
+        "ctr": 0.0747,
+        "position": 2.82,
+        "monthly_volume_fr": 480,
+        "cpc": 0.8,
+        "share_of_voice_pct": 108.8,
+        "serp": {
+          "keyword": "garde a vue temps",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Garde à vue",
+              "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F14837",
+              "domain": "service-public.gouv.fr",
+              "description": "Pour les infractions graves, la garde à vue peut être prolongée pour atteindre la durée totale de 72 heures (ou 96 heures en cas de trafic de drogue, meurtre ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Durée de la garde à vue : 24h, 48h, 96h... Combien de ...",
+              "url": "https://www.jplouton-avocat.fr/post/dur%C3%A9e-de-la-garde-%C3%A0-vue-24h-48h-96h-combien-de-temps-maximum",
+              "domain": "jplouton-avocat.fr",
+              "description": "16 déc. 2024 — La règle de base, inscrite dans le Code de procédure pénale, est que la durée initiale d'une garde à vue ne peut excéder 24 heures. C'est le ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "Garde à vue : quelle durée en France ? Quels sont mes droits ?",
+              "url": "https://www.leger-avocat.fr/garde-a-vue---quelle-duree-en-france---quels-sont-mes-droits--_ad88.html",
+              "domain": "leger-avocat.fr",
+              "description": "5 janv. 2024 — La durée légale de la garde à vue en France pour une personne majeure est de 24 heures maximum, à compter du moment de l'interpellation de la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "La garde à vue en 10 questions.",
+              "url": "https://www.village-justice.com/articles/garde-vue-questions,52955.html",
+              "domain": "village-justice.com",
+              "description": "4 avr. 2025 — En principe, la durée de la garde à vue ne peut excéder 24 heures. Toutefois, elle peut être prolongée pour un nouveau délai de vingt-quatre ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Quels sont vos droits en garde à vue ?",
+              "url": "https://www.ldh-france.org/defendre-vos-droits/vos-droits/en-garde-a-vue/quels-sont-vos-droits-en-garde-a-vue/",
+              "domain": "ldh-france.org",
+              "description": "Quels sont vos droits en garde à vue ? · du droit de faire prévenir un proche et votre employeur · du droit d'être examiné par un médecin · du droit d'être assisté ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Section 3 : De la garde à vue (Articles 706-88 à 706-88-2)",
+              "url": "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006167521/",
+              "domain": "legifrance.gouv.fr",
+              "description": "A l'expiration de la quatre-vingt-seizième heure et de la cent-vingtième heure, la personne dont la prolongation de la garde à vue est ainsi décidée peut ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Garde à vue : combien de temps peut-elle durer et quels ...",
+              "url": "https://trouvervotreavocat.com/fiche-pratique/droit-penal/procedures-penales/garde-a-vu-temps/",
+              "domain": "trouvervotreavocat.com",
+              "description": "23 août 2025 — La garde à vue peut durer 48 heures si les faits constituent un délit grave. C'est le cas pour des infractions punies d'au moins un an de prison ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "Qu'est-ce que la garde à vue",
+              "url": "https://www.vie-publique.fr/fiches/291379-quest-ce-que-la-garde-vue",
+              "domain": "vie-publique.fr",
+              "description": "12 nov. 2024 — La durée d'une garde à vue est de 24 heures mais elle peut être prolongée (ou abrégée) selon la nature de l'infraction et l'évolution de l' ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "Garde à vue : procédure et durée",
+              "url": "https://www.franck-cohen-avocat.fr/droit-penal/auteurs-infractions/tout-savoir-sur-garde-vue",
+              "domain": "franck-cohen-avocat.fr",
+              "description": "La durée légale maximale d'une garde à vue est de 24 heures. Si la peine encourue est d'au moins une année d'emprisonnement, elle peut être prolongée de 24 ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:50:02.027Z"
+        }
+      },
+      {
+        "query": "garde a vue",
+        "impressions": 1265,
+        "ctr": 0.049,
+        "position": 4.14,
+        "monthly_volume_fr": 9900,
+        "cpc": 0.39,
+        "share_of_voice_pct": 4.3,
+        "serp": {
+          "keyword": "garde a vue",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Garde à vue",
+              "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F14837",
+              "domain": "service-public.gouv.fr",
+              "description": "La garde à vue est une mesure privative de liberté prise lors d'une enquête judiciaire à l'encontre d'une personne suspectée d'avoir commis une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "title": "Garde à vue en droit français",
+              "url": "https://fr.wikipedia.org/wiki/Garde_%C3%A0_vue_en_droit_fran%C3%A7ais",
+              "domain": "fr.wikipedia.org",
+              "description": "Plus simplement, la garde à vue est le maintien à disposition, sous contrainte, d'une personne soupçonnée d'avoir commis ou tenté de commettre un crime ou un ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 4,
+              "title": "Quels sont vos droits en garde à vue ?",
+              "url": "https://www.ldh-france.org/defendre-vos-droits/vos-droits/en-garde-a-vue/quels-sont-vos-droits-en-garde-a-vue/",
+              "domain": "ldh-france.org",
+              "description": "Quels sont vos droits en garde à vue ? · du droit de faire prévenir un proche et votre employeur · du droit d'être examiné par un médecin · du droit d'être ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 5,
+              "title": "Garde à vue",
+              "url": "https://www.avocat.fr/garde-vue",
+              "domain": "avocat.fr",
+              "description": "La garde à vue permet à un officier de police judiciaire de garder au poste de police, pendant 24 heures, pour les besoins d'une enquête et pour l'interroger, ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 6,
+              "title": "Qu'est-ce que la garde à vue",
+              "url": "https://www.vie-publique.fr/fiches/291379-quest-ce-que-la-garde-vue",
+              "domain": "vie-publique.fr",
+              "description": "12 nov. 2024 — La garde à vue consiste à retenir le suspect dans les locaux de la police ou de la gendarmerie. La garde à vue permet de : poursuivre une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 7,
+              "title": "Garde à vue : définition, déroulement et droits en 2025",
+              "url": "https://www.teboulavocat.com/blog/garde-a-vue-definition-deroulement-et-droits-en-2025",
+              "domain": "teboulavocat.com",
+              "description": "La garde à vue est une mesure de privation de liberté prise par les forces de l'ordre dans le cadre d'une enquête pénale. Elle permet de retenir, pendant une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "La Garde à vue",
+              "url": "https://www.lespenalistesenherbe.com/post/la-garde-%C3%A0-vue",
+              "domain": "lespenalistesenherbe.com",
+              "description": "11 janv. 2026 — “La garde à vue est une mesure de contrainte décidée par un officier de police judiciaire, sous le contrôle de l'autorité judiciaire, ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "Qu'est-ce qu'une garde à vue ? Une juriste nous explique tout ...",
+              "url": "https://www.dailymotion.com/video/x9kql8c",
+              "domain": "dailymotion.com",
+              "description": "01:21Le gardé à vue bénéficie de droits, par exemple l'assistance d'un avocat,. 01:27le droit de voir un médecin, le droit de prévenir un proche ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "Garde à vue : procédure et durée",
+              "url": "https://www.franck-cohen-avocat.fr/droit-penal/auteurs-infractions/tout-savoir-sur-garde-vue",
+              "domain": "franck-cohen-avocat.fr",
+              "description": "La durée de la garde à vue est de 24 heures avec un renouvellement possible en cas de crime ou délit puni d'au moins 5 ans d'emprisonnement, soit 48 heures ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": true,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:49:53.886Z"
+        }
+      },
+      {
+        "query": "combien de temps dure une garde à vue",
+        "impressions": 1023,
+        "ctr": 0.0596,
+        "position": 2.79,
+        "monthly_volume_fr": 390,
+        "cpc": 0.45,
+        "share_of_voice_pct": 87.4,
+        "serp": {
+          "keyword": "combien de temps dure une garde à vue",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Garde à vue",
+              "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F14837",
+              "domain": "service-public.gouv.fr",
+              "description": "Pour les infractions graves, la garde à vue peut être prolongée pour atteindre la durée totale de 72 heures (ou 96 heures en cas de trafic de drogue, meurtre ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Durée de la garde à vue : 24h, 48h, 96h... Combien de ...",
+              "url": "https://www.jplouton-avocat.fr/post/dur%C3%A9e-de-la-garde-%C3%A0-vue-24h-48h-96h-combien-de-temps-maximum",
+              "domain": "jplouton-avocat.fr",
+              "description": "16 déc. 2024 — La règle de base, inscrite dans le Code de procédure pénale, est que la durée initiale d'une garde à vue ne peut excéder 24 heures. C'est le ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "Garde à vue : quelle durée en France ? Quels sont mes droits ?",
+              "url": "https://www.leger-avocat.fr/garde-a-vue---quelle-duree-en-france---quels-sont-mes-droits--_ad88.html",
+              "domain": "leger-avocat.fr",
+              "description": "5 janv. 2024 — La durée légale de la garde à vue en France pour une personne majeure est de 24 heures maximum, à compter du moment de l'interpellation de la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "Garde à vue : combien de temps peut-elle durer et quels ...",
+              "url": "https://trouvervotreavocat.com/fiche-pratique/droit-penal/procedures-penales/garde-a-vu-temps/",
+              "domain": "trouvervotreavocat.com",
+              "description": "23 août 2025 — La garde à vue peut durer 48 heures si les faits constituent un délit grave. C'est le cas pour des infractions punies d'au moins un an de prison ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Cadre légal : quand une garde à vue est-elle possible et ...",
+              "url": "https://www.ldh-france.org/defendre-vos-droits/vos-droits/en-garde-a-vue/cadre-legal-quand-une-garde-a-vue-est-elle-possible-et-pour-quelle-duree/",
+              "domain": "ldh-france.org",
+              "description": "La durée de la garde à vue est de 24 heures. Le procureur de la République peut prolonger la durée de la garde à vue de 24 heures supplémentaires, si et ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "QU'EST CE QUE LA GARDE A VUE ? DROITS ET DUREE",
+              "url": "https://www.liwer-avocat.fr/qu-est-ce-que-la-garde-a-vue---droits-et-duree---presence-d-un-avocat_ad26.html",
+              "domain": "liwer-avocat.fr",
+              "description": "En effet, une garde à vue a une durée initiale de 24 heures. Néanmoins, ce placement peut être abrégé ou prolongé sur décision du Procureur de la République de ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Qu'est-ce que la garde à vue",
+              "url": "https://www.vie-publique.fr/fiches/291379-quest-ce-que-la-garde-vue",
+              "domain": "vie-publique.fr",
+              "description": "12 nov. 2024 — La durée d'une garde à vue est de 24 heures mais elle peut être prolongée (ou abrégée) selon la nature de l'infraction et l'évolution de l' ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "Section 3 : De la garde à vue (Articles 706-88 à 706-88-2)",
+              "url": "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006167521/",
+              "domain": "legifrance.gouv.fr",
+              "description": "A l'expiration de la quatre-vingt-seizième heure, la personne dont la prolongation de la garde à vue est ainsi décidée peut demander à s'entretenir avec un ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "Garde à vue : procédure et durée",
+              "url": "https://www.franck-cohen-avocat.fr/droit-penal/auteurs-infractions/tout-savoir-sur-garde-vue",
+              "domain": "franck-cohen-avocat.fr",
+              "description": "La durée légale maximale d'une garde à vue est de 24 heures. Si la peine encourue est d'au moins une année d'emprisonnement, elle peut être prolongée de 24 ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:49:55.343Z"
+        }
+      },
+      {
+        "query": "garde à vue moins de 24h",
+        "impressions": 791,
+        "ctr": 0.0278,
+        "position": 4.48,
+        "monthly_volume_fr": 320,
+        "cpc": 1.09,
+        "share_of_voice_pct": 82.4,
+        "serp": {
+          "keyword": "garde à vue moins de 24h",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Durée de la garde à vue : 24h, 48h, 96h... Combien de ...",
+              "url": "https://www.jplouton-avocat.fr/post/dur%C3%A9e-de-la-garde-%C3%A0-vue-24h-48h-96h-combien-de-temps-maximum",
+              "domain": "jplouton-avocat.fr",
+              "description": "16 déc. 2024 — La règle de base, inscrite dans le Code de procédure pénale, est que la durée initiale d'une garde à vue ne peut excéder 24 heures. C'est le ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Combien de temps dure une garde à vue",
+              "url": "https://www.mariloulepage.fr/blog/la-duree-de-la-garde-a-vue",
+              "domain": "mariloulepage.fr",
+              "description": "9 mai 2022 — La durée de la garde à vue est de 24 heures. Il est tout à fait possible que la garde à vue soit plus courte que 24h, ce délai initial ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "La garde à vue en 10 questions.",
+              "url": "https://www.village-justice.com/articles/garde-vue-questions,52955.html",
+              "domain": "village-justice.com",
+              "description": "4 avr. 2025 — Quelle est la durée d'une garde à vue ? En principe, la durée de la garde à vue ne peut excéder 24 heures. Toutefois, elle peut être ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "Garde à vue : quelle durée en France ? Quels sont mes droits ?",
+              "url": "https://www.leger-avocat.fr/garde-a-vue---quelle-duree-en-france---quels-sont-mes-droits--_ad88.html",
+              "domain": "leger-avocat.fr",
+              "description": "5 janv. 2024 — La durée légale de la garde à vue en France pour une personne majeure est de 24 heures maximum, à compter du moment de l'interpellation de la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Section 3 : De la garde à vue (Articles 706-88 à 706-88-2)",
+              "url": "https://www.legifrance.gouv.fr/codes/id/LEGISCTA000006167521/",
+              "domain": "legifrance.gouv.fr",
+              "description": "A l'expiration de la quatre-vingt-seizième heure et de la cent-vingtième heure, la personne dont la prolongation de la garde à vue est ainsi décidée peut ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Comprendre la garde à vue en droit pénal français",
+              "url": "https://etb-avocats.com/avocat-penaliste-garde-a-vue/",
+              "domain": "etb-avocats.com",
+              "description": "La garde à vue peut durer 24 heures, avec une prolongation possible de 24 heures supplémentaires pour les infractions punies d'au moins un an de prison. En cas ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Garde à vue : combien de temps peut-elle durer et quels ...",
+              "url": "https://trouvervotreavocat.com/fiche-pratique/droit-penal/procedures-penales/garde-a-vu-temps/",
+              "domain": "trouvervotreavocat.com",
+              "description": "23 août 2025 — La garde à vue peut durer 48 heures si les faits constituent un délit grave. C'est le cas pour des infractions punies d'au moins un an de ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 11,
+              "title": "Combien de temps peut durer une garde à vue ? Vos droits ...",
+              "url": "https://www.teboulavocat.com/blog/duree-garde-a-vue",
+              "domain": "teboulavocat.com",
+              "description": "24 heures : la règle de base. La durée initiale d'une garde à vue est de 24 heures maximum, à compter du moment où la personne est privée de sa liberté."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:49:57.696Z"
+        }
+      },
+      {
+        "query": "garde à vue 72 heures",
+        "impressions": 738,
+        "ctr": 0.0556,
+        "position": 3.72,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "peut-on sortir de garde à vue la nuit",
+        "impressions": 693,
+        "ctr": 0.0144,
+        "position": 9,
+        "monthly_volume_fr": 880,
+        "cpc": 1.06,
+        "share_of_voice_pct": 26.3
+      },
+      {
+        "query": "garde à vue durée",
+        "impressions": 639,
+        "ctr": 0.1033,
+        "position": 2.55,
+        "monthly_volume_fr": 880,
+        "cpc": 0.41,
+        "share_of_voice_pct": 24.2
+      },
+      {
+        "query": "temps maximum en cellule de dégrisement",
+        "impressions": 501,
+        "ctr": 0.006,
+        "position": 7.6,
+        "monthly_volume_fr": 210,
+        "cpc": null,
+        "share_of_voice_pct": 79.5
+      },
+      {
+        "query": "duree garde a vue",
+        "impressions": 486,
+        "ctr": 0.0782,
+        "position": 3.56,
+        "monthly_volume_fr": 170,
+        "cpc": 6.03,
+        "share_of_voice_pct": 95.3
+      }
+    ],
+    "total_monthly_demand_fr": 14110,
+    "internal_pages_catalog": {
+      "expertise": [
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale",
+          "role": "expertise",
+          "topic": "Défense pénale (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+          "role": "expertise",
+          "topic": "Droit pénal général"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+          "role": "expertise",
+          "topic": "Procès criminels (cour d'assises)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+          "role": "expertise",
+          "topic": "Violences conjugales et féminicides"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+          "role": "expertise",
+          "topic": "Trafic de stupéfiants"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+          "role": "expertise",
+          "topic": "Droit pénal des affaires"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+          "role": "expertise",
+          "topic": "Indemnisation des victimes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+          "role": "expertise",
+          "topic": "Accidents de la vie courante"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+          "role": "expertise",
+          "topic": "Victimes de délits ou crimes"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+          "role": "expertise",
+          "topic": "Accidents et erreurs médicales"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+          "role": "expertise",
+          "topic": "Droit et accidents du travail"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+          "role": "expertise",
+          "topic": "Accidents de la route"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+          "role": "expertise",
+          "topic": "Droit des contrats et des personnes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+          "role": "expertise",
+          "topic": "Défense des consommateurs"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+          "role": "expertise",
+          "topic": "Droit des assurances"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+          "role": "expertise",
+          "topic": "Droit de la famille"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+          "role": "expertise",
+          "topic": "Divorce (Bordeaux)"
+        }
+      ],
+      "cta": [
+        {
+          "url": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+          "role": "cta",
+          "topic": "Honoraires & prise de rendez-vous"
+        }
+      ],
+      "trust": [
+        {
+          "url": "https://www.jplouton-avocat.fr/notre-cabinet",
+          "role": "trust",
+          "topic": "Présentation du cabinet"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/nos-affaires",
+          "role": "trust",
+          "topic": "Affaires emblématiques"
+        }
+      ],
+      "blog_root": [
+        {
+          "url": "https://www.jplouton-avocat.fr/blog",
+          "role": "blog_root"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/comprendre-le-droit",
+          "role": "blog_root"
+        }
+      ],
+      "homepage": [
+        {
+          "url": "https://www.jplouton-avocat.fr",
+          "role": "homepage"
+        }
+      ],
+      "legal": [
+        {
+          "url": "https://www.jplouton-avocat.fr/mentions-legales",
+          "role": "legal"
+        }
+      ]
+    },
+    "google_guidance": {
+      "blog_posts": [
+        {
+          "title": "A new resource for optimizing for generative AI in Google Search",
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "summary": "As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for ap",
+          "published_date": "2026-05-15",
+          "age_days": 0
+        },
+        {
+          "title": "Introducing a new spam policy for \"back button hijacking\"",
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "summary": "Today, we are expanding our spam policies to address a deceptive practice known as \"back button hijacking\", which will become an explicit violation of the \"malicious practices\" of spam policies, leading to potential spam",
+          "published_date": "2026-04-13",
+          "age_days": 32
+        },
+        {
+          "title": "Inside Googlebot: demystifying crawling, fetching, and the bytes we process",
+          "link": "https://developers.google.com/search/blog/2026/03/crawler-blog-post",
+          "summary": "If you tuned into episode 105 of the Search Off the Record podcast, you might have heard us diving deep into a topic that is close to our hearts (and our servers): the inner workings of Googlebot.",
+          "published_date": "2026-03-31",
+          "age_days": 45
+        }
+      ],
+      "blog_posts_deep": [
+        {
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "body": "Home Search Central Google Search Central Blog Send feedback A new resource for optimizing for generative AI in Google Search Friday, May 15, 2026 As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for appearance in generative AI features in Search, and in turn Google Search overall. In the new guide, optimizing your website for generative AI features on Google Search, you'll find: Guidance on the importance of providing valuable, unique, non-commodity content Tips about providing local, shopping, image, and video content Mythbusting common \"AEO/GEO\" misconceptions Initial guidance related to AI agents, a quickly emerging and evolving space Information about why SEO best practices remain relevant and foundational to success with our generative AI features We hope this guide provides more clarity to help you continue to create great content that reaches your audience effectively through Google Search. As always, if you have any feedback, share your comments on LinkedIn or post in the Google Search Central Community. Posted"
+        },
+        {
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "body": "首頁 Search Central Google Search Central Blog 提供意見 針對「返回按鈕劫持」推出新版垃圾內容政策 2026 年 4 月 13 日 今天，我們將擴大垃圾內容政策的適用範圍，以因應「返回按鈕劫持」這類欺騙行為。這類行為明確違反垃圾內容政策的「惡意行為」，導致我們可能必須處理垃圾內容。 什麼是返回按鈕劫持？ 使用者點選瀏覽器的「返回」按鈕時，會明確預期要返回上一個網頁。返回按鈕劫持行為會破壞這項基本期望。如果網站干擾使用者瀏覽器的導覽方式，導致使用者無法使用「返回」按鈕立即返回來源網頁，就屬於返回按鈕劫持行為。使用者可能會被帶往以前從未造訪過的網頁、看到來路不明的推薦內容或廣告，或無法正常瀏覽網頁。 我們採取行動的原因為何？ 我們認為使用者體驗至關重要。返回按鈕劫持行為會干擾瀏覽器的功能，破壞使用者預期的歷程，導致使用者感到沮喪。使用者表示感覺遭到操弄，最終不太願意造訪不熟悉的網站。如先前所述，在使用者瀏覽器記錄中插入欺騙或操弄性網頁，一律違反 Google 搜尋基礎入門中的規定。 由於這類行為日益增加，因此我們將其明確列為違反惡意行為政策，該政策規定： 惡意行為會導致使用者期望與實際結果不符，進而造成負面和欺騙性的使用者體驗，或損害使用者安全或隱私權。 如果網頁涉及返回按鈕劫持行為，可能會遭到人工垃圾內容處置或自動降級，進而影響網站在 Google 搜尋結果中的成效。為確保網站擁有者有時間進行必要變更，我們會在 2026 年 6 月 15 日開始執法前兩個月發布這項政策。 網站擁有者應採取什麼行動？ 請確保您未採取任何行動，進而干擾使用者瀏覽自己的瀏覽器記錄。 如果您目前使用任何指令碼或技術，將欺騙或操縱性網頁插入或取代使用者的瀏覽器記錄，導致使用者無法使用「返回」按鈕立即返回來源網頁，請務必移除或停用這類指令碼或技術。 值得注意的是，某些返回按鈕劫持事件可能源自網站內含的程式庫或廣告平台。建議網站擁有者全面檢查技術實作項目，並移除或停用任何會劫持返回按鈕的程式碼、匯入項目或設定，確保使用者獲得實用且不受欺騙的體驗。 如果網站受到人工判決處罰影響，且您已修正問題，則可以隨時透過 Search Console 提交重審要求，如有任何問題或意見，歡迎前往社群媒體與我們聯絡，或在產品討論社群中交流討論。 發文者：Google 搜尋品質團隊代表 Chris Nelson 提供意見"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "7eTbAa2jWdToLkraZj5y",
+          "title": "March 2026 core update",
+          "begin": "2026-03-27T09:00:00+00:00",
+          "end": "2026-04-08T13:00:00+00:00",
+          "is_active": false,
+          "category": "core_update"
+        },
+        {
+          "id": "VbnSXAH4SmEcxPtx4YSD",
+          "title": "March 2026 spam update",
+          "begin": "2026-03-24T19:00:00+00:00",
+          "end": "2026-03-25T14:30:00+00:00",
+          "is_active": false,
+          "category": "spam_update"
+        }
+      ],
+      "ranking_systems": [
+        {
+          "id": "bert",
+          "name": "BERT",
+          "description": "Bidirectional Encoder Representations from Transformers (BERT) is an AI system Google uses that allows us to understand how combinations of words express different meanings and intent."
+        },
+        {
+          "id": "crisis-info",
+          "name": "Crisis information systems",
+          "description": "Google has developed systems to provide helpful and timely information during times of crisis, whether those involve personal crisis situations, natural disasters, or other wide-spread crisis situations:"
+        },
+        {
+          "id": "deduplication",
+          "name": "Deduplication systems",
+          "description": "Searches on Google may find thousands or even millions of matching web pages. Some of these may be very similar to each other. In such cases, our systems show only the most relevant results to avoid unhelpful duplication. Learn more about how deduplication works and how to see omitted results if des"
+        },
+        {
+          "id": "exact-match",
+          "name": "Exact match domain system",
+          "description": "Our ranking systems consider the words in domain names as one of many factors to determine if content is relevant to a search. However, our exact match domain system works to ensure we don't give too much credit for content hosted under domains designed to exactly match particular queries. For examp"
+        },
+        {
+          "id": "freshness",
+          "name": "Freshness systems",
+          "description": "We have various \"query deserves freshness\" systems designed to show fresher content for queries where it would be expected. For example, if someone is searching about a movie that's just been released, they probably want recent reviews rather than older articles from when production began. For anoth"
+        },
+        {
+          "id": "link-analysis",
+          "name": "Link analysis systems and PageRank",
+          "description": "We have various systems that understand how pages link to each other as a way to determine what pages are about and which might be most helpful in response to a query. Among these is PageRank, one of our core ranking systems used when Google first launched. Those curious can learn more by reading th"
+        },
+        {
+          "id": "local-news",
+          "name": "Local news systems",
+          "description": "We have systems that work to identify and surface local sources of news whenever relevant, such as through our \"Top stories\" and \"Local news\" features."
+        },
+        {
+          "id": "mum",
+          "name": "MUM",
+          "description": "Multitask Unified Model (MUM) is an AI system capable of both understanding and generating language. It's not currently used for general ranking in Search but rather for some specific applications such as to improve searches for COVID-19 vaccine information and to improve featured snippet callouts w"
+        },
+        {
+          "id": "neural-matching",
+          "name": "Neural matching",
+          "description": "Neural matching is an AI system that Google uses to understand representations of concepts in queries and pages and match them to one another."
+        },
+        {
+          "id": "original-content",
+          "name": "Original content systems",
+          "description": "We have systems to help ensure we are showing original content prominently in search results, including original reporting, ahead of those who merely cite it. This includes support of a special canonical markup creators can use to help us better understand what is the primary page if a page has been"
+        },
+        {
+          "id": "removals",
+          "name": "Removal-based demotion systems",
+          "description": "Google has policies that allow the removal of certain types of content. If we process a significant volume of such removals involving a particular site, we use that as a signal to improve our results. In particular:"
+        },
+        {
+          "id": "passage-ranking-system",
+          "name": "Passage ranking system",
+          "description": "Passage ranking is an AI system we use to identify individual sections or \"passages\" of a web page to better understand how relevant a page is to a search."
+        },
+        {
+          "id": "rankbrain",
+          "name": "RankBrain",
+          "description": "RankBrain is an AI system that helps us understand how words are related to concepts. It means we can better return relevant content even if it doesn't contain all the exact words used in a search, by understanding the content is related to other words and concepts."
+        },
+        {
+          "id": "reliable-information-systems",
+          "name": "Reliable information systems",
+          "description": "Multiple systems work in various ways to show the most reliable information possible, such as to help surface more authoritative pages and demote low-quality content and to elevate quality journalism. In cases where reliable information might be lacking, our systems automatically display content adv"
+        },
+        {
+          "id": "reviews-system",
+          "name": "Reviews system",
+          "description": "The reviews system aims to better reward high quality reviews, content that provides insightful analysis and original research, and is written by experts or enthusiasts who know the topic well."
+        },
+        {
+          "id": "site-diversity-system",
+          "name": "Site diversity system",
+          "description": "Our site diversity system works so that we generally won't show more than two web page listings from the same site in our top results, so that no single site tends to dominate all the top results. However, we may still show more than two listings in cases where our systems determine it's especially"
+        },
+        {
+          "id": "spam-detection-systems",
+          "name": "Spam detection systems",
+          "description": "No one wants their email inbox filled with spam, which is why spam filters are so helpful. Search faces a similar challenge, because the internet includes huge amounts of spam that, if not dealt with, would prevent us from showing the most helpful and relevant results. We employ a range of spam dete"
+        }
+      ],
+      "spam_policies": [
+        {
+          "id": "cloaking",
+          "name": "Cloaking",
+          "description": "Cloaking refers to the practice of presenting different content to users and search engines with the intent to manipulate search rankings and mislead users. Examples of cloaking include: If your site uses technologies that search engines have difficulty accessing, like JavaScript or images, see our"
+        },
+        {
+          "id": "doorways",
+          "name": "Doorway abuse",
+          "description": "Doorway abuse is when sites or pages are created to rank for specific, similar search queries. They lead users to intermediate pages that are not as useful as the final destination. Examples of doorway abuse include:"
+        },
+        {
+          "id": "expired-domains",
+          "name": "Expired domain abuse",
+          "description": "Expired domain abuse is where an expired domain name is purchased and repurposed primarily to manipulate search rankings by hosting content that provides little to no value to users. Illustrative examples include, but are not limited to:"
+        },
+        {
+          "id": "hacked-content",
+          "name": "Hacked content",
+          "description": "Hacked content is any content placed on a site without permission, due to vulnerabilities in a site's security. Hacked content gives poor search results to our users and can potentially install malicious content on their machines. Examples of hacking include: Here are our tips on fixing hacked sites"
+        },
+        {
+          "id": "hidden-text-and-links",
+          "name": "Hidden text and link abuse",
+          "description": "Hidden text or link abuse is the practice of placing content on a page in a way solely to manipulate search engines and not to be easily viewable by human visitors. Examples of hidden text or link abuse include: There are many web design elements today that utilize showing and hiding content in a dy"
+        },
+        {
+          "id": "keyword-stuffing",
+          "name": "Keyword stuffing",
+          "description": "Keyword stuffing refers to the practice of filling a web page with keywords or numbers in an attempt to manipulate rankings in Google Search results. Often these keywords appear in a list or group, unnaturally, or out of context. Examples of keyword stuffing include:"
+        },
+        {
+          "id": "link-spam",
+          "name": "Link spam",
+          "description": "Link spam is the practice of creating links to or from a site primarily for the purpose of manipulating search rankings. The following are examples of link spam: Google does understand that buying and selling links is a normal part of the economy of the web for advertising and sponsorship purposes."
+        },
+        {
+          "id": "machine-generated-traffic",
+          "name": "Machine-generated traffic",
+          "description": "Machine-generated traffic (also called automated traffic) refers to the practice of sending automated queries to Google. This includes scraping results for rank-checking purposes or other types of automated access to Google Search conducted without express permission. Machine-generated traffic consu"
+        },
+        {
+          "id": "malicious-practices",
+          "name": "Malicious practices",
+          "description": "Malicious practices create a mismatch between user expectations and the actual outcome, leading to a negative and deceptive user experience, or compromised user security or privacy. The following are common examples of malicious practices:"
+        },
+        {
+          "id": "misleading-functionality",
+          "name": "Misleading functionality",
+          "description": "Misleading functionality refers to the practice of intentionally creating sites that trick users into thinking they would be able to access some content or services but in reality can't. Examples of misleading functionality include:"
+        },
+        {
+          "id": "scaled-content",
+          "name": "Scaled content abuse",
+          "description": "Scaled content abuse is when many pages are generated for the primary purpose of manipulating search rankings and not helping users. This abusive practice is typically focused on creating large amounts of unoriginal content that provides little to no value to users, no matter how it's created. Examp"
+        },
+        {
+          "id": "scraped-content",
+          "name": "Scraping",
+          "description": "Scraping refers to the practice of taking content from other sites, often through automated means, and hosting it with the purpose of manipulating search rankings. Examples of abusive scraping include:"
+        },
+        {
+          "id": "site-reputation",
+          "name": "Site reputation abuse",
+          "description": "Site reputation abuse is a tactic where third-party content is published on a host site mainly because of that host's already-established ranking signals, which it has earned primarily from its first-party content. The goal of this tactic is for the content to rank better than it could otherwise on"
+        },
+        {
+          "id": "sneaky-redirects",
+          "name": "Sneaky redirects",
+          "description": "Redirecting is the act of sending a visitor to a different URL than the one they initially requested. Sneaky redirecting is the practice of doing this maliciously in order to either show users and search engines different content or show users unexpected content that does not fulfill their original"
+        },
+        {
+          "id": "thin-affiliate-pages",
+          "name": "Thin affiliation",
+          "description": "Thin affiliation is the practice of publishing content with product affiliate links where the product descriptions and reviews are copied directly from the original merchant without any original content or added value. Affiliate pages can be considered thin if they are a part of a program that distr"
+        },
+        {
+          "id": "user-generated-spam",
+          "name": "User-generated spam",
+          "description": "User-generated spam is spammy content added to a site by users through a channel intended for user content. Often site owners are unaware of the spammy content. Examples of spammy user-generated content include: Here are several tips on how to prevent abuse of your site's public areas. Here are our"
+        },
+        {
+          "id": "other-behaviors-that-can-lead-to-demotion-or-removal",
+          "name": "Other practices that can lead to demotion or removal",
+          "description": "When we receive a significant volume of valid copyright removal requests involving a given site, we are able to use that to demote other content from the site in our results. This way, if there is other infringing content, people are less likely to encounter it versus the original content. We apply"
+        }
+      ],
+      "fetched_at": "2026-05-15T21:50:03.797Z"
+    }
+  },
+  "inbound_summary": {
+    "outbound_total": 81,
+    "inbound_total": 4,
+    "inbound_distinct_sources": 4,
+    "inbound_editorial": 4,
+    "inbound_nav_footer": 0,
+    "top_editorial_sources": [
+      {
+        "source_path": "/post/la-garde-à-vue-définition-droits-et-conséquences",
+        "anchor_text": "durée maximale de la garde à vue"
+      },
+      {
+        "source_path": "/post/mes-droits-en-garde-a-vue",
+        "anchor_text": "durée maximale d'une garde à vue"
+      },
+      {
+        "source_path": "/post/nullité-de-la-poursuite",
+        "anchor_text": "Durée maximale d’une garde à vue"
+      },
+      {
+        "source_path": "/post/surpopulation-carcérale-à-la-maison-d-arrêt-de-gradignan-maître-plouton-répond-au-figaro-sur-le-sen",
+        "anchor_text": "Durée de la garde à vue : 24h, 48h, 96h… combien de temps maximum ?"
+      }
+    ]
+  },
+  "cooked_extras": {
+    "path": "/post/durée-de-la-garde-à-vue-24h-48h-96h-combien-de-temps-maximum",
+    "windows": {
+      "7d": {
+        "views": 471,
+        "unique_visitors": 371,
+        "sessions": 458,
+        "bounce_rate": 0.2577,
+        "avg_dwell_seconds": 74.4,
+        "scroll_avg": 24.6,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0.6,
+        "entry_count": 454,
+        "exit_count": 450,
+        "outbound_clicks": 0
+      },
+      "28d": {
+        "views": 564,
+        "unique_visitors": 440,
+        "sessions": 550,
+        "bounce_rate": 0.2509,
+        "avg_dwell_seconds": 78.3,
+        "scroll_avg": 24.3,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0.7,
+        "entry_count": 542,
+        "exit_count": 540,
+        "outbound_clicks": 0
+      },
+      "90d": {
+        "views": 564,
+        "unique_visitors": 440,
+        "sessions": 550,
+        "bounce_rate": 0.2509,
+        "avg_dwell_seconds": 78.3,
+        "scroll_avg": 24.3,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0.7,
+        "entry_count": 542,
+        "exit_count": 540,
+        "outbound_clicks": 0
+      },
+      "365d": {
+        "views": 564,
+        "unique_visitors": 440,
+        "sessions": 550,
+        "bounce_rate": 0.2509,
+        "avg_dwell_seconds": 78.3,
+        "scroll_avg": 24.3,
+        "scroll_median": 25,
+        "scroll_complete_pct": 0.7,
+        "entry_count": 542,
+        "exit_count": 540,
+        "outbound_clicks": 0
+      }
+    },
+    "cwv_28d": {
+      "lcp_p75_ms": 1283,
+      "inp_p75_ms": 288,
+      "cls_p75": 0.16,
+      "ttfb_p75_ms": 353.5
+    },
+    "provenance_28d": {
+      "top_referrer": "www.google.com",
+      "top_source": null,
+      "top_medium": null
+    },
+    "device_split_28d": {
+      "desktop": 22.2,
+      "mobile": 77.5,
+      "tablet": 0.4
+    },
+    "conversion": {
+      "phone_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "email_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "booking_cta_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      }
+    },
+    "pogo_28d": {
+      "google_sessions": 373,
+      "pogo_sticks": 39,
+      "hard_pogo": 23,
+      "pogo_rate_pct": 10.5
+    },
+    "cta_per_device_28d": {
+      "mobile_sessions": 426,
+      "desktop_sessions": 122,
+      "cta_rate_mobile_pct": 0,
+      "cta_rate_desktop_pct": 0
+    },
+    "refreshed_at": "2026-05-15T03:00:00.176656+00:00"
+  },
+  "cooked_site_context": {
+    "global_sessions_28d": 6228,
+    "global_bounce_rate_28d": 0.1549,
+    "sessions_per_day_median_28d": 598,
+    "sessions_trend_pct_7d_vs_28d": 203.34,
+    "top_sources_28d": [
+      {
+        "source": "www.google.com",
+        "medium": "referral",
+        "sessions": 3366
+      },
+      {
+        "source": "direct",
+        "medium": "none",
+        "sessions": 1208
+      },
+      {
+        "source": "www.jplouton-avocat.fr",
+        "medium": "referral",
+        "sessions": 459
+      },
+      {
+        "source": "adwords",
+        "medium": "ppc",
+        "sessions": 409
+      },
+      {
+        "source": "www.bing.com",
+        "medium": "referral",
+        "sessions": 192
+      }
+    ]
+  },
+  "outbound_destinations": [],
+  "cta_breakdown": [],
+  "gsc_clicks_28d": 1696,
+  "cooked_first_seen": "2026-05-06T17:14:47.130Z",
+  "content_snapshot": {
+    "author": {
+      "date_modified": "2026-04-10T07:34:12.421Z",
+      "date_published": "2024-12-15T23:00:00Z"
+    },
+    "images": [
+      {
+        "alt": "Image de Fahad Bin Kamal Anik",
+        "src": "https://static.wixstatic.com/media/nsplsh_c5c71d86d13c4d6cb9f87d1517edf867~mv2.jpg/v1/fill/w_147,h_110,al_c,q_80,usm_0.66_1.00_0.01,blur_2,enc_avif,quality_auto/Image%20de%20Fahad%20Bin%20Kamal%20Anik.jpg",
+        "in_body": true
+      },
+      {
+        "alt": "Logo de Google Avis",
+        "src": "https://static.wixstatic.com/media/d05c9e_cf0a4239b5a9454e84a5a2081f17aa95~mv2.png",
+        "in_body": false
+      }
+    ],
+    "outline": [
+      {
+        "text": "La durée de principe : 24 heures, le point de départ de tout",
+        "level": 2,
+        "anchor": "viewer-q250y13990",
+        "word_offset": 232
+      },
+      {
+        "text": "Quand le chronomètre se déclenche-t-il VRAIMENT?",
+        "level": 3,
+        "anchor": "viewer-rpqst1895",
+        "word_offset": 305
+      },
+      {
+        "text": "La première prolongation : jusqu'à 48 heures (le cas général)",
+        "level": 2,
+        "anchor": "viewer-24jyy14540",
+        "word_offset": 532
+      },
+      {
+        "text": "Quelles sont les conditions pour une prolongation?",
+        "level": 3,
+        "anchor": "viewer-meecx1930",
+        "word_offset": 588
+      },
+      {
+        "text": "Vos droits spécifiques en cas de prolongation",
+        "level": 3,
+        "anchor": "viewer-5labe1948",
+        "word_offset": 724
+      },
+      {
+        "text": "Les prolongations exceptionnelles : 72h, 96h et au-delà",
+        "level": 2,
+        "anchor": "viewer-g8w7o15104",
+        "word_offset": 993
+      },
+      {
+        "text": "Criminalité organisée et trafic de stupéfiants (jusqu'à 96 heures... et même 120 heures)",
+        "level": 3,
+        "anchor": "viewer-x0fsm1980",
+        "word_offset": 1045
+      },
+      {
+        "text": "Terrorisme (jusqu'à 144 heures, soit 6 jours)",
+        "level": 3,
+        "anchor": "viewer-cjjok1997",
+        "word_offset": 1212
+      },
+      {
+        "text": "Le rôle central du Juge des Libertés et de la Détention (JLD)",
+        "level": 3,
+        "anchor": "viewer-c2id12008",
+        "word_offset": 1278
+      },
+      {
+        "text": "Tableau récapitulatif des durées de garde à vue par type d'infraction",
+        "level": 2,
+        "anchor": "viewer-8s22y15660",
+        "word_offset": 1428
+      },
+      {
+        "text": "Que se passe-t-il si la durée légale est dépassée?",
+        "level": 2,
+        "anchor": "viewer-kh8om2186",
+        "word_offset": 1615
+      },
+      {
+        "text": "Conclusion : La durée de la garde à vue, un cadre strict pour protéger vos droits",
+        "level": 3,
+        "anchor": "viewer-z0qql2222",
+        "word_offset": 1905
+      },
+      {
+        "text": "Posts similaires",
+        "level": 2,
+        "anchor": null,
+        "word_offset": 2104
+      }
+    ],
+    "body_text": "— Article mis à jour le 10 Avril 2026\n\nLa garde à vue est une épreuve soudaine et déstabilisante, tant pour la personne qui la subit que pour ses proches. Dans ce moment de confusion et d'angoisse, une question revient sans cesse : combien de temps cela va-t-il durer ? 24 heures ? 48 heures ? Plus encore ?\n\nNotre cabinet d'avocat pénaliste Plouton sait parfaitement que l'incertitude est l'un des aspects les plus difficiles de cette mesure.\n\nCet article a pour but de vous éclairer, de manière simple et transparente. Nous allons décortiquer, étape par étape, les différentes durées légales de la garde à vue, les raisons qui peuvent justifier une prolongation et, surtout, les droits qui vous protègent à chaque instant. Comprendre ce cadre légal est le premier pas pour se défendre.\n\nLa durée de principe : 24 heures, le point de départ de tout\n\nLa règle de base, inscrite dans le Code de procédure pénale, est que la durée initiale d'une garde à vue ne peut excéder 24 heures. C'est le cadre de référence pour la quasi-totalité des infractions. Durant ce laps de temps, les officiers de police judiciaire (OPJ) mènent les premières investigations pour vérifier les soupçons qui pèsent sur la personne retenue.\n\nQuand le chronomètre se déclenche-t-il VRAIMENT?\n\nC'est un point technique, mais absolument fondamental. Le décompte des 24 heures ne commence pas à l'arrivée au commissariat ou à la gendarmerie, ni au moment où l'on vous notifie officiellement vos droits. Il débute à l'instant précis où vous êtes privé de votre liberté d'aller et venir.\n\nCette nuance est capitale et peut prendre plusieurs formes concrètes :\n\nEn cas d'interpellation dans la rue : Si vous êtes arrêté à 15h00 et que vous n'arrivez au commissariat qu'à 16h00, la garde à vue a commencé à 15h00. Elle devra donc prendre fin, au plus tard, le lendemain à 15h00.\n\nEn cas d'interpellation dans la rue : Si vous êtes arrêté à 15h00 et que vous n'arrivez au commissariat qu'à 16h00, la garde à vue a commencé à 15h00. Elle devra donc prendre fin, au plus tard, le lendemain à 15h00.\n\nEn cas de contrôle routier : Pour une infraction comme la conduite en état d'ivresse, le début de la garde à vue est fixé à l'heure du test d'alcoolémie ou de stupéfiants, même si d'autres vérifications sont faites plus tard au poste.\n\nEn cas de contrôle routier : Pour une infraction comme la conduite en état d'ivresse, le début de la garde à vue est fixé à l'heure du test d'alcoolémie ou de stupéfiants, même si d'autres vérifications sont faites plus tard au poste.\n\nEn cas de placement en cellule de dégrisement : Le temps passé en chambre de dégrisement avant l'audition est entièrement comptabilisé dans la durée totale de la garde à vue.\n\nEn cas de placement en cellule de dégrisement : Le temps passé en chambre de dégrisement avant l'audition est entièrement comptabilisé dans la durée totale de la garde à vue.\n\nLe calcul précis de cette heure de départ est un réflexe essentiel pour un avocat pénaliste. Une erreur, même d'une heure, de la part des enquêteurs peut rendre la totalité de la mesure illégale. C'est souvent sur ces détails, en apparence minimes, que se construit une défense efficace.\n\nLa première prolongation : jusqu'à 48 heures (le cas général)\n\nDans de nombreux cas, les 24 heures initiales ne suffisent pas aux enquêteurs. La loi prévoit donc la possibilité de prolonger la garde à vue de 24 heures supplémentaires, portant ainsi sa durée totale maximale à 48 heures. C'est le scénario le plus fréquent en pratique.\n\nQuelles sont les conditions pour une prolongation?\n\nCette prolongation n'est pas automatique. Elle est soumise à des conditions strictes qui doivent être scrupuleusement respectées :\n\nLa gravité de l'infraction : La prolongation n'est possible que si les faits pour lesquels la personne est retenue constituent un crime ou un délit puni par la loi d'une peine d'emprisonnement d'au moins un an.2 Pour les infractions moins graves, la garde à vue ne peut excéder 24 heures.\n\nLa gravité de l'infraction : La prolongation n'est possible que si les faits pour lesquels la personne est retenue constituent un crime ou un délit puni par la loi d'une peine d'emprisonnement d'au moins un an.2 Pour les infractions moins graves, la garde à vue ne peut excéder 24 heures.\n\nL'autorisation d'un magistrat : La décision de prolonger doit être prise par le Procureur de la République (dans le cadre d'une enquête préliminaire ou de flagrance) ou par le Juge d'instruction (si une information judiciaire est ouverte). Cette autorisation doit être écrite et motivée, c'est-à-dire qu'elle doit expliquer pourquoi il est nécessaire de maintenir la personne en garde à vue.\n\nL'autorisation d'un magistrat : La décision de prolonger doit être prise par le Procureur de la République (dans le cadre d'une enquête préliminaire ou de flagrance) ou par le Juge d'instruction (si une information judiciaire est ouverte). Cette autorisation doit être écrite et motivée, c'est-à-dire qu'elle doit expliquer pourquoi il est nécessaire de maintenir la personne en garde à vue.\n\nVos droits spécifiques en cas de prolongation\n\nL'approche de la 24ème heure n'est pas seulement un moment de bascule pour l'enquête ; elle active de nouveaux droits fondamentaux pour la personne gardée à vue. Il ne s'agit pas de droits passifs, mais d'outils concrets pour contester la mesure.\n\nLe droit à un nouvel examen médical : Vous pouvez demander à être examiné une seconde fois par un médecin. Celui-ci vérifiera si votre état de santé est compatible avec la poursuite de la garde à vue et son avis sera versé au dossier. C'est une garantie essentielle.\n\nLe droit à un nouvel examen médical : Vous pouvez demander à être examiné une seconde fois par un médecin. Celui-ci vérifiera si votre état de santé est compatible avec la poursuite de la garde à vue et son avis sera versé au dossier. C'est une garantie essentielle.\n\nLe droit de présenter des observations au magistrat : C'est une étape cruciale. Vous pouvez demander à être présenté physiquement (ou par visioconférence) au Procureur de la République qui s'apprête à décider de la prolongation. De son côté, votre avocat peut formuler des observations écrites qui seront jointes à la procédure pour contester la nécessité de vous maintenir privé de liberté. Bien qu'il ne s'agisse pas encore d'un débat oral contradictoire (qui n'intervient qu'à la 48ème heure devant le JLD), ces observations écrites sont une arme stratégique pour argumenter que les objectifs de l'enquête sont atteints ou que la prolongation n'est pas justifiée.\n\nLe droit de présenter des observations au magistrat : C'est une étape cruciale. Vous pouvez demander à être présenté physiquement (ou par visioconférence) au Procureur de la République qui s'apprête à décider de la prolongation. De son côté, votre avocat peut formuler des observations écrites qui seront jointes à la procédure pour contester la nécessité de vous maintenir privé de liberté. Bien qu'il ne s'agisse pas encore d'un débat oral contradictoire (qui n'intervient qu'à la 48ème heure devant le JLD), ces observations écrites sont une arme stratégique pour argumenter que les objectifs de l'enquête sont atteints ou que la prolongation n'est pas justifiée.\n\nLe droit à un nouvel entretien avec votre avocat : Dès le début de la prolongation, vous avez le droit de vous entretenir à nouveau confidentiellement avec votre avocat pendant 30 minutes.\n\nLe droit à un nouvel entretien avec votre avocat : Dès le début de la prolongation, vous avez le droit de vous entretenir à nouveau confidentiellement avec votre avocat pendant 30 minutes.\n\nCe moment de la prolongation transforme une décision qui pourrait sembler administrative en un débat contradictoire. C'est une opportunité stratégique pour votre défense, où l'intervention d'un avocat peut faire la différence et mener à une remise en liberté.\n\nLes prolongations exceptionnelles : 72h, 96h et au-delà\n\nPour les formes de criminalité les plus graves, le législateur a prévu des régimes dérogatoires permettant de prolonger la garde à vue bien au-delà des 48 heures de droit commun. Ces mesures, qui portent une atteinte majeure à la liberté individuelle, sont très encadrées.\n\nCriminalité organisée et trafic de stupéfiants (jusqu'à 96 heures... et même 120 heures)\n\nPour les infractions relevant de la criminalité en bande organisée (comme le vol à main armée, le proxénétisme aggravé, etc.) et le trafic de stupéfiants, listées à l'article 706-73 du Code de procédure pénale, la durée de la garde à vue peut atteindre 96 heures (soit 4 jours). Cette durée est atteinte par deux prolongations supplémentaires de 24 heures chacune après les 48 premières heures.\n\nIl existe même une exception très spécifique : pour les personnes soupçonnées de trafic de stupéfiants qui ont ingéré la drogue pour la transporter (communément appelées \"mules\"), une prolongation additionnelle de 24 heures est possible si la présence des produits dans l'organisme est avérée. La durée totale peut alors être portée à 120 heures (5 jours), notamment pour permettre l'expulsion naturelle des preuves dans un cadre médicalisé et sécurisé. La connaissance de cette règle pointue illustre la complexité de la matière et la nécessité d'une défense spécialisée.\n\nTerrorisme (jusqu'à 144 heures, soit 6 jours)\n\nLe régime le plus exceptionnel est réservé aux affaires de terrorisme. Face à la complexité de ces enquêtes et à la gravité de la menace, la garde à vue peut être étendue jusqu'à une durée maximale de 144 heures, soit 6 jours. Ces prolongations successives sont soumises à des conditions extrêmement strictes et à un contrôle judiciaire renforcé.\n\nLe rôle central du Juge des Libertés et de la Détention (JLD)\n\nUn changement fondamental intervient après 48 heures de garde à vue. Pour toute prolongation au-delà de ce seuil, ce n'est plus le Procureur de la République (qui dirige l'accusation) qui est seul compétent. La décision doit être prise par un magistrat du siège, indépendant de l'accusation : le Juge des Libertés et de la Détention (JLD), ou le Juge d'instruction s'il est déjà saisi.\n\nCe basculement n'est pas un simple détail de procédure. Il constitue une garantie fondamentale. La loi considère qu'une privation de liberté aussi longue exige l'intervention d'un \"arbitre\" dont le rôle spécifique est de protéger les libertés individuelles face aux nécessités de l'enquête. La présentation de la personne au JLD est le principe, ce qui assure que la décision de prolonger est prise après un débat contradictoire, renforçant ainsi les droits de la défense.\n\nTableau récapitulatif des durées de garde à vue par type d'infraction\n\nPour y voir plus clair, voici un tableau qui résume les différentes durées maximales de la garde à vue en France, en fonction de la nature de l'infraction et de l'âge de la personne concernée.\n\nRégime / Personne Concernée\n\nRégime / Personne Concernée\n\nDurée Initiale\n\nDurée Initiale\n\n1ère Prolongation\n\n1ère Prolongation\n\nProlongations Exceptionnelles\n\nProlongations Exceptionnelles\n\nDurée Maximale\n\nDurée Maximale\n\nAutorité Clé pour la Prolongation\n\nAutorité Clé pour la Prolongation\n\nMajeur - Droit Commun\n\nMajeur - Droit Commun\n\n24h\n\n24h\n\n+ 24h\n\n+ 24h\n\n-\n\n-\n\n48h\n\n48h\n\nProcureur / Juge d'instruction\n\nProcureur / Juge d'instruction\n\nMajeur - Bande Organisée\n\nMajeur - Bande Organisée\n\n24h\n\n24h\n\n+ 24h\n\n+ 24h\n\n+ 24h, puis + 24h\n\n+ 24h, puis + 24h\n\n96h\n\n96h\n\nJLD / Juge d'instruction\n\nJLD / Juge d'instruction\n\nMajeur - Trafic de Stupéfiants (\"Mule\")\n\nMajeur - Trafic de Stupéfiants (\"Mule\")\n\n24h\n\n24h\n\n+ 24h\n\n+ 24h\n\n+ 24h, + 24h, puis + 24h\n\n+ 24h, + 24h, puis + 24h\n\n120h (5j)\n\n120h (5j)\n\nJLD / Juge d'instruction\n\nJLD / Juge d'instruction\n\nMajeur - Terrorisme\n\nMajeur - Terrorisme\n\n24h\n\n24h\n\n+ 24h\n\n+ 24h\n\nJusqu'à 144h par tranches\n\nJusqu'à 144h par tranches\n\n144h (6j)\n\n144h (6j)\n\nJLD / Juge d'instruction\n\nJLD / Juge d'instruction\n\nMineur (16-17 ans)\n\nMineur (16-17 ans)\n\n24h\n\n24h\n\n+ 24h\n\n+ 24h\n\nRégimes dérogatoires applicables (Si co-auteur/complice majeur)\n\nRégimes dérogatoires applicables (Si co-auteur/complice majeur)\n\nJusqu'à 96h ou 144h\n\nJusqu'à 96h ou 144h\n\nProcureur / Juge d'instruction\n\nProcureur / Juge d'instruction\n\nMineur (13-15 ans)\n\nMineur (13-15 ans)\n\n24h\n\n24h\n\n+ 24h (si peine ≥ 5 ans)\n\n+ 24h (si peine ≥ 5 ans)\n\n-\n\n-\n\n48h\n\n48h\n\nProcureur / Juge d'instruction\n\nProcureur / Juge d'instruction\n\nMineur (10-12 ans) - Retenue\n\nMineur (10-12 ans) - Retenue\n\n12h (si peine ≥ 5 ans)\n\n12h (si peine ≥ 5 ans)\n\n+ 12h\n\n+ 12h\n\n-\n\n-\n\n24h\n\n24h\n\nProcureur / Juge d'instruction\n\nProcureur / Juge d'instruction\n\nQue se passe-t-il si la durée légale est dépassée?\n\nLe respect des délais de la garde à vue n'est pas une option. C'est une obligation impérative qui protège la liberté individuelle. Si la durée légale est dépassée, même de quelques minutes, les conséquences peuvent être radicales : c'est le principe de la nullité de la procédure.\n\nConcrètement, si un juge constate que la garde à vue est illégale (par exemple, en raison d'un dépassement de la durée maximale), il peut l'annuler. Cette annulation a un effet \"domino\". Selon la théorie des \"fruits de l'arbre empoisonné\", tous les actes d'enquête qui ont été réalisés pendant la garde à vue illégale et qui en sont le support nécessaire peuvent également être annulés. Cela peut concerner :\n\nLes aveux ou déclarations faits pendant les auditions.\n\nLes aveux ou déclarations faits pendant les auditions.\n\nLes résultats d'une perquisition décidée sur la base de ces déclarations.\n\nLes résultats d'une perquisition décidée sur la base de ces déclarations.\n\nToute pièce de la procédure qui découle directement de la mesure annulée.\n\nToute pièce de la procédure qui découle directement de la mesure annulée.\n\nCependant, il est essentiel de comprendre une chose : la nullité n'est jamais automatique. Une erreur de procédure ne suffit pas toujours à faire tomber un dossier. Elle doit être identifiée, argumentée et plaidée par un avocat devant la juridiction compétente (la Chambre de l'instruction ou le tribunal correctionnel). Le rôle de l'avocat est de démontrer que l'irrégularité a porté une atteinte effective aux droits de son client. C'est un combat juridique technique et précis, où l'expertise d'un pénaliste est déterminante.\n\nLa vigilance sur le respect scrupuleux des délais et la capacité à soulever une nullité pertinente est l'une des plus-values les plus importantes de l'assistance d'un avocat dès la première heure de garde à vue. Pour en savoir plus, vous pouvez consulter nos ressources sur les vices de procédure en droit pénal.\n\nConclusion : La durée de la garde à vue, un cadre strict pour protéger vos droits\n\nComme nous venons de le voir, la durée d'une garde à vue est tout sauf arbitraire. Elle est régie par un cadre légal strict qui évolue en fonction de la gravité des faits et de l'avancée de l'enquête : 24 heures par principe, 48 heures dans le cas général, et jusqu'à 96, 120 ou 144 heures pour les crimes les plus graves.\n\nChaque palier de cette chronologie est un rempart pour vos libertés, ouvrant des droits spécifiques et renforçant le contrôle judiciaire. Connaître ces règles est une première étape indispensable. Mais dans le contexte stressant et complexe d'une garde à vue, seul un avocat spécialisé en droit pénal a l'expertise pour s'assurer que chaque seconde du chronomètre est légale, que chaque droit est respecté, et que chaque faille de la procédure est exploitée pour construire une défense solide.\n\nSi vous ou l'un de vos proches êtes placé en garde à vue à Bordeaux ou dans la région, n'attendez pas. Les premières heures sont décisives. Contactez le Cabinet Plouton pour une assistance immédiate et une défense efficace.\n\nRESSOURCES\n\nLe droit expliqué clairement, par des avocats. 48 articles pour comprendre vos droits, quelle que soit votre situation.",
+    "word_count": 2588,
+    "extracted_at": "2026-05-07T22:26:58.065Z",
+    "cta_in_body_positions": [
+      {
+        "anchor": "Tous les articles",
+        "target": "/blog",
+        "word_offset": 0
+      },
+      {
+        "anchor": "Droit Pénal",
+        "target": "/blog/categories/droit-pénal",
+        "word_offset": 3
+      },
+      {
+        "anchor": "Procès criminels",
+        "target": "/blog/categories/droit-criminel",
+        "word_offset": 5
+      },
+      {
+        "anchor": "Violences Conjugales et féminicides",
+        "target": "/blog/categories/violences-conjugales-féminicides",
+        "word_offset": 7
+      },
+      {
+        "anchor": "Trafic de stupéfiants",
+        "target": "/blog/categories/trafic-de-stupéfiants",
+        "word_offset": 11
+      },
+      {
+        "anchor": "Droit pénal des affaires",
+        "target": "/blog/categories/droit-pénal-des-affaires",
+        "word_offset": 14
+      },
+      {
+        "anchor": "Victimes de délits ou crimes",
+        "target": "/blog/categories/indemnisation-des-victimes-pénale",
+        "word_offset": 18
+      },
+      {
+        "anchor": "Accidents et erreurs médicales",
+        "target": "/blog/categories/accidents-erreurs-médicales",
+        "word_offset": 23
+      },
+      {
+        "anchor": "Accidents de la route",
+        "target": "/blog/categories/accidents-de-la-route",
+        "word_offset": 27
+      },
+      {
+        "anchor": "Droit et accidents du travail",
+        "target": "/blog/categories/droit-et-accidents-du-travail",
+        "word_offset": 31
+      },
+      {
+        "anchor": "Accidents de la vie courante",
+        "target": "/blog/categories/accidents-de-la-vie-courante",
+        "word_offset": 36
+      },
+      {
+        "anchor": "Droit des assurances",
+        "target": "/blog/categories/droit-des-assurances",
+        "word_offset": 41
+      },
+      {
+        "anchor": "Défense des consommateurs",
+        "target": "/blog/categories/défense-des-consommateurs",
+        "word_offset": 44
+      },
+      {
+        "anchor": "Droit de la famille",
+        "target": "/blog/categories/droit-de-la-famille",
+        "word_offset": 47
+      },
+      {
+        "anchor": "Ressources et notions juridiques",
+        "target": "/blog/categories/ressources-et-notions-juridiques",
+        "word_offset": 51
+      },
+      {
+        "anchor": "Médias",
+        "target": "/blog/categories/médias",
+        "word_offset": 55
+      },
+      {
+        "anchor": "Divorce",
+        "target": "/blog/categories/divorce",
+        "word_offset": 56
+      },
+      {
+        "anchor": "d'avocat pénaliste Plouton",
+        "target": "/défense-pénale/droit-pénal",
+        "word_offset": 159
+      },
+      {
+        "anchor": "un réflexe essentiel pour un avocat pénaliste",
+        "target": "/défense-pénale/droit-pénal",
+        "word_offset": 492
+      },
+      {
+        "anchor": "l'expertise d'un pénaliste est déterminante.",
+        "target": "/défense-pénale/droit-pénal",
+        "word_offset": 1848
+      },
+      {
+        "anchor": "avocat spécialisé en droit pénal",
+        "target": "/défense-pénale/droit-pénal",
+        "word_offset": 2024
+      },
+      {
+        "anchor": "Contactez le Cabinet Plouton pour une assistance immédiate et une défense efficace.",
+        "target": "/honoraires-rendez-vous",
+        "word_offset": 2085
+      },
+      {
+        "anchor": "rj-droit-pénal",
+        "target": "/blog/tags/rj-droit-pénal",
+        "word_offset": 2099
+      },
+      {
+        "anchor": "Ressources et notions juridiques",
+        "target": "/blog/categories/ressources-et-notions-juridiques",
+        "word_offset": 2100
+      },
+      {
+        "anchor": "Voir tout",
+        "target": "/blog",
+        "word_offset": 2106
+      },
+      {
+        "anchor": "Responsabilité du fait des choses : quels recours en cas de chute, d’objet tombé ou d’équipement défectueux ?",
+        "target": "/post/responsabilité-du-fait-des-choses-quels-recours-en-cas-de-chute-d-objet-tombé-ou-d-équipement-déf",
+        "word_offset": 2108
+      },
+      {
+        "anchor": "Délai déraisonnable dans une procédure judiciaire : comment engager la responsabilité de l’Etat ?",
+        "target": "/post/ma-procédure-judiciaire-n-avance-pas-puis-je-obtenir-une-indemnisation-pour-ce-délai-déraisonnable",
+        "word_offset": 2126
+      },
+      {
+        "anchor": "Auto-entrepreneur victime d'un accident : comment obtenir une indemnisation complète ?",
+        "target": "/post/auto-entrepreneur-victime-d-un-accident-comment-justifier-une-perte-de-revenus-ou-d-exploitation",
+        "word_offset": 2140
+      },
+      {
+        "anchor": "Lire",
+        "target": "/comprendre-le-droit",
+        "word_offset": 2170
+      }
+    ]
+  },
+  "engagement_density": {
+    "sessions": 456,
+    "dwell_p25_seconds": 15.8,
+    "dwell_median_seconds": 48,
+    "dwell_p75_seconds": 108,
+    "evenness_score": 0.15
+  },
+  "cooked_health": {
+    "snapshot_extras": "ok",
+    "site_context": "ok",
+    "outbound": "empty",
+    "cta": "empty",
+    "engagement_density": "ok",
+    "failure_messages": []
+  }
+}

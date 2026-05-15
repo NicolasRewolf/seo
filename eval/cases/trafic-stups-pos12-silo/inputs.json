@@ -1,0 +1,1365 @@
+{
+  "url": "https://www.jplouton-avocat.fr/défense-pénale/trafic-de-stupéfiant",
+  "avg_position": 12.18,
+  "position_drift": null,
+  "impressions_monthly": 1238,
+  "ctr_actual": 0.0054,
+  "ctr_expected": 0.0246,
+  "ctr_gap_pct": 78.05,
+  "pages_per_session": 1.13,
+  "avg_duration_seconds": 81,
+  "scroll_depth": 26.92,
+  "scroll_complete_pct": null,
+  "outbound_clicks": null,
+  "lcp_p75_ms": null,
+  "inp_p75_ms": null,
+  "cls_p75": null,
+  "ttfb_p75_ms": null,
+  "current_title": "Avocat Trafic de Stupéfiant à Bordeaux | Cabinet Plouton",
+  "current_meta": "Accusé de trafic de stupéfiants ? Le Cabinet Plouton à Bordeaux vous défend dès la garde à vue. Go Fast, réseau, détention provisoire. Assistance 24h/24.",
+  "current_h1": "Avocat trafic de stupéfiants",
+  "current_intro": "Menu Close Affaires Médias Ressources Équipe Search Contactez - nous Accueil Je prends rendez-vous Équipe Rendez-vous, accès & honoraires Horaires & accès Honoraires Horaires & accès Honoraires La défense pénale Droit Pénal Procès Criminels Trafic de stupéfiants Violences conjugales et feminicides Droit pénal des affaires Droit Pénal Procès Criminels Trafic de stupéfiants Violences conjugales et feminicides Droit pénal des affaires L'indemnisation des victimes Victimes de délits ou crimes Accidents de la route Droit et accidents du travail Accidents et erreurs médicales Accidents de la vie courante Victimes de délits ou crimes Accidents de la route Droit et accidents du travail",
+  "current_schema_jsonld": [
+    {
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 44.8368,
+        "longitude": -0.569
+      },
+      "url": "https://www.jplouton-avocat.fr",
+      "name": "Cabinet Plouton - Avocat à Bordeaux",
+      "@type": "Attorney",
+      "image": "https://static.wixstatic.com/media/d05c9e_75eb8b18d2b247eab8afa1356a161f79~mv2.jpg",
+      "sameAs": [
+        "https://www.instagram.com/jploutonavocat/",
+        "https://www.facebook.com/jploutonavocat/",
+        "https://www.linkedin.com/in/julien-plouton-12255b37/"
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "postalCode": "33000",
+        "addressRegion": "Nouvelle-Aquitaine",
+        "streetAddress": "45 Cours d'Alsace-et-Lorraine",
+        "addressCountry": "FR",
+        "addressLocality": "Bordeaux"
+      },
+      "@context": "https://schema.org",
+      "telephone": "+33556443596",
+      "areaServed": [
+        {
+          "name": "Bordeaux",
+          "@type": "City"
+        },
+        {
+          "name": "Gironde",
+          "@type": "AdministrativeArea"
+        },
+        {
+          "name": "Nouvelle-Aquitaine",
+          "@type": "AdministrativeArea"
+        }
+      ],
+      "knowsAbout": [
+        "Accident de la route",
+        "Indemnisation des victimes",
+        "Dommage corporel",
+        "Droit pénal",
+        "Loi Badinter"
+      ],
+      "priceRange": "€€",
+      "description": "Le Cabinet Plouton, avocat spécialisé à Bordeaux depuis plus de 20 ans, accompagne les victimes d'accidents de la route pour obtenir une indemnisation juste et intégrale.",
+      "alternateName": "Cabinet d'Avocats Julien Plouton SELAS",
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "bestRating": "5",
+        "ratingValue": "4.6",
+        "reviewCount": "184"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@context": "https://schema.org",
+      "itemListElement": [
+        {
+          "item": "https://www.jplouton-avocat.fr/",
+          "name": "Accueil",
+          "@type": "ListItem",
+          "position": 1
+        },
+        {
+          "item": "https://www.jplouton-avocat.fr/défense-pénale",
+          "name": "Défense pénale",
+          "@type": "ListItem",
+          "position": 2
+        },
+        {
+          "item": "https://www.jplouton-avocat.fr/défense-pénale/trafic-de-stupéfiant",
+          "name": "Trafic de stupéfiants",
+          "@type": "ListItem",
+          "position": 3
+        }
+      ]
+    },
+    {
+      "url": "https://www.jplouton-avocat.fr/défense-pénale/trafic-de-stupéfiant",
+      "name": "Avocat trafic de stupéfiants Bordeaux — Cabinet Plouton",
+      "@type": "LegalService",
+      "@context": "https://schema.org",
+      "provider": {
+        "url": "https://www.jplouton-avocat.fr/",
+        "name": "Cabinet Plouton",
+        "@type": "Attorney",
+        "address": {
+          "@type": "PostalAddress",
+          "postalCode": "33000",
+          "addressRegion": "Nouvelle-Aquitaine",
+          "streetAddress": "45 Cours d'Alsace-et-Lorraine",
+          "addressCountry": "FR",
+          "addressLocality": "Bordeaux"
+        },
+        "telephone": "+33556443596"
+      },
+      "areaServed": {
+        "name": "Bordeaux",
+        "@type": "City"
+      },
+      "description": "Défense en matière de stupéfiants à Bordeaux. Détention, trafic, import, conduite sous stupéfiants. Cabinet d'avocats spécialisé.",
+      "serviceType": "Défense trafic de stupéfiants"
+    }
+  ],
+  "current_internal_links": [
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal"
+    },
+    {
+      "anchor": "Procès criminels",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel"
+    },
+    {
+      "anchor": "Trafic de stupéfiants",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant"
+    },
+    {
+      "anchor": "Violences conjugales et féminicides",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides"
+    },
+    {
+      "anchor": "Droit pénal des affaires",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires"
+    },
+    {
+      "anchor": "Victimes de délits ou crimes",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes"
+    },
+    {
+      "anchor": "Accidents de la route",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route"
+    },
+    {
+      "anchor": "Droit et accidents du travail",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail"
+    },
+    {
+      "anchor": "Accidents et erreurs médicales",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales"
+    },
+    {
+      "anchor": "Accidents de la vie courante",
+      "target": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante"
+    },
+    {
+      "anchor": "Droit des assurances particuliers et professionnels",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels"
+    },
+    {
+      "anchor": "Défense des consommateurs",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs"
+    },
+    {
+      "anchor": "Droit de la famille",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille"
+    },
+    {
+      "anchor": "Divorce",
+      "target": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux"
+    },
+    {
+      "anchor": "Affaires",
+      "target": "https://www.jplouton-avocat.fr/nos-affaires"
+    },
+    {
+      "anchor": "Médias",
+      "target": "https://www.jplouton-avocat.fr/blog/categories/m%C3%A9dias"
+    },
+    {
+      "anchor": "Ressources",
+      "target": "https://www.jplouton-avocat.fr/comprendre-le-droit"
+    },
+    {
+      "anchor": "Équipe",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet"
+    },
+    {
+      "anchor": "Contactez - nous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Accueil",
+      "target": "https://www.jplouton-avocat.fr/"
+    },
+    {
+      "anchor": "Je prends rendez-vous",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Équipe",
+      "target": "https://www.jplouton-avocat.fr/notre-cabinet"
+    },
+    {
+      "anchor": "Rendez-vous, accès & honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Horaires & accès",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Horaires & accès",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "Honoraires",
+      "target": "https://www.jplouton-avocat.fr/honoraires-rendez-vous"
+    },
+    {
+      "anchor": "La défense pénale",
+      "target": "https://www.jplouton-avocat.fr/defense-penale"
+    },
+    {
+      "anchor": "Droit Pénal",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/droit-penal"
+    },
+    {
+      "anchor": "Procès Criminels",
+      "target": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel"
+    }
+  ],
+  "top_queries": [
+    {
+      "query": "avocat trafic de stupéfiants",
+      "impressions": 480,
+      "ctr": 0,
+      "position": 9.17
+    },
+    {
+      "query": "avocat spécialisé stupéfiant",
+      "impressions": 244,
+      "ctr": 0,
+      "position": 8.52
+    },
+    {
+      "query": "avocat stupefiant",
+      "impressions": 200,
+      "ctr": 0,
+      "position": 7.59
+    },
+    {
+      "query": "avocat trafic de stupefiant",
+      "impressions": 198,
+      "ctr": 0,
+      "position": 6.68
+    },
+    {
+      "query": "avocat trafic de stupéfiant",
+      "impressions": 160,
+      "ctr": 0.0063,
+      "position": 8.18
+    },
+    {
+      "query": "avocat pour affaire de stupéfiant",
+      "impressions": 125,
+      "ctr": 0,
+      "position": 6.94
+    },
+    {
+      "query": "cabinet plouton",
+      "impressions": 116,
+      "ctr": 0,
+      "position": 1.79
+    },
+    {
+      "query": "avocat stupéfiants au volant nimes",
+      "impressions": 98,
+      "ctr": 0,
+      "position": 63.09
+    },
+    {
+      "query": "meilleur avocat pour trafic de stupéfiants",
+      "impressions": 88,
+      "ctr": 0,
+      "position": 8.33
+    },
+    {
+      "query": "avocat stupéfiants",
+      "impressions": 83,
+      "ctr": 0,
+      "position": 23.71
+    }
+  ],
+  "enrichment": {
+    "category": null,
+    "wix_metrics": null,
+    "enriched_top_queries": [
+      {
+        "query": "avocat trafic de stupéfiants",
+        "impressions": 480,
+        "ctr": 0,
+        "position": 9.17,
+        "monthly_volume_fr": 90,
+        "cpc": 3.56,
+        "share_of_voice_pct": 177.8,
+        "serp": {
+          "keyword": "avocat trafic de stupéfiants",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Avocat trafic de stupéfiants | Expert en dossier pour ...",
+              "url": "https://www.avocatgoudard.com/specialites/avocat-trafic-de-stupefiant/",
+              "domain": "avocatgoudard.com",
+              "description": "Maître Jérôme Goudard est spécialiste des dossiers liés aux délits et crimes relatifs au trafic de stupéfiants. Vous pouvez vous adresser à Me Jérôme ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "title": "Avocat pénaliste en cas de trafic de stupéfiants à Paris 7",
+              "url": "https://www.avocat-gabeaud.fr/trafic-stupefiants.php",
+              "domain": "avocat-gabeaud.fr",
+              "description": "Si vous êtes impliqué dans une affaire de stupéfiants, vous pouvez faire appel à Maître Gabeaud, avocat en droit pénal à Paris. Cet avocat vous fait bénéficier ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 3,
+              "title": "Trouvez un Avocat en trafic de stupéfiant",
+              "url": "https://www.justifit.fr/avocats/q/trafic-de-stupefiant/?srsltid=AfmBOooXsHZIdi-iXuAed03e-qfqB-JtolzqaPcPUr8a1wlGX4fpdmdL",
+              "domain": "justifit.fr",
+              "description": "À propos : Avocat au barreau de Paris, Maître IVANIER vous accompagne en droit pénal et en droit du travail, avec une approche humaine et engagée."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 5,
+              "title": "Le meilleur avocat pour trafic de stupéfiants",
+              "url": "https://www.nicolas-paganelli-avocat.fr/blog/le-meilleur-avocat-pour-trafic-de-stupefiants-pourquoi-choisir-me-nicolas-paganelli-a-paris/",
+              "domain": "nicolas-paganelli-avocat.fr",
+              "description": "Fort de nombreuses années d'expérience, Me PAGANELLI a défendu des dossiers complexes, allant de simples infractions à des réseaux de trafic de grande ampleur."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 6,
+              "title": "Avocat pour trafic de stupéfiant Evry – Corbeil-Essonnes",
+              "url": "https://www.dch-avocat.fr/trafic-stupefiant.php",
+              "domain": "dch-avocat.fr",
+              "description": "Votre avocat en trafic de stupéfiants, Maitre DIANA CHICHEPORTICHE, vous défend avec rigueur et expérience. Contactez-la pour une défense stratégique."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 7,
+              "title": "Quel avocat pour une affaire de trafic de stupéfiants",
+              "url": "https://curiel-avocat-penaliste-paris.fr/avocat-trafic-de-stupefiant/",
+              "domain": "curiel-avocat-penaliste-paris.fr",
+              "description": "Expert reconnu dans la défense des personnes impliquées dans les affaires de trafic de stupéfiants, Maître David Curiel, avocat pénaliste à Paris, possède une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 8,
+              "title": "Avocat Trafic de Stupéfiant à Bordeaux",
+              "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+              "domain": "jplouton-avocat.fr",
+              "description": "Maître Julien Plouton et son équipe possèdent une connaissance approfondie du droit pénal et une expertise pointue dans les affaires de trafic de stupéfiants."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 9,
+              "title": "Avocat trafic de drogue Paris 15 : Vos intérêts sont sa priorité",
+              "url": "https://www.amb-avocats.com/trafic-drogue.php",
+              "domain": "amb-avocats.com",
+              "description": "Pour votre défense pénale lors de votre procès pour trafic de drogue, faites appel à Maître Benamara et son expertise juridique. Contactez le cabinet."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 10,
+              "title": "Avocat Spécialiste Trafic de Stupéfiants La Rochelle & ...",
+              "url": "https://www.doranges-avocat.fr/avocat-trafic-de-stupefiants",
+              "domain": "doranges-avocat.fr",
+              "description": "Vous êtes poursuivi pour trafic de stupéfiants ? Confiez votre défense à un avocat spécialiste en droit pénal. | ☎ 06 67 57 53 33."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": true
+          },
+          "fetched_at": "2026-05-15T21:51:14.739Z"
+        }
+      },
+      {
+        "query": "avocat spécialisé stupéfiant",
+        "impressions": 244,
+        "ctr": 0,
+        "position": 8.52,
+        "monthly_volume_fr": 90,
+        "cpc": 3.34,
+        "share_of_voice_pct": 90.4,
+        "serp": {
+          "keyword": "avocat spécialisé stupéfiant",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "title": "Avocat trafic de stupéfiants | Expert en dossier pour ...",
+              "url": "https://www.avocatgoudard.com/specialites/avocat-trafic-de-stupefiant/",
+              "domain": "avocatgoudard.com",
+              "description": "Maître Jérôme Goudard est spécialiste des dossiers liés aux délits et crimes relatifs au trafic de stupéfiants. Vous pouvez vous adresser à Me Jérôme ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 6,
+              "title": "Trouvez un Avocat en trafic de stupéfiant",
+              "url": "https://www.justifit.fr/avocats/q/trafic-de-stupefiant/?srsltid=AfmBOoo6XB6nVjJGugiuiSqLrFLVqDLJ_3DVD3L4f91a6jP2j2Ygb9en",
+              "domain": "justifit.fr",
+              "description": "Avocats trafic de stupéfiant ; Maître Benjamin IVANIER. 4.8 ( · ) Répond rapidement. Maître Benjamin IVANIER Paris. 9 Rue Alfred de Vigny Paris 75008 ; Maître ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 7,
+              "title": "Avocat pénaliste en cas de trafic de stupéfiants à Paris 7",
+              "url": "https://www.avocat-gabeaud.fr/trafic-stupefiants.php",
+              "domain": "avocat-gabeaud.fr",
+              "description": "Recourez aux services du cabinet de Maître Gabeaud à Paris 7 et bénéficiez de l'expertise d'un avocat pénaliste sur des affaires de trafic de stupéfiants."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "title": "Avocat Stupéfiants au volant - Permis de conduire",
+              "url": "https://maitredufour.com/avocat-permis-de-conduire-drogue/",
+              "domain": "maitredufour.com",
+              "description": "Maître Dufour est un avocat expert du permis de conduire, qui saura vous défendre en cas d'interpellation pour conduite sous stupéfiants. Il contrôlera l ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "title": "Avocat pour trafic de stupéfiant Evry – Corbeil-Essonnes",
+              "url": "https://www.dch-avocat.fr/trafic-stupefiant.php",
+              "domain": "dch-avocat.fr",
+              "description": "Votre avocat en trafic de stupéfiants, Maitre DIANA CHICHEPORTICHE, vous défend avec rigueur et expérience. Contactez-la pour une défense stratégique."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "title": "Avocat Trafic de Stupéfiant à Bordeaux",
+              "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+              "domain": "jplouton-avocat.fr",
+              "description": "Accusé de trafic de stupéfiants ? Le Cabinet Plouton à Bordeaux vous défend dès la garde à vue. Go Fast, réseau, détention provisoire. Assistance 24h/24."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "title": "Avocat Spécialiste Trafic de Stupéfiants La Rochelle & ...",
+              "url": "https://www.doranges-avocat.fr/avocat-trafic-de-stupefiants",
+              "domain": "doranges-avocat.fr",
+              "description": "Vous êtes poursuivi pour trafic de stupéfiants ? Confiez votre défense à un avocat spécialiste en droit pénal. | ☎ 06 67 57 53 33."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 12,
+              "title": "Quel avocat pour une affaire de trafic de stupéfiants",
+              "url": "https://curiel-avocat-penaliste-paris.fr/avocat-trafic-de-stupefiant/",
+              "domain": "curiel-avocat-penaliste-paris.fr",
+              "description": "Expert reconnu dans la défense des personnes impliquées dans les affaires de trafic de stupéfiants, Maître David Curiel, avocat pénaliste à Paris, possède une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 13,
+              "title": "Les 10 meilleurs avocats pour vous défendre suite à une ...",
+              "url": "https://www.alexia.fr/barreau-2-forfait-82/avocat-pour-vous-defendre-suite-a-une-conduite-sous-stupefiants-paris.htm",
+              "domain": "alexia.fr",
+              "description": "Trouvez votre avocat parmis les 36 avocats pour vous défendre suite à une conduite sous stupéfiants à Paris actuellement disponibles."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 14,
+              "title": "Avocats en Trafic de stupéfiants | Droit pénal",
+              "url": "https://www.callalawyer.fr/competences-avocats/trafic-de-stupefiants/",
+              "domain": "callalawyer.fr",
+              "description": "146 Avocats en Trafic de stupéfiants. Maître Claire Fornacciari, avocat à Paris. Me Claire Fornacciari. 5,0. 137 rue Lamarck75018 Paris. placeholder."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": true,
+            "has_video": true
+          },
+          "fetched_at": "2026-05-15T21:51:27.768Z"
+        }
+      },
+      {
+        "query": "avocat stupefiant",
+        "impressions": 200,
+        "ctr": 0,
+        "position": 7.59,
+        "monthly_volume_fr": 170,
+        "cpc": 4.1,
+        "share_of_voice_pct": 39.2,
+        "serp": {
+          "keyword": "avocat stupefiant",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 5,
+              "title": "Avocat trafic de stupéfiants | Expert en dossier pour ...",
+              "url": "https://www.avocatgoudard.com/specialites/avocat-trafic-de-stupefiant/",
+              "domain": "avocatgoudard.com",
+              "description": "Maître Jérôme Goudard est spécialiste des dossiers liés aux délits et crimes relatifs au trafic de stupéfiants. Vous pouvez vous adresser à Me Jérôme ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 6,
+              "title": "Avocat pénaliste en cas de trafic de stupéfiants à Paris 7",
+              "url": "https://www.avocat-gabeaud.fr/trafic-stupefiants.php",
+              "domain": "avocat-gabeaud.fr",
+              "description": "Si vous êtes impliqué dans une affaire de stupéfiants, vous pouvez faire appel à Maître Gabeaud, avocat en droit pénal à Paris. Cet avocat vous fait bénéficier ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 7,
+              "title": "Trouvez un Avocat en trafic de stupéfiant",
+              "url": "https://www.justifit.fr/avocats/q/trafic-de-stupefiant/?srsltid=AfmBOoojPQ4HOvCDfWQzSfVAsgrmvS88lLnV0KWjjC0ankzKK4Zz5v9C",
+              "domain": "justifit.fr",
+              "description": "À propos : Avocat au barreau de Paris, Maître IVANIER vous accompagne en droit pénal et en droit du travail, avec une approche humaine et engagée."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 8,
+              "title": "Avocat Trafic de Stupéfiant à Bordeaux",
+              "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+              "domain": "jplouton-avocat.fr",
+              "description": "Maître Julien Plouton et son équipe possèdent une connaissance approfondie du droit pénal et une expertise pointue dans les affaires de trafic de stupéfiants."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 9,
+              "title": "Les 10 meilleurs avocats pour vous défendre suite à une ...",
+              "url": "https://www.alexia.fr/barreau-2-forfait-82/avocat-pour-vous-defendre-suite-a-une-conduite-sous-stupefiants-paris.htm",
+              "domain": "alexia.fr",
+              "description": "Trouvez votre avocat parmis les 36 avocats pour vous défendre suite à une conduite sous stupéfiants à Paris actuellement disponibles."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 10,
+              "title": "Stupéfiants - Droit pénal",
+              "url": "https://www.mcjb-avocats.fr/competences/droit-penal/stupefiants.htm",
+              "domain": "mcjb-avocats.fr",
+              "description": "En tant qu'avocat spécialiste en droit pénal, Jean de Bary intervient dans les affaires liées aux infractions à la législation sur les stupéfiants."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 11,
+              "title": "Avocat pour trafic de stupéfiant Evry – Corbeil-Essonnes",
+              "url": "https://www.dch-avocat.fr/trafic-stupefiant.php",
+              "domain": "dch-avocat.fr",
+              "description": "Votre avocat en trafic de stupéfiants, Maitre DIANA CHICHEPORTICHE, vous défend avec rigueur et expérience. Contactez-la pour une défense stratégique."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 13,
+              "title": "Solliciter un avocat pour une affaire de stupéfiant",
+              "url": "https://curiel-avocat-penaliste-paris.fr/avocat-pour-affaire-de-stupefiant/",
+              "domain": "curiel-avocat-penaliste-paris.fr",
+              "description": "Un avocat pour une affaire de stupéfiant à Paris : adressez-vous à maître David Curiel · Appelez-moi au 06 19 97 10 19 ou : CONTACTEZ-MOI · Ce qu'on entend par ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 14,
+              "title": "Avocat Spécialiste Trafic de Stupéfiants La Rochelle & ...",
+              "url": "https://www.doranges-avocat.fr/avocat-trafic-de-stupefiants",
+              "domain": "doranges-avocat.fr",
+              "description": "Vous êtes poursuivi pour trafic de stupéfiants ? Confiez votre défense à un avocat spécialiste en droit pénal. | ☎ 06 67 57 53 33."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 15,
+              "title": "Le meilleur avocat pour trafic de stupéfiants",
+              "url": "https://www.nicolas-paganelli-avocat.fr/blog/le-meilleur-avocat-pour-trafic-de-stupefiants-pourquoi-choisir-me-nicolas-paganelli-a-paris/",
+              "domain": "nicolas-paganelli-avocat.fr",
+              "description": "Fort de nombreuses années d'expérience, Me PAGANELLI a défendu des dossiers complexes, allant de simples infractions à des réseaux de trafic de grande ampleur."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": true,
+            "has_video": true
+          },
+          "fetched_at": "2026-05-15T21:51:09.947Z"
+        }
+      },
+      {
+        "query": "avocat trafic de stupefiant",
+        "impressions": 198,
+        "ctr": 0,
+        "position": 6.68,
+        "monthly_volume_fr": 90,
+        "cpc": 3.56,
+        "share_of_voice_pct": 73.3,
+        "serp": {
+          "keyword": "avocat trafic de stupefiant",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Avocat trafic de stupéfiants | Expert en dossier pour ...",
+              "url": "https://www.avocatgoudard.com/specialites/avocat-trafic-de-stupefiant/",
+              "domain": "avocatgoudard.com",
+              "description": "Maître Jérôme Goudard est spécialiste des dossiers liés aux délits et crimes relatifs au trafic de stupéfiants. Vous pouvez vous adresser à Me Jérôme ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "title": "Avocat pénaliste en cas de trafic de stupéfiants à Paris 7",
+              "url": "https://www.avocat-gabeaud.fr/trafic-stupefiants.php",
+              "domain": "avocat-gabeaud.fr",
+              "description": "Si vous êtes impliqué dans une affaire de stupéfiants, vous pouvez faire appel à Maître Gabeaud, avocat en droit pénal à Paris. Cet avocat vous fait bénéficier ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 3,
+              "title": "Trouvez un Avocat en trafic de stupéfiant",
+              "url": "https://www.justifit.fr/avocats/q/trafic-de-stupefiant/?srsltid=AfmBOoqAxMW0S3c6RxUUGMRoVYXsg6eT9iLk0yVOr4Je0sX8YaiVxy2K",
+              "domain": "justifit.fr",
+              "description": "À propos : Avocat au barreau de Paris, Maître IVANIER vous accompagne en droit pénal et en droit du travail, avec une approche humaine et engagée."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 5,
+              "title": "Avocats en Trafic de stupéfiants | Droit pénal",
+              "url": "https://www.callalawyer.fr/competences-avocats/trafic-de-stupefiants/",
+              "domain": "callalawyer.fr",
+              "description": "Trouvez un avocat spécialisé en Trafic de stupéfiants en France et discutez immédiatement par téléphone."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 6,
+              "title": "Avocat pour trafic de stupéfiant Evry – Corbeil-Essonnes",
+              "url": "https://www.dch-avocat.fr/trafic-stupefiant.php",
+              "domain": "dch-avocat.fr",
+              "description": "Votre avocat en trafic de stupéfiants, Maitre DIANA CHICHEPORTICHE, vous défend avec rigueur et expérience. Contactez-la pour une défense stratégique."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 7,
+              "title": "Quel avocat pour une affaire de trafic de stupéfiants",
+              "url": "https://curiel-avocat-penaliste-paris.fr/avocat-trafic-de-stupefiant/",
+              "domain": "curiel-avocat-penaliste-paris.fr",
+              "description": "Expert reconnu dans la défense des personnes impliquées dans les affaires de trafic de stupéfiants, Maître David Curiel, avocat pénaliste à Paris, possède une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 8,
+              "title": "Trafic de drogue | Maître Ian Knafou | Avocat pénaliste à ...",
+              "url": "https://www.ian-knafou-avocat-penaliste.fr/avocat-trafic-de-stupefiants",
+              "domain": "ian-knafou-avocat-penaliste.fr",
+              "description": "Maître Knafou, avocat pénaliste à Paris, partage avec vous quelques uns des jugements de relaxe obtenus dans des affaires de trafic de drogue."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 9,
+              "title": "Le meilleur avocat pour trafic de stupéfiants",
+              "url": "https://www.nicolas-paganelli-avocat.fr/blog/le-meilleur-avocat-pour-trafic-de-stupefiants-pourquoi-choisir-me-nicolas-paganelli-a-paris/",
+              "domain": "nicolas-paganelli-avocat.fr",
+              "description": "Fort de nombreuses années d'expérience, Me PAGANELLI a défendu des dossiers complexes, allant de simples infractions à des réseaux de trafic de grande ampleur."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 10,
+              "title": "Avocat trafic de drogue Paris 15 : Vos intérêts sont sa priorité",
+              "url": "https://www.amb-avocats.com/trafic-drogue.php",
+              "domain": "amb-avocats.com",
+              "description": "Pour votre défense pénale lors de votre procès pour trafic de drogue, faites appel à Maître Benamara et son expertise juridique. Contactez le cabinet."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 11,
+              "title": "Avocat trafic de stupéfiant - DROIT pénal",
+              "url": "https://www.teboulavocat.com/droit-penal/avocat-trafic-de-stupefiant",
+              "domain": "teboulavocat.com",
+              "description": "Mis en cause pour trafic de stupéfiant ? +10 ans d'expérience, +500 affaires traitées. Défense réactive 24h/7j par un avocat pénaliste reconnu."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:51:16.344Z"
+        }
+      },
+      {
+        "query": "avocat trafic de stupéfiant",
+        "impressions": 160,
+        "ctr": 0.0063,
+        "position": 8.18,
+        "monthly_volume_fr": 90,
+        "cpc": 3.56,
+        "share_of_voice_pct": 59.3,
+        "serp": {
+          "keyword": "avocat trafic de stupéfiant",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Avocat pénaliste en cas de trafic de stupéfiants à Paris 7",
+              "url": "https://www.avocat-gabeaud.fr/trafic-stupefiants.php",
+              "domain": "avocat-gabeaud.fr",
+              "description": "Si vous êtes impliqué dans une affaire de stupéfiants, vous pouvez faire appel à Maître Gabeaud, avocat en droit pénal à Paris. Cet avocat vous fait bénéficier ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Trouvez un Avocat en trafic de stupéfiant",
+              "url": "https://www.justifit.fr/avocats/q/trafic-de-stupefiant/?srsltid=AfmBOoroMRaf5CGCMl-CBrtoTlOLhnXAfyJLZOXhQN3wpZczvL0ndji3",
+              "domain": "justifit.fr",
+              "description": "À propos : Avocat au barreau de Paris, Maître IVANIER vous accompagne en droit pénal et en droit du travail, avec une approche humaine et engagée."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "Avocat pour trafic de stupéfiant Evry – Corbeil-Essonnes",
+              "url": "https://www.dch-avocat.fr/trafic-stupefiant.php",
+              "domain": "dch-avocat.fr",
+              "description": "Votre avocat en trafic de stupéfiants, Maitre DIANA CHICHEPORTICHE, vous défend avec rigueur et expérience. Contactez-la pour une défense stratégique."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 7,
+              "title": "Trafic de drogue | Maître Ian Knafou | Avocat pénaliste à ...",
+              "url": "https://www.ian-knafou-avocat-penaliste.fr/avocat-trafic-de-stupefiants",
+              "domain": "ian-knafou-avocat-penaliste.fr",
+              "description": "Maître Knafou, avocat pénaliste à Paris, partage avec vous quelques uns des jugements de relaxe obtenus dans des affaires de trafic de drogue."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 8,
+              "title": "Avocat trafic de drogue Paris 15 : Vos intérêts sont sa priorité",
+              "url": "https://www.amb-avocats.com/trafic-drogue.php",
+              "domain": "amb-avocats.com",
+              "description": "Pour votre défense pénale lors de votre procès pour trafic de drogue, faites appel à Maître Benamara et son expertise juridique. Contactez le cabinet."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 9,
+              "title": "Quel avocat pour une affaire de trafic de stupéfiants",
+              "url": "https://curiel-avocat-penaliste-paris.fr/avocat-trafic-de-stupefiant/",
+              "domain": "curiel-avocat-penaliste-paris.fr",
+              "description": "Expert reconnu dans la défense des personnes impliquées dans les affaires de trafic de stupéfiants, Maître David Curiel, avocat pénaliste à Paris, possède une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 10,
+              "title": "Avocat trafic de stupéfiant - DROIT pénal",
+              "url": "https://www.teboulavocat.com/droit-penal/avocat-trafic-de-stupefiant",
+              "domain": "teboulavocat.com",
+              "description": "Mis en cause pour trafic de stupéfiant ? +10 ans d'expérience, +500 affaires traitées. Défense réactive 24h/7j par un avocat pénaliste reconnu."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 11,
+              "title": "Le meilleur avocat pour trafic de stupéfiants",
+              "url": "https://www.nicolas-paganelli-avocat.fr/blog/le-meilleur-avocat-pour-trafic-de-stupefiants-pourquoi-choisir-me-nicolas-paganelli-a-paris/",
+              "domain": "nicolas-paganelli-avocat.fr",
+              "description": "Fort de nombreuses années d'expérience, Me PAGANELLI a défendu des dossiers complexes, allant de simples infractions à des réseaux de trafic de grande ampleur."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": true,
+            "has_local_pack": false,
+            "has_video": true
+          },
+          "fetched_at": "2026-05-15T21:51:09.970Z"
+        }
+      },
+      {
+        "query": "avocat pour affaire de stupéfiant",
+        "impressions": 125,
+        "ctr": 0,
+        "position": 6.94,
+        "monthly_volume_fr": 70,
+        "cpc": null,
+        "share_of_voice_pct": 59.5
+      },
+      {
+        "query": "cabinet plouton",
+        "impressions": 116,
+        "ctr": 0,
+        "position": 1.79,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "avocat stupéfiants au volant nimes",
+        "impressions": 98,
+        "ctr": 0,
+        "position": 63.09,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "meilleur avocat pour trafic de stupéfiants",
+        "impressions": 88,
+        "ctr": 0,
+        "position": 8.33,
+        "monthly_volume_fr": 90,
+        "cpc": 2.52,
+        "share_of_voice_pct": 32.6
+      },
+      {
+        "query": "avocat stupéfiants",
+        "impressions": 83,
+        "ctr": 0,
+        "position": 23.71,
+        "monthly_volume_fr": 170,
+        "cpc": 4.1,
+        "share_of_voice_pct": 16.3
+      }
+    ],
+    "total_monthly_demand_fr": 860,
+    "internal_pages_catalog": {
+      "expertise": [
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale",
+          "role": "expertise",
+          "topic": "Défense pénale (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+          "role": "expertise",
+          "topic": "Droit pénal général"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+          "role": "expertise",
+          "topic": "Procès criminels (cour d'assises)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+          "role": "expertise",
+          "topic": "Violences conjugales et féminicides"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+          "role": "expertise",
+          "topic": "Trafic de stupéfiants"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+          "role": "expertise",
+          "topic": "Droit pénal des affaires"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+          "role": "expertise",
+          "topic": "Indemnisation des victimes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+          "role": "expertise",
+          "topic": "Accidents de la vie courante"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+          "role": "expertise",
+          "topic": "Victimes de délits ou crimes"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+          "role": "expertise",
+          "topic": "Accidents et erreurs médicales"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+          "role": "expertise",
+          "topic": "Droit et accidents du travail"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+          "role": "expertise",
+          "topic": "Accidents de la route"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+          "role": "expertise",
+          "topic": "Droit des contrats et des personnes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+          "role": "expertise",
+          "topic": "Défense des consommateurs"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+          "role": "expertise",
+          "topic": "Droit des assurances"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+          "role": "expertise",
+          "topic": "Droit de la famille"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+          "role": "expertise",
+          "topic": "Divorce (Bordeaux)"
+        }
+      ],
+      "cta": [
+        {
+          "url": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+          "role": "cta",
+          "topic": "Honoraires & prise de rendez-vous"
+        }
+      ],
+      "trust": [
+        {
+          "url": "https://www.jplouton-avocat.fr/notre-cabinet",
+          "role": "trust",
+          "topic": "Présentation du cabinet"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/nos-affaires",
+          "role": "trust",
+          "topic": "Affaires emblématiques"
+        }
+      ],
+      "blog_root": [
+        {
+          "url": "https://www.jplouton-avocat.fr/blog",
+          "role": "blog_root"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/comprendre-le-droit",
+          "role": "blog_root"
+        }
+      ],
+      "homepage": [
+        {
+          "url": "https://www.jplouton-avocat.fr",
+          "role": "homepage"
+        }
+      ],
+      "legal": [
+        {
+          "url": "https://www.jplouton-avocat.fr/mentions-legales",
+          "role": "legal"
+        }
+      ]
+    },
+    "google_guidance": {
+      "blog_posts": [
+        {
+          "title": "A new resource for optimizing for generative AI in Google Search",
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "summary": "As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for ap",
+          "published_date": "2026-05-15",
+          "age_days": 0
+        },
+        {
+          "title": "Introducing a new spam policy for \"back button hijacking\"",
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "summary": "Today, we are expanding our spam policies to address a deceptive practice known as \"back button hijacking\", which will become an explicit violation of the \"malicious practices\" of spam policies, leading to potential spam",
+          "published_date": "2026-04-13",
+          "age_days": 32
+        },
+        {
+          "title": "Inside Googlebot: demystifying crawling, fetching, and the bytes we process",
+          "link": "https://developers.google.com/search/blog/2026/03/crawler-blog-post",
+          "summary": "If you tuned into episode 105 of the Search Off the Record podcast, you might have heard us diving deep into a topic that is close to our hearts (and our servers): the inner workings of Googlebot.",
+          "published_date": "2026-03-31",
+          "age_days": 45
+        }
+      ],
+      "blog_posts_deep": [
+        {
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "body": "Home Search Central Google Search Central Blog Send feedback A new resource for optimizing for generative AI in Google Search Friday, May 15, 2026 As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for appearance in generative AI features in Search, and in turn Google Search overall. In the new guide, optimizing your website for generative AI features on Google Search, you'll find: Guidance on the importance of providing valuable, unique, non-commodity content Tips about providing local, shopping, image, and video content Mythbusting common \"AEO/GEO\" misconceptions Initial guidance related to AI agents, a quickly emerging and evolving space Information about why SEO best practices remain relevant and foundational to success with our generative AI features We hope this guide provides more clarity to help you continue to create great content that reaches your audience effectively through Google Search. As always, if you have any feedback, share your comments on LinkedIn or post in the Google Search Central Community. Posted"
+        },
+        {
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "body": "Accueil Search Central Google Search Central Blog Envoyer des commentaires Nouvelle règle de lutte contre le spam concernant le \"détournement du bouton Retour\" 13 avril 2026 Aujourd'hui, nous élargissons nos règles concernant le spam pour lutter contre une pratique trompeuse appelée \"détournement du bouton Retour\". Cette pratique sera désormais considérée comme une infraction explicite entrant dans le cadre des \"pratiques malveillantes\" des règles concernant le spam et pourra entraîner des actions liées au spam. Qu'est-ce que le détournement du bouton Retour ? Lorsqu'un utilisateur clique sur le bouton Retour du navigateur, son intention est claire : il souhaite revenir à la page précédente. Le détournement du bouton Retour contrevient à cette attente fondamentale. Cela se produit lorsqu'un site interfère avec la navigation de l'utilisateur dans son navigateur et l'empêche d'utiliser le bouton Retour pour revenir immédiatement à la page d'où il vient. Au lieu de cela, l'utilisateur peut être redirigé vers des pages qu'il n'a jamais consultées, voir des recommandations ou des annonces non sollicitées, ou simplement être empêché de naviguer normalement sur le Web. Pourquoi prenons-no"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "7eTbAa2jWdToLkraZj5y",
+          "title": "March 2026 core update",
+          "begin": "2026-03-27T09:00:00+00:00",
+          "end": "2026-04-08T13:00:00+00:00",
+          "is_active": false,
+          "category": "core_update"
+        },
+        {
+          "id": "VbnSXAH4SmEcxPtx4YSD",
+          "title": "March 2026 spam update",
+          "begin": "2026-03-24T19:00:00+00:00",
+          "end": "2026-03-25T14:30:00+00:00",
+          "is_active": false,
+          "category": "spam_update"
+        }
+      ],
+      "ranking_systems": [
+        {
+          "id": "bert",
+          "name": "BERT",
+          "description": "Bidirectional Encoder Representations from Transformers (BERT) is an AI system Google uses that allows us to understand how combinations of words express different meanings and intent."
+        },
+        {
+          "id": "crisis-info",
+          "name": "Crisis information systems",
+          "description": "Google has developed systems to provide helpful and timely information during times of crisis, whether those involve personal crisis situations, natural disasters, or other wide-spread crisis situations:"
+        },
+        {
+          "id": "deduplication",
+          "name": "Deduplication systems",
+          "description": "Searches on Google may find thousands or even millions of matching web pages. Some of these may be very similar to each other. In such cases, our systems show only the most relevant results to avoid unhelpful duplication. Learn more about how deduplication works and how to see omitted results if des"
+        },
+        {
+          "id": "exact-match",
+          "name": "Exact match domain system",
+          "description": "Our ranking systems consider the words in domain names as one of many factors to determine if content is relevant to a search. However, our exact match domain system works to ensure we don't give too much credit for content hosted under domains designed to exactly match particular queries. For examp"
+        },
+        {
+          "id": "freshness",
+          "name": "Freshness systems",
+          "description": "We have various \"query deserves freshness\" systems designed to show fresher content for queries where it would be expected. For example, if someone is searching about a movie that's just been released, they probably want recent reviews rather than older articles from when production began. For anoth"
+        },
+        {
+          "id": "link-analysis",
+          "name": "Link analysis systems and PageRank",
+          "description": "We have various systems that understand how pages link to each other as a way to determine what pages are about and which might be most helpful in response to a query. Among these is PageRank, one of our core ranking systems used when Google first launched. Those curious can learn more by reading th"
+        },
+        {
+          "id": "local-news",
+          "name": "Local news systems",
+          "description": "We have systems that work to identify and surface local sources of news whenever relevant, such as through our \"Top stories\" and \"Local news\" features."
+        },
+        {
+          "id": "mum",
+          "name": "MUM",
+          "description": "Multitask Unified Model (MUM) is an AI system capable of both understanding and generating language. It's not currently used for general ranking in Search but rather for some specific applications such as to improve searches for COVID-19 vaccine information and to improve featured snippet callouts w"
+        },
+        {
+          "id": "neural-matching",
+          "name": "Neural matching",
+          "description": "Neural matching is an AI system that Google uses to understand representations of concepts in queries and pages and match them to one another."
+        },
+        {
+          "id": "original-content",
+          "name": "Original content systems",
+          "description": "We have systems to help ensure we are showing original content prominently in search results, including original reporting, ahead of those who merely cite it. This includes support of a special canonical markup creators can use to help us better understand what is the primary page if a page has been"
+        },
+        {
+          "id": "removals",
+          "name": "Removal-based demotion systems",
+          "description": "Google has policies that allow the removal of certain types of content. If we process a significant volume of such removals involving a particular site, we use that as a signal to improve our results. In particular:"
+        },
+        {
+          "id": "passage-ranking-system",
+          "name": "Passage ranking system",
+          "description": "Passage ranking is an AI system we use to identify individual sections or \"passages\" of a web page to better understand how relevant a page is to a search."
+        },
+        {
+          "id": "rankbrain",
+          "name": "RankBrain",
+          "description": "RankBrain is an AI system that helps us understand how words are related to concepts. It means we can better return relevant content even if it doesn't contain all the exact words used in a search, by understanding the content is related to other words and concepts."
+        },
+        {
+          "id": "reliable-information-systems",
+          "name": "Reliable information systems",
+          "description": "Multiple systems work in various ways to show the most reliable information possible, such as to help surface more authoritative pages and demote low-quality content and to elevate quality journalism. In cases where reliable information might be lacking, our systems automatically display content adv"
+        },
+        {
+          "id": "reviews-system",
+          "name": "Reviews system",
+          "description": "The reviews system aims to better reward high quality reviews, content that provides insightful analysis and original research, and is written by experts or enthusiasts who know the topic well."
+        },
+        {
+          "id": "site-diversity-system",
+          "name": "Site diversity system",
+          "description": "Our site diversity system works so that we generally won't show more than two web page listings from the same site in our top results, so that no single site tends to dominate all the top results. However, we may still show more than two listings in cases where our systems determine it's especially"
+        },
+        {
+          "id": "spam-detection-systems",
+          "name": "Spam detection systems",
+          "description": "No one wants their email inbox filled with spam, which is why spam filters are so helpful. Search faces a similar challenge, because the internet includes huge amounts of spam that, if not dealt with, would prevent us from showing the most helpful and relevant results. We employ a range of spam dete"
+        }
+      ],
+      "spam_policies": [
+        {
+          "id": "cloaking",
+          "name": "Cloaking",
+          "description": "Cloaking refers to the practice of presenting different content to users and search engines with the intent to manipulate search rankings and mislead users. Examples of cloaking include: If your site uses technologies that search engines have difficulty accessing, like JavaScript or images, see our"
+        },
+        {
+          "id": "doorways",
+          "name": "Doorway abuse",
+          "description": "Doorway abuse is when sites or pages are created to rank for specific, similar search queries. They lead users to intermediate pages that are not as useful as the final destination. Examples of doorway abuse include:"
+        },
+        {
+          "id": "expired-domains",
+          "name": "Expired domain abuse",
+          "description": "Expired domain abuse is where an expired domain name is purchased and repurposed primarily to manipulate search rankings by hosting content that provides little to no value to users. Illustrative examples include, but are not limited to:"
+        },
+        {
+          "id": "hacked-content",
+          "name": "Hacked content",
+          "description": "Hacked content is any content placed on a site without permission, due to vulnerabilities in a site's security. Hacked content gives poor search results to our users and can potentially install malicious content on their machines. Examples of hacking include: Here are our tips on fixing hacked sites"
+        },
+        {
+          "id": "hidden-text-and-links",
+          "name": "Hidden text and link abuse",
+          "description": "Hidden text or link abuse is the practice of placing content on a page in a way solely to manipulate search engines and not to be easily viewable by human visitors. Examples of hidden text or link abuse include: There are many web design elements today that utilize showing and hiding content in a dy"
+        },
+        {
+          "id": "keyword-stuffing",
+          "name": "Keyword stuffing",
+          "description": "Keyword stuffing refers to the practice of filling a web page with keywords or numbers in an attempt to manipulate rankings in Google Search results. Often these keywords appear in a list or group, unnaturally, or out of context. Examples of keyword stuffing include:"
+        },
+        {
+          "id": "link-spam",
+          "name": "Link spam",
+          "description": "Link spam is the practice of creating links to or from a site primarily for the purpose of manipulating search rankings. The following are examples of link spam: Google does understand that buying and selling links is a normal part of the economy of the web for advertising and sponsorship purposes."
+        },
+        {
+          "id": "machine-generated-traffic",
+          "name": "Machine-generated traffic",
+          "description": "Machine-generated traffic (also called automated traffic) refers to the practice of sending automated queries to Google. This includes scraping results for rank-checking purposes or other types of automated access to Google Search conducted without express permission. Machine-generated traffic consu"
+        },
+        {
+          "id": "malicious-practices",
+          "name": "Malicious practices",
+          "description": "Malicious practices create a mismatch between user expectations and the actual outcome, leading to a negative and deceptive user experience, or compromised user security or privacy. The following are common examples of malicious practices:"
+        },
+        {
+          "id": "misleading-functionality",
+          "name": "Misleading functionality",
+          "description": "Misleading functionality refers to the practice of intentionally creating sites that trick users into thinking they would be able to access some content or services but in reality can't. Examples of misleading functionality include:"
+        },
+        {
+          "id": "scaled-content",
+          "name": "Scaled content abuse",
+          "description": "Scaled content abuse is when many pages are generated for the primary purpose of manipulating search rankings and not helping users. This abusive practice is typically focused on creating large amounts of unoriginal content that provides little to no value to users, no matter how it's created. Examp"
+        },
+        {
+          "id": "scraped-content",
+          "name": "Scraping",
+          "description": "Scraping refers to the practice of taking content from other sites, often through automated means, and hosting it with the purpose of manipulating search rankings. Examples of abusive scraping include:"
+        },
+        {
+          "id": "site-reputation",
+          "name": "Site reputation abuse",
+          "description": "Site reputation abuse is a tactic where third-party content is published on a host site mainly because of that host's already-established ranking signals, which it has earned primarily from its first-party content. The goal of this tactic is for the content to rank better than it could otherwise on"
+        },
+        {
+          "id": "sneaky-redirects",
+          "name": "Sneaky redirects",
+          "description": "Redirecting is the act of sending a visitor to a different URL than the one they initially requested. Sneaky redirecting is the practice of doing this maliciously in order to either show users and search engines different content or show users unexpected content that does not fulfill their original"
+        },
+        {
+          "id": "thin-affiliate-pages",
+          "name": "Thin affiliation",
+          "description": "Thin affiliation is the practice of publishing content with product affiliate links where the product descriptions and reviews are copied directly from the original merchant without any original content or added value. Affiliate pages can be considered thin if they are a part of a program that distr"
+        },
+        {
+          "id": "user-generated-spam",
+          "name": "User-generated spam",
+          "description": "User-generated spam is spammy content added to a site by users through a channel intended for user content. Often site owners are unaware of the spammy content. Examples of spammy user-generated content include: Here are several tips on how to prevent abuse of your site's public areas. Here are our"
+        },
+        {
+          "id": "other-behaviors-that-can-lead-to-demotion-or-removal",
+          "name": "Other practices that can lead to demotion or removal",
+          "description": "When we receive a significant volume of valid copyright removal requests involving a given site, we are able to use that to demote other content from the site in our results. This way, if there is other infringing content, people are less likely to encounter it versus the original content. We apply"
+        }
+      ],
+      "fetched_at": "2026-05-15T21:51:29.051Z"
+    }
+  },
+  "inbound_summary": {
+    "outbound_total": 0,
+    "inbound_total": 10,
+    "inbound_distinct_sources": 9,
+    "inbound_editorial": 10,
+    "inbound_nav_footer": 0,
+    "top_editorial_sources": [
+      {
+        "source_path": "/post/à-périgueux-un-procès-effacé-par-la-rigueur-du-droit-procédural",
+        "anchor_text": "saisir le Cabinet"
+      },
+      {
+        "source_path": "/post/acquittement-aux-assises-pour-tentative-d-assassinat-cours-de-la-marne-à-bordeaux-notre-client-est",
+        "anchor_text": "trafic de stupéfiants"
+      },
+      {
+        "source_path": "/post/dossier-air-cocaïne-à-la-jirs-de-bordeaux-le-cabinet-évite-le-retour-en-détention-à-son-client",
+        "anchor_text": "trafic de stupéfiants en bande organisée"
+      },
+      {
+        "source_path": "/post/dossier-air-cocaine-au-pays-basque-maître-plouton-intervient-en-défense-pour-l-un-des-11-prévenus",
+        "anchor_text": "mis en examen pour importation de stupéfiants"
+      },
+      {
+        "source_path": "/post/fusillade-lormont-defense-tireur-presume",
+        "anchor_text": "trafic de stupéfiants"
+      },
+      {
+        "source_path": "/post/qu-est-ce-qu-une-période-de-sureté",
+        "anchor_text": "Trafic de stupéfiants aggravé"
+      },
+      {
+        "source_path": "/post/tentative-feminicide-pessac-accompagnement-victime-indemnisation",
+        "anchor_text": "l'homme était consommateur de cocaïne"
+      },
+      {
+        "source_path": "/post/trafic-de-stupéfiants-à-libourne-et-castillon-une-défense-active-dans-un-procès-tentaculaire",
+        "anchor_text": "expertise en droit pénal des stupéfiants"
+      },
+      {
+        "source_path": "/post/trafic-de-stupéfiants-à-libourne-et-castillon-une-défense-active-dans-un-procès-tentaculaire",
+        "anchor_text": "trafic de stupéfiants"
+      },
+      {
+        "source_path": "/post/trafic-de-stupéfiants-entre-marseille-et-la-corrèze-la-cour-d-appel-de-limoges-revoit-très-largeme",
+        "anchor_text": "affaire de trafic de stupéfiants"
+      }
+    ]
+  },
+  "cooked_extras": null,
+  "cooked_site_context": {
+    "global_sessions_28d": 6228,
+    "global_bounce_rate_28d": 0.1549,
+    "sessions_per_day_median_28d": 598,
+    "sessions_trend_pct_7d_vs_28d": 203.34,
+    "top_sources_28d": [
+      {
+        "source": "www.google.com",
+        "medium": "referral",
+        "sessions": 3366
+      },
+      {
+        "source": "direct",
+        "medium": "none",
+        "sessions": 1208
+      },
+      {
+        "source": "www.jplouton-avocat.fr",
+        "medium": "referral",
+        "sessions": 459
+      },
+      {
+        "source": "adwords",
+        "medium": "ppc",
+        "sessions": 409
+      },
+      {
+        "source": "www.bing.com",
+        "medium": "referral",
+        "sessions": 192
+      }
+    ]
+  },
+  "outbound_destinations": [],
+  "cta_breakdown": [],
+  "gsc_clicks_28d": 6,
+  "cooked_first_seen": "2026-05-06T17:14:47.130Z",
+  "content_snapshot": null,
+  "engagement_density": {
+    "sessions": 0,
+    "dwell_p25_seconds": null,
+    "dwell_median_seconds": null,
+    "dwell_p75_seconds": null,
+    "evenness_score": null
+  },
+  "cooked_health": {
+    "snapshot_extras": "empty",
+    "site_context": "ok",
+    "outbound": "empty",
+    "cta": "empty",
+    "engagement_density": "ok",
+    "failure_messages": []
+  }
+}

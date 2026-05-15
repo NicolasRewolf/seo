@@ -1,0 +1,42 @@
+{
+  "case_id": "premeditation-pos5-snippet-gap",
+  "what": "Pos 5, CTR halved (1.42% vs 3.64% expected), scroll 3.35%. SERP locked by definitional sources (Légifrance/Wikipedia/Larousse/CNRTL). Tests joint snippet + above-fold engagement diagnosis + recognition that competing on definitional intent is hopeless.",
+  "asserts": [
+    {
+      "field": "tldr",
+      "kind": "min_length",
+      "length": 80,
+      "why": "Substantive synthesis required."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["légifrance", "wikipedia", "larousse", "cnrtl", "dictionnaire", "définition", "institutionnel"],
+      "why": "The SERP is dominated by definitional/institutional sources — a snippet diagnosis that doesn't recognize this proposes the wrong fix (rewriting title for definitional intent is futile against Larousse)."
+    },
+    {
+      "field": "engagement_diagnosis",
+      "kind": "must_contain_any",
+      "patterns": ["scroll", "abandon", "décrochage"],
+      "why": "scroll_avg 3.35% with 0% reaching 100% is the dominant engagement signal — the page loses readers above the fold."
+    },
+    {
+      "field": "engagement_diagnosis",
+      "kind": "must_not_contain_any",
+      "patterns": ["satisfaisant", "engagement bon", "bonne lecture", "engagement correct"],
+      "why": "scroll 3.35% is unambiguously bad — calling engagement satisfaisant would mask the core issue."
+    },
+    {
+      "field": "pogo_navboost_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["n=", "échantillon", "faible", "<30", "insuffisant", "trop peu", "small sample"],
+      "why": "Only n=10 google_sessions captured — must caveat that pogo_rate 10% is non-conclusive at this sample size, otherwise the LLM hallucinates a NavBoost verdict."
+    },
+    {
+      "field": "conversion_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["CTA", "cta", "lien", "in-body", "0 lien", "aucun"],
+      "why": "0 internal links + 0 conversions is the funnel-mort signal — must propose injecting a CTA / internal link."
+    }
+  ]
+}

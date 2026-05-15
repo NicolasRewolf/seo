@@ -1,0 +1,116 @@
+name: eval
+
+# Vague-3 — LLM regression eval against the golden set in eval/cases/.
+#
+# When to run :
+#   - On demand (workflow_dispatch) before bumping the diagnostic prompt.
+#   - Optionally after a major model upgrade (Anthropic ships a new Claude).
+#
+# Why NOT on every push : each run does N LLM calls (1 per golden case),
+# costing ~$0.50-$1 per run. We don't want to pay that on every commit.
+# CI typecheck + unit tests already gate the framework code itself
+# (`src/lib/eval-*.ts` + `src/scripts/test-eval-assertions.ts`).
+#
+# Outputs :
+#   - eval-results-<sha>.zip artifact (report.md + report.json + per-case
+#     output JSONs) — downloadable from the run page.
+#   - PR comment summarizing pass/fail (only on workflow_dispatch from a
+#     branch — see "Comment summary" step).
+#   - Exit code 1 if any case fails — gates merging if you set this as a
+#     required check on prompt-bump PRs.
+on:
+  workflow_dispatch:
+    inputs:
+      cases:
+        description: 'Comma-separated case slugs to run (default: all)'
+        required: false
+        default: ''
+      concurrency:
+        description: 'Parallel LLM calls (default: 2)'
+        required: false
+        default: '2'
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pull-requests: write    # to comment on PRs if triggered from a branch
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      # The eval replays FROZEN inputs — no live Cooked / GSC / Wix / GitHub
+      # calls happen during the run. Those secrets are still defined here
+      # because some libs eagerly validate their env block at import time
+      # (same workaround as measure-outcomes.yml). Use placeholders, not
+      # production secrets, where possible.
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_OWNER: ${{ github.repository_owner }}
+      GITHUB_REPO: ${{ github.event.repository.name }}
+      GSC_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
+      GSC_TOKEN_FILE: ./gsc-token.json
+      GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+      COOKED_SUPABASE_URL: ${{ secrets.COOKED_SUPABASE_URL }}
+      COOKED_SECRET_KEY: ${{ secrets.COOKED_SECRET_KEY }}
+      WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+      WIX_SITE_ID: ${{ secrets.WIX_SITE_ID }}
+      WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Materialize OAuth files (placeholder — eval doesn't actually call GSC)
+        run: |
+          set -euo pipefail
+          # Just enough to satisfy file-exists checks; real GSC calls do not
+          # happen during the eval (replayed against frozen inputs).
+          echo '{}' > gsc-oauth-credentials.json
+          echo '{}' > gsc-token.json
+
+      - name: Run eval
+        id: eval
+        run: |
+          set -euo pipefail
+          ARGS=""
+          if [ -n "${{ github.event.inputs.cases }}" ]; then
+            ARGS="$ARGS --cases=${{ github.event.inputs.cases }}"
+          fi
+          if [ -n "${{ github.event.inputs.concurrency }}" ]; then
+            ARGS="$ARGS --concurrency=${{ github.event.inputs.concurrency }}"
+          fi
+          npm run eval -- $ARGS
+
+      - name: Upload results artifact
+        if: always()    # upload even on failure so the operator can debug
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results-${{ github.sha }}
+          path: eval/results/
+          retention-days: 30
+
+      - name: Comment latest report.md on commit
+        if: always()
+        run: |
+          set -euo pipefail
+          LATEST=$(ls -td eval/results/*/ 2>/dev/null | head -1 || true)
+          if [ -z "$LATEST" ]; then
+            echo "No results dir found — eval failed before writing a report."
+            exit 0
+          fi
+          REPORT="${LATEST}report.md"
+          if [ ! -f "$REPORT" ]; then
+            echo "No report.md in $LATEST"
+            exit 0
+          fi
+          echo "## Eval report" >> "$GITHUB_STEP_SUMMARY"
+          cat "$REPORT" >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Cleanup OAuth placeholders
+        if: always()
+        run: rm -f gsc-oauth-credentials.json gsc-token.json

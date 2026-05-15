@@ -1,0 +1,8 @@
+{
+  "case_id": "vc-feminicides-pos14-thin",
+  "what": "Pos 13.94, low impr (1.5k), best engagement (pps 1.71, scroll 40%). Tests prompt's recommendation of ranking lift / topical depth instead of CTR fixes when traffic is the bottleneck.",
+  "source_finding_id": "ae75d68f-02ed-45a9-975d-1eea384bb08d",
+  "page_url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+  "captured_at": "2026-05-15T21:56:33.197Z",
+  "prompt_version_at_capture": 12
+}

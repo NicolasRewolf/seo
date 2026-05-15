@@ -21,7 +21,9 @@
     "issues": "tsx src/scripts/run-create-issues.ts",
     "apply": "tsx src/scripts/run-mark-applied.ts",
     "measure": "tsx src/scripts/run-measure.ts",
-    "test": "tsx --test src/scripts/test-scoring.ts src/scripts/test-issue-template.ts src/scripts/test-data-quality-check.ts src/scripts/test-content-extractor.ts src/scripts/test-diagnostic-fact-check.ts src/scripts/test-serp-helpers.ts src/scripts/test-google-guidance.ts src/scripts/test-cooked-health.ts",
+    "eval": "tsx src/scripts/run-eval.ts",
+    "eval:capture": "tsx src/scripts/run-eval-capture.ts",
+    "test": "tsx --test src/scripts/test-scoring.ts src/scripts/test-issue-template.ts src/scripts/test-data-quality-check.ts src/scripts/test-content-extractor.ts src/scripts/test-diagnostic-fact-check.ts src/scripts/test-serp-helpers.ts src/scripts/test-google-guidance.ts src/scripts/test-cooked-health.ts src/scripts/test-eval-assertions.ts",
     "test:scoring": "tsx --test src/scripts/test-scoring.ts",
     "test:issue-template": "tsx --test src/scripts/test-issue-template.ts",
     "test:data-quality": "tsx --test src/scripts/test-data-quality-check.ts",
@@ -29,7 +31,8 @@
     "test:fact-check": "tsx --test src/scripts/test-diagnostic-fact-check.ts",
     "test:serp": "tsx --test src/scripts/test-serp-helpers.ts",
     "test:google": "tsx --test src/scripts/test-google-guidance.ts",
-    "test:cooked-health": "tsx --test src/scripts/test-cooked-health.ts"
+    "test:cooked-health": "tsx --test src/scripts/test-cooked-health.ts",
+    "test:eval-assertions": "tsx --test src/scripts/test-eval-assertions.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.30.0",

@@ -1,0 +1,1307 @@
+{
+  "url": "https://www.jplouton-avocat.fr/post/l-assignation-à-résidence-sous-surveillance-électronique-arse-comprendre",
+  "avg_position": 7.78,
+  "position_drift": null,
+  "impressions_monthly": 8208,
+  "ctr_actual": 0.0093,
+  "ctr_expected": 0.017,
+  "ctr_gap_pct": 45.23,
+  "pages_per_session": 0.95,
+  "avg_duration_seconds": 119,
+  "scroll_depth": 1.37,
+  "scroll_complete_pct": 4.3,
+  "outbound_clicks": 1,
+  "lcp_p75_ms": 4114,
+  "inp_p75_ms": 466,
+  "cls_p75": 0.11,
+  "ttfb_p75_ms": 3057.4,
+  "current_title": "Assignation à Résidence Sous Surveillance Électronique (ARSE) | Bracelet électronique avant jugement",
+  "current_meta": "L'Assignation à Résidence Sous Surveillance Électronique (ARSE) est une alternative à la détention provisoire. Conditions, procédure, obligations et droits expliqués par Me Plouton, avocat pénaliste à Bordeaux.",
+  "current_h1": "L'Assignation à résidence sous surveillance électronique (ARSE) : comprendre cette alternative à la détention provisoire",
+  "current_intro": "L'ARSE est une mesure judiciaire qui permet à une personne mise en examen de demeurer à son domicile (ou dans une résidence fixée par le juge) plutôt que d'être placée en détention provisoire, tout en étant surveillée à distance par un dispositif électronique. Notre Cabinet vous propose un éclairage complet sur ce dispositif qui permet à une personne mise en examen d'éviter la détention provisoire tout en restant sous contrôle judiciaire. Qu'est-ce que l'Assignation à Résidence Sous Surveillance Électronique ? Dans le système judiciaire français, l'Assignation à Résidence Sous Surveillance Électronique (ARSE) constitue une mesure importante qui concilie les nécessités",
+  "current_schema_jsonld": [
+    {
+      "@type": "FAQPage",
+      "@context": "https://schema.org",
+      "mainEntity": [
+        {
+          "name": "Qu'est-ce que l'Assignation à Résidence Sous Surveillance Électronique (ARSE) ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "L'ARSE est une mesure judiciaire qui permet à une personne mise en examen de demeurer à son domicile (ou dans une résidence fixée par le juge) plutôt que d'être placée en détention provisoire, tout en étant surveillée à distance par un dispositif électronique (bracelet). Cette mesure s'inscrit dans une volonté de limiter le recours à l'incarcération avant jugement.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "Qui peut bénéficier de l'ARSE ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "L'ARSE peut être accordée aux personnes mises en examen qui encourent une peine d'emprisonnement correctionnel d'au moins 2 ans ou une peine plus grave. Pour les mineurs, elle est applicable à partir de 16 ans s'ils encourent une peine d'au moins 3 ans. Le consentement de la personne est obligatoire, et la faisabilité technique doit être vérifiée par le SPIP.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "Quelles sont les obligations d'une personne placée sous ARSE ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "La personne placée sous ARSE doit demeurer au lieu d'assignation pendant les périodes fixées par le juge, ne sortir qu'aux horaires et pour les motifs autorisés, répondre aux convocations, préserver le matériel de surveillance, et informer le SPIP de tout changement dans sa situation. Le juge peut également imposer d'autres obligations comme l'interdiction de rencontrer certaines personnes ou de fréquenter certains lieux.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "Quelles sont les conséquences en cas de non-respect des conditions de l'ARSE ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "Le non-respect des obligations peut entraîner l'émission d'un mandat d'arrêt ou d'amener, et conduire au placement en détention provisoire. La manipulation du bracelet peut également entraîner des poursuites pénales en plus de la révocation de l'ARSE. Toute absence non autorisée ou tentative de manipulation déclenche une alarme au centre de surveillance.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "En quoi l'ARSE diffère-t-elle du bracelet électronique après condamnation (DDSE) ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "L'ARSE s'applique avant jugement, pendant la phase d'instruction, pour des personnes présumées innocentes. La DDSE intervient après une condamnation définitive, soit comme peine autonome, soit comme aménagement d'une peine d'emprisonnement. La durée passée sous ARSE est intégralement déduite de toute peine privative de liberté ultérieurement prononcée pour les mêmes faits.",
+            "@type": "Answer"
+          }
+        },
+        {
+          "name": "L'ARSE peut-elle concerner des mineurs ?",
+          "@type": "Question",
+          "acceptedAnswer": {
+            "text": "Oui, l'ARSE peut être appliquée aux mineurs de 16 ans ou plus qui encourent une peine d'emprisonnement d'au moins 3 ans. Des dispositions spécifiques sont prévues dans le Code de la justice pénale des mineurs pour l'application de cette mesure aux personnes mineures.",
+            "@type": "Answer"
+          }
+        }
+      ]
+    }
+  ],
+  "current_internal_links": [],
+  "top_queries": [
+    {
+      "query": "arse",
+      "impressions": 9725,
+      "ctr": 0.0008,
+      "position": 7.79
+    },
+    {
+      "query": "assignation residence bracelet",
+      "impressions": 1032,
+      "ctr": 0,
+      "position": 15.15
+    },
+    {
+      "query": "arse code de procédure pénale",
+      "impressions": 249,
+      "ctr": 0.008,
+      "position": 4.57
+    },
+    {
+      "query": "assignation à résidence sous surveillance électronique",
+      "impressions": 205,
+      "ctr": 0.0244,
+      "position": 7.11
+    },
+    {
+      "query": "l'arse",
+      "impressions": 179,
+      "ctr": 0.0056,
+      "position": 7.94
+    },
+    {
+      "query": "enquête de faisabilité arse",
+      "impressions": 145,
+      "ctr": 0.0621,
+      "position": 4.1
+    },
+    {
+      "query": "assignation à résidence sous surveillance électronique mineur",
+      "impressions": 137,
+      "ctr": 0,
+      "position": 6.83
+    },
+    {
+      "query": "assignation à résidence sans bracelet électronique",
+      "impressions": 116,
+      "ctr": 0.0086,
+      "position": 9.85
+    },
+    {
+      "query": "arse cpp",
+      "impressions": 112,
+      "ctr": 0,
+      "position": 6.81
+    },
+    {
+      "query": "contrôle judiciaire et bracelet électronique",
+      "impressions": 100,
+      "ctr": 0,
+      "position": 7.9
+    }
+  ],
+  "enrichment": {
+    "wix_post_id": "8b8562e9-65be-4e17-bc25-7b073c3d5d87",
+    "category": {
+      "id": "9477320f-5902-40e9-ace3-b0e3b6b8b51f",
+      "label": "Ressources et notions juridiques",
+      "role": "knowledge_brick"
+    },
+    "wix_metrics": {
+      "views": 1507,
+      "likes": 2,
+      "comments": 0
+    },
+    "enriched_top_queries": [
+      {
+        "query": "arse",
+        "impressions": 9725,
+        "ctr": 0.0008,
+        "position": 7.79,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "arse",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Assignation à résidence avec surveillance électronique",
+              "url": "https://www.citoyens-justice.fr/pre-sententiel/mesures-alternatives-a-la-detention-provisoire/assignation-a-residence-avec-surveillance-electronique.html",
+              "domain": "citoyens-justice.fr",
+              "description": "L'ARSE est une alternative à la détention provisoire. Elle consiste pour la personne à l'obligation de demeurer à son domicile ou dans une résidence fixée ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "title": "Assignation à résidence sous surveillance électronique ...",
+              "url": "https://www.dalloz.fr/documentation/Document?id=DZ%2FOASIS%2F001857",
+              "domain": "dalloz.fr",
+              "description": "L'ARSE est une mesure privative de liberté de degré intermédiaire entre le contrôle judiciaire et la détention provisoire. Elle pourra être ordonnée, durant l' ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 4,
+              "title": "Définition de ARSE",
+              "url": "https://www.cnrtl.fr/definition/arse",
+              "domain": "cnrtl.fr",
+              "description": "Vx, inus. Brûlé, sec, desséché : [Les boulangers :] Pain ars, pain brûlé. L. Rigaud, Dict. de l' ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 5,
+              "title": "arse — Wiktionnaire, le dictionnaire libre",
+              "url": "https://fr.wiktionary.org/wiki/arse",
+              "domain": "fr.wiktionary.org",
+              "description": "Ancien français. modifier. Forme de verbe. modifier. arse. Participe passé féminin singulier de ardre et ardoir . Anagrammes."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 6,
+              "title": "Code de justice pénale des mineurs",
+              "url": "https://www.justice.gouv.fr/sites/default/files/migrations/portail/art_pix/cjpm_ft_arse.pdf",
+              "domain": "justice.gouv.fr",
+              "description": "29 juin 2021 — ✓ Seuls les mineurs âgés d'au moins 16 ans encourant au moins 3 ans d'emprisonnement peuvent être placés sous ARSE, quel que soit le stade de la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 7,
+              "title": "A.R.S.E. - Édito",
+              "url": "https://arse.ffe.com/",
+              "domain": "arse.ffe.com",
+              "description": "L'ARSE est une association située à Saintry-sur Seine en Essonne qui propose des activités de rééducation par les sports équestres aux personnes en situation de ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 8,
+              "title": "L'Assignation à résidence sous surveillance électronique ...",
+              "url": "https://www.jplouton-avocat.fr/post/l-assignation-%C3%A0-r%C3%A9sidence-sous-surveillance-%C3%A9lectronique-arse-comprendre",
+              "domain": "jplouton-avocat.fr",
+              "description": "L'ARSE est une mesure judiciaire qui permet à une personne mise en examen de demeurer à son domicile (ou dans une résidence fixée par le juge) plutôt que ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 9,
+              "title": "Nouveau dispositif de placement conditionnel sous ...",
+              "url": "https://sofian-bouzerara-avocat.fr/fiche-dinformation-nouveau-dispositif-de-placement-conditionnel-sous-assignation-a-residence-avec-surveillance-electronique-arse/",
+              "domain": "sofian-bouzerara-avocat.fr",
+              "description": "Le JLD rend une ordonnance motivée : Décidant l'ARSE conditionnelle et la courte incarcération provisoire (15 jours maximum). Précisant lieu exact d'assignation ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 10,
+              "title": "L'ARSE - Définition - Légibase Justice",
+              "url": "https://justice.legibase.fr/base-de-connaissances/larse-definition-10122",
+              "domain": "justice.legibase.fr",
+              "description": "25 sept. 2024 — Définition de l'assignation à résidence sous surveillance électronique (ARSE). Il convient en premier lieu de rappeler que l'assignation à ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 11,
+              "title": "Arse",
+              "url": "https://fr.wikipedia.org/wiki/Arse",
+              "domain": "fr.wikipedia.org",
+              "description": "Nom · Arse, une ancienne commune française du département de l'Aude ; · Seigneurie d'Arse, un vin français du Fitou, produit dans l'Aude ; · Arse, le nom de la ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:50:54.220Z"
+        }
+      },
+      {
+        "query": "assignation residence bracelet",
+        "impressions": 1032,
+        "ctr": 0,
+        "position": 15.15,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "assignation residence bracelet",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 2,
+              "title": "Sous-section 2 : De l'assignation à résidence avec ...",
+              "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071154/LEGISCTA000021330868/",
+              "domain": "legifrance.gouv.fr",
+              "description": "L'assignation à résidence avec surveillance électronique est décidée par ordonnance motivée du juge d'instruction ou du juge des libertés et de la détention, ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "title": "Assignation à résidence avec surveillance électronique",
+              "url": "https://www.citoyens-justice.fr/pre-sententiel/mesures-alternatives-a-la-detention-provisoire/assignation-a-residence-avec-surveillance-electronique.html",
+              "domain": "citoyens-justice.fr",
+              "description": "L'ARSE est une alternative à la détention provisoire. Elle consiste pour la personne à l'obligation de demeurer à son domicile ou dans une résidence fixée ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 4,
+              "title": "L'assignation à résidence avec bracelet électronique sous ...",
+              "url": "https://www.lemag-juridique.com/articles/lassignation-residence-avec-bracelet-electronique-sous-condition-surete-geometrie-variable-10143.htm",
+              "domain": "lemag-juridique.com",
+              "description": "12 juin 2025 — L'assignation à résidence sous surveillance électronique est une mesure de sûreté alternative à la détention provisoire. Dans les cas les plus ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 5,
+              "title": "L'Assignation à résidence sous surveillance électronique ...",
+              "url": "https://www.jplouton-avocat.fr/post/l-assignation-%C3%A0-r%C3%A9sidence-sous-surveillance-%C3%A9lectronique-arse-comprendre",
+              "domain": "jplouton-avocat.fr",
+              "description": "Toute absence non autorisée ou tentative de manipulation du bracelet déclenche une alarme au centre de surveillance. Le centre contacte alors la personne ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 6,
+              "title": "Assignation à résidence ou comment éviter la détention ...",
+              "url": "https://sprauer.fr/2025/02/26/assignation-a-residence-ou-comment-eviter-la-detention-provisoire/",
+              "domain": "sprauer.fr",
+              "description": "26 févr. 2025 — L'assignation à résidence avec bracelet électronique est une alternative à la détention provisoire. Elle permet de surveiller une personne ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Assignation à résidence sous surveillance électronique",
+              "url": "https://www.justice.gouv.fr/actualites/actualite/assignation-residence-surveillance-electronique",
+              "domain": "justice.gouv.fr",
+              "description": "10 nov. 2020 — ... résidence sous surveillance électronique qui consiste à obliger une personne mise en cause dans une enquête pénale à porter un bracelet ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Sous-section 2 : De l'assignation à résidence avec ...",
+              "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071154/LEGISCTA000022071172/",
+              "domain": "legifrance.gouv.fr",
+              "description": "Si la personne se soustrait aux obligations de l'assignation à résidence avec surveillance électronique alors qu'elle est renvoyée devant la juridiction de ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "L'assignation à résidence : comment ça fonctionne ?",
+              "url": "https://www.lemag-juridique.com/articles/lassignation-residence-7622.htm",
+              "domain": "lemag-juridique.com",
+              "description": "27 sept. 2024 — Si la personne a donné son consentement, en présence d'un avocat, le bracelet lui sera posé dans un délai de 5 jours suivant l'ordonnance de ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "Bracelet électronique lors d'une assignation à résidence",
+              "url": "https://www.ville-nievroz.fr/guide-pratique-services-publics.html?xml=F2007",
+              "domain": "ville-nievroz.fr",
+              "description": "16 févr. 2023 — La personne sous bracelet électronique ne peut s'absenter de sa résidence qu'aux conditions et motifs fixés par le juge. Si elle sort de chez ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:50:51.362Z"
+        }
+      },
+      {
+        "query": "arse code de procédure pénale",
+        "impressions": 249,
+        "ctr": 0.008,
+        "position": 4.57,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "arse code de procédure pénale",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 3,
+              "title": "Assignation à résidence sous surveillance électronique ...",
+              "url": "https://www.dalloz.fr/documentation/Document?id=DZ%2FOASIS%2F001857",
+              "domain": "dalloz.fr",
+              "description": "Mesure privative de liberté faisant obligation à un individu de porter un bracelet électronique, de demeurer à son domicile ou dans une résidence fixée et de ne ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 4,
+              "title": "Assignation à résidence avec surveillance électronique",
+              "url": "https://www.citoyens-justice.fr/pre-sententiel/mesures-alternatives-a-la-detention-provisoire/assignation-a-residence-avec-surveillance-electronique.html",
+              "domain": "citoyens-justice.fr",
+              "description": "L'ARSE est une alternative à la détention provisoire. Elle consiste pour la personne à l'obligation de demeurer à son domicile ou dans une résidence fixée ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "L'Assignation à résidence sous surveillance électronique ...",
+              "url": "https://www.jplouton-avocat.fr/post/l-assignation-%C3%A0-r%C3%A9sidence-sous-surveillance-%C3%A9lectronique-arse-comprendre",
+              "domain": "jplouton-avocat.fr",
+              "description": "L'ARSE est régie par les articles 142-5 à 142-13 du Code de procédure pénale. Son cadre a été récemment précisé par le Décret n° 2025-154 du 19 février 2025 ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "Fiche 33. Le contrôle judiciaire (CJ) et l'assignation à ...",
+              "url": "https://droit.cairn.info/les-indispensables-de-la-procedure-penale-2e-edition--9782340035126-page-223?lang=fr",
+              "domain": "droit.cairn.info",
+              "description": "Le CPP permet de recourir à deux mesures restrictives de liberté : le CJ et l'ARSE. Le CJ astreint la personne mise en examen à une ou plusieurs obligations ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "Code de justice pénale des mineurs",
+              "url": "https://www.justice.gouv.fr/sites/default/files/migrations/portail/art_pix/cjpm_ft_arse.pdf",
+              "domain": "justice.gouv.fr",
+              "description": "29 juin 2021 — ✓ Seuls les mineurs âgés d'au moins 16 ans encourant au moins 3 ans d'emprisonnement peuvent être placés sous ARSE, quel que soit le stade de la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Le CJ et l'ARSE - Cabinet d'avocat Brochard",
+              "url": "https://brochard-avocat.com/le-cj-et-larse/",
+              "domain": "brochard-avocat.com",
+              "description": "Durant l'instruction judiciaire, l'ARSE (l'Assignation à Résidence avec Surveillance Électronique) ou « bracelet électronique » est une mesure de sûreté ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "L'ARSE - Définition - Légibase Justice",
+              "url": "https://justice.legibase.fr/base-de-connaissances/larse-definition-10122",
+              "domain": "justice.legibase.fr",
+              "description": "25 sept. 2024 — Définition de l'assignation à résidence sous surveillance électronique (ARSE). Il convient en premier lieu de rappeler que l'assignation à ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "JUSD2506897C.pdf",
+              "url": "https://www.justice.gouv.fr/sites/default/files/2025-03/JUSD2506897C.pdf",
+              "domain": "justice.gouv.fr",
+              "description": "11 mars 2025 — L'article 142-6-1 du CPP indique que la décision de placement conditionnel de la personne mise en examen sous ARSE n'est possible que si ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "L'assignation à résidence avec surveillance électronique ...",
+              "url": "https://manuel-abitbol-avocat-penaliste.fr/lassignation-a-residence-avec-surveillance-electronique-arse/",
+              "domain": "manuel-abitbol-avocat-penaliste.fr",
+              "description": "18 sept. 2020 — L'ARSE est une mesure privative de liberté consistant à assigner à son domicile un mis en examen en lui plaçant un bracelet électronique afin de ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": true,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:51:01.371Z"
+        }
+      },
+      {
+        "query": "assignation à résidence sous surveillance électronique",
+        "impressions": 205,
+        "ctr": 0.0244,
+        "position": 7.11,
+        "monthly_volume_fr": 70,
+        "cpc": null,
+        "share_of_voice_pct": 97.6,
+        "serp": {
+          "keyword": "assignation à résidence sous surveillance électronique",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Sous-section 2 : De l'assignation à résidence avec ...",
+              "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071154/LEGISCTA000021330868/",
+              "domain": "legifrance.gouv.fr",
+              "description": "L'assignation à résidence avec surveillance électronique est assimilée à une détention provisoire pour l'imputation intégrale de sa durée sur celle d'une peine ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 2,
+              "title": "Assignation à résidence sous surveillance électronique ...",
+              "url": "https://www.dalloz.fr/documentation/Document?id=DZ%2FOASIS%2F001857",
+              "domain": "dalloz.fr",
+              "description": "Définition. Mesure privative de liberté faisant obligation à un individu de porter un bracelet électronique, de demeurer à son domicile ou dans une ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 4,
+              "title": "Assignation à résidence avec surveillance électronique",
+              "url": "https://www.citoyens-justice.fr/pre-sententiel/mesures-alternatives-a-la-detention-provisoire/assignation-a-residence-avec-surveillance-electronique.html",
+              "domain": "citoyens-justice.fr",
+              "description": "Elle consiste pour la personne à l'obligation de demeurer à son domicile ou dans une résidence fixée par le juge d'instruction (JI) ou le juge des libertés et ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 5,
+              "title": "Bracelet électronique lors d'une assignation à résidence",
+              "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F2007",
+              "domain": "service-public.gouv.fr",
+              "description": "La personne assignée à résidence doit porter un bracelet électronique relié à une unité de surveillance. Cette mesure l'oblige à rester à son domicile ou dans ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 6,
+              "title": "Assignation à résidence sous surveillance électronique",
+              "url": "https://www.justice.gouv.fr/actualites/actualite/assignation-residence-surveillance-electronique",
+              "domain": "justice.gouv.fr",
+              "description": "10 nov. 2020 — Lejuge d'instruction ou le juge des libertés et de la détention peut désormais prononcer une assignation à résidence sous surveillance ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 7,
+              "title": "L'Assignation à résidence sous surveillance électronique ...",
+              "url": "https://www.jplouton-avocat.fr/post/l-assignation-%C3%A0-r%C3%A9sidence-sous-surveillance-%C3%A9lectronique-arse-comprendre",
+              "domain": "jplouton-avocat.fr",
+              "description": "L'ARSE est une mesure judiciaire qui permet à une personne mise en examen de demeurer à son domicile (ou dans une résidence fixée par le juge) plutôt que ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 8,
+              "title": "Les modalités de l'assignation à résidence sous ...",
+              "url": "https://www.village-justice.com/articles/les-modalites-assignation-residence-sous-surveillance-electronique-precisees,52498.html",
+              "domain": "village-justice.com",
+              "description": "24 févr. 2025 — Le service pénitentiaire d'insertion et de probation transmet au juge des libertés et de la détention, dans un délai de dix jours à compter de ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 9,
+              "title": "L'assignation à résidence avec surveillance électronique ...",
+              "url": "https://www.citoyens-justice.fr/justice-des-enfants-et-des-adolescents/les-mesures-de-surete-dans-le-cadre-du-cjpm/lassignation-a-residence-avec-surveillance-electronique-dans-le-cadre-du-cjpm.html",
+              "domain": "citoyens-justice.fr",
+              "description": "Cette mesure oblige le jeune à demeurer à domicile ou dans une résidence fixée par la juridiction ou dans un établissement éducatif des secteurs publics et ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 10,
+              "title": "Sous-section 2 : De l'assignation à résidence avec ...",
+              "url": "https://www.legifrance.gouv.fr/codes/section_lc/LEGITEXT000006071154/LEGISCTA000022071172/",
+              "domain": "legifrance.gouv.fr",
+              "description": "1° Imposer à la personne placée sous assignation à résidence avec surveillance électronique une ou plusieurs obligations nouvelles ; 2° Supprimer tout ou ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 10,
+              "rank_absolute": 11,
+              "title": "Assignation à résidence avec surveillance électronique ...",
+              "url": "https://actu.dalloz-etudiant.fr/a-la-une/article/assignation-a-residence-avec-surveillance-electronique-competence-partagee-du-jld-et-du-ji/h/9e5f4c4be1cb0a4e5d7685ca55287403.html",
+              "domain": "actu.dalloz-etudiant.fr",
+              "description": "15 oct. 2012 — Cette mesure oblige la personne à demeurer à son domicile ou dans une résidence fixée par le juge d'instruction ou le juge des libertés et de la ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": false
+          },
+          "fetched_at": "2026-05-15T21:51:00.567Z"
+        }
+      },
+      {
+        "query": "l'arse",
+        "impressions": 179,
+        "ctr": 0.0056,
+        "position": 7.94,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null,
+        "serp": {
+          "keyword": "l'arse",
+          "organic": [
+            {
+              "type": "organic",
+              "rank_group": 1,
+              "rank_absolute": 1,
+              "title": "Aide à la reprise ou à la création d'entreprise (Arce)",
+              "url": "https://entreprendre.service-public.gouv.fr/vosdroits/F15252",
+              "domain": "entreprendre.service-public.gouv.fr",
+              "description": "L 'Arce permet au créateur ou repreneur d'entreprise de recevoir une partie de ses allocations chômage sous forme de capital."
+            },
+            {
+              "type": "organic",
+              "rank_group": 2,
+              "rank_absolute": 3,
+              "title": "Aide à la reprise et à la création d'entreprise (ARCE)",
+              "url": "https://www.francetravail.fr/candidat/je-creereprends-une-entreprise/les-aides-financieres-creation-d/aide-a-la-reprise-et-a-la-creati.html",
+              "domain": "francetravail.fr",
+              "description": "L'Aide à la reprise et à la création d'entreprise (ARCE ) est une aide financière destinée aux créateurs ou repreneurs d'entreprise en France qui choisissent de ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 3,
+              "rank_absolute": 5,
+              "title": "Aide à la reprise ou à la création d'entreprise (ARCE)",
+              "url": "https://www.unedic.org/la-reglementation/fiches-thematiques/aide-la-reprise-ou-la-creation-dentreprise-arce",
+              "domain": "unedic.org",
+              "description": "Les allocataires ayant des droits à l'ARE qui créent ou reprennent une entreprise, peuvent bénéficier d'une aide : l'ARCE. Elle peut être versée au créateur ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 4,
+              "rank_absolute": 6,
+              "title": "ARE ou Arce, quelle option en fonction de votre situation",
+              "url": "https://bpifrance-creation.fr/encyclopedie/aides-a-creation-a-reprise-dentreprise/aides-sociales-financieres/are-ou-arce-quelle",
+              "domain": "bpifrance-creation.fr",
+              "description": "25 août 2025 — L'ARE permet au créateur d'entreprise de cumuler une partie de ses allocations d'aide au retour à l'emploi avec son activité non salariée, à la ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 5,
+              "rank_absolute": 7,
+              "title": "L'ARSE - Définition - Légibase Justice",
+              "url": "https://justice.legibase.fr/base-de-connaissances/larse-definition-10122",
+              "domain": "justice.legibase.fr",
+              "description": "25 sept. 2024 — Définition de l'assignation à résidence sous surveillance électronique (ARSE). Il convient en premier lieu de rappeler que l'assignation à ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 6,
+              "rank_absolute": 8,
+              "title": "Aide à la Reprise ou à la Création d'Entreprise (ARCE)",
+              "url": "https://www.toute-la-franchise.com/tout-sur-la-franchise/lexique/aide-a-la-reprise-ou-a-la-creation-d-entreprise-arce",
+              "domain": "toute-la-franchise.com",
+              "description": "L 'Aide à la Reprise ou à la Création d'Entreprise est une aide financière réservée aux demandeurs d'emploi percevant une allocation de retour à l'emploi ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 7,
+              "rank_absolute": 9,
+              "title": "Demander l'ARCE : démarches, montant et versement",
+              "url": "https://propulsebyca.fr/aides-creation-entreprise/acre/arce",
+              "domain": "propulsebyca.fr",
+              "description": "12 févr. 2026 — L'ARCE correspond au versement en capital de vos allocations chômage. Découvrez les conditions pour en bénéficier et le montant de l'aide."
+            },
+            {
+              "type": "organic",
+              "rank_group": 8,
+              "rank_absolute": 10,
+              "title": "ARCE : tout savoir de l'Aide à la Reprise ou Création d' ...",
+              "url": "https://www.legalstart.fr/fiches-pratiques/aides-creation-entreprise/arce/",
+              "domain": "legalstart.fr",
+              "description": "6 mars 2026 — L'ARCE, ou Aide à la Reprise ou à la Création d'Entreprise, est un dispositif d'aide qui permet de sécuriser le lancement d'une activité. Cette ..."
+            },
+            {
+              "type": "organic",
+              "rank_group": 9,
+              "rank_absolute": 11,
+              "title": "L'ARCE, qu'est-ce que c'est ?",
+              "url": "https://www.youtube.com/watch?v=Z57MHrAM_1g",
+              "domain": "youtube.com",
+              "description": "L 'Aide à la reprise ou à la création d'entreprise, c'est un dispositif de l 'Assurance chômage pour les personnes qui se lancent dans ..."
+            }
+          ],
+          "features": {
+            "has_ai_overview": false,
+            "has_featured_snippet": false,
+            "has_people_also_ask": true,
+            "has_knowledge_graph": false,
+            "has_local_pack": false,
+            "has_video": true
+          },
+          "fetched_at": "2026-05-15T21:50:52.131Z"
+        }
+      },
+      {
+        "query": "enquête de faisabilité arse",
+        "impressions": 145,
+        "ctr": 0.0621,
+        "position": 4.1,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "assignation à résidence sous surveillance électronique mineur",
+        "impressions": 137,
+        "ctr": 0,
+        "position": 6.83,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "assignation à résidence sans bracelet électronique",
+        "impressions": 116,
+        "ctr": 0.0086,
+        "position": 9.85,
+        "monthly_volume_fr": 50,
+        "cpc": null,
+        "share_of_voice_pct": 77.3
+      },
+      {
+        "query": "arse cpp",
+        "impressions": 112,
+        "ctr": 0,
+        "position": 6.81,
+        "monthly_volume_fr": null,
+        "cpc": null,
+        "share_of_voice_pct": null
+      },
+      {
+        "query": "contrôle judiciaire et bracelet électronique",
+        "impressions": 100,
+        "ctr": 0,
+        "position": 7.9,
+        "monthly_volume_fr": 10,
+        "cpc": null,
+        "share_of_voice_pct": 333.3
+      }
+    ],
+    "total_monthly_demand_fr": 130,
+    "internal_pages_catalog": {
+      "expertise": [
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale",
+          "role": "expertise",
+          "topic": "Défense pénale (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal",
+          "role": "expertise",
+          "topic": "Droit pénal général"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/proces-criminel",
+          "role": "expertise",
+          "topic": "Procès criminels (cour d'assises)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/violences-conjugales-et-feminicides",
+          "role": "expertise",
+          "topic": "Violences conjugales et féminicides"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/trafic-de-stupefiant",
+          "role": "expertise",
+          "topic": "Trafic de stupéfiants"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/defense-penale/droit-penal-des-affaires",
+          "role": "expertise",
+          "topic": "Droit pénal des affaires"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes",
+          "role": "expertise",
+          "topic": "Indemnisation des victimes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-vie-courante",
+          "role": "expertise",
+          "topic": "Accidents de la vie courante"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/victimes-de-delits-ou-crimes",
+          "role": "expertise",
+          "topic": "Victimes de délits ou crimes"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-et-erreurs-medicales",
+          "role": "expertise",
+          "topic": "Accidents et erreurs médicales"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/droit-et-accidents-du-travail",
+          "role": "expertise",
+          "topic": "Droit et accidents du travail"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/indemnisation-des-victimes/accidents-de-la-route",
+          "role": "expertise",
+          "topic": "Accidents de la route"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes",
+          "role": "expertise",
+          "topic": "Droit des contrats et des personnes (racine)"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/defense-des-consommateurs",
+          "role": "expertise",
+          "topic": "Défense des consommateurs"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-assurances-particuliers-professionnels",
+          "role": "expertise",
+          "topic": "Droit des assurances"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille",
+          "role": "expertise",
+          "topic": "Droit de la famille"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/droit-des-contrats-et-des-personnes/droit-de-la-famille/avocat-divorce-bordeaux",
+          "role": "expertise",
+          "topic": "Divorce (Bordeaux)"
+        }
+      ],
+      "cta": [
+        {
+          "url": "https://www.jplouton-avocat.fr/honoraires-rendez-vous",
+          "role": "cta",
+          "topic": "Honoraires & prise de rendez-vous"
+        }
+      ],
+      "trust": [
+        {
+          "url": "https://www.jplouton-avocat.fr/notre-cabinet",
+          "role": "trust",
+          "topic": "Présentation du cabinet"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/nos-affaires",
+          "role": "trust",
+          "topic": "Affaires emblématiques"
+        }
+      ],
+      "blog_root": [
+        {
+          "url": "https://www.jplouton-avocat.fr/blog",
+          "role": "blog_root"
+        },
+        {
+          "url": "https://www.jplouton-avocat.fr/comprendre-le-droit",
+          "role": "blog_root"
+        }
+      ],
+      "homepage": [
+        {
+          "url": "https://www.jplouton-avocat.fr",
+          "role": "homepage"
+        }
+      ],
+      "legal": [
+        {
+          "url": "https://www.jplouton-avocat.fr/mentions-legales",
+          "role": "legal"
+        }
+      ]
+    },
+    "google_guidance": {
+      "blog_posts": [
+        {
+          "title": "A new resource for optimizing for generative AI in Google Search",
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "summary": "As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for ap",
+          "published_date": "2026-05-15",
+          "age_days": 0
+        },
+        {
+          "title": "Introducing a new spam policy for \"back button hijacking\"",
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "summary": "Today, we are expanding our spam policies to address a deceptive practice known as \"back button hijacking\", which will become an explicit violation of the \"malicious practices\" of spam policies, leading to potential spam",
+          "published_date": "2026-04-13",
+          "age_days": 32
+        },
+        {
+          "title": "Inside Googlebot: demystifying crawling, fetching, and the bytes we process",
+          "link": "https://developers.google.com/search/blog/2026/03/crawler-blog-post",
+          "summary": "If you tuned into episode 105 of the Search Off the Record podcast, you might have heard us diving deep into a topic that is close to our hearts (and our servers): the inner workings of Googlebot.",
+          "published_date": "2026-03-31",
+          "age_days": 45
+        }
+      ],
+      "blog_posts_deep": [
+        {
+          "link": "https://developers.google.com/search/blog/2026/05/a-new-resource-for-optimizing",
+          "body": "Home Search Central Google Search Central Blog Send feedback A new resource for optimizing for generative AI in Google Search Friday, May 15, 2026 As people increasingly gravitate to generative AI experiences and find information in new ways, we're publishing a new resource to help website owners, SEOs, and developers understand how to optimize their content for appearance in generative AI features in Search, and in turn Google Search overall. In the new guide, optimizing your website for generative AI features on Google Search, you'll find: Guidance on the importance of providing valuable, unique, non-commodity content Tips about providing local, shopping, image, and video content Mythbusting common \"AEO/GEO\" misconceptions Initial guidance related to AI agents, a quickly emerging and evolving space Information about why SEO best practices remain relevant and foundational to success with our generative AI features We hope this guide provides more clarity to help you continue to create great content that reaches your audience effectively through Google Search. As always, if you have any feedback, share your comments on LinkedIn or post in the Google Search Central Community. Posted"
+        },
+        {
+          "link": "https://developers.google.com/search/blog/2026/04/back-button-hijacking",
+          "body": "Home Search Central Google Search Central Blog Send feedback Introducing a new spam policy for \"back button hijacking\" April 13, 2026 Today, we are expanding our spam policies to address a deceptive practice known as \"back button hijacking\", which will become an explicit violation of the \"malicious practices\" of spam policies, leading to potential spam actions. What is back button hijacking? When a user clicks the \"back\" button in the browser, they have a clear expectation: they want to return to the previous page. Back button hijacking breaks this fundamental expectation. It occurs when a site interferes with a user's browser navigation and prevents them from using their back button to immediately get back to the page they came from. Instead, users might be sent to pages they never visited before, be presented with unsolicited recommendations or ads, or are otherwise just prevented from normally browsing the web. Why are we taking action? We believe that the user experience comes first. Back button hijacking interferes with the browser's functionality, breaks the expected user journey, and results in user frustration. People report feeling manipulated and eventually less willing t"
+        }
+      ],
+      "incidents": [
+        {
+          "id": "7eTbAa2jWdToLkraZj5y",
+          "title": "March 2026 core update",
+          "begin": "2026-03-27T09:00:00+00:00",
+          "end": "2026-04-08T13:00:00+00:00",
+          "is_active": false,
+          "category": "core_update"
+        },
+        {
+          "id": "VbnSXAH4SmEcxPtx4YSD",
+          "title": "March 2026 spam update",
+          "begin": "2026-03-24T19:00:00+00:00",
+          "end": "2026-03-25T14:30:00+00:00",
+          "is_active": false,
+          "category": "spam_update"
+        }
+      ],
+      "ranking_systems": [
+        {
+          "id": "bert",
+          "name": "BERT",
+          "description": "Bidirectional Encoder Representations from Transformers (BERT) is an AI system Google uses that allows us to understand how combinations of words express different meanings and intent."
+        },
+        {
+          "id": "crisis-info",
+          "name": "Crisis information systems",
+          "description": "Google has developed systems to provide helpful and timely information during times of crisis, whether those involve personal crisis situations, natural disasters, or other wide-spread crisis situations:"
+        },
+        {
+          "id": "deduplication",
+          "name": "Deduplication systems",
+          "description": "Searches on Google may find thousands or even millions of matching web pages. Some of these may be very similar to each other. In such cases, our systems show only the most relevant results to avoid unhelpful duplication. Learn more about how deduplication works and how to see omitted results if des"
+        },
+        {
+          "id": "exact-match",
+          "name": "Exact match domain system",
+          "description": "Our ranking systems consider the words in domain names as one of many factors to determine if content is relevant to a search. However, our exact match domain system works to ensure we don't give too much credit for content hosted under domains designed to exactly match particular queries. For examp"
+        },
+        {
+          "id": "freshness",
+          "name": "Freshness systems",
+          "description": "We have various \"query deserves freshness\" systems designed to show fresher content for queries where it would be expected. For example, if someone is searching about a movie that's just been released, they probably want recent reviews rather than older articles from when production began. For anoth"
+        },
+        {
+          "id": "link-analysis",
+          "name": "Link analysis systems and PageRank",
+          "description": "We have various systems that understand how pages link to each other as a way to determine what pages are about and which might be most helpful in response to a query. Among these is PageRank, one of our core ranking systems used when Google first launched. Those curious can learn more by reading th"
+        },
+        {
+          "id": "local-news",
+          "name": "Local news systems",
+          "description": "We have systems that work to identify and surface local sources of news whenever relevant, such as through our \"Top stories\" and \"Local news\" features."
+        },
+        {
+          "id": "mum",
+          "name": "MUM",
+          "description": "Multitask Unified Model (MUM) is an AI system capable of both understanding and generating language. It's not currently used for general ranking in Search but rather for some specific applications such as to improve searches for COVID-19 vaccine information and to improve featured snippet callouts w"
+        },
+        {
+          "id": "neural-matching",
+          "name": "Neural matching",
+          "description": "Neural matching is an AI system that Google uses to understand representations of concepts in queries and pages and match them to one another."
+        },
+        {
+          "id": "original-content",
+          "name": "Original content systems",
+          "description": "We have systems to help ensure we are showing original content prominently in search results, including original reporting, ahead of those who merely cite it. This includes support of a special canonical markup creators can use to help us better understand what is the primary page if a page has been"
+        },
+        {
+          "id": "removals",
+          "name": "Removal-based demotion systems",
+          "description": "Google has policies that allow the removal of certain types of content. If we process a significant volume of such removals involving a particular site, we use that as a signal to improve our results. In particular:"
+        },
+        {
+          "id": "passage-ranking-system",
+          "name": "Passage ranking system",
+          "description": "Passage ranking is an AI system we use to identify individual sections or \"passages\" of a web page to better understand how relevant a page is to a search."
+        },
+        {
+          "id": "rankbrain",
+          "name": "RankBrain",
+          "description": "RankBrain is an AI system that helps us understand how words are related to concepts. It means we can better return relevant content even if it doesn't contain all the exact words used in a search, by understanding the content is related to other words and concepts."
+        },
+        {
+          "id": "reliable-information-systems",
+          "name": "Reliable information systems",
+          "description": "Multiple systems work in various ways to show the most reliable information possible, such as to help surface more authoritative pages and demote low-quality content and to elevate quality journalism. In cases where reliable information might be lacking, our systems automatically display content adv"
+        },
+        {
+          "id": "reviews-system",
+          "name": "Reviews system",
+          "description": "The reviews system aims to better reward high quality reviews, content that provides insightful analysis and original research, and is written by experts or enthusiasts who know the topic well."
+        },
+        {
+          "id": "site-diversity-system",
+          "name": "Site diversity system",
+          "description": "Our site diversity system works so that we generally won't show more than two web page listings from the same site in our top results, so that no single site tends to dominate all the top results. However, we may still show more than two listings in cases where our systems determine it's especially"
+        },
+        {
+          "id": "spam-detection-systems",
+          "name": "Spam detection systems",
+          "description": "No one wants their email inbox filled with spam, which is why spam filters are so helpful. Search faces a similar challenge, because the internet includes huge amounts of spam that, if not dealt with, would prevent us from showing the most helpful and relevant results. We employ a range of spam dete"
+        }
+      ],
+      "spam_policies": [
+        {
+          "id": "cloaking",
+          "name": "Cloaking",
+          "description": "Cloaking refers to the practice of presenting different content to users and search engines with the intent to manipulate search rankings and mislead users. Examples of cloaking include: If your site uses technologies that search engines have difficulty accessing, like JavaScript or images, see our"
+        },
+        {
+          "id": "doorways",
+          "name": "Doorway abuse",
+          "description": "Doorway abuse is when sites or pages are created to rank for specific, similar search queries. They lead users to intermediate pages that are not as useful as the final destination. Examples of doorway abuse include:"
+        },
+        {
+          "id": "expired-domains",
+          "name": "Expired domain abuse",
+          "description": "Expired domain abuse is where an expired domain name is purchased and repurposed primarily to manipulate search rankings by hosting content that provides little to no value to users. Illustrative examples include, but are not limited to:"
+        },
+        {
+          "id": "hacked-content",
+          "name": "Hacked content",
+          "description": "Hacked content is any content placed on a site without permission, due to vulnerabilities in a site's security. Hacked content gives poor search results to our users and can potentially install malicious content on their machines. Examples of hacking include: Here are our tips on fixing hacked sites"
+        },
+        {
+          "id": "hidden-text-and-links",
+          "name": "Hidden text and link abuse",
+          "description": "Hidden text or link abuse is the practice of placing content on a page in a way solely to manipulate search engines and not to be easily viewable by human visitors. Examples of hidden text or link abuse include: There are many web design elements today that utilize showing and hiding content in a dy"
+        },
+        {
+          "id": "keyword-stuffing",
+          "name": "Keyword stuffing",
+          "description": "Keyword stuffing refers to the practice of filling a web page with keywords or numbers in an attempt to manipulate rankings in Google Search results. Often these keywords appear in a list or group, unnaturally, or out of context. Examples of keyword stuffing include:"
+        },
+        {
+          "id": "link-spam",
+          "name": "Link spam",
+          "description": "Link spam is the practice of creating links to or from a site primarily for the purpose of manipulating search rankings. The following are examples of link spam: Google does understand that buying and selling links is a normal part of the economy of the web for advertising and sponsorship purposes."
+        },
+        {
+          "id": "machine-generated-traffic",
+          "name": "Machine-generated traffic",
+          "description": "Machine-generated traffic (also called automated traffic) refers to the practice of sending automated queries to Google. This includes scraping results for rank-checking purposes or other types of automated access to Google Search conducted without express permission. Machine-generated traffic consu"
+        },
+        {
+          "id": "malicious-practices",
+          "name": "Malicious practices",
+          "description": "Malicious practices create a mismatch between user expectations and the actual outcome, leading to a negative and deceptive user experience, or compromised user security or privacy. The following are common examples of malicious practices:"
+        },
+        {
+          "id": "misleading-functionality",
+          "name": "Misleading functionality",
+          "description": "Misleading functionality refers to the practice of intentionally creating sites that trick users into thinking they would be able to access some content or services but in reality can't. Examples of misleading functionality include:"
+        },
+        {
+          "id": "scaled-content",
+          "name": "Scaled content abuse",
+          "description": "Scaled content abuse is when many pages are generated for the primary purpose of manipulating search rankings and not helping users. This abusive practice is typically focused on creating large amounts of unoriginal content that provides little to no value to users, no matter how it's created. Examp"
+        },
+        {
+          "id": "scraped-content",
+          "name": "Scraping",
+          "description": "Scraping refers to the practice of taking content from other sites, often through automated means, and hosting it with the purpose of manipulating search rankings. Examples of abusive scraping include:"
+        },
+        {
+          "id": "site-reputation",
+          "name": "Site reputation abuse",
+          "description": "Site reputation abuse is a tactic where third-party content is published on a host site mainly because of that host's already-established ranking signals, which it has earned primarily from its first-party content. The goal of this tactic is for the content to rank better than it could otherwise on"
+        },
+        {
+          "id": "sneaky-redirects",
+          "name": "Sneaky redirects",
+          "description": "Redirecting is the act of sending a visitor to a different URL than the one they initially requested. Sneaky redirecting is the practice of doing this maliciously in order to either show users and search engines different content or show users unexpected content that does not fulfill their original"
+        },
+        {
+          "id": "thin-affiliate-pages",
+          "name": "Thin affiliation",
+          "description": "Thin affiliation is the practice of publishing content with product affiliate links where the product descriptions and reviews are copied directly from the original merchant without any original content or added value. Affiliate pages can be considered thin if they are a part of a program that distr"
+        },
+        {
+          "id": "user-generated-spam",
+          "name": "User-generated spam",
+          "description": "User-generated spam is spammy content added to a site by users through a channel intended for user content. Often site owners are unaware of the spammy content. Examples of spammy user-generated content include: Here are several tips on how to prevent abuse of your site's public areas. Here are our"
+        },
+        {
+          "id": "other-behaviors-that-can-lead-to-demotion-or-removal",
+          "name": "Other practices that can lead to demotion or removal",
+          "description": "When we receive a significant volume of valid copyright removal requests involving a given site, we are able to use that to demote other content from the site in our results. This way, if there is other infringing content, people are less likely to encounter it versus the original content. We apply"
+        }
+      ],
+      "fetched_at": "2026-05-15T21:51:02.807Z"
+    }
+  },
+  "inbound_summary": {
+    "outbound_total": 79,
+    "inbound_total": 9,
+    "inbound_distinct_sources": 8,
+    "inbound_editorial": 9,
+    "inbound_nav_footer": 0,
+    "top_editorial_sources": [
+      {
+        "source_path": "/blog/categories/ressources-et-notions-juridiques",
+        "anchor_text": "L'Assignation à résidence sous surveillance électronique (ARSE) : comprendre cette alternative à la détention provisoire"
+      },
+      {
+        "source_path": "/defense-penale/droit-penal",
+        "anchor_text": "assignation à résidence sous surveillance électronique"
+      },
+      {
+        "source_path": "/post/accusé-de-viol-il-avait-été-incarcéré-trois-ans-avant-d-être-acquitté-par-la-cour-d-assises",
+        "anchor_text": "détention provisoire"
+      },
+      {
+        "source_path": "/post/de-la-tentative-de-meurtre-aux-violences-aggravées-une-défense-méthodique-validée",
+        "anchor_text": "Assignation à résidence sous surveillance électronique (ARSE)"
+      },
+      {
+        "source_path": "/post/escroquerie-à-plus-de-6-millions-d-euros-par-un-réseau-international-jugement-en-dordogne",
+        "anchor_text": "alternatives à la détention provisoire"
+      },
+      {
+        "source_path": "/post/qu-est-ce-que-le-bracelet-anti-rapprochement",
+        "anchor_text": "l'assignation à résidence (ARSE)"
+      },
+      {
+        "source_path": "/post/qu-est-ce-que-le-bracelet-anti-rapprochement",
+        "anchor_text": "L'Assignation à résidence sous surveillance électronique (ARSE) : comprendre cette alternative à la détention provisoire"
+      },
+      {
+        "source_path": "/post/surpopulation-carcérale-à-la-maison-d-arrêt-de-gradignan-maître-plouton-répond-au-figaro-sur-le-sen",
+        "anchor_text": "assignation à résidence sous surveillance électronique (ARSE)"
+      },
+      {
+        "source_path": "/post/trafic-de-stupéfiants-entre-marseille-et-la-corrèze-la-cour-d-appel-de-limoges-revoit-très-largeme",
+        "anchor_text": "l'assignation à résidence sous surveillance électronique (ARSE)"
+      }
+    ]
+  },
+  "cooked_extras": {
+    "path": "/post/l-assignation-à-résidence-sous-surveillance-électronique-arse-comprendre",
+    "windows": {
+      "7d": {
+        "views": 30,
+        "unique_visitors": 26,
+        "sessions": 29,
+        "bounce_rate": 0.3448,
+        "avg_dwell_seconds": 90.1,
+        "scroll_avg": 25,
+        "scroll_median": 0,
+        "scroll_complete_pct": 5.1,
+        "entry_count": 29,
+        "exit_count": 29,
+        "outbound_clicks": 1
+      },
+      "28d": {
+        "views": 36,
+        "unique_visitors": 32,
+        "sessions": 35,
+        "bounce_rate": 0.3714,
+        "avg_dwell_seconds": 80.6,
+        "scroll_avg": 23.4,
+        "scroll_median": 0,
+        "scroll_complete_pct": 4.3,
+        "entry_count": 35,
+        "exit_count": 35,
+        "outbound_clicks": 1
+      },
+      "90d": {
+        "views": 36,
+        "unique_visitors": 32,
+        "sessions": 35,
+        "bounce_rate": 0.3714,
+        "avg_dwell_seconds": 80.6,
+        "scroll_avg": 23.4,
+        "scroll_median": 0,
+        "scroll_complete_pct": 4.3,
+        "entry_count": 35,
+        "exit_count": 35,
+        "outbound_clicks": 1
+      },
+      "365d": {
+        "views": 36,
+        "unique_visitors": 32,
+        "sessions": 35,
+        "bounce_rate": 0.3714,
+        "avg_dwell_seconds": 80.6,
+        "scroll_avg": 23.4,
+        "scroll_median": 0,
+        "scroll_complete_pct": 4.3,
+        "entry_count": 35,
+        "exit_count": 35,
+        "outbound_clicks": 1
+      }
+    },
+    "cwv_28d": {
+      "lcp_p75_ms": 4114,
+      "inp_p75_ms": 466,
+      "cls_p75": 0.11,
+      "ttfb_p75_ms": 3057.4
+    },
+    "provenance_28d": {
+      "top_referrer": "www.google.com",
+      "top_source": "chatgpt.com",
+      "top_medium": null
+    },
+    "device_split_28d": {
+      "desktop": 50,
+      "mobile": 50,
+      "tablet": 0
+    },
+    "conversion": {
+      "phone_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "email_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      },
+      "booking_cta_clicks": {
+        "7d": 0,
+        "28d": 0,
+        "90d": 0,
+        "365d": 0
+      }
+    },
+    "pogo_28d": {
+      "google_sessions": 23,
+      "pogo_sticks": 6,
+      "hard_pogo": 2,
+      "pogo_rate_pct": 26.1
+    },
+    "cta_per_device_28d": {
+      "mobile_sessions": 18,
+      "desktop_sessions": 17,
+      "cta_rate_mobile_pct": 0,
+      "cta_rate_desktop_pct": 0
+    },
+    "refreshed_at": "2026-05-15T03:00:00.176656+00:00"
+  },
+  "cooked_site_context": {
+    "global_sessions_28d": 6228,
+    "global_bounce_rate_28d": 0.1549,
+    "sessions_per_day_median_28d": 598,
+    "sessions_trend_pct_7d_vs_28d": 203.34,
+    "top_sources_28d": [
+      {
+        "source": "www.google.com",
+        "medium": "referral",
+        "sessions": 3366
+      },
+      {
+        "source": "direct",
+        "medium": "none",
+        "sessions": 1208
+      },
+      {
+        "source": "www.jplouton-avocat.fr",
+        "medium": "referral",
+        "sessions": 459
+      },
+      {
+        "source": "adwords",
+        "medium": "ppc",
+        "sessions": 409
+      },
+      {
+        "source": "www.bing.com",
+        "medium": "referral",
+        "sessions": 192
+      }
+    ]
+  },
+  "outbound_destinations": [
+    {
+      "hostname": "www.legifrance.gouv.fr",
+      "clicks": 1
+    }
+  ],
+  "cta_breakdown": [],
+  "gsc_clicks_28d": 72,
+  "cooked_first_seen": "2026-05-06T17:14:47.130Z",
+  "content_snapshot": null,
+  "engagement_density": {
+    "sessions": 29,
+    "dwell_p25_seconds": 11,
+    "dwell_median_seconds": 40,
+    "dwell_p75_seconds": 102,
+    "evenness_score": 0.11
+  },
+  "cooked_health": {
+    "snapshot_extras": "ok",
+    "site_context": "ok",
+    "outbound": "ok",
+    "cta": "empty",
+    "engagement_density": "ok",
+    "failure_messages": []
+  }
+}

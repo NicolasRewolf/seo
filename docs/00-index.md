@@ -16,11 +16,12 @@ Documentation siloée par mécanisme. Chaque doc est self-contained : tu peux la
 | 08 | [Coordination Cooked](./08-cooked-coordination.md) | Le protocole pour collaborer avec l'agent jumeau Cooked |
 | 09 | [Tests](./09-testing.md) | Les 7 suites de tests unitaires + smoke + e2e |
 | 10 | [Opérationnel](./10-operational.md) | Workflows GitHub Actions, secrets, env vars, cycle de mesure |
+| 11 | [Eval LLM](./11-eval.md) | Le golden set de regression sur le diagnostic LLM : 5 cases frozen, ~25 assertions, gate avant bump prompt |
 
 ## Lecture rapide selon ton intention
 
 - **Tu débutes / tu arrives sur le projet** : [01](./01-pipeline.md) → [02](./02-data-sources.md) → [05](./05-issue-template.md)
-- **Tu veux modifier le prompt LLM** : [03](./03-prompts.md) + [04](./04-safety-nets.md)
+- **Tu veux modifier le prompt LLM** : [03](./03-prompts.md) + [04](./04-safety-nets.md) + run `npm run eval` (cf. [11](./11-eval.md))
 - **Tu veux ajouter une source** : [02](./02-data-sources.md) puis [03](./03-prompts.md) (le wiring vers le prompt)
 - **Tu veux comprendre comment l'outil reste honnête** : [04](./04-safety-nets.md)
 - **Tu déploies / tu débugues le cron** : [10](./10-operational.md)
