@@ -8,7 +8,7 @@
  */
 import { z } from 'zod';
 import { supabase } from '../lib/supabase.js';
-import { anthropic, model } from '../lib/anthropic.js';
+import { messagesCreateWithRetry, model } from '../lib/anthropic.js';
 import {
   renderFixGenPrompt,
   FIX_GEN_PROMPT_NAME,
@@ -19,6 +19,7 @@ import { enrichContext } from './context-enrichment.js';
 import { fetchInboundSummary } from './diagnose.js';
 import type { InboundSummary } from '../prompts/diagnostic.v1.js';
 import { pathOf } from '../lib/url.js';
+import { ensurePromptVersion } from '../lib/prompt-versions.js';
 import {
   fetchPageSnapshotExtras,
   fetchCtaBreakdown,
@@ -176,7 +177,8 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
   };
 
   const prompt = renderFixGenPrompt(inputs);
-  const res = await anthropic().messages.create({
+  // AMDEC M9 — retry exponentiel sur 429/5xx Anthropic (cf. anthropic.ts).
+  const res = await messagesCreateWithRetry({
     model: model(),
     // Same reason as diagnose: 2500 was too tight once the prompt opened up
     // to all 7 fix types + schema fixes that include full JSON-LD strings.
@@ -204,12 +206,23 @@ export async function generateFixesForFinding(findingId: string): Promise<FixesP
     .eq('status', 'draft');
   if (delErr) throw new Error(`clear prior drafts: ${delErr.message}`);
 
+  // AMDEC M4 — traçabilité prompt version. Idempotent + module-cache.
+  // Best-effort : si l'insert prompt_versions fail, on insert quand même
+  // les fixes avec FK NULL (row legacy-style).
+  let promptVersionId: string | null = null;
+  try {
+    promptVersionId = await ensurePromptVersion('fix_generation', FIX_GEN_PROMPT_VERSION);
+  } catch (err) {
+    process.stderr.write(`[fix-gen] ensurePromptVersion failed: ${(err as Error).message}\n`);
+  }
+
   const rows = fixes.fixes.map((f) => ({
     finding_id: findingId,
     fix_type: f.fix_type,
     current_value: f.current_value ?? null,
     proposed_value: f.proposed_value,
     rationale: f.rationale,
+    prompt_version_id: promptVersionId,
     status: 'draft' as const,
   }));
   if (rows.length > 0) {

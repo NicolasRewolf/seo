@@ -9,7 +9,7 @@
  */
 import { z } from 'zod';
 import { supabase } from '../lib/supabase.js';
-import { anthropic, model } from '../lib/anthropic.js';
+import { messagesCreateWithRetry, model } from '../lib/anthropic.js';
 import {
   renderDiagnosticPrompt,
   DIAGNOSTIC_PROMPT_NAME,
@@ -34,6 +34,7 @@ import {
 } from '../lib/cooked.js';
 import { factCheckDiagnostic, type FactCheckResult } from '../lib/diagnostic-fact-check.js';
 import type { ContentSnapshot } from '../lib/page-content-extractor.js';
+import { ensurePromptVersion } from '../lib/prompt-versions.js';
 
 const DiagnosticSchema = z.object({
   // Sprint-11 v5: synthesis-first field. Optional so older v1-v4 diagnostics
@@ -105,6 +106,27 @@ export type DiagnoseSummary = {
   failed: number;
   errors: Array<{ findingId: string; error: string }>;
   durationMs: number;
+};
+
+/**
+ * AMDEC fix M1 — per-RPC health for the 5 Cooked sources we read.
+ *
+ * - `ok`     : RPC returned data (len > 0 / non-null object).
+ * - `empty`  : RPC succeeded but no rows / null payload — page genuinely has no data.
+ * - `failed` : RPC threw — degraded mode, the prompt warns the LLM not to read
+ *              null engagement signals as "bad engagement".
+ *
+ * `failure_messages` carries the human-readable reasons for each failure so
+ * the prompt can surface them to the LLM and the issue body to the operator.
+ */
+type CookedSourceStatus = 'ok' | 'empty' | 'failed';
+type CookedHealth = {
+  snapshot_extras: CookedSourceStatus;
+  site_context: CookedSourceStatus;
+  outbound: CookedSourceStatus;
+  cta: CookedSourceStatus;
+  engagement_density: CookedSourceStatus;
+  failure_messages: string[];
 };
 
 async function fetchTopQueries(
@@ -237,34 +259,60 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     process.stderr.write(`[diagnose] inbound fetch failed: ${(err as Error).message}\n`);
   }
 
-  // Sprint-12: Cooked full-menu fetch. All 4 calls are best-effort — if any
+  // Sprint-12: Cooked full-menu fetch. All 5 calls are best-effort — if any
   // fails (RPC not yet deployed, network blip, freshly-seeded DB with no
   // rows yet), we degrade gracefully and the prompt surfaces the absence
   // explicitly rather than crashing the diagnostic.
+  //
+  // AMDEC fix M1 — `cookedHealth` tracks per-RPC status so the prompt can
+  // distinguish "no data because the page has 0 sessions" (organic null)
+  // from "no data because the RPC errored" (degraded mode). When degraded,
+  // `<cooked_data_health>` surfaces the failure list to the LLM so it
+  // doesn't conclude "engagement is bad" from a network-induced null.
   const pagePath = pathOf(row.page as string);
   let cookedExtras: PageSnapshotExtras | null = null;
   let cookedSiteContext: SiteContext | null = null;
   let outboundDestinations: OutboundDestination[] = [];
   let ctaBreakdown: CtaBreakdownRow[] = [];
+  const cookedHealth: CookedHealth = {
+    snapshot_extras: 'ok',
+    site_context: 'ok',
+    outbound: 'ok',
+    cta: 'ok',
+    engagement_density: 'ok',
+    failure_messages: [],
+  };
   try {
     const rows = await fetchPageSnapshotExtras([pagePath]);
     cookedExtras = rows[0] ?? null;
+    if (!cookedExtras) cookedHealth.snapshot_extras = 'empty';
   } catch (err) {
+    cookedHealth.snapshot_extras = 'failed';
+    cookedHealth.failure_messages.push(`snapshot_extras: ${(err as Error).message}`);
     process.stderr.write(`[diagnose] cooked snapshot extras failed: ${(err as Error).message}\n`);
   }
   try {
     cookedSiteContext = await fetchSiteContext();
+    if (!cookedSiteContext) cookedHealth.site_context = 'empty';
   } catch (err) {
+    cookedHealth.site_context = 'failed';
+    cookedHealth.failure_messages.push(`site_context: ${(err as Error).message}`);
     process.stderr.write(`[diagnose] cooked site context failed: ${(err as Error).message}\n`);
   }
   try {
     outboundDestinations = await fetchOutboundDestinations(pagePath, 28);
+    if (outboundDestinations.length === 0) cookedHealth.outbound = 'empty';
   } catch (err) {
+    cookedHealth.outbound = 'failed';
+    cookedHealth.failure_messages.push(`outbound: ${(err as Error).message}`);
     process.stderr.write(`[diagnose] cooked outbound destinations failed: ${(err as Error).message}\n`);
   }
   try {
     ctaBreakdown = await fetchCtaBreakdown(pagePath, 28);
+    if (ctaBreakdown.length === 0) cookedHealth.cta = 'empty';
   } catch (err) {
+    cookedHealth.cta = 'failed';
+    cookedHealth.failure_messages.push(`cta: ${(err as Error).message}`);
     process.stderr.write(`[diagnose] cooked cta breakdown failed: ${(err as Error).message}\n`);
   }
   // Sprint-16 — engagement density (intra-session dwell distribution).
@@ -274,8 +322,21 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
   let engagementDensity: EngagementDensity | null = null;
   try {
     engagementDensity = await fetchEngagementDensity(pagePath, 28);
+    if (!engagementDensity) cookedHealth.engagement_density = 'empty';
   } catch (err) {
+    cookedHealth.engagement_density = 'failed';
+    cookedHealth.failure_messages.push(`engagement_density: ${(err as Error).message}`);
     process.stderr.write(`[diagnose] cooked engagement_density failed: ${(err as Error).message}\n`);
+  }
+  // AMDEC fix M1 — log a one-liner banner if 2+ Cooked sources are degraded.
+  // Visible in workflow logs so the operator can grep for "cooked-degraded".
+  const failedCount = (
+    ['snapshot_extras', 'site_context', 'outbound', 'cta', 'engagement_density'] as const
+  ).filter((k) => cookedHealth[k] === 'failed').length;
+  if (failedCount >= 2) {
+    process.stderr.write(
+      `[diagnose] cooked-degraded path=${pagePath} failed=${failedCount}/5 (${cookedHealth.failure_messages.join('; ')})\n`,
+    );
   }
 
   // Sprint-12 data quality check: GSC clicks last 28d (NOT the audit period
@@ -363,6 +424,8 @@ export async function buildDiagnosticInputs(findingId: string): Promise<Diagnost
     content_snapshot: (row.content_snapshot as DiagnosticPromptInputs['content_snapshot']) ?? null,
     // Sprint-16: engagement density (intra-session dwell distribution)
     engagement_density: engagementDensity,
+    // AMDEC M1: Cooked degraded mode signal — see CookedHealth comment.
+    cooked_health: cookedHealth,
   };
 }
 
@@ -396,7 +459,8 @@ async function fetchGscClicksLast28d(page: string): Promise<number | null> {
 }
 
 async function callDiagnosticLLM(prompt: string, extraMessages: Array<{ role: 'user' | 'assistant'; content: string }> = []): Promise<DiagnosticPayload> {
-  const res = await anthropic().messages.create({
+  // AMDEC M9 — retry exponentiel sur 429/5xx Anthropic (cf. anthropic.ts).
+  const res = await messagesCreateWithRetry({
     model: model(),
     // Sprint-14: bumped from 4000 → 8000 tokens. The v7 prompt feeds the
     // full <page_body> (up to 8000 words) + 4 new XML blocks, so the LLM
@@ -516,11 +580,22 @@ export async function diagnoseFinding(findingId: string): Promise<DiagnosticPayl
     }
   }
 
+  // AMDEC M4 — traçabilité prompt version. Idempotent + module-cache (1 lookup
+  // par version pour tout le batch). Best-effort : si l'insert prompt_versions
+  // fail (RLS, contrainte), on continue sans bloquer la persistance du diag.
+  let promptVersionId: string | null = null;
+  try {
+    promptVersionId = await ensurePromptVersion('diagnostic', DIAGNOSTIC_PROMPT_VERSION);
+  } catch (err) {
+    process.stderr.write(`[diagnose] ensurePromptVersion failed: ${(err as Error).message}\n`);
+  }
+
   const { error: updErr } = await supabase()
     .from('audit_findings')
     .update({
       diagnostic,
       diagnostic_fact_check: factCheck,
+      diagnostic_prompt_version_id: promptVersionId,
       status: 'diagnosed',
       updated_at: new Date().toISOString(),
     })

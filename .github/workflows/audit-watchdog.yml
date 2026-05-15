@@ -1,0 +1,92 @@
+name: audit-watchdog
+
+# AMDEC fix M2 — cron de secours si l'audit hebdomadaire n'a pas tourné.
+#
+# Scénario protégé : `audit-weekly` (lundi 06:00 UTC) ne s'est pas exécuté
+# pour une raison quelconque — GitHub Actions outage, repo passé inactif
+# (>60j sans push), secret expiré, etc. Sans watchdog, on perd une semaine
+# d'audit silencieusement.
+#
+# Stratégie : mardi 06:00 UTC (24h après le slot nominal), on vérifie en DB
+# qu'une `audit_runs` row existe avec `started_at >= now()-36h`. Si non,
+# on déclenche `audit-weekly` via `gh workflow run`.
+#
+# Pourquoi 36h et pas 24h : tolère les workflows lents (audit-weekly a
+# timeout 45min mais peut traîner sur Wix CDN throttle). Tolère aussi un
+# léger drift de cron GitHub (jusqu'à ~15min de retard observé).
+#
+# Le workflow `alert-on-failure` reste responsable de signaler les ÉCHECS
+# d'audit. Ce watchdog gère uniquement les CAS OÙ AUCUN RUN N'A EU LIEU.
+on:
+  schedule:
+    # Mardi 06:00 UTC = 24h après le slot nominal lundi 06:00 UTC.
+    - cron: '0 6 * * 2'
+  workflow_dispatch:
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      actions: write    # to dispatch audit-weekly
+      issues: write     # to create alert if no recent run
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+
+      - name: Check last audit_runs age
+        id: check
+        run: |
+          set -euo pipefail
+          # Query Supabase REST: most recent audit_runs.started_at
+          RESPONSE=$(curl -sf \
+            -H "apikey: ${SUPABASE_SERVICE_ROLE_KEY}" \
+            -H "Authorization: Bearer ${SUPABASE_SERVICE_ROLE_KEY}" \
+            "${SUPABASE_URL}/rest/v1/audit_runs?select=started_at&order=started_at.desc&limit=1")
+          LAST=$(node -e "const r=JSON.parse(process.argv[1]); console.log(r[0]?.started_at ?? '')" "$RESPONSE")
+          echo "last_run=$LAST" >> "$GITHUB_OUTPUT"
+          if [ -z "$LAST" ]; then
+            echo "needs_dispatch=true" >> "$GITHUB_OUTPUT"
+            echo "reason=no_audit_runs_ever" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          AGE_HOURS=$(node -e "const d=new Date(process.argv[1]); console.log(Math.round((Date.now()-d.getTime())/3600000))" "$LAST")
+          echo "age_hours=$AGE_HOURS" >> "$GITHUB_OUTPUT"
+          if [ "$AGE_HOURS" -gt 36 ]; then
+            echo "needs_dispatch=true" >> "$GITHUB_OUTPUT"
+            echo "reason=stale_${AGE_HOURS}h" >> "$GITHUB_OUTPUT"
+          else
+            echo "needs_dispatch=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Dispatch audit-weekly (backup)
+        if: ${{ steps.check.outputs.needs_dispatch == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GH_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh workflow run audit-weekly.yml --ref main
+          echo "Dispatched audit-weekly (reason=${{ steps.check.outputs.reason }})"
+
+      - name: Open alert issue if dispatched
+        if: ${{ steps.check.outputs.needs_dispatch == 'true' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          gh issue create \
+            --title "[watchdog] audit-weekly didn't run on time — backup dispatched" \
+            --body "Le watchdog mardi 06:00 UTC a constaté que **aucun \`audit_runs\` n'a été créé dans les dernières 36h** (raison: \`${{ steps.check.outputs.reason }}\`, last=\`${{ steps.check.outputs.last_run }}\`, age=\`${{ steps.check.outputs.age_hours }}h\`).\n\nLe workflow \`audit-weekly\` a été redéclenché automatiquement. Vérifier qu'il termine OK ; sinon investiguer la cause de l'échec du cron lundi nominal (GitHub Actions outage ? secret expiré ? repo inactif ?).\n\n---\n_AMDEC fix M2 — \`.github/workflows/audit-watchdog.yml\`._" \
+            --label "watchdog,automation"
+
+      - name: Log healthy state
+        if: ${{ steps.check.outputs.needs_dispatch == 'false' }}
+        run: |
+          echo "OK : last audit_runs is ${{ steps.check.outputs.age_hours }}h old (< 36h)."

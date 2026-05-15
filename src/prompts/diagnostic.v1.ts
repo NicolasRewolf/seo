@@ -80,7 +80,7 @@ import type { ContentSnapshot } from '../lib/page-content-extractor.js';
 import type { GoogleSearchGuidance } from '../lib/google-search-central.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 11 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 12 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -167,6 +167,20 @@ export type DiagnosticPromptInputs = {
    *  give the LLM a read on bimodal vs uniform engagement (a low evenness
    *  signals that the page works for SOME visitors but not all). */
   engagement_density?: EngagementDensity | null;
+  /** AMDEC fix M1 — per-RPC health of the 5 Cooked fetches. When ≥1 RPC
+   *  failed, the prompt surfaces a `<cooked_data_health>` warning so the
+   *  LLM doesn't read network-induced nulls as behavioral signals
+   *  ("engagement is bad" vs "engagement_density RPC errored"). Optional
+   *  to keep the type backwards-compatible with tests/callers that don't
+   *  build it. */
+  cooked_health?: {
+    snapshot_extras: 'ok' | 'empty' | 'failed';
+    site_context: 'ok' | 'empty' | 'failed';
+    outbound: 'ok' | 'empty' | 'failed';
+    cta: 'ok' | 'empty' | 'failed';
+    engagement_density: 'ok' | 'empty' | 'failed';
+    failure_messages: string[];
+  };
 };
 
 // ---------- formatting helpers ---------------------------------------------
@@ -769,6 +783,37 @@ export function fmtDataQualityCheck(
   return lines.join('\n');
 }
 
+/**
+ * AMDEC fix M1 — render the Cooked health banner.
+ *
+ * Returns `null` (omit the block entirely) when EVERY source is `ok` or `empty`
+ * — that's the nominal case, no need to bloat the prompt. Returns a banner
+ * string when ≥1 source is `failed` so the LLM knows to read absent signals
+ * as "unknown", not "zero".
+ */
+export function fmtCookedHealth(
+  health: DiagnosticPromptInputs['cooked_health'] | null | undefined,
+): string | null {
+  if (!health) return null;
+  const sources = ['snapshot_extras', 'site_context', 'outbound', 'cta', 'engagement_density'] as const;
+  const failed = sources.filter((k) => health[k] === 'failed');
+  if (failed.length === 0) return null;
+  const lines: string[] = [
+    `⚠️ **${failed.length}/5 sources Cooked en échec ce run** : ${failed.join(', ')}.`,
+    '',
+    'Conséquence : les blocs ci-dessous qui en dépendent peuvent afficher "indisponible" ou des chiffres null **alors que la page a vraiment des sessions**. Ne les lis PAS comme des signaux behavioral négatifs.',
+    '',
+    'Erreurs détaillées :',
+    ...health.failure_messages.map((m) => `- ${m}`),
+    '',
+    'Pour TOUS les blocs marqués "indisponible" liés à une source en échec ci-dessus :',
+    '- traite-les comme **inconnus** (pas comme zéro)',
+    '- ne formule aucun verdict basé exclusivement sur eux',
+    '- mentionne explicitement dans `engagement_diagnosis` / `conversion_assessment` que la lecture est partielle ("données Cooked partiellement indisponibles ce run, à reconfirmer au prochain audit")',
+  ];
+  return lines.join('\n');
+}
+
 function fmtSiteContext(ctx: SiteContext | null | undefined): string {
   if (!ctx) return '_(contexte site indisponible)_';
   const trend = ctx.sessions_trend_pct_7d_vs_28d;
@@ -1163,7 +1208,12 @@ ${i.enrichment ? fmtCatalog(i.enrichment.internal_pages_catalog) : '_(catalog no
 # Cooked full-menu (Sprint 12) — SIGNAUX BEHAVIOR & CONVERSION
 
 ⚠️ **Lis le bloc \`<data_quality_check>\` EN PREMIER.** Il te dit si tu peux lire les chiffres Cooked comme ground truth ou comme lower bound. Tous les autres blocs sont à pondérer en conséquence.
-
+${(() => {
+  const banner = fmtCookedHealth(i.cooked_health);
+  return banner
+    ? `\n<cooked_data_health>\n${banner}\n</cooked_data_health>\n`
+    : '';
+})()}
 <data_quality_check>
 ${fmtDataQualityCheck(i.gsc_clicks_28d, i.cooked_extras?.windows['28d'].sessions ?? null, i.cooked_first_seen ?? null)}
 </data_quality_check>

@@ -1,0 +1,81 @@
+name: ci
+
+# Continuous integration : sur chaque push/PR sur main, tourne :
+#   - typecheck strict (tsc --noEmit)
+#   - 155 tests unitaires
+#   - smoke connectors (si secrets dispo)
+#
+# Bloque le merge si rouge. Couvre l'écart W6 (audit AMDEC) :
+# "Tests existent mais ne tournent pas en CI".
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  typecheck-and-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Typecheck strict
+        run: npx tsc --noEmit
+
+      - name: Unit tests (155 tests, no live HTTP)
+        run: npm test
+
+  smoke:
+    # Smoke tape sur les API live — peut fail temporairement pour des raisons
+    # externes (Cooked refresh en cours, GSC rate limit). Marqué non-bloquant
+    # pour ne pas bloquer le merge sur un blip extérieur, mais alerte si fail.
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: typecheck-and-test
+    continue-on-error: true
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      ANTHROPIC_MODEL: ${{ secrets.ANTHROPIC_MODEL }}
+      GITHUB_TOKEN: ${{ secrets.GH_API_TOKEN }}
+      GITHUB_OWNER: ${{ github.repository_owner }}
+      GITHUB_REPO: ${{ github.event.repository.name }}
+      COOKED_SUPABASE_URL: ${{ secrets.COOKED_SUPABASE_URL }}
+      COOKED_SECRET_KEY: ${{ secrets.COOKED_SECRET_KEY }}
+      WIX_API_KEY: ${{ secrets.WIX_API_KEY }}
+      WIX_SITE_ID: ${{ secrets.WIX_SITE_ID }}
+      WIX_ACCOUNT_ID: ${{ secrets.WIX_ACCOUNT_ID }}
+      DATAFORSEO_AUTH: ${{ secrets.DATAFORSEO_AUTH }}
+      GSC_SITE_URL: ${{ secrets.GSC_SITE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Materialize GSC OAuth files from secrets
+        if: ${{ secrets.GSC_OAUTH_CREDENTIALS_JSON != '' && secrets.GSC_TOKEN_JSON != '' }}
+        run: |
+          echo '${{ secrets.GSC_OAUTH_CREDENTIALS_JSON }}' > gsc-oauth-credentials.json
+          echo '${{ secrets.GSC_TOKEN_JSON }}' > gsc-token.json
+        env:
+          GSC_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
+          GSC_TOKEN_FILE: ./gsc-token.json
+      - name: Smoke connectors
+        env:
+          GSC_OAUTH_CREDENTIALS_FILE: ./gsc-oauth-credentials.json
+          GSC_TOKEN_FILE: ./gsc-token.json
+        run: npm run smoke

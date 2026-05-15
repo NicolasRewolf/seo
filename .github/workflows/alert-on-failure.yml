@@ -1,0 +1,64 @@
+name: alert-on-failure
+
+# AMDEC fix M2 — alerting zero-config sur échec workflow.
+#
+# Avant : `audit-weekly` ou `measure-outcomes` plante → personne ne le voit
+# avant la prochaine semaine. Pas de cycle d'apprentissage si la pipeline
+# est silencieusement morte.
+#
+# Maintenant : tout `workflow_run` en `conclusion=failure` sur les workflows
+# critiques déclenche une issue GitHub avec lien direct vers les logs. Une
+# nouvelle issue est créée par failure (pas de dédup à dessein : 2 failures
+# consécutives = problème qui revient = mérite 2 alertes).
+#
+# Pourquoi pas Slack/email : aucune dep externe, pas de webhook à maintenir,
+# pas de secret supplémentaire. GitHub issues sont déjà le canal de
+# coordination du repo. L'utilisateur reçoit la notif GitHub native.
+on:
+  workflow_run:
+    workflows: ['audit-weekly', 'measure-outcomes', 'ci']
+    types: [completed]
+
+jobs:
+  alert:
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Create alert issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          WF_NAME: ${{ github.event.workflow_run.name }}
+          WF_URL: ${{ github.event.workflow_run.html_url }}
+          WF_BRANCH: ${{ github.event.workflow_run.head_branch }}
+          WF_SHA: ${{ github.event.workflow_run.head_sha }}
+          WF_EVENT: ${{ github.event.workflow_run.event }}
+          WF_RUN_ID: ${{ github.event.workflow_run.id }}
+          WF_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}
+        run: |
+          set -euo pipefail
+          TITLE="[alert] workflow ${WF_NAME} failed (run #${WF_RUN_ID} attempt ${WF_ATTEMPT})"
+          BODY=$(cat <<EOF
+          Workflow **${WF_NAME}** a échoué automatiquement.
+
+          - **Run** : [#${WF_RUN_ID}](${WF_URL}) (tentative ${WF_ATTEMPT})
+          - **Branch** : \`${WF_BRANCH}\`
+          - **Commit** : \`${WF_SHA}\`
+          - **Trigger** : \`${WF_EVENT}\`
+
+          ## Action attendue
+
+          1. Ouvrir les logs : ${WF_URL}
+          2. Identifier l'étape qui plante
+          3. Si transient (rate limit Anthropic, timeout réseau) → relancer via \`workflow_dispatch\`
+          4. Si bug structurel → fix + push sur main → la CI revalide
+
+          ---
+          _Alerte générée automatiquement par \`.github/workflows/alert-on-failure.yml\` (AMDEC M2)._
+          EOF
+          )
+          gh issue create \
+            --title "$TITLE" \
+            --body "$BODY" \
+            --label "alert,automation"

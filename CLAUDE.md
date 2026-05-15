@@ -30,7 +30,7 @@ L'agent `seo` est **propriétaire** de :
 - Le projet Supabase Seo (`lzdnljppbenqoflyxbhi`) et son schéma
   (`audit_findings`, `behavior_page_snapshots`, `gsc_*_snapshots`,
   `internal_link_graph`, etc.)
-- Les prompts diagnostic v6+ et fix-generation v3+
+- Les prompts diagnostic v12+ et fix-generation v3+
 - Le template d'issue GitHub
 - Les wrappers TypeScript dans `src/lib/cooked.ts` qui consomment
   les RPCs Cooked (mais pas le contrat lui-même)
@@ -93,7 +93,7 @@ le 2026-05-09. À retenir pour calibrer tes prompts et tes attentes :
 - Modifier tes prompts, tes pipelines, ton issue template
 - Modifier ta DB Seo (toute table dans le projet `lzdnljppbenqoflyxbhi`)
 - Forger des findings manuels pour test (ex: `forge-finding-*.ts`)
-- Bumper les versions de prompts (v6 → v7 → …)
+- Bumper les versions de prompts (v12 → v13 → …)
 - Pousser des PRs sur ce repo
 - Lancer les workflows GitHub Actions
 
@@ -185,12 +185,12 @@ au moment où l'agent Cooked aura sa propre approche.
 ```
 GSC                    \
 DataForSEO              \
-Wix Blog API + DOM       → seo pipeline → audit_findings → diagnose v6 → issue GitHub
+Wix Blog API + DOM       → seo pipeline → audit_findings → diagnose v12 → issue GitHub
 Cooked (RPCs)           /                  + proposed_fixes
 Site catalog (curé)    /
 ```
 
-Sources de données → 21 blocs structurés dans le prompt v6 → LLM
+Sources de données → ~26 blocs structurés dans le prompt v12 (incluant silo Sprint 19/19.5 Google Search Central + bloc AMDEC M1 `<cooked_data_health>` qui apparaît seulement si Cooked est dégradé) → LLM
 sectionne en 12 bullets diagnostic + 8 fixes → 1 issue GitHub humanly
 readable. Stack qui a livré sa première issue end-to-end le 2026-05-07
 sur la finding `que-se-passe-t-il-après-une-garde-à-vue` (#30).
