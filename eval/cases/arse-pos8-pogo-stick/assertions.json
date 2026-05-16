@@ -23,8 +23,8 @@
     {
       "field": "engagement_diagnosis",
       "kind": "must_not_contain_any",
-      "patterns": ["satisfaisant", "engagement bon", "bonne lecture", "correct"],
-      "why": "Worst engagement profile in the corpus — calling it satisfaisant would invalidate the diagnostic."
+      "patterns": ["satisfaisant", "engagement bon", "bonne lecture"],
+      "why": "Worst engagement profile in the corpus — calling it satisfaisant would invalidate the diagnostic. (Note Sprint-23 : 'correct' retiré car trop générique, apparaît dans des contextes neutres comme 'snippet correct mais générique')."
     },
     {
       "field": "structural_gaps",

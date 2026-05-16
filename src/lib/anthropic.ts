@@ -40,7 +40,11 @@ function isRetryable(err: unknown): boolean {
   // Filets pour les network errors (ECONNRESET, ETIMEDOUT) — Anthropic SDK
   // les wrappe parfois sans status code.
   const msg = (e.message ?? '').toLowerCase();
-  return /econnreset|etimedout|enotfound|socket hang up|fetch failed/.test(msg);
+  // Sprint-23 hotfix: ajout de "connection error" (string générique renvoyée
+  // par le Anthropic SDK quand le pipe TCP est cassé en plein stream). Observé
+  // sur 2/6 cases d'un eval batch concurrent=2 le 2026-05-16 — sans ce filet
+  // le case foire et toutes ses assertions cascadent en faux négatif.
+  return /econnreset|etimedout|enotfound|socket hang up|fetch failed|connection error/.test(msg);
 }
 
 export async function messagesCreateWithRetry(
