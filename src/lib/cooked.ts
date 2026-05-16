@@ -381,10 +381,30 @@ export async function fetchOutboundDestinations(
   }));
 }
 
-/** CTA clicks broken down by placement (header / footer / body) per cta_type.
- *  Critical signal — distinguishes intent-qualified body clicks from
- *  ambient footer clicks. */
-export type CtaPlacement = 'header' | 'footer' | 'body';
+/** CTA clicks broken down by placement (header / footer / body / sticky) per cta_type.
+ *  Critical signal — distinguishes intent-qualified body/sticky clicks from
+ *  ambient header/footer clicks.
+ *
+ *  Sprint-23 — agent Cooked briefing 2026-05-16 :
+ *    - Le contrat actuel publié par `cta_breakdown_for_path` retourne
+ *      enum ('header' | 'footer' | 'body'). Le placement 'sticky' (TOC +
+ *      barre sticky mobile sur pages expertise, Sprint-19 côté Cooked) est
+ *      ACTUELLEMENT INVISIBLE : les ~30 anchor clicks de RDV par 10j
+ *      n'apparaissent ni dans ce wrapper ni dans booking_cta_clicks.
+ *    - Migration demandée à l'agent Cooked le 2026-05-16 : élargir l'enum
+ *      à 'sticky' et mapper les 2 aria-labels ("Je prends rendez-vous —
+ *      table des matières" / "Demander un RDV — formulaire expertise")
+ *      en cta_type='booking'.
+ *    - Une fois la migration déployée Cooked-side : décommenter le 'sticky'
+ *      ci-dessous, retirer le commentaire de défense, et bump le smoke
+ *      check ligne 476 pour accepter 'sticky'.
+ *
+ *  ⚠️ NE JAMAIS filtrer `device_type != 'server'` dans une query qui compte
+ *  des form_submit — Cooked insère ces events server-side (form-webhook
+ *  edge function) avec device_type='server'. Un filtre exclusif jetterait
+ *  toutes les conversions par formulaire (cf. briefing Cooked 2026-05-16).
+ */
+export type CtaPlacement = 'header' | 'footer' | 'body'; // TODO Sprint-23 v2 : | 'sticky'
 export type CtaType = 'phone' | 'email' | 'booking';
 export type CtaBreakdownRow = {
   cta_type: CtaType;

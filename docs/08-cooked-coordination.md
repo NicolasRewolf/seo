@@ -113,6 +113,72 @@ Nicolas relaie, l'agent Cooked répond, Nicolas re-relaie. Round-trip typique : 
 
 ---
 
+## Briefing reçu de l'agent Cooked (relayé via Nicolas le 2026-05-16)
+
+**4 points actionables + 1 FYI.**
+
+### 1. Sprint 22 — fix `anonymous_id` (critique)
+
+**Bug** : 93 % des sessions avaient >1 `anonymous_id`. Cause = workers Wix Velo stateless avec IPs sortantes différentes → chaque `engagement_tick` hashait une IP différente → 6+ anonymous_id par session réelle.
+
+**Fix Cooked-side (déployé ~15 mai 2026)** : `anonymous_id` vient maintenant du `localStorage` browser (`_ckd_aid`, UUID stable). Données propres à partir du **16 mai**. Fenêtre 28d entièrement nettoyée vers le **13 juin**.
+
+**Impact pour Seo** : `sessions_*` étaient massivement gonflés avant le fix → `bounce_rate` et taux de conversion par session artificiellement bas. Ne JAMAIS tirer de conclusion sur ces ratios pendant la fenêtre de transition.
+
+**Câblé Seo-side** : bloc `<cooked_anonymous_id_advisory>` ajouté au prompt v13 (puis v14) dans `src/prompts/diagnostic.v1.ts`. Le bloc affiche un caveat tant que `now < COOKED_CLEAN_28D_WINDOW_DATE` (= 2026-06-13). Disparaît automatiquement après. Voir aussi `fmtCookedAnonIdAdvisory()`.
+
+### 2. `cta_anchor_click` — angle mort dans les RPCs
+
+**Bug** : Sprint 19 Cooked a introduit `cta_anchor_click` (clics sur TOC sticky + barre sticky mobile des pages expertise). Ces events ont `placement: 'sticky'`, absent de l'enum `'header'|'footer'|'body'` de `cta_breakdown_for_path` → ~30 anchor RDV par 10 jours sont INVISIBLES dans `cta_breakdown_for_path` ET dans `booking_cta_clicks` de `snapshot_pages_export`.
+
+**Impact pour Seo** : sur les pages expertise (les plus stratégiques business), le diag dit "0 booking, page ne convertit pas" alors qu'il y a 30 anchor clicks invisibles → recommandation erronée ("ajouter un CTA" alors qu'il y en a déjà un qui marche).
+
+**Décision Seo (2026-05-16)** : OUI on veut le fix. Confirmation transmise à l'agent Cooked via Nicolas. Implémentation préférée :
+- Ajouter `'sticky'` à l'enum `placement` de `cta_breakdown_for_path`
+- Mapper les 2 aria-labels (cf. référentiel ci-dessous) en `cta_type='booking'`
+
+**Préparation Seo-side** : `src/lib/cooked.ts` annoté avec TODO + commentaires défensifs. `CtaPlacement` actuel reste `'header'|'footer'|'body'`. Une fois la migration Cooked en prod, ajouter `'sticky'` au type + adapter le smoke check ligne 476 + adapter `fmtCtaBreakdown` côté prompt pour interpréter le nouveau placement (sticky = intent qualifié comme body, peut-être MEME PLUS QUE BODY puisque user a consciemment cherché le sticky).
+
+### 3. `form_submit` — piège `device_type='server'`
+
+Les `form_submit` arrivent avec `device_type='server'` (insérés server-side par l'edge function `form-webhook`). Un filtre exclusif `device_type != 'server'` pour exclure les bots jetterait aussi tous les `form_submit`.
+
+**Règle SQL correcte** :
+```sql
+WHERE name IN ('cta_phone_click','form_submit')
+  AND (device_type != 'server' OR name = 'form_submit')
+```
+
+**Vérifié Seo-side** : aucun filtre `device_type` dans `src/lib/cooked.ts`. Commentaire défensif ajouté pour qu'aucune session future ne réintroduise ce piège.
+
+### 4. Référentiel complet aria-label → event (source de vérité)
+
+C'est le mapping authoritatif Cooked-side. À consulter avant tout diagnostic / fix qui interprète les compteurs CTA.
+
+| Composant | Devices | Aria-label | Event |
+|---|---|---|---|
+| Header | Desktop | `Prendre rendez-vous — header` | `cta_booking_click` |
+| Header burger | Tab+Mobile | `Prendre rendez-vous — menu mobile` | `cta_booking_click` |
+| Header burger | Tab+Mobile | `Appeler le cabinet — menu mobile` | `cta_phone_click` |
+| Footer | Tous | `Appeler le cabinet — footer` | `cta_phone_click` |
+| Footer | Tous | `Prendre rendez-vous — footer` | `cta_booking_click` |
+| TOC sticky expertise | Tous | `Je prends rendez-vous — table des matières` | `cta_anchor_click` (→ `booking` post-fix Sprint 23) |
+| TOC sticky expertise | Tous | _nom section libre_ | `cta_anchor_click` (navigation, PAS conversion) |
+| Barre sticky expertise | Tab+Mobile | `Demander un RDV — formulaire expertise` | `cta_anchor_click` (→ `booking` post-fix Sprint 23) |
+| Barre sticky expertise | Tab+Mobile | `Appeler le cabinet — barre mobile expertise` | `cta_phone_click` |
+
+⚠️ Tout `cta_anchor_click` avec un label `nom section libre` (ex: "Défendre vos intérêts") = navigation interne intra-page, **PAS** une conversion. Ne jamais le compter comme micro-conversion.
+
+### 5. Noise filtering 56 % — FYI
+
+`events_human` (vue consommée par toutes les RPCs) combine :
+- Sprint 17 `bot_fingerprints` (UA suspects)
+- Sprint 20/21 `noise_sessions` (sessions courtes, JS-only, crawlers non-UA)
+
+Aucune action requise Seo-side. Les RPCs héritent du filtre automatiquement.
+
+---
+
 ## Historique des collabos cross-agent
 
 Pour archive (utile aux futures sessions) :
@@ -123,6 +189,7 @@ Pour archive (utile aux futures sessions) :
 | Pogo signal (Sprint 15) | Cooked livre `pogo_rates_for_period` puis intègre 4 cols pogo dans `seo_url_snapshot` | Seo livre `<pogo_navboost>` block dans prompt v8 + bannière `[!CAUTION]` |
 | Engagement density + CTA per device (Sprint 16) | Cooked livre `engagement_density_for_path` RPC + 4 cols CTA per device | Seo livre 2 blocs XML + bannière mobile-first + helper évenness verdict |
 | Bot filter (Sprint 17) | Cooked livre filtre bot centralisé. Bonus : signale bug `bounce_rate /100` côté Seo | Seo fixe le bug bounce + 3 false positives fact-checker découverts pendant Sprint 17 e2e |
+| Briefing Sprint 22 + cta_anchor_click + form_submit + aria-label référentiel (2026-05-16) | Cooked annonce fix anonymous_id, signale `cta_anchor_click` invisible, donne le piège `device_type='server'` + référentiel aria-label complet | Seo livre bloc `<cooked_anonymous_id_advisory>` v14, prépare le type `CtaPlacement` pour 'sticky', ajoute garde-fou `device_type` dans `src/lib/cooked.ts`, confirme demande de migration `cta_breakdown_for_path` |
 
 Le pattern est solide :
 1. Identification d'un besoin / amélioration
