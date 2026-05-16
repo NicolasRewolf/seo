@@ -112,6 +112,7 @@ async function runOneCase(c: Awaited<ReturnType<typeof loadCase>>): Promise<Case
       outbound_leak_note: '',
       pogo_navboost_assessment: '',
       engagement_pattern_assessment: '',
+      unique_pov_assessment: '',
     };
     return scoreCase(c.caseId, c.what, synthetic, c.assertions, Date.now() - t0);
   }

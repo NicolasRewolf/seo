@@ -10,7 +10,7 @@ Les croyances SEO du LLM viennent de :
 
 Sans Sprint 19, il rate les évolutions Google récentes (nouvelles spam policies, core updates, retraits de systèmes). Le silo Google colmate cette fuite **sans perturber** son raisonnement page-data : c'est lu comme un signal externe d'autorité.
 
-## Les 5 sources qui composent le silo
+## Les 6 sources qui composent le silo
 
 | # | Source | Format | Refresh | Ce qu'on en tire |
 |---|---|---|---|---|
@@ -19,8 +19,10 @@ Sans Sprint 19, il rate les évolutions Google récentes (nouvelles spam policie
 | 3 | Top 2 posts pivot deep-fetched | HTML scrape | Cache 1h | 1200 chars de body au lieu du 220-char summary RSS |
 | 4 | [Ranking Systems guide](https://developers.google.com/search/docs/appearance/ranking-systems-guide) | HTML scrape | Cache 1h | 17 systèmes nommés actifs (BERT, MUM, Reviews, Reliable Information, etc.) |
 | 5 | [Spam Policies](https://developers.google.com/search/docs/essentials/spam-policies) | HTML scrape | Cache 1h | 17 policies enumerees (Cloaking, Scaled Content Abuse, etc.) |
+| 6 | **[AI Optimization Guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide)** (Sprint-23) | Static text | Constante | Anti-patterns AEO/GEO + pillar #1 "non-commodity content" |
 
-Tout vit dans **`src/lib/google-search-central.ts`**.
+Sources 1-5 vivent dans **`src/lib/google-search-central.ts`** (fetched at prompt build time).
+Source 6 vit dans **`src/prompts/google-genai-guide.ts`** — c'est du texte statique parce que Google publie ce guide comme référence stable (pas un flux qui change chaque semaine). On bump quand Google met à jour le guide.
 
 ---
 
@@ -184,6 +186,41 @@ Filtre `description.length >= 50` pour drop les H2 de wrapper (genre "Our polici
 - Thin affiliation
 - (+ Legal removals, Personal information removals, Policy circumvention, Scam and fraud — non capturés si description courte)
 ```
+
+---
+
+## Source 6 : AI Optimization Guide (Sprint-23, static)
+
+### URL
+[`https://developers.google.com/search/docs/fundamentals/ai-optimization-guide`](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) — publié 2026-05-15.
+
+### Format
+Texte statique en TypeScript dans **`src/prompts/google-genai-guide.ts`**, pas de fetch live (contrairement aux 5 autres sources). Raison : ce guide est une référence Google stable qui change rarement. Quand Google met à jour, on bump le contenu des constantes.
+
+### 2 constantes exportées
+
+**`GOOGLE_GENAI_ANTI_PATTERNS_BLOCK`** — wrapped dans `<google_genai_anti_patterns>` dans le prompt diagnostic **ET** le prompt fix-gen.
+
+Liste les 5 "hacks" AEO/GEO que Google déclare officiellement INUTILES :
+- `llms.txt` / fichiers spéciaux AI
+- Chunking artificiel / micro-pages
+- Réécriture "AI-friendly style"
+- Mentions inauthentiques / link spam
+- Over-focus structured data comme silver bullet
+
+Locker : le LLM ne doit JAMAIS proposer ces fixes. Avant Sprint-23, rien dans le prompt ne l'en empêchait explicitement.
+
+**`GOOGLE_NON_COMMODITY_PRINCIPLE_BLOCK`** — wrapped dans `<google_non_commodity_principle>` dans le prompt diagnostic + fix-gen.
+
+Frame le pillar #1 de Google pour GenAI Search : **non-commodity content avec POV unique gagne sur RAG retrieval**. Exemples Google verbatim (commodity "7 Tips for First-Time Homebuyers" vs non-commodity "Why We Waived the Inspection & Saved Money"). Pour Plouton : cas anonymisés, plaidoiries, résultats chiffrés, angle territorial Bordeaux.
+
+### Nouveau champ diagnostic : `unique_pov_assessment`
+
+Ajouté au schema Zod `DiagnosticPayload` (Sprint-23). Le LLM doit explicitement classer la page comme COMMODITY ou NON-COMMODITY et recommander un type de contenu différenciant si commodity. Pin par 4 assertions dans le golden case `premeditation-commodity` (cf. [doc 11](./11-eval.md)).
+
+### Down-grade du fix_type `schema`
+
+Sprint-23 a aussi modifié le prompt fix-gen pour que `schema` soit **dernier recours** — Google a explicitement dit que structured data n'est PAS requis pour GenAI Search. À ne plus jamais proposer comme top action ROI quand title/meta/intro/content sont aussi en jeu.
 
 ---
 

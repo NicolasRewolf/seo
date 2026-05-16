@@ -57,6 +57,40 @@ function numOrNull(v: Numeric): number | null {
 }
 
 /**
+ * Drop physically-impossible CWV outliers and return null instead.
+ *
+ * Cooked's web_vitals event captures occasionally produces values that
+ * suggest clock skew or backgrounded-tab measurements (e.g. LCP of
+ * 1.3 million ms = 22 minutes). These values cause `numeric field
+ * overflow` on insert into `behavior_page_snapshots` (where lcp/inp/ttfb
+ * are `numeric(7,1)` capping at ~16 min).
+ *
+ * Returning null here is more honest than clamping : a null tells the
+ * downstream LLM "no signal", a clamped value would lie about the
+ * actual page performance.
+ *
+ * The hard caps below are an order of magnitude past Google's Poor
+ * threshold for each metric — anything above is almost certainly a
+ * measurement artefact, not a real user experience.
+ *
+ * TODO Cooked-side : clamp / drop these at event-capture time so the
+ * outliers don't pollute the RPC at all. Until then we sanitize here.
+ */
+const CWV_HARD_CAPS = {
+  lcp_p75_ms: 60_000, // Google "Poor" = 4000ms ; 60s = 15× past, surely an artefact
+  inp_p75_ms: 5_000, // Poor = 500ms ; 5s = 10× past
+  cls_p75: 5, // Poor = 0.25 ; 5 = 20× past
+  ttfb_p75_ms: 30_000, // Poor = 1800ms ; 30s = ~16× past
+} as const;
+
+function sanitizeCwv(v: number | null, metric: keyof typeof CWV_HARD_CAPS): number | null {
+  if (v == null) return null;
+  const cap = CWV_HARD_CAPS[metric];
+  if (v < 0 || v > cap) return null;
+  return v;
+}
+
+/**
  * Fetch one row per URL aggregating sessions / engagement / CWV / outbound
  * over the [dateFrom, dateTo) window.
  *
@@ -81,10 +115,10 @@ export async function fetchBehaviorPages(
     bounce_rate: num(r.bounce_rate),
     scroll_depth_avg: num(r.scroll_depth_avg),
     scroll_complete_pct: num(r.scroll_complete_pct),
-    lcp_p75_ms: numOrNull(r.lcp_p75_ms),
-    inp_p75_ms: numOrNull(r.inp_p75_ms),
-    cls_p75: numOrNull(r.cls_p75),
-    ttfb_p75_ms: numOrNull(r.ttfb_p75_ms),
+    lcp_p75_ms: sanitizeCwv(numOrNull(r.lcp_p75_ms), 'lcp_p75_ms'),
+    inp_p75_ms: sanitizeCwv(numOrNull(r.inp_p75_ms), 'inp_p75_ms'),
+    cls_p75: sanitizeCwv(numOrNull(r.cls_p75), 'cls_p75'),
+    ttfb_p75_ms: sanitizeCwv(numOrNull(r.ttfb_p75_ms), 'ttfb_p75_ms'),
     outbound_clicks: num(r.outbound_clicks),
   }));
 }

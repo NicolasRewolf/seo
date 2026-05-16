@@ -78,9 +78,13 @@ import type {
 import { fetchTrackerFirstSeen } from '../lib/cooked.js';
 import type { ContentSnapshot } from '../lib/page-content-extractor.js';
 import type { GoogleSearchGuidance } from '../lib/google-search-central.js';
+import {
+  GOOGLE_GENAI_ANTI_PATTERNS_BLOCK,
+  GOOGLE_NON_COMMODITY_PRINCIPLE_BLOCK,
+} from './google-genai-guide.js';
 
 export const DIAGNOSTIC_PROMPT_NAME = 'diagnostic' as const;
-export const DIAGNOSTIC_PROMPT_VERSION = 12 as const;
+export const DIAGNOSTIC_PROMPT_VERSION = 14 as const;
 
 /**
  * Sprint-9: live snapshot of how the rest of the site links to this page.
@@ -666,6 +670,24 @@ function fmtOutboundDestinations(rows: OutboundDestination[] | undefined): strin
  */
 const COOKED_TRACKER_DEPLOY_FALLBACK = new Date('2026-05-06T17:00:00Z');
 
+/**
+ * Sprint-22 Cooked-side fix : before 2026-05-16, the anonymous_id was
+ * hashed from server-side IP (Wix Velo stateless workers → different IP
+ * each request → 6+ anonymous_ids per real session). Result : sessions
+ * inflated ~6×, bounce_rate artificially low, per-session conv rates
+ * artificially low.
+ *
+ * Post-fix, anonymous_id comes from browser localStorage (`_ckd_aid`,
+ * stable UUID per visitor). Data from 2026-05-16 onward is correct ;
+ * the 28d window is fully clean ~2026-06-13.
+ *
+ * When an audit period_end falls in the contaminated window, the
+ * diagnostic prompt surfaces a banner so the LLM doesn't read inflated
+ * sessions / depressed conv-rates as behavioral signals.
+ */
+const COOKED_ANONYMOUS_ID_FIX_DATE = new Date('2026-05-16T00:00:00Z');
+const COOKED_CLEAN_28D_WINDOW_DATE = new Date('2026-06-13T00:00:00Z');
+
 let _cachedFirstSeen: { value: Date; at: number } | null = null;
 const CACHE_TTL_MS = 3600_000; // 1h
 
@@ -781,6 +803,43 @@ export function fmtDataQualityCheck(
   }
   lines.push(`- Verdict: ${verdict}`);
   return lines.join('\n');
+}
+
+/**
+ * Sprint-22 banner — Cooked anonymous_id fix. Returns null (no banner)
+ * when the audit window is fully post-fix, otherwise warns the LLM that
+ * sessions / bounce / conversion-per-session signals are biased.
+ *
+ * `now` is injectable for tests. In prod we use the real current date.
+ */
+export function fmtCookedAnonIdAdvisory(now: Date = new Date()): string | null {
+  if (now.getTime() >= COOKED_CLEAN_28D_WINDOW_DATE.getTime()) return null;
+  const daysSinceFix = Math.max(
+    0,
+    Math.floor((now.getTime() - COOKED_ANONYMOUS_ID_FIX_DATE.getTime()) / (24 * 60 * 60 * 1000)),
+  );
+  const daysUntilCleanWindow = Math.max(
+    0,
+    Math.ceil((COOKED_CLEAN_28D_WINDOW_DATE.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)),
+  );
+  const phase =
+    daysSinceFix === 0
+      ? 'la fenêtre 28d est ENTIÈREMENT pré-fix'
+      : `la fenêtre 28d contient ${daysSinceFix}j de données post-fix sur 28, soit ${(
+          (daysSinceFix / 28) *
+          100
+        ).toFixed(0)}% propres et ${100 - Math.round((daysSinceFix / 28) * 100)}% biaisés`;
+  return [
+    `⚠️ **Cooked Sprint-22 — bug anonymous_id corrigé le 2026-05-16.** Avant le fix, 93% des sessions avaient >1 anonymous_id (Wix Velo stateless workers → IP différente par requête → hash différent par engagement_tick). Conséquence : **sessions surestimées ~6×, bounce_rate sous-estimé, taux de conversion par session sous-estimés**.`,
+    '',
+    `État actuel : ${phase}. Fenêtre 28d 100% propre dans ${daysUntilCleanWindow}j.`,
+    '',
+    `**Consignes pour ce diagnostic :**`,
+    `- Pour TOUT chiffre sessions/bounce/conv-rate qui couvre la fenêtre contaminée : lecture **qualitative seulement** ("intent fort/faible", "engagement décroche tôt/tard"), JAMAIS d'absolu ni de comparaison page-à-page chiffrée.`,
+    `- Les ratios INTRA-page restent OK (ex: scroll_avg 3% vs scroll_complete 0% est valide — c'est la MÊME mesure dégradée du même facteur).`,
+    `- Les RPCs autres que sessions (Cooked dwell, scroll, CWV, queries GSC) ne sont PAS affectées par ce bug → ground truth normale.`,
+    `- Si tu identifies un signal "engagement très faible" basé sur sessions : préfixe ton verdict par "à reconfirmer post-${COOKED_CLEAN_28D_WINDOW_DATE.toISOString().slice(0, 10)}".`,
+  ].join('\n');
 }
 
 /**
@@ -1109,6 +1168,14 @@ Sprint 19+19.5 — SILO de "ce que Google dit / a publié officiellement". 5 sou
 ${fmtGoogleRecentGuidance(i.enrichment?.google_guidance ?? null)}
 </google_recent_guidance>
 
+<google_genai_anti_patterns>
+${GOOGLE_GENAI_ANTI_PATTERNS_BLOCK}
+</google_genai_anti_patterns>
+
+<google_non_commodity_principle>
+${GOOGLE_NON_COMMODITY_PRINCIPLE_BLOCK}
+</google_non_commodity_principle>
+
 # Identité de la page
 ${fmtIdentityBlock(i.url, i.enrichment)}
 
@@ -1209,6 +1276,9 @@ ${i.enrichment ? fmtCatalog(i.enrichment.internal_pages_catalog) : '_(catalog no
 
 ⚠️ **Lis le bloc \`<data_quality_check>\` EN PREMIER.** Il te dit si tu peux lire les chiffres Cooked comme ground truth ou comme lower bound. Tous les autres blocs sont à pondérer en conséquence.
 ${(() => {
+  const advisory = fmtCookedAnonIdAdvisory();
+  return advisory ? `\n<cooked_anonymous_id_advisory>\n${advisory}\n</cooked_anonymous_id_advisory>\n` : '';
+})()}${(() => {
   const banner = fmtCookedHealth(i.cooked_health);
   return banner
     ? `\n<cooked_data_health>\n${banner}\n</cooked_data_health>\n`
@@ -1304,7 +1374,8 @@ Produis un diagnostic JSON strict avec ce schéma. **Le champ \`tldr\` vient en 
   "engagement_pattern_assessment": "1-2 phrases. (Sprint-16) Lis <engagement_density>. Si evenness < 0.15 → 'distribution très bimodale, la page travaille pour certains visiteurs (queue p75=Xs) mais perd les autres très tôt (p25=Ys), signal d'intent mismatch partiel'. À CROISER avec <pogo_navboost> : si pogo OK + evenness <0.15 → 'le problème n'est pas la première seconde mais la mi-page (les visiteurs lisent puis abandonnent vers Xs)'. Si evenness > 0.6 → 'engagement régulier, quand on lit on va au bout, contenu retient — protéger ce signal lors des fixes'. Si entre 0.3-0.6 → mention courte, pas de verdict fort. Si pas de data : 'densité d'engagement non disponible'.",
   "outbound_leak_note": "1 phrase ou 'pas de leak significatif'. Lis <top_outbound_destinations>: si la top destination est sémantiquement liée à la thématique de la page (ex: legifrance.gouv.fr / service-public.fr sur une page juridique), c'est une fuite réparable → 'ajoute la citation X in-page au lieu de laisser fuir vers source externe Y'. Sinon : 'fuites externes normales (autorités juridiques officielles), pas un signal de fix'.",
   "pogo_navboost_assessment": "1-2 phrases. Lis <pogo_navboost>. Si pogo_rate > 20% sur n≥30 google_sessions → cause #1 d'une éventuelle position_drift négative, à mettre en tête des hypothèses : 'NavBoost dérouté la page (pogo XX% sur n=YY) — l'intent ne match pas, soit le snippet ment, soit la page n'apporte pas la réponse attendue dans les 10 premières secondes'. Si n<30, mentionne 'à surveiller, échantillon trop faible pour conclure'. Si pas de signal (0 google_sessions ou tracker récent), écris 'signal pogo non disponible (Cooked vient de démarrer ou page non indexée)'. Si pogo_rate ≤ 10% sur n≥30, écris brièvement 'engagement Google satisfaisant (pogo XX%)' — c'est une info utile à l'inverse pour ne pas fixer ce qui marche.",
-  "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le bloc <outbound_links_from_this_page> (ne pas re-suggérer des liens existants), le RÔLE FUNNEL de la page, ET (Sprint-14) **le bloc <page_outline> et le word_count du <page_body>**. Si le word_count est < 1500 mots sur un sujet juridique substantiel, dis 'thin content vs benchmark juridique-FR ~1800 mots médian'. Si une top requête à fort volume n'a pas de H2 dédié dans <page_outline>, dis-le explicitement avec l'offset où l'insérer. Cite le bloc <images> si plusieurs images sans alt-text. ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', traite le maillage éditorial sortant comme INCONNU.** ⚠️ **Si <page_body> est indisponible/vide, écris 'extraction body indisponible' et ne fais PAS de claim sur word_count ou outline.**",
+  "structural_gaps": "1-3 phrases sur les manques structurels. Tu DOIS prendre en compte : le schema déjà présent (ne pas suggérer ce qui existe), le bloc <outbound_links_from_this_page> (ne pas re-suggérer des liens existants), le RÔLE FUNNEL de la page, ET (Sprint-14) **le bloc <page_outline> et le word_count du <page_body>**. Si le word_count est < 1500 mots sur un sujet juridique substantiel, dis 'thin content vs benchmark juridique-FR ~1800 mots médian'. Si une top requête à fort volume n'a pas de H2 dédié dans <page_outline>, dis-le explicitement avec l'offset où l'insérer. (Sprint-23 Google AI Guide) **Si <images> contient 0 image ou seulement des images sans alt-text** sur une page YMYL juridique substantielle (>1000 mots), flague-le COMME PROBLÈME PRIORITAIRE (pas juste une remarque) — Google a explicitement listé 'images + vidéos high-quality' comme un des 5 piliers GenAI Search. Cite le bloc <images> si plusieurs images sans alt-text. ⚠️ **Si le bloc outbound est marqué 'Snapshot pré-Sprint-9', traite le maillage éditorial sortant comme INCONNU.** ⚠️ **Si <page_body> est indisponible/vide, écris 'extraction body indisponible' et ne fais PAS de claim sur word_count ou outline.**",
+  "unique_pov_assessment": "2-4 phrases. (Sprint-23 v14, Google AI Optimization Guide — pilier #1 pour la GenAI Search.) Compare le contenu de la page (lis <page_body> + <page_outline>) avec le top 3 SERP (<serp_competitive_landscape>). Verdict catégorique : la page est-elle COMMODITY (= recyclage de ce que disent les autres sources, produisible par un LLM générique) ou NON-COMMODITY (= POV unique avec angle expert, cas réel, résultats chiffrés, expertise territoriale Bordeaux) ? Si COMMODITY contre des autorités institutionnelles (.gouv, Wikipedia, Légifrance, Dalloz) → handicap structurel majeur, signale que le levier #1 est l'ajout d'éléments NON-COMMODITY (cas anonymisé, plaidoirie, résultat obtenu, angle défense explicite). Si NON-COMMODITY déjà présent (cas/chiffre/angle expert visible dans le body) → c'est un ATOUT à amplifier (titre, schema PracticeArea, intro qui le met en valeur). Cite UN passage spécifique du body qui justifie ton verdict (offset si possible). Si <page_body> indisponible, écris 'POV non évaluable (body indisponible)'.",
   "funnel_assessment": "1-2 phrases : la page remplit-elle correctement son rôle funnel ? Quels maillons manquants vers les pages expertise + CTA du catalogue ? Cite les URLs précises du catalogue. (Sprint-14) **Lis aussi <cta_in_body_positions>** — si un CTA existant est très tard dans le body (offset > 70% du word_count) et que scroll_avg Cooked est faible (<50%), recommande explicitement de le repositionner plus tôt avec l'offset cible. ⚠️ **Si <outbound_links_from_this_page> est 'Snapshot pré-Sprint-9', écris : 'maillage éditorial sortant non capturé — réévaluer'.**",
   "internal_authority_assessment": "1-2 phrases sur la position de cette page dans le graph interne (lis EXCLUSIVEMENT le bloc <inbound_links_to_this_page>, JAMAIS le bloc outbound). Si inbound_editorial>=10 → 'page hub à protéger' (les fixes ne doivent pas casser ce statut). Si inbound_editorial==0 et inbound_total>0 → 'page orpheline éditorialement' : prioriser absolument l'ajout de liens depuis 2-3 pages sources naturelles. Sinon → position standard, pas de levier graph spécifique. Si le graph n'est pas encore crawlé, écris 'graph non disponible (premier crawl en cours)'."
 }

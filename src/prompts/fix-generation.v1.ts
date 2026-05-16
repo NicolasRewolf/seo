@@ -38,9 +38,13 @@ import type {
   CtaBreakdownRow,
 } from '../lib/cooked.js';
 import { FORBIDDEN_LINK_TARGETS } from '../lib/site-catalog.js';
+import {
+  GOOGLE_GENAI_ANTI_PATTERNS_BLOCK,
+  GOOGLE_NON_COMMODITY_PRINCIPLE_BLOCK,
+} from './google-genai-guide.js';
 
 export const FIX_GEN_PROMPT_NAME = 'fix_generation' as const;
-export const FIX_GEN_PROMPT_VERSION = 3 as const;
+export const FIX_GEN_PROMPT_VERSION = 4 as const;
 
 export type FixGenPromptInputs = {
   url: string;
@@ -399,6 +403,14 @@ ${fmtCatalogForFixes(i.enrichment?.internal_pages_catalog)}
 ${FORBIDDEN_LINK_TARGETS.map((p) => `- ${p}`).join('\n')}
 > Pourquoi : ces URLs apparaissent légitimement dans le maillage (footer, mentions légales, blog index Wix) mais n'ont **aucune valeur éditoriale** comme cible de recommandation. Si tu veux pousser un lien CTA, propose une page \`expertise\` ou \`cta\` (honoraires-rendez-vous) du catalogue, pas une page index ni une page legal.
 
+<google_genai_anti_patterns>
+${GOOGLE_GENAI_ANTI_PATTERNS_BLOCK}
+</google_genai_anti_patterns>
+
+<google_non_commodity_principle>
+${GOOGLE_NON_COMMODITY_PRINCIPLE_BLOCK}
+</google_non_commodity_principle>
+
 # Diagnostic (rendu sectionné — lis le TL;DR puis pondère les autres sections en fonction de leur étiquette d'utilité)
 ${fmtDiagnosticBlock(i.diagnostic)}
 
@@ -427,7 +439,7 @@ ${fmtCookedBlockForFixes(i.cooked_extras, i.cta_breakdown, i.gsc_clicks_28d)}
   - URLs proposées DOIVENT venir du catalogue ci-dessus (pas d'invention)
   - Ne PAS re-suggérer un lien déjà listé dans "LIENS ÉDITORIAUX in-body" (il existe déjà)
   - Si un lien éditorial existant pointe vers une mauvaise sous-expertise, dis-le explicitement et propose le REMPLACEMENT
-- **Pour le schema** : ne propose pas un type déjà présent. Pour Article schema, n'invente pas de dateModified/datePublished — si tu n'as pas la vraie date, écris "{{TO_FILL_BY_AUTHOR}}" comme placeholder.
+- **Pour le schema** : ne propose pas un type déjà présent. Pour Article schema, n'invente pas de dateModified/datePublished — si tu n'as pas la vraie date, écris "{{TO_FILL_BY_AUTHOR}}" comme placeholder. **(Sprint-23 Google AI Guide)** : Google a explicitement dit que **le schema JSON-LD n'est PAS requis pour la GenAI Search**. Il reste utile pour les rich results classiques (FAQPage, BreadcrumbList, Article) mais ne JAMAIS le proposer comme top action ROI quand title/meta/intro/content_addition sont aussi en jeu. Si la page est COMMODITY (cf. \`unique_pov_assessment\` du diagnostic), proposer du schema sans avoir d'abord adressé le POV unique = mettre le wagon avant la locomotive.
 - **Pour les CTA** : tenir compte du rôle funnel ci-dessus. Un knowledge_brick doit avoir un CTA explicite et hiérarchisé en bas d'article, pas noyé.
 
 # Format de réponse JSON strict
@@ -442,7 +454,7 @@ ${fmtCookedBlockForFixes(i.cooked_extras, i.cta_breakdown, i.gsc_clicks_28d)}
     //   - "meta_description"  — toujours pertinent si la meta est >155 chars, manque un signal différenciant ou un bénéfice
     //   - "h1"                — UNIQUEMENT si le H1 diffère du title et peut être affûté
     //   - "intro"             — si l'intro actuelle est faible, polluée (nav cruft), ou ne répond pas à la requête principale
-    //   - "schema"            — UNIQUEMENT si un type Schema.org pertinent manque (ex: FAQPage si les top queries sont des questions, BreadcrumbList si la page a une hiérarchie claire). Pour le proposed_value, fournis du JSON-LD valide complet en string.
+    //   - "schema"            — DERNIER RECOURS (Sprint-23). UNIQUEMENT si un type Schema.org pertinent manque ET que les leviers title/meta/intro/content sont déjà OK ou couverts. Ex: FAQPage si les top queries sont des questions, BreadcrumbList si la page a une hiérarchie claire. Pour le proposed_value, fournis du JSON-LD valide complet en string. ⚠️ Ne PAS proposer schema si la page est commodity content (cf. unique_pov_assessment) — corriger le POV d'abord.
     //   - "internal_links"    — si NavBoost faible (pages/session bas, durée courte) OU si maillage anémique. Format proposed_value: "ancre1 → URL1 | ancre2 → URL2 | ancre3 → URL3"
     //   - "content_addition"  — UNIQUEMENT si une top query est partiellement matched et appelle une section éditoriale manquante. Décris la section à ajouter (titre + 2-3 lignes du contenu attendu).
     //

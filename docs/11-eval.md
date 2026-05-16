@@ -2,9 +2,9 @@
 
 ## WHAT
 
-A regression test for the diagnostic LLM. **5 frozen golden cases** (real prod
+A regression test for the diagnostic LLM. **6 frozen golden cases** (real prod
 findings captured at a specific moment) are replayed against the current
-prompt + Claude model, scored against ~25 hand-curated assertions, and a pass /
+prompt + Claude model, scored against ~33 hand-curated assertions, and a pass /
 fail report is produced.
 
 It catches the kind of silent regression you'd otherwise only notice weeks
@@ -34,6 +34,7 @@ The 5 cases were chosen to span the diagnostic surface area :
 | `arse-pos8-pogo-stick` | 4-10 (7.78) | Page is THIN (0 H2, 0 image, 0 outbound) | Structural-thinness diagnosis + small-n caveat |
 | `trafic-stups-pos12-silo` | 11-20 (12.18) | Silo expertise page, lawyer-saturated SERP | Commercial intent recognition + competitor differentiation |
 | `vc-feminicides-pos14-thin` | 11-20 (13.94) | Meta description literally TRUNCATED at 'd' | Recognition of broken meta as #1 fix + tiny-n caveat |
+| `premeditation-commodity` | 4-10 (5.25) | Page définitionnelle pure face à autorités institutionnelles | **Sprint-23** : nouveau champ `unique_pov_assessment` — la page doit être identifiée comme COMMODITY et le diag doit recommander un POV non-commodity (cas, plaidoirie, angle expert) |
 
 Coverage gap : no case currently exercises CWV / LCP-Poor diagnosis (no
 finding in the corpus has populated `lcp_p75_ms`). To add later when

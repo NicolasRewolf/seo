@@ -72,6 +72,13 @@ const DiagnosticSchema = z.object({
   // device_optimization_note also gets richer in v9 but the schema field
   // already exists since v6 — only the prompt instruction changed.
   engagement_pattern_assessment: z.string().optional().default(''),
+  // Sprint-23 v14 (Google AI Optimization Guide) : explicit commodity vs
+  // non-commodity assessment. Identifies whether the page is differentiated
+  // enough vs the top-3 SERP competitors — the #1 lever Google flags for
+  // GenAI Search visibility (RAG retrieval favors unique POV / first-hand
+  // content over recycled common-knowledge summaries). Optional for v1-v13
+  // backcompat (older diagnostics don't have this field).
+  unique_pov_assessment: z.string().optional().default(''),
 });
 
 export type DiagnosticPayload = z.infer<typeof DiagnosticSchema>;

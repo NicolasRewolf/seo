@@ -1,0 +1,8 @@
+{
+  "case_id": "premeditation-commodity",
+  "what": "Pos 5.25, 11k impr/mois, article purement définitionnel face à Légifrance/Wikipedia. Tests le nouveau champ unique_pov_assessment (Sprint-23 Google AI Guide) : la page doit être identifiée comme COMMODITY et le diag doit recommander d'ajouter un POV non-commodity (cas, plaidoirie, angle avocat).",
+  "source_finding_id": "e66763e9-bbf9-40c3-abe4-c6db0a3e0da2",
+  "page_url": "https://www.jplouton-avocat.fr/post/la-préméditation-en-droit-pénal-français-définition-et-conséquences-juridiques",
+  "captured_at": "2026-05-16T08:19:14.929Z",
+  "prompt_version_at_capture": 14
+}

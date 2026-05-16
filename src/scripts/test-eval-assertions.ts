@@ -34,6 +34,7 @@ function payload(overrides: Partial<DiagnosticPayload> = {}): DiagnosticPayload 
     outbound_leak_note: '',
     pogo_navboost_assessment: '',
     engagement_pattern_assessment: '',
+    unique_pov_assessment: '',
     ...overrides,
   };
 }

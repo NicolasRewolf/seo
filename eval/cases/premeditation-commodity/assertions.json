@@ -1,0 +1,42 @@
+{
+  "case_id": "premeditation-commodity",
+  "what": "Pos 5.25, 11k impr/mois, article purement définitionnel ('définition et conséquences juridiques') face à Légifrance/Wikipedia/CNRTL. Tests le nouveau champ unique_pov_assessment (Sprint-23 Google AI Guide) — la page doit être identifiée comme COMMODITY content et le diag doit recommander d'ajouter un POV non-commodity (cas, plaidoirie, angle avocat) plutôt que de tenter de battre les autorités sur leur terrain définitionnel.",
+  "asserts": [
+    {
+      "field": "tldr",
+      "kind": "min_length",
+      "length": 80,
+      "why": "Substantive synthesis required."
+    },
+    {
+      "field": "unique_pov_assessment",
+      "kind": "min_length",
+      "length": 100,
+      "why": "Le nouveau champ Sprint-23 doit être substantiel (verdict explicite + 1-2 phrases d'action). Une réponse vide ou de moins de 100 chars = le LLM a ignoré le pillar Google #1."
+    },
+    {
+      "field": "unique_pov_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["commodity", "non-commodity", "POV", "point de vue", "unique", "first-hand", "première main"],
+      "why": "Le champ DOIT employer le vocabulaire Sprint-23 Google AI Guide (commodity / POV unique) pour démontrer que l'instruction a été suivie. Sinon c'est du texte générique qui ne capture pas la grille d'analyse."
+    },
+    {
+      "field": "unique_pov_assessment",
+      "kind": "must_contain_any",
+      "patterns": ["cas", "plaidoirie", "affaire", "résultat", "expérience", "expert", "anonymisé"],
+      "why": "Doit recommander un type de contenu NON-commodity concret (cas réel, plaidoirie, résultat obtenu) — pas juste 'ajouter du contenu unique' qui serait creux."
+    },
+    {
+      "field": "snippet_weakness",
+      "kind": "must_contain_any",
+      "patterns": ["légifrance", "wikipedia", "larousse", "cnrtl", "service-public", "institutionnel", "dictionnaire", "définition"],
+      "why": "Recognition de la SERP locked par autorités institutionnelles définitionnelles — sans ça, le diag propose des fixes inutiles (battre Larousse sur 'définition' est impossible)."
+    },
+    {
+      "field": "engagement_diagnosis",
+      "kind": "must_not_contain_any",
+      "patterns": ["satisfaisant", "bon engagement", "engagement correct"],
+      "why": "Si scroll faible (cf. metrics réelles du finding), engagement n'est PAS satisfaisant — calling it good masquerait l'urgence."
+    }
+  ]
+}
